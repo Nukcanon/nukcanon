@@ -1,811 +1,321 @@
-body {
-	font-family: sans-serif;
-	margin: 0;
-	padding: 0;
+/* =========================================
+   1. Global Variables & Reset
+   ========================================= */
+:root {
+    --primary-color: #0066cc;       /* 기존 #06c 유지하되 표준화 */
+    --accent-color: #03a9f4;        /* 버튼 색상 */
+    --accent-hover: #0288d1;
+    --text-main: #333333;
+    --text-muted: #666666;
+    --bg-light: #f8f9fa;
+    --border-color: #e1e4e8;
+    --code-bg: #f6f8fa;             /* 코드 블럭 배경색 */
+    --shadow-soft: 0 4px 6px rgba(0, 0, 0, 0.05);
+    --shadow-hover: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
+body {
+    /* 시스템 폰트 스택을 사용하여 더 깔끔하고 빠르게 렌더링 */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: var(--text-main);
+    line-height: 1.6;
+    background-color: #fff;
+}
+
+/* 스크롤바 디자인 개선 - 더 얇고 모던하게 */
 *::-webkit-scrollbar {
-	width: 9px;
-	height: 9px;
+    width: 8px;
+    height: 8px;
 }
 
 *::-webkit-scrollbar-thumb {
-	border-radius: 9px;
-	-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-	background: #888888;
+    border-radius: 4px;
+    background: #ccc;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: #bbb;
 }
 
 *::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-	border-radius: 10px;
-	background: #EDEDED;
+    background: transparent;
 }
 
 a {
-	color: #06c;
-	text-decoration: none;
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.2s;
 }
 
-	a:hover {
-		text-decoration: underline;
-	}
+a:hover {
+    text-decoration: underline;
+    color: #004080;
+}
 
+/* =========================================
+   2. UI Elements (Buttons, Banner)
+   ========================================= */
 button {
-	padding:8px 15px 8px 15px;
-	min-width: 300px;
-	min-height: 20px;
-	border: 0px;
-	border-radius: 20px;
-	font-size: 1rem;
-	font-weight: 400;
-	background-color: #03a9f4;
-	color: #ffffff;
-	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: 10px 24px;
+    /* min-width: 300px; -> 너무 커서 제거, 필요시 컨텐츠에 맞게 늘어나도록 함 */
+    border: none;
+    border-radius: 6px; /* 과도한 20px에서 줄임 */
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: var(--accent-color);
+    color: #ffffff;
+    box-shadow: var(--shadow-soft);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    background-color: var(--accent-hover);
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-1px); /* 살짝 떠오르는 효과 */
 }
 
 .topbanner {
-	margin: auto;
-	padding: 12px 3px;
-	margin-bottom: 3px;
-	border-bottom: solid 1px #ccc;
-	align-self: stretch;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	background-color: #06c;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--primary-color);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .topbanner, .topbanner * {
-	color: white;
+    color: white;
 }
 
 .topbanner label {
-	font-size: 18px;
+    font-size: 1.25rem;
+    font-weight: 600;
 }
 
-.navitem.active {
-	background-color: steelblue;
-}
-
-	.navitem.active a {
-		color: #fff;
-	}
-
-.navcontent {
-	padding: 8px 24px 48px;
-}
-
+/* =========================================
+   3. Navigation
+   ========================================= */
 .navmenu {
-	padding: 0 5px 48px;
-	margin-left: 5px;
+    padding: 0 10px 48px;
+    background-color: #fff;
 }
 
 .navfolder {
-	font-weight: bold;
-	font-size: 18px;
-	text-align: center;
-	margin: 0.5rem 0 0.5rem;
-	padding: 0.5rem 0 0.5rem;
-	background-color: #eee;
-	text-align: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: center;
+    margin: 1rem 0;
+    padding: 0.75rem;
+    background-color: var(--bg-light); /* 연한 회색으로 변경 */
+    border-radius: 6px;
+    color: var(--text-main);
 }
 
 .navgroup {
-	font-size: 16px;
-	padding-left: 0.25rem;
-	margin: 10px 0;
+    font-size: 1rem;
+    padding-left: 0.5rem;
+    margin: 10px 0;
+    font-weight: 600;
+    color: var(--text-muted);
 }
 
 .navitem {
-	padding: 2px 1.25rem;
-	display: inline-block;
-	width: 180px;
-	margin: 3px 0;
+    /* width: 180px; -> 고정 너비 제거 (반응형 대응) */
+    display: inline-block;
+    margin: 2px 0;
+    padding: 0; /* a 태그에 패딩을 줌 */
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.navitem a {
+    display: block;
+    padding: 6px 12px;
+    color: var(--text-main);
+    border-radius: 4px;
+}
+
+.navitem:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    text-decoration: none;
+}
+
+.navitem.active {
+    background-color: #4682b4; /* steelblue */
+}
+
+.navitem.active a {
+    color: #fff;
+    font-weight: 500;
+}
+
+.navcontent {
+    padding: 20px 40px;
 }
 
 .navfolderitems {
-	display: flex;
-	flex-wrap: wrap;
-	flex-direction: column;
-	position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 5px; /* 아이템 간 간격 추가 */
 }
 
-.navgroupcontainer {
-	width: 33%;
+/* 논리적 오류 수정: 내용이 많아지면 잘릴 수 있는 고정 높이 제거 */
+.navfolderdemos, .navfolderdocs {
+    height: auto; 
+    min-height: 200px;
 }
 
-.navfolderdemos {
-	height: 500px;
-}
-
-.navfolderdocs {
-	height: 1100px;
-}
-
+/* =========================================
+   4. Syntax Highlighter (Modernized)
+   ========================================= */
+/* 기존의 베이지색/점선 스타일을 현대적인 GitHub/VSCode 스타일로 변경 */
 
 .dp-highlighter {
-	font-family: "Consolas", "Courier New", Courier, mono, serif;
-	font-size: 12px;
-	background-color: #E7E5DC;
-	width: 99%;
-	overflow: auto;
-	margin: 18px 0 18px 0 !important;
-	padding-top: 1px; /* adds a little border on top when controls are hidden */
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 13px;
+    background-color: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    width: 100%; /* 99% -> 100% */
+    box-sizing: border-box; /* 패딩 포함 계산 */
+    overflow: auto;
+    margin: 20px 0 !important;
+    padding: 0;
+    line-height: 1.5;
 }
 
-	/* clear styles */
-	.dp-highlighter ol,
-	.dp-highlighter ol li,
-	.dp-highlighter ol li span {
-		margin: 0;
-		padding: 0;
-		border: none;
-	}
-
-	.dp-highlighter a,
-	.dp-highlighter a:hover {
-		background: none;
-		border: none;
-		padding: 0;
-		margin: 0;
-	}
-
-	.dp-highlighter .bar {
-		padding-left: 45px;
-	}
-
-	.dp-highlighter.collapsed .bar,
-	.dp-highlighter.nogutter .bar {
-		padding-left: 0px;
-	}
-
-	.dp-highlighter ol {
-		list-style: decimal; /* for ie */
-		background-color: #fff;
-		margin: 0px 0px 1px 45px !important; /* 1px bottom margin seems to fix occasional Firefox scrolling */
-		padding: 0px;
-		color: #5C5C5C;
-	}
-
-	.dp-highlighter.nogutter ol,
-	.dp-highlighter.nogutter ol li {
-		list-style: none !important;
-		margin-left: 0px !important;
-	}
-
-	.dp-highlighter ol li,
-	.dp-highlighter .columns div {
-		list-style: decimal-leading-zero; /* better look for others, override cascade from OL */
-		list-style-position: outside !important;
-		border-left: 3px solid #6CE26C;
-		background-color: #F8F8F8;
-		color: #5C5C5C;
-		padding: 0 3px 0 10px !important;
-		margin: 0 !important;
-	}
-
-	.dp-highlighter.nogutter ol li,
-	.dp-highlighter.nogutter .columns div {
-		border: 0;
-	}
-
-	.dp-highlighter .columns {
-		background-color: #F8F8F8;
-		color: gray;
-		overflow: hidden;
-		width: 100%;
-	}
-
-		.dp-highlighter .columns div {
-			padding-bottom: 5px;
-		}
-
-	.dp-highlighter ol li.alt {
-		background-color: #FFF;
-		color: inherit;
-	}
-
-	.dp-highlighter ol li span {
-		color: black;
-		background-color: inherit;
-	}
-
-	/* Adjust some properties when collapsed */
-
-	.dp-highlighter.collapsed ol {
-		margin: 0px;
-	}
-
-		.dp-highlighter.collapsed ol li {
-			display: none;
-		}
-
-	/* Additional modifications when in print-view */
-
-	.dp-highlighter.printing {
-		border: none;
-	}
-
-		.dp-highlighter.printing .tools {
-			display: none !important;
-		}
-
-		.dp-highlighter.printing li {
-			display: list-item !important;
-		}
-
-	/* Styles for the tools */
-
-	.dp-highlighter .tools {
-		padding: 3px 8px 3px 10px;
-		font: 9px Verdana, Geneva, Arial, Helvetica, sans-serif;
-		color: silver;
-		background-color: #f8f8f8;
-		padding-bottom: 10px;
-		border-left: 3px solid #6CE26C;
-	}
-
-	.dp-highlighter.nogutter .tools {
-		border-left: 0;
-	}
-
-	.dp-highlighter.collapsed .tools {
-		border-bottom: 0;
-	}
-
-	.dp-highlighter .tools a {
-		font-size: 9px;
-		color: #a0a0a0;
-		background-color: inherit;
-		text-decoration: none;
-		margin-right: 10px;
-	}
-
-		.dp-highlighter .tools a:hover {
-			color: red;
-			background-color: inherit;
-			text-decoration: underline;
-		}
-
-/* About dialog styles */
-
-.dp-about {
-	background-color: #fff;
-	color: #333;
-	margin: 0px;
-	padding: 0px;
+/* 상단 툴바 (Copy 버튼 등) */
+.dp-highlighter .bar {
+    padding-left: 0;
+    background-color: transparent;
 }
 
-	.dp-about table {
-		width: 100%;
-		height: 100%;
-		font-size: 11px;
-		font-family: Tahoma, Verdana, Arial, sans-serif !important;
-	}
-
-	.dp-about td {
-		padding: 10px;
-		vertical-align: top;
-	}
-
-	.dp-about .copy {
-		border-bottom: 1px solid #ACA899;
-		height: 95%;
-	}
-
-	.dp-about .title {
-		color: red;
-		background-color: inherit;
-		font-weight: bold;
-	}
-
-	.dp-about .para {
-		margin: 0 0 4px 0;
-	}
-
-	.dp-about .footer {
-		background-color: #ECEADB;
-		color: #333;
-		border-top: 1px solid #fff;
-		text-align: right;
-	}
-
-	.dp-about .close {
-		font-size: 11px;
-		font-family: Tahoma, Verdana, Arial, sans-serif !important;
-		background-color: #ECEADB;
-		color: #333;
-		width: 60px;
-		height: 22px;
-	}
-
-/* Language specific styles */
-
-.dp-highlighter .comment, .dp-highlighter .comments {
-	color: #008200;
-	background-color: inherit;
+/* 코드 영역 리스트 */
+.dp-highlighter ol {
+    margin: 0 !important;
+    padding: 10px 0 10px 50px !important; /* 라인 넘버 공간 확보 */
+    color: var(--text-muted);
+    background-color: transparent;
+    border: none;
 }
 
-.dp-highlighter .string {
-	color: blue;
-	background-color: inherit;
+.dp-highlighter ol li,
+.dp-highlighter .columns div {
+    list-style: decimal;
+    border-left: 3px solid transparent; /* 녹색 선 제거, 투명으로 유지 */
+    background-color: transparent;
+    color: #bbb; /* 라인 넘버 색상 연하게 */
+    padding-left: 10px !important;
+    margin: 0 !important;
 }
 
-.dp-highlighter .keyword {
-	color: #069;
-	font-weight: bold;
-	background-color: inherit;
+/* 짝수 줄 배경색 제거 (현대적인 느낌을 위해) */
+.dp-highlighter ol li.alt {
+    background-color: transparent;
 }
 
-.dp-highlighter .preprocessor {
-	color: gray;
-	background-color: inherit;
+/* 코드 텍스트 본문 */
+.dp-highlighter ol li span {
+    color: #24292e; /* 기본 텍스트 검정 */
+    font-family: inherit;
+}
+
+/* 호버 시 라인 강조 (선택 사항) */
+.dp-highlighter ol li:hover {
+    background-color: rgba(0,0,0,0.03);
+    border-left-color: var(--accent-color);
+}
+
+/* 구문 강조 색상 (조금 더 선명하게 조정) */
+.dp-highlighter .comment, .dp-highlighter .comments { color: #6a737d; font-style: italic; }
+.dp-highlighter .string { color: #032f62; }
+.dp-highlighter .keyword { color: #d73a49; font-weight: bold; }
+.dp-highlighter .preprocessor { color: #6f42c1; }
+
+/* Copy 버튼 위치 및 스타일 수정 (JS에서 생성되는 요소 대응) */
+.dp-highlighter + div { 
+    /* patch.js의 DPH_AddCopyBtn 함수가 생성하는 버튼에 대한 스타일 보정 */
+    /* 필요하다면 여기에 z-index 등을 추가 */
 }
 
 
-
-
-
-/*------------------------------------
-  General
-------------------------------------*/
-
+/* =========================================
+   5. General Content Styles (Bootstrap-like)
+   ========================================= */
 p {
-	color: initial;
-}
-
-ul li,
-ol li,
-table {
-	color: initial;
-}
-
-.tab-content .header + .header,
-.tab-content .alert + .alert,
-.tab-content .nav + .nav,
-.tab-content .navbar + .navbar,
-.tab-content .progress + .btn,
-.tab-content .progress + .progress {
-	margin-top: 1rem;
-}
-
-.hs-docs-content-divider:first-child {
-	border-bottom: 1px solid #e7eaf3;
-	padding-bottom: 3rem;
-}
-
-.hs-docs-content-divider:not(:last-child) {
-	margin-bottom: 4rem;
-}
-
-.hs-docs-content-divider p:last-child,
-.hs-docs-content-divider ul:last-child,
-.hs-docs-content-divider ol:last-child,
-.hs-docs-content-divider .table:last-child {
-	margin-bottom: 0;
-}
-
-.hs-docs-badge {
-	font-weight: bold;
-	text-transform: uppercase;
-	padding: .35rem .75rem;
-}
-
-/*------------------------------------
-  Markup
-------------------------------------*/
-.code-toolbar {
-	position: relative
+    margin-bottom: 1rem;
 }
 
 code {
-	font-size: 100%;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 90%;
+    padding: 0.2rem 0.4rem;
+    color: #d63384; /* 인라인 코드 강조색 */
+    background-color: rgba(27, 31, 35, 0.05);
+    border-radius: 3px;
 }
 
-:not(pre) > code[class*="language-"],
-pre[class*="language-"] {
-	padding: 1.5rem;
-	background: #142140;
-	margin-bottom: 1rem;
+pre {
+    background: #1e1e1e; /* 어두운 배경 */
+    color: #f8f8f2;
+    padding: 1rem;
+    border-radius: 6px;
+    overflow-x: auto;
 }
 
-.tab-content :not(pre) > code[class*="language-"],
-.tab-content pre[class*="language-"] {
-	border-top-right-radius: 0 !important;
-	border-top-left-radius: 0 !important;
-	border-bottom-right-radius: .3125rem;
-	border-bottom-left-radius: .3125rem;
-}
-
-code[class*="language-"],
-pre[class*="language-"] {
-	color: #ffffff;
-	text-shadow: none;
-	white-space: pre-wrap;
-}
-
-.token.operator,
-.token.entity,
-.token.url,
-.language-css .token.string,
-.style .token.string {
-	color: #d09a5c;
-	background: transparent;
-}
-
-.token.punctuation,
-.token.property,
-.token.tag,
-.token.constant,
-.token.symbol,
-.token.deleted {
-	color: #2f6f9f;
-}
-
-.token.selector,
-.token.attr-name,
-.token.string,
-.token.char,
-.token.builtin,
-.token.inserted {
-	color: #26a5b5;
-}
-
-.token.atrule,
-.token.attr-value,
-.token.function {
-	color: #d44950;
-}
-
-div.code-toolbar > .toolbar {
-	top: 10px;
-	right: 10px;
-	opacity: 1;
-}
-
-	div.code-toolbar > .toolbar a {
-		padding: .3rem .7rem !important;
-		background-color: rgba(255, 255, 255, .3);
-		box-shadow: none;
-		transition: all .2s ease-in-out;
-	}
-
-		div.code-toolbar > .toolbar a:hover {
-			background-color: #377dff;
-			color: #fff !important;
-		}
-
-/*------------------------------------
-  AnchorJS Link
-------------------------------------*/
-.hs-docs-heading {
-	font-size: 1.3125rem;
-	font-weight: 700;
-	margin-bottom: 1rem;
-}
-
-	.hs-docs-heading::before {
-		content: "";
-		display: block;
-		width: 100%;
-		height: 100px;
-		visibility: hidden;
-		margin-top: -100px;
-	}
-
-[data-anchorjs-icon]::after {
-	content: attr(data-anchorjs-icon);
-}
-
-.anchorjs-link {
-	padding-left: .5rem;
-	font-size: 90%;
-	color: rgba(55,125,255, .5) !important;
-	transition: color .16s linear;
-	opacity: 0;
-}
-
-	.anchorjs-link:hover {
-		color: rgba(55,125,255, 1) !important;
-	}
-
-.hs-docs-heading:hover .anchorjs-link {
-	opacity: 1;
-}
-
-/*------------------------------------
-  Scroll Nav Example
-------------------------------------*/
-.scroll-nav-example {
-	position: relative;
-	height: 200px;
-	margin-top: .5rem;
-	overflow: auto;
-}
-
-/*------------------------------------
-  jQuery UI
-------------------------------------*/
-.ui-autocomplete {
-	max-height: 300px;
-	overflow: hidden;
-	overflow-y: auto;
-	padding-bottom: 1px;
-	z-index: 91199;
-}
-
-	.ui-autocomplete::-webkit-scrollbar {
-		width: 0.5rem;
-	}
-
-	.ui-autocomplete::-webkit-scrollbar-thumb {
-		background-color: rgba(189, 197, 209, 0.6);
-		visibility: hidden;
-	}
-
-	.ui-autocomplete:hover::-webkit-scrollbar-thumb {
-		visibility: visible;
-	}
-
-	.ui-autocomplete .left {
-		float: left;
-	}
-
-	.ui-autocomplete .right {
-		float: right;
-	}
-
-	.ui-autocomplete .ui-menu-item {
-		padding: .25rem;
-	}
-
-		.ui-autocomplete .ui-menu-item:not(:last-child) {
-			border-bottom: 1px solid #e7eaf3;
-		}
-
-	.ui-autocomplete .ui-menu-item-wrapper {
-		display: block;
-		color: inherit;
-		background-color: transparent;
-		border-color: transparent;
-		padding: 7px 15px;
-	}
-
-.ui-widget.ui-widget-content {
-	border: thin solid #e7eaf3;
-	border-radius: .3125rem;
-	box-shadow: 0 2px 16px 8px rgba(140, 152, 164, 0.135);
-}
-
-.ui-autocomplete .ui-menu-item-wrapper.ui-state-active, .ui-autocomplete .ui-menu-item-wrapper:hover {
-	background-color: rgba(55,125,255, .1);
-	text-decoration: none;
-}
-
-.ui-autocomplete .ui-menu-item:hover .ui-menu-item-wrapper {
-	background-color: rgba(55,125,255, .1);
-	border-color: transparent;
-	border-radius: .125rem;
-}
-
-.ui-autocomplete-category {
-	padding: 5px 15px;
-	margin: 0;
-	font-weight: bold;
-}
-
-.jvectormap-container {
-	width: 100%;
-	height: 100%;
-}
-
-.hd-doc-search-category {
-	display: block;
-	color: #97a4af;
-	font-size: .875rem;
-}
-
-.ui-autocomplete-input.form-control:not(:last-child) {
-	border-top-right-radius: .25rem;
-	border-bottom-right-radius: .25rem;
-}
-
-/*------------------------------------
-  Tab
-------------------------------------*/
-.tab-wrapper {
-	border: 1px solid #e7eaf3;
-	box-shadow: 0 0 35px rgba(140, 152, 163, .125);
-	border-radius: .5rem;
-	margin-top: 1.5rem;
-	margin-bottom: 3rem;
-}
-
-.tab-pane {
-	max-height: 700px;
-	overflow-y: auto;
-	overflow-x: hidden;
-}
-
-	.tab-pane pre {
-		margin: 0;
-	}
-
-/*------------------------------------
-  Copy to clipboard style
-------------------------------------*/
-.hs-docs-copy-to-clipboard-text {
-	font-size: 80%;
-	color: #77838f;
-}
-
-.hs-docs-copy-to-clipboard:hover .hs-docs-copy-to-clipboard-text {
-	color: #fff;
-	background-color: #377dff;
-}
-
-/*------------------------------------
-  Callout
-------------------------------------*/
+/* Callout Box 디자인 개선 */
 .callout {
-	border-left-width: 10px;
-	border-left-style: solid;
-	padding: 1.5rem;
-	margin-bottom: 1.25rem;
-}
-
-	.callout p:last-child {
-		margin-bottom: 0;
-	}
-
-.callout-title {
-	color: initial;
-	font-size: 1.25rem;
-	font-weight: bold;
-	margin-bottom: .5rem;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 4px;
+    background-color: #fff;
 }
 
 .callout-warning {
-	border-color: rgba(255, 193, 7, .25);
-	background-color: rgba(255, 193, 7, .075);
+    border-left-color: #ffc107;
+    background-color: #fffbf2;
 }
 
 .callout-danger {
-	border-color: rgba(222, 68, 55, .25);
-	background-color: rgba(222, 68, 55, .075);
+    border-left-color: #dc3545;
+    background-color: #fff5f5;
 }
 
-/*------------------------------------
-  Sidebar
-------------------------------------*/
-.hs-sidebar-sticky {
-	position: relative;
-	top: 0;
-	width: 100%;
-	height: 15rem;
-	padding: .5rem 0;
+.callout-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    display: block;
 }
 
-@media (max-height: 500px) {
-	.hs-sidebar-sticky {
-		min-height: 15rem;
-	}
-}
-
-@media (min-width: 992px) {
-	.hs-sidebar-sticky {
-		height: calc(100vh - 5rem);
-	}
-}
-
-@supports ((position: -webkit-sticky) or (position: sticky)) {
-	.hs-sidebar-sticky {
-		position: -webkit-sticky;
-		position: sticky;
-	}
-}
-
-.hs-sidebar {
-	z-index: 100;
-}
-
-@media (min-width: 992px) {
-	.hs-sidebar {
-		position: fixed;
-		top: 3rem;
-		bottom: 0;
-		left: 0;
-		border-right: 1px solid #e7eaf3;
-		padding-top: 1rem;
-	}
-}
-
-@media (max-width: 991.8px) {
-	.hs-sidebar {
-		border-bottom: 1px solid #e7eaf3;
-	}
-}
-
-/*------------------------------------
-  Sidebar Nav
-------------------------------------*/
-.hs-sidebar-nav {
-	list-style: none;
-	padding-left: 0;
-	margin-bottom: 2rem;
-}
-
-.hs-sidebar-item {
-	font-size: .875rem;
-}
-
+/* Sidebar Styling (Bootstrap Docs style) */
 .hs-sidebar-link {
-	color: #495057;
-	display: block;
-	background-color: transparent;
-	border-radius: .3125rem;
-	padding: .5rem .9375rem;
+    color: #495057;
+    padding: 0.5rem 1rem;
+    display: block;
+    border-radius: 4px;
 }
 
-	.hs-sidebar-link.active {
-		color: #377dff;
-		background-color: rgba(55, 125, 255, 0.1);
-	}
-
-		.hs-sidebar-link.active:hover {
-			color: #377dff;
-		}
-
-	.hs-sidebar-link:hover {
-		text-decoration: none;
-	}
+.hs-sidebar-link:hover, 
+.hs-sidebar-link.active {
+    color: var(--accent-color);
+    background-color: rgba(3, 169, 244, 0.1);
+    text-decoration: none;
+}
 
 .hs-sidebar-heading {
-	display: block;
-	color: #1e2022;
-	font-size: .8125rem;
-	font-weight: 600;
-	text-transform: uppercase;
-	padding-left: .9375rem;
-	padding-right: .9375rem;
-	margin-top: 1rem;
-	margin-bottom: .5rem;
-}
-
-/*------------------------------------
-  Header
-------------------------------------*/
-.header-docs .navbar-brand,
-.header-docs .navbar-brand > img {
-	width: 7.5rem;
-}
-
-/*------------------------------------
-  Fullscreen
-------------------------------------*/
-.fullscreen {
-	z-index: 9999;
-}
-
-/*------------------------------------
-  List
-------------------------------------*/
-.hs-docs-list-md li {
-	margin-bottom: .5rem;
-}
-
-/*------------------------------------
-  Scrollbar
-------------------------------------*/
-.hs-sidebar-scrollbar {
-	overflow-y: scroll;
-}
-
-/*------------------------------------
-  Utilities
-------------------------------------*/
-@media (min-width: 768px) {
-	.nav-docs-space {
-		margin-left: 5rem;
-	}
+    color: #888;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 1.5rem 0 0.5rem;
+    padding: 0 1rem;
 }
