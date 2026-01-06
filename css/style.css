@@ -376,9 +376,42 @@ pre {
     background-color: #f9f9f9;
 }
 
-/* 설치 버튼 스타일 */
+/* =========================================
+   6. ESP Web Tools Button Styling
+   ========================================= */
+
+/* 설치 버튼 컨테이너 */
 esp-web-install-button {
     display: inline-block;
     margin-top: 10px;
 }
 
+/* Web Component 내부의 실제 버튼 스타일링 
+   (쉐도우 돔 내부 요소 접근을 위해 ::part 사용)
+*/
+esp-web-install-button::part(button) {
+    font-size: 1.2rem;            /* 글자 크기 키움 */
+    padding: 12px 24px;           /* 버튼 크기 키움 */
+    background-color: var(--primary-color); /* 파란색 배경 (#0066cc) */
+    color: white;                 /* 글자색 흰색 */
+    border-radius: 8px;           /* 둥근 모서리 */
+    cursor: pointer;
+    border: none;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.2s ease;
+    font-weight: 600;
+    font-family: inherit;
+}
+
+/* 버튼 마우스 오버 효과 */
+esp-web-install-button::part(button):hover {
+    background-color: #004080;    /* 더 진한 파란색 */
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-1px);  /* 살짝 떠오르는 효과 */
+}
+
+/* 버튼 클릭(활성화) 효과 */
+esp-web-install-button::part(button):active {
+    transform: translateY(0);
+    box-shadow: none;
+}
