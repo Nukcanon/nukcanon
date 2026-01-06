@@ -65,7 +65,7 @@
             <ol>
                 <li>
                     <strong>File > Preferences</strong>를 클릭합니다.
-                    [cite_start]<img src="images/arduino_pref_1.png" alt="File > Preferences 메뉴 [cite: 1]" class="step-img" style="max-width: 500px;">
+                    <img src="images/arduino_pref_1.png" alt="File > Preferences 메뉴" class="step-img" style="max-width: 500px;">
                 </li>
                 <li>
                     <strong>Additional Board Manager URLs</strong>의 오른쪽 아이콘을 클릭하고, 아래 주소를 추가한 후 <strong>OK</strong>를 누릅니다.
@@ -74,22 +74,22 @@
                             <li><span>https://dl.espressif.com/dl/package_esp32_index.json</span></li>
                         </ol>
                     </div>
-                    [cite_start]<img src="images/arduino_pref_2.png" alt="Board Manager URL 입력 화면 [cite: 2]" class="step-img" style="max-width: 600px;">
+                    <img src="images/arduino_pref_2.png" alt="Board Manager URL 입력 화면" class="step-img" style="max-width: 600px;">
                 </li>
                 <li>
                     <strong>Tools > Board > Boards Manager</strong>를 클릭합니다. 검색창에 <code>esp32</code>를 검색하여, <strong>ESP32 by Espressif Systems</strong>를 찾아 그 아래의 <strong>Install</strong>을 클릭합니다.
                     <p class="callout callout-danger">
                         <span class="callout-title">⚠️ 주의!</span>
-                        [cite_start]반드시 <strong>2.0.17 버전</strong>을 선택하여 설치해주세요! [cite: 84]
+                        반드시 <strong>2.0.17 버전</strong>을 선택하여 설치해주세요!
                     </p>
                     <img src="images/board_manager.png" alt="Board Manager 설치 화면" class="step-img" style="max-width: 600px;">
                 </li>
                 <li>
-                    [cite_start]<strong>Tools > Board</strong> 메뉴에서 <strong>DOIT ESP32 DEVKIT V1</strong>을 찾아 클릭합니다. [cite: 143]
+                    <strong>Tools > Board</strong> 메뉴에서 <strong>DOIT ESP32 DEVKIT V1</strong>을 찾아 클릭합니다.
                     <br><span class="text-muted">(만약 어떤 ESP32를 가지고 있는지 알 수 없다면, ESP32 Dev Module을 선택합니다.)</span>
                 </li>
                 <li>
-                    [cite_start]그리고, <strong>Tools > Port</strong> 메뉴에서 ESP32가 연결된 포트를 선택합니다. [cite: 145]
+                    그리고, <strong>Tools > Port</strong> 메뉴에서 ESP32가 연결된 포트를 선택합니다.
                     
                     <div class="summary-img-container">
                         <span class="summary-label">▼ 보드 및 포트 선택 화면</span>
@@ -101,21 +101,21 @@
 
         <div class="callout callout-warning">
             <span class="callout-title">주의 사항</span>
-            [cite_start]ESP32는 Arduino와 기본 명령어(<code>pinMode</code>, <code>digitalWrite</code>, <code>digitalRead</code> 등)는 동일하나, <strong>Wi-Fi, Servo 모터 등의 명령어는 다르므로</strong>, <em>Sketch > Include Library > Manage Libraries</em>에서 해당 라이브러리를 찾아 등록해야 합니다. [cite: 185]
+            ESP32는 Arduino와 기본 명령어(<code>pinMode</code>, <code>digitalWrite</code>, <code>digitalRead</code> 등)는 동일하나, <strong>Wi-Fi, Servo 모터 등의 명령어는 다르므로</strong>, <em>Sketch > Include Library > Manage Libraries</em>에서 해당 라이브러리를 찾아 등록해야 합니다.
         </div>
 
         <h3 class="section-title">2. ESP32 핀배열 (Pinout)</h3>
-        <p>ESP32는 Arduino와 핀배열이 다릅니다. [cite_start]DOIT ESP32 DEVKIT 30핀 기준으로 다음과 같습니다. [cite: 187]</p>
+        <p>ESP32는 Arduino와 핀배열이 다릅니다. DOIT ESP32 DEVKIT 30핀 기준으로 다음과 같습니다.</p>
         
         <img src="images/esp32_pinout.png" alt="ESP32 Pinout Diagram" class="step-img">
 
         <h4>가. GPIO (General-Purpose Input/Output)</h4>
-        <p>디지털 입출력 핀으로 입력 및 출력이 가능합니다. [cite_start]단, 목적이 정해진 핀이 있어 주의해야 합니다. [cite: 252]</p>
+        <p>디지털 입출력 핀으로 입력 및 출력이 가능합니다. 단, 목적이 정해진 핀이 있어 주의해야 합니다.</p>
         <ul class="pin-list">
-            [cite_start]<li><strong>아무 제약 없이 사용 가능한 핀:</strong> GPIO 4, 13, 14, 16~33번 [cite: 255]</li>
-            [cite_start]<li><strong>내부 LED 연결 핀:</strong> GPIO 2번 [cite: 257]</li>
-            [cite_start]<li><strong>Read-Only (입력 전용) 핀:</strong> GPIO 34~39번 [cite: 259]</li>
-            [cite_start]<li><strong>플래시 메모리 전용 (사용 불가):</strong> GPIO 6~11번 [cite: 260]</li>
+            <li><strong>아무 제약 없이 사용 가능한 핀:</strong> GPIO 4, 13, 14, 16~33번</li>
+            <li><strong>내부 LED 연결 핀:</strong> GPIO 2번</li>
+            <li><strong>Read-Only (입력 전용) 핀:</strong> GPIO 34~39번</li>
+            <li><strong>플래시 메모리 전용 (사용 불가):</strong> GPIO 6~11번</li>
         </ul>
 
         <div class="summary-img-container">
@@ -124,14 +124,14 @@
         </div>
 
         <h4>나. ADC (Analog to Digital Converter)</h4>
-        <p>아날로그 신호를 디지털로 변환해주는 핀입니다. [cite_start]0V~3.3V를 0~4095까지 총 4096단계로 변환하며, Arduino의 <code>analogRead</code>에 대응합니다. [cite: 265]</p>
+        <p>아날로그 신호를 디지털로 변환해주는 핀입니다. 0V~3.3V를 0~4095까지 총 4096단계로 변환하며, Arduino의 <code>analogRead</code>에 대응합니다.</p>
 
         <h4>다. PWM (Pulse Width Modulation)</h4>
-        <p>디지털 신호의 펄스 폭을 조절하여 제어합니다. [cite_start]<code>analogWrite</code>(최근 지원) 혹은 <code>ledcWrite</code>(기본 지원)를 사용하며 서보 모터 제어 등에 사용됩니다. [cite: 271]</p>
+        <p>디지털 신호의 펄스 폭을 조절하여 제어합니다. <code>analogWrite</code>(최근 지원) 혹은 <code>ledcWrite</code>(기본 지원)를 사용하며 서보 모터 제어 등에 사용됩니다.</p>
 
         <h3 class="section-title">3. ESP32-CAM 핀배열</h3>
-        <p>ESP32-CAM은 일반 ESP32와 핀배열이 다릅니다. (16핀 기준) [cite_start][cite: 273]</p>
-        [cite_start]<p>아래 GPIO 핀으로 입출력을 하면 되지만, <strong>GPIO 0, 1, 3</strong>은 USB-Serial 컨버터 연결 시 사용되므로 사용하지 않는 것이 좋습니다. [cite: 274]</p>
+        <p>ESP32-CAM은 일반 ESP32와 핀배열이 다릅니다. (16핀 기준)</p>
+        <p>아래 GPIO 핀으로 입출력을 하면 되지만, <strong>GPIO 0, 1, 3</strong>은 USB-Serial 컨버터 연결 시 사용되므로 사용하지 않는 것이 좋습니다.</p>
 
         <img src="images/esp32_cam_pinout.png" alt="ESP32-CAM Pinout Diagram" class="step-img">
 
@@ -146,20 +146,20 @@
             <tbody>
                 <tr>
                     <td><strong>SD 카드 공유 핀</strong><br>(SD 미사용 시 사용 가능)</td>
-                    [cite_start]<td>GPIO 2, 4, 12, 13, 14, 15 [cite: 316]</td>
+                    <td>GPIO 2, 4, 12, 13, 14, 15</td>
                 </tr>
                 <tr>
                     <td><strong>내부 LED 및 플래시</strong></td>
                     <td>
                         GPIO 4: 전면 플래시 LED (SD카드 데이터 핀과 공유)<br>
-                        [cite_start]GPIO 33: 후면 작은 빨간색 LED [cite: 318, 319]
+                        GPIO 33: 후면 작은 빨간색 LED
                     </td>
                 </tr>
                 <tr>
                     <td><strong>업로드 및 통신 (UART)</strong></td>
                     <td>
                         GPIO 1 (TX0), GPIO 3 (RX0): 코드 업로드/디버깅<br>
-                        [cite_start]GPIO 16 (RX2): 수신 전용 (단, PSRAM/카메라 사용 시 불가) [cite: 321, 322]
+                        GPIO 16 (RX2): 수신 전용 (단, PSRAM/카메라 사용 시 불가)
                     </td>
                 </tr>
                 <tr>
@@ -168,12 +168,12 @@
                         GPIO 0: 부팅 시 HIGH (LOW면 업로드 모드)<br>
                         GPIO 2: 부팅 시 LOW<br>
                         GPIO 12: 부팅 시 LOW<br>
-                        [cite_start]GPIO 15: 부팅 시 HIGH [cite: 326, 327, 328, 329]
+                        GPIO 15: 부팅 시 HIGH
                     </td>
                 </tr>
                 <tr>
                     <td><strong>카메라/PSRAM 전용</strong><br>(사용 불가)</td>
-                    [cite_start]<td>GPIO 5, 18, 19, 21, 22, 23, 25, 26, 27, 32, 34, 35, 36, 39 [cite: 331]</td>
+                    <td>GPIO 5, 18, 19, 21, 22, 23, 25, 26, 27, 32, 34, 35, 36, 39</td>
                 </tr>
             </tbody>
         </table>
