@@ -21,13 +21,34 @@
             max-width: 100%;
             border: 1px solid #ddd;
             border-radius: 4px;
-            margin: 10px 0;
+            margin: 10px auto; /* 수정됨: 이미지를 가운데 정렬 */
             display: block;
         }
         .pin-list li {
             margin-bottom: 5px;
         }
-        /* 중요: 표나 요약 이미지 강조용 스타일 */
+        .wiring-table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        .wiring-table th, .wiring-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            vertical-align: middle;
+        }
+        .wiring-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-align: center;
+            color: #333;
+        }
+        .wiring-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        /* 요약 이미지 컨테이너 스타일 */
         .summary-img-container {
             text-align: center;
             margin: 20px 0;
@@ -65,16 +86,16 @@
             <ol>
                 <li>
                     <strong>File > Preferences</strong>를 클릭합니다.
-                    <img src="image/arduino_pref_1.png" alt="File > Preferences 메뉴" class="step-img" style="max-width: 500px;">
+                    <img src="image/arduino_pref_1.png" alt="File > Preferences 메뉴" class="step-img">
                 </li>
                 <li>
                     <strong>Additional Board Manager URLs</strong>의 오른쪽 아이콘을 클릭하고, 아래 주소를 추가한 후 <strong>OK</strong>를 누릅니다.
-                   <div class="dp-highlighter">
+                    <div class="dp-highlighter">
                         <ol style="padding-left: 10px !important;">
                             <li style="list-style: none;"><span>https://dl.espressif.com/dl/package_esp32_index.json</span></li>
                         </ol>
                     </div>
-                    <img src="image/arduino_pref_2.png" alt="Board Manager URL 입력 화면" class="step-img" style="max-width: 600px;">
+                    <img src="image/arduino_pref_2.png" alt="Board Manager URL 입력 화면" class="step-img">
                 </li>
                 <li>
                     <strong>Tools > Board > Boards Manager</strong>를 클릭합니다. 검색창에 <code>esp32</code>를 검색하여, <strong>ESP32 by Espressif Systems</strong>를 찾아 그 아래의 <strong>Install</strong>을 클릭합니다.
@@ -82,19 +103,16 @@
                         <span class="callout-title">⚠️ 주의!</span>
                         반드시 <strong>2.0.17 버전</strong>을 선택하여 설치해주세요!
                     </p>
-                    <img src="image/board_manager.png" alt="Board Manager 설치 화면" class="step-img" style="max-width: 600px;">
+                    <img src="image/board_manager.png" alt="Board Manager 설치 화면" class="step-img">
                 </li>
                 <li>
                     <strong>Tools > Board</strong> 메뉴에서 <strong>DOIT ESP32 DEVKIT V1</strong>을 찾아 클릭합니다.
                     <br><span class="text-muted">(만약 어떤 ESP32를 가지고 있는지 알 수 없다면, ESP32 Dev Module을 선택합니다.)</span>
                 </li>
                 <li>
-                    그리고, <strong>Tools > Port</strong> 메뉴에서 ESP32가 연결된 포트를 선택합니다.
+                    <strong>Tools > Port</strong> 메뉴에서 ESP32가 연결된 포트를 선택합니다.
                     
-                    <div class="summary-img-container">
-                        <span class="summary-label">▼ 보드 및 포트 선택 화면</span>
-                        <img src="image/board_port_select.png" alt="보드 및 포트 선택 화면" class="step-img">
-                    </div>
+                    <img src="image/board_port_select.png" alt="보드 및 포트 선택 화면" class="step-img">
                 </li>
             </ol>
         </div>
@@ -141,7 +159,7 @@
 
         <div class="summary-img-container">
             <span class="summary-label">▼ 사용 가능한 GPIO 핀 정리</span>
-            <img src="image/esp32_gpio_summary.png" alt="ESP32 사용 가능한 GPIO 핀 정리" class="step-img" style="max-width: 600px;">
+            <img src="image/esp32_gpio_summary.png" alt="ESP32 사용 가능한 GPIO 핀 정리" class="step-img" style="max-width: 50%;">
         </div>
 
         <h4>나. ADC (Analog to Digital Converter)</h4>
@@ -201,7 +219,7 @@
 
         <div class="summary-img-container">
             <span class="summary-label">▼ ESP32-CAM 사용 가능한 GPIO 핀 정리</span>
-            <img src="image/esp32_cam_gpio_summary.png" alt="ESP32-CAM 사용 가능한 GPIO 핀 정리" class="step-img" style="max-width: 600px;">
+            <img src="image/esp32_cam_gpio_summary.png" alt="ESP32-CAM 사용 가능한 GPIO 핀 정리" class="step-img" style="max-width: 50%;">
         </div>
 
     </div>
