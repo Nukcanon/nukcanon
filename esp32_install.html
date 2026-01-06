@@ -65,7 +65,7 @@
             <ol>
                 <li>
                     <strong>File > Preferences</strong>를 클릭합니다.
-                    <img src="images/arduino_pref_1.png" alt="File > Preferences 메뉴" class="step-img" style="max-width: 500px;">
+                    <img src="image/arduino_pref_1.png" alt="File > Preferences 메뉴" class="step-img" style="max-width: 500px;">
                 </li>
                 <li>
                     <strong>Additional Board Manager URLs</strong>의 오른쪽 아이콘을 클릭하고, 아래 주소를 추가한 후 <strong>OK</strong>를 누릅니다.
@@ -74,7 +74,7 @@
                             <li style="list-style: none;"><span>https://dl.espressif.com/dl/package_esp32_index.json</span></li>
                         </ol>
                     </div>
-                    <img src="images/arduino_pref_2.png" alt="Board Manager URL 입력 화면" class="step-img" style="max-width: 600px;">
+                    <img src="image/arduino_pref_2.png" alt="Board Manager URL 입력 화면" class="step-img" style="max-width: 600px;">
                 </li>
                 <li>
                     <strong>Tools > Board > Boards Manager</strong>를 클릭합니다. 검색창에 <code>esp32</code>를 검색하여, <strong>ESP32 by Espressif Systems</strong>를 찾아 그 아래의 <strong>Install</strong>을 클릭합니다.
@@ -82,7 +82,7 @@
                         <span class="callout-title">⚠️ 주의!</span>
                         반드시 <strong>2.0.17 버전</strong>을 선택하여 설치해주세요!
                     </p>
-                    <img src="images/board_manager.png" alt="Board Manager 설치 화면" class="step-img" style="max-width: 600px;">
+                    <img src="image/board_manager.png" alt="Board Manager 설치 화면" class="step-img" style="max-width: 600px;">
                 </li>
                 <li>
                     <strong>Tools > Board</strong> 메뉴에서 <strong>DOIT ESP32 DEVKIT V1</strong>을 찾아 클릭합니다.
@@ -93,7 +93,7 @@
                     
                     <div class="summary-img-container">
                         <span class="summary-label">▼ 보드 및 포트 선택 화면</span>
-                        <img src="images/board_port_select.png" alt="보드 및 포트 선택 화면" class="step-img">
+                        <img src="image/board_port_select.png" alt="보드 및 포트 선택 화면" class="step-img">
                     </div>
                 </li>
             </ol>
@@ -107,20 +107,41 @@
         <h3 class="section-title">2. ESP32 핀배열 (Pinout)</h3>
         <p>ESP32는 Arduino와 핀배열이 다릅니다. DOIT ESP32 DEVKIT 30핀 기준으로 다음과 같습니다.</p>
         
-        <img src="images/esp32_pinout.png" alt="ESP32 Pinout Diagram" class="step-img">
+        <img src="image/esp32_pinout.png" alt="ESP32 Pinout Diagram" class="step-img">
 
-        <h4>가. GPIO (General-Purpose Input/Output)</h4>
+        <h4>가. GPIO (General-Purpose Input/Output) 상세 안내</h4>
         <p>디지털 입출력 핀으로 입력 및 출력이 가능합니다. 단, 목적이 정해진 핀이 있어 주의해야 합니다.</p>
-        <ul class="pin-list">
-            <li><strong>제약 없이 사용 가능한 핀:</strong> GPIO 4, 13, 14, 16~33번</li>
-            <li><strong>내부 LED 연결 핀:</strong> GPIO 2번</li>
-            <li><strong>Read-Only (입력 전용) 핀:</strong> GPIO 34~39번</li>
-            <li><strong>플래시 메모리 전용 (사용 불가):</strong> GPIO 6~11번</li>
-        </ul>
+        
+        <table class="wiring-table">
+            <thead>
+                <tr>
+                    <th width="30%">구분</th>
+                    <th>해당 핀 (GPIO)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>사용 가능 핀</strong><br>(제약 없음)</td>
+                    <td>GPIO 4, 13, 14, 16~33</td>
+                </tr>
+                <tr>
+                    <td><strong>내부 LED 연결</strong></td>
+                    <td>GPIO 2</td>
+                </tr>
+                <tr>
+                    <td><strong>입력 전용 (Read-Only)</strong></td>
+                    <td>GPIO 34~39</td>
+                </tr>
+                <tr>
+                    <td><strong>플래시 메모리 전용</strong><br>(사용 불가)</td>
+                    <td>GPIO 6~11</td>
+                </tr>
+            </tbody>
+        </table>
 
         <div class="summary-img-container">
             <span class="summary-label">▼ 사용 가능한 GPIO 핀 정리</span>
-            <img src="images/esp32_gpio_summary.png" alt="ESP32 사용 가능한 GPIO 핀 정리" class="step-img" style="max-width: 600px;">
+            <img src="image/esp32_gpio_summary.png" alt="ESP32 사용 가능한 GPIO 핀 정리" class="step-img" style="max-width: 600px;">
         </div>
 
         <h4>나. ADC (Analog to Digital Converter)</h4>
@@ -133,7 +154,7 @@
         <p>ESP32-CAM은 일반 ESP32와 핀배열이 다릅니다. (16핀 기준)</p>
         <p>아래 GPIO 핀으로 입출력 하면 되지만, <strong>GPIO 0, 1, 3</strong>은 컴퓨터와 연결 시 사용되므로 사용하지 않는 것이 좋으며, 주의해야 할 핀이 많으므로 확인이 필요합니다.</p>
 
-        <img src="images/esp32_cam_pinout.png" alt="ESP32-CAM Pinout Diagram" class="step-img">
+        <img src="image/esp32_cam_pinout.png" alt="ESP32-CAM Pinout Diagram" class="step-img">
 
         <h4>가. GPIO (General-Purpose Input/Output)</h4>
         <table class="wiring-table">
@@ -180,7 +201,7 @@
 
         <div class="summary-img-container">
             <span class="summary-label">▼ ESP32-CAM 사용 가능한 GPIO 핀 정리</span>
-            <img src="images/esp32_cam_gpio_summary.png" alt="ESP32-CAM 사용 가능한 GPIO 핀 정리" class="step-img" style="max-width: 600px;">
+            <img src="image/esp32_cam_gpio_summary.png" alt="ESP32-CAM 사용 가능한 GPIO 핀 정리" class="step-img" style="max-width: 600px;">
         </div>
 
     </div>
