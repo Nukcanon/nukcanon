@@ -112,14 +112,14 @@
         <h4>가. GPIO (General-Purpose Input/Output)</h4>
         <p>디지털 입출력 핀으로 입력 및 출력이 가능합니다. 단, 목적이 정해진 핀이 있어 주의해야 합니다.</p>
         <ul class="pin-list">
-            <li><strong>아무 제약 없이 사용 가능한 핀:</strong> GPIO 4, 13, 14, 16~33번</li>
+            <li><strong>제약 없이 사용 가능한 핀:</strong> GPIO 4, 13, 14, 16~33번</li>
             <li><strong>내부 LED 연결 핀:</strong> GPIO 2번</li>
             <li><strong>Read-Only (입력 전용) 핀:</strong> GPIO 34~39번</li>
             <li><strong>플래시 메모리 전용 (사용 불가):</strong> GPIO 6~11번</li>
         </ul>
 
         <div class="summary-img-container">
-            <span class="summary-label">▼ 사용 가능한 GPIO 핀 정리 (주의/사용불가 포함)</span>
+            <span class="summary-label">▼ 사용 가능한 GPIO 핀 정리</span>
             <img src="images/esp32_gpio_summary.png" alt="ESP32 사용 가능한 GPIO 핀 정리" class="step-img" style="max-width: 600px;">
         </div>
 
@@ -131,11 +131,11 @@
 
         <h3 class="section-title">3. ESP32-CAM 핀배열</h3>
         <p>ESP32-CAM은 일반 ESP32와 핀배열이 다릅니다. (16핀 기준)</p>
-        <p>아래 GPIO 핀으로 입출력을 하면 되지만, <strong>GPIO 0, 1, 3</strong>은 USB-Serial 컨버터 연결 시 사용되므로 사용하지 않는 것이 좋습니다.</p>
+        <p>아래 GPIO 핀으로 입출력 하면 되지만, <strong>GPIO 0, 1, 3</strong>은 컴퓨터와 연결 시 사용되므로 사용하지 않는 것이 좋으며, 주의해야 할 핀이 많으므로 확인이 필요합니다.</p>
 
         <img src="images/esp32_cam_pinout.png" alt="ESP32-CAM Pinout Diagram" class="step-img">
 
-        <h4>가. GPIO 상세 안내</h4>
+        <h4>가. GPIO (General-Purpose Input/Output)</h4>
         <table class="wiring-table">
             <thead>
                 <tr>
