@@ -359,21 +359,19 @@ pre {
     border-collapse: collapse;
     width: 100%;
     margin-bottom: 20px;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
 }
-
 .wiring-table th, .wiring-table td {
     border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
+    padding: 10px;
+    text-align: center; /* 가운데 정렬 */
+    vertical-align: middle;
 }
-
 .wiring-table th {
     background-color: #f2f2f2;
     font-weight: bold;
-    text-align: center;
+    color: #333;
 }
-
 .wiring-table tr:nth-child(even) {
     background-color: #f9f9f9;
 }
@@ -383,3 +381,4 @@ esp-web-install-button {
     display: inline-block;
     margin-top: 10px;
 }
+
