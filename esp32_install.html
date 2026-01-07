@@ -14,14 +14,14 @@
         .section-title {
             margin-top: 40px;
             padding-bottom: 10px;
-            border-bottom: 2px solid var(--border-color);
-            color: var(--primary-color);
+            border-bottom: 2px solid var(--border-color, #ddd); /* fallback added */
+            color: var(--primary-color, #333); /* fallback added */
         }
         .step-img {
             max-width: 100%;
             border: 1px solid #ddd;
             border-radius: 4px;
-            margin: 10px auto; /* 수정됨: 이미지를 가운데 정렬 */
+            margin: 10px auto;
             display: block;
         }
         .pin-list li {
@@ -48,7 +48,6 @@
         .wiring-table tr:nth-child(even) {
             background-color: #f9f9f9;
         }
-        /* 요약 이미지 컨테이너 스타일 */
         .summary-img-container {
             text-align: center;
             margin: 20px 0;
@@ -61,6 +60,47 @@
             margin-bottom: 8px;
             font-weight: bold;
             color: #555;
+        }
+
+        /* --- [수정됨] 주소 복사 기능을 위한 스타일 추가 --- */
+        .url-copy-container {
+            background: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .url-copy-container code {
+            word-break: break-all;
+            font-family: Consolas, monospace;
+            color: #d63384; /* 강조색 */
+            font-size: 0.9em;
+            background-color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid #eee;
+            flex-grow: 1; /* 남은 공간 차지 */
+        }
+        .copy-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            white-space: nowrap;
+            transition: background-color 0.2s;
+        }
+        .copy-btn:hover {
+            background-color: #0056b3;
+        }
+        .copy-btn:active {
+            background-color: #004494;
         }
     </style>
 </head>
@@ -90,11 +130,12 @@
                 </li>
                 <li>
                     <strong>Additional Board Manager URLs</strong>의 오른쪽 아이콘을 클릭하고, 아래 주소를 추가한 후 <strong>OK</strong>를 누릅니다.
-                    <div class="dp-highlighter">
-                        <ol style="padding-left: 10px !important;">
-                            <li style="list-style: none;"><span>https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json</span></li>
-                        </ol>
+                    
+                    <div class="url-copy-container">
+                        <code id="esp32-url">https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json</code>
+                        <button onclick="copyUrl()" class="copy-btn">주소 복사</button>
                     </div>
+
                     <img src="image/arduino_pref_2.png" alt="Board Manager URL 입력 화면" class="step-img">
                 </li>
                 <li>
@@ -218,6 +259,32 @@
         </div>
 
     </div>
+
+    <script>
+        function copyUrl() {
+            // URL이 들어있는 code 태그의 텍스트만 가져옵니다.
+            const urlText = document.getElementById("esp32-url").innerText;
+            
+            // 클립보드 API를 사용하여 텍스트를 복사합니다.
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(urlText).then(() => {
+                    alert("주소가 복사되었습니다!\nArduino IDE에 붙여넣기 하세요."); 
+                }).catch(err => {
+                    console.error('복사 실패:', err);
+                    alert("복사에 실패했습니다. 직접 드래그하여 복사해주세요.");
+                });
+            } else {
+                // 구형 브라우저 대응 (혹시 모를 상황 대비)
+                const textArea = document.createElement("textarea");
+                textArea.value = urlText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand("copy");
+                document.body.removeChild(textArea);
+                alert("주소가 복사되었습니다!");
+            }
+        }
+    </script>
 
     <script src="css/patch.js"></script>
 </body>
