@@ -30,16 +30,18 @@ const els = {
 };
 
 const STORAGE_KEY = "nukcanon-lap-time-checker-v1";
-const PROCESS_MAX_WIDTH = 960;
-const PROCESS_INTERVAL_MS = 34;
+const PROCESS_MAX_WIDTH = 480;
+const PROCESS_INTERVAL_MS = 20;
+const PIXEL_DIFF_THRESHOLD = 26;
 const LEARNING_TIME_MS = 1200;
 const CLEAR_FRAMES_REQUIRED = 4;
 
-let cvApi = null;
-let cvReady = false;
+let cvReady = true;
 let stream = null;
-let detector = null;
-let noiseKernel = null;
+let backgroundLuma = null;
+let debugMask = null;
+let detectorSizeKey = "";
+let cameraSession = 0;
 let animationFrameId = 0;
 let timerFrameId = 0;
 let lastProcessAt = 0;
@@ -296,35 +298,53 @@ async function startCamera(deviceId = "") {
     return;
   }
 
+  const session = ++cameraSession;
+  if (measuring) stopMeasurement();
+  window.cancelAnimationFrame(animationFrameId);
+  animationFrameId = 0;
+  processing = false;
   stopTracks();
+  resetDetector();
   setStatus("카메라 권한 확인 중", "loading");
+
   try {
     const videoConstraints = deviceId
-      ? { deviceId: { exact: deviceId }, width: { ideal: 1920 }, height: { ideal: 1080 }, frameRate: { ideal: 30, max: 60 } }
-      : { facingMode: { ideal: "environment" }, width: { ideal: 1920 }, height: { ideal: 1080 }, frameRate: { ideal: 30, max: 60 } };
-    stream = await navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: false });
+      ? { deviceId: { exact: deviceId }, width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: { ideal: 60, max: 60 } }
+      : { facingMode: { ideal: "environment" }, width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: { ideal: 60, max: 60 } };
+
+    const nextStream = await navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: false });
+    if (session !== cameraSession) {
+      nextStream.getTracks().forEach((track) => track.stop());
+      return;
+    }
+
+    stream = nextStream;
     els.video.srcObject = stream;
-    await els.video.play();
-    await new Promise((resolve) => {
-      if (els.video.readyState >= 2) resolve();
-      else els.video.addEventListener("loadedmetadata", resolve, { once: true });
+    await new Promise((resolve, reject) => {
+      if (els.video.readyState >= 1) resolve();
+      else {
+        els.video.addEventListener("loadedmetadata", resolve, { once: true });
+        els.video.addEventListener("error", reject, { once: true });
+      }
     });
+    await els.video.play();
 
     els.cameraEmpty.hidden = true;
     els.cameraButton.lastChild.textContent = " 카메라 중지";
     els.cameraHelp.textContent = "영상 위에서 자동차가 통과할 영역을 드래그하세요.";
-    setStatus(roi ? "감지 준비" : "감지 영역을 선택하세요", roi ? "ready" : "loading");
     await listCameras();
     resizeProcessingCanvas();
     resetDetector();
     updateMeasureAvailability();
     startProcessingLoop();
   } catch (error) {
+    if (session !== cameraSession) return;
     stream = null;
+    els.video.srcObject = null;
     els.cameraEmpty.hidden = false;
     setStatus("카메라를 열 수 없습니다", "detected");
     if (error?.name === "NotAllowedError") showToast("브라우저 설정에서 카메라 권한을 허용해주세요.");
-    else if (error?.name === "NotFoundError") showToast("사용 가능한 카메라를 찾지 못했습니다.");
+    else if (error?.name === "NotFoundError" || error?.name === "OverconstrainedError") showToast("선택한 카메라를 사용할 수 없습니다.");
     else showToast("카메라를 시작하지 못했습니다.");
   }
 }
@@ -336,10 +356,13 @@ function stopTracks() {
 }
 
 function stopCamera() {
+  cameraSession += 1;
   stopMeasurement();
-  stopTracks();
   window.cancelAnimationFrame(animationFrameId);
   animationFrameId = 0;
+  processing = false;
+  stopTracks();
+  resetDetector();
   els.cameraEmpty.hidden = false;
   els.cameraButton.lastChild.textContent = " 카메라 시작";
   els.measureButton.disabled = true;
@@ -354,38 +377,19 @@ function resizeProcessingCanvas() {
   els.processingCanvas.height = Math.max(2, Math.round(els.video.videoHeight * scale));
 }
 
-function createDetector() {
-  if (!cvReady) return null;
-  if (typeof cvApi.BackgroundSubtractorMOG2 === "function") {
-    return new cvApi.BackgroundSubtractorMOG2(1000, 16, false);
-  }
-  if (typeof cvApi.createBackgroundSubtractorMOG2 === "function") {
-    return cvApi.createBackgroundSubtractorMOG2(1000, 16, false);
-  }
-  throw new Error("MOG2 is not available in this OpenCV.js build.");
-}
-
 function resetDetector() {
-  if (detector?.delete) detector.delete();
-  if (noiseKernel?.delete) noiseKernel.delete();
-  detector = null;
-  noiseKernel = null;
+  backgroundLuma = null;
+  debugMask = null;
+  detectorSizeKey = "";
   detectorState = "idle";
   highMotionFrames = 0;
   clearFrames = 0;
   updateMotionMeter(0);
 
-  if (!cvReady || !stream || !roi) return;
-  try {
-    detector = createDetector();
-    noiseKernel = cvApi.Mat.ones(3, 3, cvApi.CV_8U);
-    detectorState = "learning";
-    learningStartedAt = performance.now();
-    setStatus("배경 학습 중", "learning");
-  } catch (error) {
-    console.error(error);
-    setStatus("움직임 감지 모듈 오류", "detected");
-  }
+  if (!stream || !roi) return;
+  detectorState = "learning";
+  learningStartedAt = performance.now();
+  setStatus("배경 학습 중", "learning");
 }
 
 function updateMotionMeter(value) {
@@ -408,15 +412,11 @@ function updateDetectorStatus() {
 
 function processFrame(now) {
   animationFrameId = window.requestAnimationFrame(processFrame);
-  if (processing || !cvReady || !stream || !detector || !roi || now - lastProcessAt < PROCESS_INTERVAL_MS) return;
+  if (processing || !stream || !roi || now - lastProcessAt < PROCESS_INTERVAL_MS) return;
   if (els.video.readyState < 2) return;
   lastProcessAt = now;
   processing = true;
 
-  let source = null;
-  let roiMat = null;
-  let gray = null;
-  let mask = null;
   try {
     if (!els.processingCanvas.width) resizeProcessingCanvas();
     const ctx = els.processingCanvas.getContext("2d", { willReadFrequently: true });
@@ -430,27 +430,47 @@ function processFrame(now) {
     const y = Math.max(0, Math.floor(mapped.top * scaleY));
     const width = Math.max(1, Math.min(els.processingCanvas.width - x, Math.ceil((mapped.right - mapped.left) * scaleX)));
     const height = Math.max(1, Math.min(els.processingCanvas.height - y, Math.ceil((mapped.bottom - mapped.top) * scaleY)));
+    const frame = ctx.getImageData(x, y, width, height);
+    const key = `${width}x${height}`;
 
-    source = cvApi.imread(els.processingCanvas);
-    roiMat = source.roi(new cvApi.Rect(x, y, width, height));
-    gray = new cvApi.Mat();
-    mask = new cvApi.Mat();
-    cvApi.cvtColor(roiMat, gray, cvApi.COLOR_RGBA2GRAY);
-    detector.apply(gray, mask, detectorState === "learning" ? -1 : 0.002);
-    cvApi.morphologyEx(mask, mask, cvApi.MORPH_OPEN, noiseKernel);
+    if (!backgroundLuma || detectorSizeKey !== key) {
+      detectorSizeKey = key;
+      backgroundLuma = new Float32Array(width * height);
+      debugMask = new ImageData(width, height);
+      for (let pixel = 0, dataIndex = 0; pixel < backgroundLuma.length; pixel += 1, dataIndex += 4) {
+        backgroundLuma[pixel] = (frame.data[dataIndex] * 77 + frame.data[dataIndex + 1] * 150 + frame.data[dataIndex + 2] * 29) / 256;
+        debugMask.data[dataIndex + 3] = 255;
+      }
+      detectorState = "learning";
+      learningStartedAt = now;
+    }
 
-    const motion = cvApi.countNonZero(mask) / (width * height) * 100;
+    const learning = detectorState === "learning";
+    const alpha = learning ? 0.14 : 0.004;
+    let changedPixels = 0;
+
+    for (let pixel = 0, dataIndex = 0; pixel < backgroundLuma.length; pixel += 1, dataIndex += 4) {
+      const luminance = (frame.data[dataIndex] * 77 + frame.data[dataIndex + 1] * 150 + frame.data[dataIndex + 2] * 29) / 256;
+      const difference = Math.abs(luminance - backgroundLuma[pixel]);
+      const changed = !learning && difference >= PIXEL_DIFF_THRESHOLD;
+      if (changed) changedPixels += 1;
+      const maskValue = changed ? 255 : 0;
+      debugMask.data[dataIndex] = maskValue;
+      debugMask.data[dataIndex + 1] = maskValue;
+      debugMask.data[dataIndex + 2] = maskValue;
+      backgroundLuma[pixel] += (luminance - backgroundLuma[pixel]) * alpha;
+    }
+
+    const motion = changedPixels / backgroundLuma.length * 100;
     updateMotionMeter(motion);
     const threshold = Number(els.sensitivityInput.value);
 
     if (detectorState === "learning") {
       if (now - learningStartedAt >= LEARNING_TIME_MS) detectorState = "ready";
     } else if (detectorState === "ready") {
-      highMotionFrames = motion >= threshold ? highMotionFrames + 1 : 0;
-      if (highMotionFrames >= 2) {
+      if (motion >= threshold) {
         detectorState = "blocked";
         lastDetectionAt = now;
-        highMotionFrames = 0;
         clearFrames = 0;
         handlePass(now);
       }
@@ -463,8 +483,12 @@ function processFrame(now) {
       }
     }
 
-    if (debugVisible) {
-      cvApi.imshow(els.debugCanvas, mask);
+    if (debugVisible && debugMask) {
+      if (els.debugCanvas.width !== width || els.debugCanvas.height !== height) {
+        els.debugCanvas.width = width;
+        els.debugCanvas.height = height;
+      }
+      els.debugCanvas.getContext("2d").putImageData(debugMask, 0, 0);
       els.debugSize.textContent = `${width} × ${height}`;
     }
     updateDetectorStatus();
@@ -472,16 +496,12 @@ function processFrame(now) {
     console.error(error);
     setStatus("프레임 처리 오류", "detected");
   } finally {
-    mask?.delete();
-    gray?.delete();
-    roiMat?.delete();
-    source?.delete();
     processing = false;
   }
 }
 
 function startProcessingLoop() {
-  if (animationFrameId) return;
+  window.cancelAnimationFrame(animationFrameId);
   lastProcessAt = 0;
   animationFrameId = window.requestAnimationFrame(processFrame);
 }
@@ -537,23 +557,6 @@ function updateMeasureAvailability() {
   els.measureButton.disabled = !(cvReady && stream && roi);
 }
 
-async function initializeOpenCv() {
-  try {
-    const candidate = window.cv;
-    if (!candidate) return false;
-    cvApi = typeof candidate.then === "function" ? await candidate : candidate;
-    if (typeof cvApi?.Mat !== "function") return false;
-    cvReady = true;
-    setStatus(stream ? (roi ? "감지 준비" : "감지 영역을 선택하세요") : "카메라 대기", stream && roi ? "ready" : "loading");
-    updateMeasureAvailability();
-    resetDetector();
-    return true;
-  } catch (error) {
-    console.error(error);
-    return false;
-  }
-}
-
 els.roiCanvas.addEventListener("pointerdown", onPointerDown);
 els.roiCanvas.addEventListener("pointermove", onPointerMove);
 els.roiCanvas.addEventListener("pointerup", finishPointer);
@@ -596,20 +599,10 @@ els.cameraSelect.addEventListener("change", () => {
 
 window.addEventListener("resize", resizeRoiCanvas);
 window.addEventListener("orientationchange", () => window.setTimeout(resizeRoiCanvas, 150));
-window.addEventListener("opencv-ready", initializeOpenCv, { once: true });
 window.addEventListener("pagehide", stopTracks);
 
 updateSensitivityLabel();
 renderLaps();
 resizeRoiCanvas();
-
-let openCvAttempts = 0;
-const openCvPoll = window.setInterval(async () => {
-  openCvAttempts += 1;
-  if (await initializeOpenCv()) {
-    window.clearInterval(openCvPoll);
-  } else if (openCvAttempts >= 150) {
-    window.clearInterval(openCvPoll);
-    setStatus("영상 처리 모듈을 불러오지 못했습니다", "detected");
-  }
-}, 100);
+setStatus("카메라 대기", "loading");
+updateMeasureAvailability();
