@@ -1,10 +1,10 @@
-name: Build LapTimeChecker Android app
+name: Build optimized LapTimeChecker Android app
 
 on:
   workflow_dispatch:
   push:
     paths:
-      - "android-source/LapTimeChecker-Android-1.1.0.zip"
+      - "android-patches/LapTimerAnalyzer.kt"
       - ".github/workflows/build-lap-time-checker.yml"
 
 permissions:
@@ -24,16 +24,40 @@ jobs:
         run: |
           yes | "${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null
           "${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;36.0.0"
-      - name: Unpack project
+      - name: Unpack and optimize project
         run: |
           mkdir project
           unzip -q android-source/LapTimeChecker-Android-1.1.0.zip -d project
           chmod +x project/gradlew
+          cp android-patches/LapTimerAnalyzer.kt project/app/src/main/java/com/nukcanon/laptimechecker/LapTimerAnalyzer.kt
+          python3 - <<'PY'
+          from pathlib import Path
+
+          activity = Path("project/app/src/main/java/com/nukcanon/laptimechecker/MainActivity.kt")
+          text = activity.read_text(encoding="utf-8")
+          old = """imageAnalysis = ImageAnalysis.Builder()
+            .setResolutionSelector(resolutionSelector) // .setTargetAspectRatio 대신 사용"""
+          new = """imageAnalysis = ImageAnalysis.Builder()
+            .setTargetResolution(Size(640, 360))"""
+          if old not in text:
+              raise SystemExit("ImageAnalysis builder pattern not found")
+          activity.write_text(text.replace(old, new), encoding="utf-8")
+
+          gradle = Path("project/app/build.gradle.kts")
+          text = gradle.read_text(encoding="utf-8")
+          text = text.replace("versionCode = 2", "versionCode = 3")
+          text = text.replace('versionName = "1.1.0"', 'versionName = "1.2.0"')
+          gradle.write_text(text, encoding="utf-8")
+          PY
+          cd project
+          zip -qr ../LapTimeChecker-Android-1.2.0-source.zip . -x ".gradle/*" "app/build/*" "local.properties" ".idea/*"
       - name: Build debug APK
         working-directory: project
         run: ./gradlew :app:assembleDebug --no-daemon
       - uses: actions/upload-artifact@v4
         with:
-          name: LapTimeChecker-Android-1.1.0-debug
-          path: project/app/build/outputs/apk/debug/app-debug.apk
+          name: LapTimeChecker-Android-1.2.0-fast
+          path: |
+            project/app/build/outputs/apk/debug/app-debug.apk
+            LapTimeChecker-Android-1.2.0-source.zip
           if-no-files-found: error
