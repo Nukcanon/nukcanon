@@ -467,7 +467,7 @@ textarea:focus-visible {
 /* =========================================
    8. Home Page
    ========================================= */
-.home-page {
+.home-page, .doc-page {
 
   --home-primary: #0066cc;
   --home-primary-dark: #004b9b;
@@ -536,19 +536,6 @@ body.home-page {
 }
 
 .brand:hover, .brand:focus-visible { text-decoration: none; }
-
-.brand-mark {
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  border: 1px solid rgba(255, 255, 255, .32);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, .14);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16);
-  font-size: 1.15rem;
-  font-weight: 850;
-}
 
 .brand-copy { display: grid; gap: 1px; }
 .brand-copy strong { font-size: 1.23rem; letter-spacing: -.025em; line-height: 1.2; }
@@ -675,7 +662,6 @@ body.home-page {
 @media (max-width: 720px) {
   .header-inner, .home-main { width: min(100% - 22px, 1040px); }
   .header-inner { min-height: 68px; }
-  .brand-mark { width: 38px; height: 38px; border-radius: 11px; }
   .brand-copy small { display: none; }
   .home-main { padding-top: 36px; }
   .hero { margin-bottom: 24px; }
@@ -802,6 +788,17 @@ body.doc-page {
 .doc-page .upload-box { padding: 18px !important; }
 .doc-page .url-copy-container { gap: 12px; padding: 12px; }
 
+.doc-page .nano-upload-options { align-items: stretch; }
+.doc-page .nano-upload-options .upload-box { display: flex; flex-direction: column; }
+.doc-page .nano-upload-options button[arduino-uploader] {
+  flex: 0 0 46px;
+  width: 100%;
+  height: 46px;
+  min-height: 46px;
+  margin-top: auto;
+  line-height: 1.2;
+}
+
 .doc-page button,
 .doc-page button[arduino-uploader],
 .doc-page .copy-btn {
@@ -854,6 +851,7 @@ body.doc-page {
 }
 
 .doc-page .topbanner a::after,
+.doc-page .site-header a::after,
 .doc-page a.secret-link::after { content: none !important; display: none !important; }
 .doc-page a.secret-link { padding: 0 !important; border: 0 !important; background: transparent !important; box-shadow: none !important; }
 

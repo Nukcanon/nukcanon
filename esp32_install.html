@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ESP32 개발환경 설정 및 핀배열</title>
-    <link rel="stylesheet" href="css/style.css?v=20260914-3" />
+    <link rel="stylesheet" href="css/style.css?v=20260914-4" />
     <style>
         .content-container {
             max-width: 960px;
@@ -106,16 +106,19 @@
 </head>
 <body class="doc-page">
 
-    <div class="topbanner">
-        <div style="align-self:stretch;width:960px;display:flex; flex-direction: row;">
-            <div style="flex:99999">
-                <label>Nukcanon</label>
-            </div>
-            <div>
-                <a target="_self" href="./index.html">Home</a>
-            </div>
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="brand" href="./index.html" aria-label="Nukcanon 홈">
+                <span class="brand-copy"><strong>Nukcanon</strong><small>Project Archive</small></span>
+            </a>
+            <nav aria-label="주요 메뉴">
+                <a class="home-link" href="./index.html">
+                    <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8v9a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-9Z"/></svg>
+                    Home
+                </a>
+            </nav>
         </div>
-    </div>
+    </header>
 
     <div class="content-container">
         <h2>Arduino 개발도구(IDE)에서 ESP32 보드 사용 설정</h2>
@@ -289,4 +292,3 @@
     <script src="css/patch.js"></script>
 </body>
 </html>
-
