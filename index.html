@@ -1,99 +1,144 @@
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" style="display:flex;height:100%;flex-direction:column;">
+<!doctype html>
+<html lang="ko">
 <head>
-	<meta charset="utf-8" />
-	<title>Nukcanon Home</title>
-	<base href='./' />
-	<link rel="stylesheet" href="css/style.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0066cc">
+  <meta name="description" content="Nukcanon의 Arduino, ESP32, 머신러닝, 디자인 및 웹 애플리케이션 자료 모음">
+  <title>Nukcanon Home</title>
+  <base href="./">
+  <link rel="stylesheet" href="css/style.css">
 </head>
-<body style="padding-bottom:3px;align-items:center">
-	
-	<div class="topbanner">
-		<div style="align-self:stretch;width:960px;display:flex; flex-direction: row;">
-			<div style="flex:99999">
-				<label>Nukcanon</label>
-			</div>
-			<div>
-				<a target="_self" href="./index.html">Home</a>
-			</div>
-		</div>
-	</div>
-	<div style="margin: auto; padding: 0px 6px 0px; max-width: 960px;">
-		<h2>원하시는 메뉴를 선택해주세요.</h2>
-	</div>
-	<div style="margin: auto; padding: 0px 6px 36px; max-width: 960px;">
-		<div class='navfoldercontainer'>
-			<div class='navfolder'>Arduino</div>
-			<div>
-				<li>
-					<a href="https://nukcanon.github.io/go_kart/installer/Go_kart_without_led.html">Arduino Gokart(Led 없는 버전)</a>
-				</li>
-			</div>
-		</div>
-		<div class='navfoldercontainer'>
-			<div class='navfolder'>ESP32-CAM</div>
-			<div>
-				<li>
-					<a href="https://nukcanon.github.io/ESP32-CAM_motion_detection_telegram/installer/ESP32-CAM_motion_detection_telegram.html">모션감지 텔레그램 전송</a>
-				</li>
-				<li>
-					<a href="https://nukcanon.github.io/ESP32_security_camera/installer/ESP32_security_camera.html">Security Camera</a>
-				</li>	
-				<li>
-					<a href="https://nukcanon.github.io/ESP32-CAM_remote_control/ESP32-CAM_remote_control.html">원격 조종 자동차</a>
-				</li>
-			</div>
-		</div>
-		<div class='navfoldercontainer'>
-			<div class='navfolder'>ESP32</div>
-			<div>
-				<li>
-					<a href="https://nukcanon.github.io/ESP32_IoT_outlet_Telegram/installer/ESP32_IoT_outlet_Telegram_version.html">멀티탭 텔레그램 제어</a>
-				</li>
-				<li>
-					<a href="https://nukcanon.github.io/ESP32_BLE_keyboard/ESP32_BLE_keyboard.html">블루투스 키보드</a>
-				</li>
-			</div>
-		</div>
-		<div class='navfoldercontainer'>
-			<div class='navfolder'>Machine Learning</div>
-			<div>
-				<li>
-					<a href="https://nukcanon.github.io/machine_learning/machine_learning.html">Machine Learning</a>
-				</li>
-			</div>
-		</div>
-		<div class='navfoldercontainer'>
-			<div class='navfolder'>Design</div>
-			<div>
-				<li>
-					<a href="https://school.gyo6.net/common/nttFileDownload.do?fileKey=30d9eecfcd71e8d17a54a1e80a5489a2&sysId=Indeok&bbsId=156976&nttSn=16713911">123d Design</a>
-				</li>
-			</div>
-		</div>
-		<div class='navfoldercontainer'>
-			<div class='navfolder'>필요 프로그램</div>
-			<div>
-				<li>
-					<a href="https://nukcanon.github.io/nukcanon/esp32_install.html">아두이노 개발환경(ARDUINO IDE)에서 ESP32 보드 사용 설정</a>
-				</li>
-				<li>
-					<a href="https://nukcanon.github.io/nukcanon/CH341SER.zip">CH340 driver</a>
-				</li>
-				<li>
-					<a href="https://nukcanon.github.io/nukcanon/CP210x_Windows_Drivers.zip">CP2102 drivers</a>
-				</li>
-				<li>
-					<a href="https://repo.anaconda.com/archive/">Anaconda 설치 프로그램 Archive</a>
-				</li>
-				<li>
-		            <a href="https://www.arduino.cc/en/software/OldSoftwareReleases">Arduino IDE Archive</a>
-		        </li>
-			</div>
-		</div>
-	</div>
+<body class="home-page">
+  <a class="skip-link" href="#main-content">본문으로 바로가기</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="./index.html" aria-label="Nukcanon 홈">
+        <span class="brand-mark" aria-hidden="true">N</span>
+        <span class="brand-copy">
+          <strong>Nukcanon</strong>
+          <small>Project Archive</small>
+        </span>
+      </a>
+      <nav aria-label="주요 메뉴">
+        <a class="home-link" href="./index.html" aria-current="page">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8v9a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-9Z"/></svg>
+          Home
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" class="home-main">
+    <section class="hero" aria-labelledby="page-title">
+      <p class="eyebrow">MAKER · CODING · DESIGN</p>
+      <h1 id="page-title">원하시는 메뉴를 선택해주세요.</h1>
+      <p>하드웨어 제작부터 머신러닝, 디자인, 웹 도구까지 필요한 자료를 분야별로 모았습니다.</p>
+    </section>
+
+    <div class="menu-grid">
+      <section class="menu-card" aria-labelledby="arduino-title">
+        <header class="card-heading">
+          <span class="section-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M8.5 8.5 6 6m9.5 2.5L18 6M8 12H5m14 0h-3m-7.5 3.5L6 18m9.5-2.5L18 18"/><circle cx="12" cy="12" r="4"/></svg>
+          </span>
+          <div><p>Hardware</p><h2 id="arduino-title">Arduino</h2></div>
+        </header>
+        <ul class="link-list">
+          <li>
+            <a class="menu-link" href="https://nukcanon.github.io/go_kart/installer/Go_kart_without_led.html">
+              <span><strong>Arduino Gokart</strong><small>LED 없는 버전 설치 페이지</small></span><span class="arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section class="menu-card" aria-labelledby="camera-title">
+        <header class="card-heading">
+          <span class="section-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9H3V9a1 1 0 0 1 1-1Z"/><circle cx="12" cy="13" r="3.5"/></svg>
+          </span>
+          <div><p>Vision &amp; IoT</p><h2 id="camera-title">ESP32-CAM</h2></div>
+        </header>
+        <ul class="link-list">
+          <li><a class="menu-link" href="https://nukcanon.github.io/ESP32-CAM_motion_detection_telegram/installer/ESP32-CAM_motion_detection_telegram.html"><span><strong>모션감지 텔레그램 전송</strong><small>움직임 감지 및 알림 프로젝트</small></span><span class="arrow" aria-hidden="true">→</span></a></li>
+          <li><a class="menu-link" href="https://nukcanon.github.io/ESP32_security_camera/installer/ESP32_security_camera.html"><span><strong>Security Camera</strong><small>ESP32 보안 카메라 프로젝트</small></span><span class="arrow" aria-hidden="true">→</span></a></li>
+          <li><a class="menu-link" href="https://nukcanon.github.io/ESP32-CAM_remote_control/ESP32-CAM_remote_control.html"><span><strong>원격 조종 자동차</strong><small>카메라 기반 원격 제어</small></span><span class="arrow" aria-hidden="true">→</span></a></li>
+        </ul>
+      </section>
+
+      <section class="menu-card" aria-labelledby="esp32-title">
+        <header class="card-heading">
+          <span class="section-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4m6-4v4M9 18v4m6-4v4M2 9h4m-4 6h4m12-6h4m-4 6h4M10 10h4v4h-4z"/></svg>
+          </span>
+          <div><p>IoT &amp; Control</p><h2 id="esp32-title">ESP32</h2></div>
+        </header>
+        <ul class="link-list">
+          <li><a class="menu-link" href="https://nukcanon.github.io/ESP32_IoT_outlet_Telegram/installer/ESP32_IoT_outlet_Telegram_version.html"><span><strong>멀티탭 텔레그램 제어</strong><small>IoT 멀티탭 원격 제어</small></span><span class="arrow" aria-hidden="true">→</span></a></li>
+          <li><a class="menu-link" href="https://nukcanon.github.io/ESP32_BLE_keyboard/ESP32_BLE_keyboard.html"><span><strong>블루투스 키보드</strong><small>ESP32 BLE 키보드 프로젝트</small></span><span class="arrow" aria-hidden="true">→</span></a></li>
+        </ul>
+      </section>
+
+      <section class="menu-card" aria-labelledby="ml-title">
+        <header class="card-heading">
+          <span class="section-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="5" r="2"/><circle cx="19" cy="9" r="2"/><circle cx="19" cy="17" r="2"/><path d="m6.7 10.9 3.6-4.7m3.5-.3 3.4 2.2M7 12h10m-5 2-5 3m6.8-3.1 3.4 2.2"/></svg>
+          </span>
+          <div><p>AI &amp; Data</p><h2 id="ml-title">Machine Learning</h2></div>
+        </header>
+        <ul class="link-list">
+          <li><a class="menu-link" href="https://nukcanon.github.io/machine_learning/machine_learning.html"><span><strong>Machine Learning</strong><small>머신러닝 학습 자료</small></span><span class="arrow" aria-hidden="true">→</span></a></li>
+        </ul>
+      </section>
+
+      <section class="menu-card" aria-labelledby="design-title">
+        <header class="card-heading">
+          <span class="section-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4.5 7.8 7.5 4.3 7.5-4.3M12 12v9"/></svg>
+          </span>
+          <div><p>3D Modeling</p><h2 id="design-title">Design</h2></div>
+        </header>
+        <ul class="link-list">
+          <li><a class="menu-link" href="https://school.gyo6.net/common/nttFileDownload.do?fileKey=30d9eecfcd71e8d17a54a1e80a5489a2&amp;sysId=Indeok&amp;bbsId=156976&amp;nttSn=16713911"><span><strong>123D Design</strong><small>3D 모델링 프로그램 다운로드</small></span><span class="arrow" aria-hidden="true">→</span></a></li>
+        </ul>
+      </section>
+
+      <section class="menu-card featured-card" aria-labelledby="webapp-title">
+        <header class="card-heading">
+          <span class="section-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3.5 9h17M3.5 15h17M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+          </span>
+          <div><p>Web Tools <span class="new-badge">NEW</span></p><h2 id="webapp-title">웹 애플리케이션</h2></div>
+        </header>
+        <ul class="link-list">
+          <li><a class="menu-link featured-link" href="https://nukcanon.github.io/miniseismo/"><span><strong>내진실험 애플리케이션</strong><small>스마트폰 센서로 가속도와 진폭 측정</small></span><span class="arrow" aria-hidden="true">→</span></a></li>
+        </ul>
+      </section>
+
+      <section class="menu-card wide-card" aria-labelledby="software-title">
+        <header class="card-heading">
+          <span class="section-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M4 19h16"/></svg>
+          </span>
+          <div><p>Downloads &amp; Setup</p><h2 id="software-title">필요 프로그램</h2></div>
+        </header>
+        <ul class="link-list software-list">
+          <li><a class="menu-link" href="https://nukcanon.github.io/nukcanon/esp32_install.html"><span><strong>Arduino IDE ESP32 설정</strong><small>ESP32 보드 사용 환경 구성</small></span><span class="arrow" aria-hidden="true">→</span></a></li>
+          <li><a class="menu-link" href="https://nukcanon.github.io/nukcanon/CH341SER.zip"><span><strong>CH340 Driver</strong><small>USB 시리얼 드라이버</small></span><span class="arrow" aria-hidden="true">↓</span></a></li>
+          <li><a class="menu-link" href="https://nukcanon.github.io/nukcanon/CP210x_Windows_Drivers.zip"><span><strong>CP2102 Driver</strong><small>Windows USB 드라이버</small></span><span class="arrow" aria-hidden="true">↓</span></a></li>
+          <li><a class="menu-link" href="https://repo.anaconda.com/archive/"><span><strong>Anaconda Archive</strong><small>이전 버전 설치 프로그램</small></span><span class="arrow" aria-hidden="true">→</span></a></li>
+          <li><a class="menu-link" href="https://www.arduino.cc/en/software/OldSoftwareReleases"><span><strong>Arduino IDE Archive</strong><small>Arduino 공식 이전 버전</small></span><span class="arrow" aria-hidden="true">→</span></a></li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p><strong>Nukcanon</strong><span aria-hidden="true">·</span> Maker project archive</p>
+  </footer>
+
+  <script src="css/patch.js"></script>
 </body>
-<script src="css/patch.js"></script>
 </html>
-
-
-
