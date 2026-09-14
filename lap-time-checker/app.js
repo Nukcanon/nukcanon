@@ -29,16 +29,16 @@ const els = {
   toast: document.querySelector("#toast")
 };
 
-const STORAGE_KEY = "nukcanon-lap-time-checker-v1";
+const STORAGE_KEY = "nukcanon-lap-time-checker-v2";
 const PROCESS_MAX_WIDTH = 480;
 const PROCESS_INTERVAL_MS = 20;
-const PIXEL_DIFF_THRESHOLD = 26;
-const LEARNING_TIME_MS = 1200;
+const PIXEL_DIFF_THRESHOLD = 10;
+const LEARNING_TIME_MS = 700;
 const CLEAR_FRAMES_REQUIRED = 4;
 
 let cvReady = true;
 let stream = null;
-let backgroundLuma = null;
+let backgroundRgb = null;
 let debugMask = null;
 let detectorSizeKey = "";
 let cameraSession = 0;
@@ -61,7 +61,7 @@ let clearFrames = 0;
 
 const saved = loadSavedState();
 let laps = Array.isArray(saved.laps) ? saved.laps : [];
-els.sensitivityInput.value = String(saved.sensitivity ?? 5);
+els.sensitivityInput.value = String(saved.sensitivity ?? 0.3);
 els.cooldownInput.value = String(saved.cooldown ?? 2000);
 
 function loadSavedState() {
@@ -378,7 +378,7 @@ function resizeProcessingCanvas() {
 }
 
 function resetDetector() {
-  backgroundLuma = null;
+  backgroundRgb = null;
   debugMask = null;
   detectorSizeKey = "";
   detectorState = "idle";
@@ -433,12 +433,15 @@ function processFrame(now) {
     const frame = ctx.getImageData(x, y, width, height);
     const key = `${width}x${height}`;
 
-    if (!backgroundLuma || detectorSizeKey !== key) {
+    if (!backgroundRgb || detectorSizeKey !== key) {
       detectorSizeKey = key;
-      backgroundLuma = new Float32Array(width * height);
-      debugMask = new ImageData(width, height);
-      for (let pixel = 0, dataIndex = 0; pixel < backgroundLuma.length; pixel += 1, dataIndex += 4) {
-        backgroundLuma[pixel] = (frame.data[dataIndex] * 77 + frame.data[dataIndex + 1] * 150 + frame.data[dataIndex + 2] * 29) / 256;
+      const pixelCount = width * height;
+      backgroundRgb = new Float32Array(pixelCount * 3);
+      debugMask = els.debugCanvas.getContext("2d").createImageData(width, height);
+      for (let pixel = 0, dataIndex = 0, bgIndex = 0; pixel < pixelCount; pixel += 1, dataIndex += 4, bgIndex += 3) {
+        backgroundRgb[bgIndex] = frame.data[dataIndex];
+        backgroundRgb[bgIndex + 1] = frame.data[dataIndex + 1];
+        backgroundRgb[bgIndex + 2] = frame.data[dataIndex + 2];
         debugMask.data[dataIndex + 3] = 255;
       }
       detectorState = "learning";
@@ -449,19 +452,28 @@ function processFrame(now) {
     const alpha = learning ? 0.14 : 0.004;
     let changedPixels = 0;
 
-    for (let pixel = 0, dataIndex = 0; pixel < backgroundLuma.length; pixel += 1, dataIndex += 4) {
-      const luminance = (frame.data[dataIndex] * 77 + frame.data[dataIndex + 1] * 150 + frame.data[dataIndex + 2] * 29) / 256;
-      const difference = Math.abs(luminance - backgroundLuma[pixel]);
+    const pixelCount = width * height;
+    for (let pixel = 0, dataIndex = 0, bgIndex = 0; pixel < pixelCount; pixel += 1, dataIndex += 4, bgIndex += 3) {
+      const red = frame.data[dataIndex];
+      const green = frame.data[dataIndex + 1];
+      const blue = frame.data[dataIndex + 2];
+      const difference = Math.max(
+        Math.abs(red - backgroundRgb[bgIndex]),
+        Math.abs(green - backgroundRgb[bgIndex + 1]),
+        Math.abs(blue - backgroundRgb[bgIndex + 2])
+      );
       const changed = !learning && difference >= PIXEL_DIFF_THRESHOLD;
       if (changed) changedPixels += 1;
       const maskValue = changed ? 255 : 0;
       debugMask.data[dataIndex] = maskValue;
       debugMask.data[dataIndex + 1] = maskValue;
       debugMask.data[dataIndex + 2] = maskValue;
-      backgroundLuma[pixel] += (luminance - backgroundLuma[pixel]) * alpha;
+      backgroundRgb[bgIndex] += (red - backgroundRgb[bgIndex]) * alpha;
+      backgroundRgb[bgIndex + 1] += (green - backgroundRgb[bgIndex + 1]) * alpha;
+      backgroundRgb[bgIndex + 2] += (blue - backgroundRgb[bgIndex + 2]) * alpha;
     }
 
-    const motion = changedPixels / backgroundLuma.length * 100;
+    const motion = changedPixels / pixelCount * 100;
     updateMotionMeter(motion);
     const threshold = Number(els.sensitivityInput.value);
 
@@ -538,7 +550,11 @@ function startMeasurement() {
   els.timer.textContent = "00:00.00";
   els.measureButton.classList.add("running");
   els.measureButton.lastChild.textContent = " 측정 중지";
-  resetDetector();
+  if (!backgroundRgb || detectorState === "idle") {
+    resetDetector();
+  } else {
+    updateDetectorStatus();
+  }
 }
 
 function stopMeasurement() {
