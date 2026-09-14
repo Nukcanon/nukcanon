@@ -35,12 +35,10 @@ jobs:
 
           activity = Path("project/app/src/main/java/com/nukcanon/laptimechecker/MainActivity.kt")
           text = activity.read_text(encoding="utf-8")
-          old = """imageAnalysis = ImageAnalysis.Builder()
-            .setResolutionSelector(resolutionSelector) // .setTargetAspectRatio 대신 사용"""
-          new = """imageAnalysis = ImageAnalysis.Builder()
-            .setTargetResolution(Size(640, 360))"""
+          old = ".setResolutionSelector(resolutionSelector) // .setTargetAspectRatio 대신 사용"
+          new = ".setTargetResolution(Size(640, 360))"
           if old not in text:
-              raise SystemExit("ImageAnalysis builder pattern not found")
+              raise SystemExit("ImageAnalysis selector pattern not found")
           activity.write_text(text.replace(old, new), encoding="utf-8")
 
           gradle = Path("project/app/build.gradle.kts")
