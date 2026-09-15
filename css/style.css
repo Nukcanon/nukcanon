@@ -877,9 +877,25 @@ body.doc-page {
   .doc-page .url-copy-container { flex-direction: column; align-items: stretch; }
   .doc-page .upload-box-container { gap: 12px; }
   .doc-page .upload-box { width: 100% !important; min-width: 0 !important; padding: 15px !important; }
-  .doc-page .wiring-table { display: block; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .doc-page .wiring-table {
+    display: block;
+    width: calc(100vw - 16px) !important;
+    max-width: none;
+    margin-left: calc(50% - 50vw + 8px) !important;
+    margin-right: calc(50% - 50vw + 8px) !important;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    -webkit-overflow-scrolling: touch;
+  }
   .doc-page .wiring-table th,
-  .doc-page .wiring-table td { min-width: 92px; padding: 8px; font-size: .82rem; }
+  .doc-page .wiring-table td {
+    min-width: 0;
+    padding: 6px 4px;
+    font-size: .76rem;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
   .doc-page pre, .doc-page .dp-highlighter { font-size: 11px; }
 }
 
