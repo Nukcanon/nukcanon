@@ -1,0 +1,54 @@
+name: Build RelayStrike Windows
+on:
+  push:
+    paths:
+      - 'games/relaystrike/**'
+      - '.github/workflows/relaystrike.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: relaystrike-release
+  cancel-in-progress: true
+jobs:
+  windows:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare Godot and assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 -o /tmp/godot.zip https://github.com/godotengine/godot-builds/releases/download/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64.zip
+          unzip -q /tmp/godot.zip -d /tmp/godot
+          chmod +x /tmp/godot/Godot_v4.4.1-stable_linux.x86_64
+          curl -fL --retry 3 -o /tmp/templates.tpz https://github.com/godotengine/godot-builds/releases/download/4.4.1-stable/Godot_v4.4.1-stable_export_templates.tpz
+          mkdir -p ~/.local/share/godot/export_templates/4.4.1.stable
+          unzip -p /tmp/templates.tpz templates/windows_release_x86_64.exe > ~/.local/share/godot/export_templates/4.4.1.stable/windows_release_x86_64.exe
+          unzip -p /tmp/templates.tpz templates/windows_debug_x86_64.exe > ~/.local/share/godot/export_templates/4.4.1.stable/windows_debug_x86_64.exe
+          python3 games/relaystrike/tools/prepare_assets.py
+      - name: Import and test
+        run: |
+          /tmp/godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path games/relaystrike --editor --import --quit
+          /tmp/godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path games/relaystrike --script res://tests/test_rules.gd
+      - name: Export Windows and package
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/out/RelayStrike"
+          /tmp/godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path games/relaystrike --export-release "Windows Desktop" "$GITHUB_WORKSPACE/out/RelayStrike/RelayStrike.exe"
+          cp games/relaystrike/README.md games/relaystrike/LICENSE.txt games/relaystrike/GODOT_LICENSE.txt out/RelayStrike/
+          cp games/relaystrike/assets/FONT_LICENSE.txt out/RelayStrike/
+          cp games/relaystrike/docs/TEST_REPORT.md out/RelayStrike/
+          cp games/relaystrike/tools/StartServer.cmd out/RelayStrike/
+          cd out
+          zip -q -r RelayStrike_Windows_v0.1.0.zip RelayStrike
+          sha256sum RelayStrike_Windows_v0.1.0.zip > SHA256SUMS.txt
+      - name: Publish downloadable build
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release view relaystrike-v0.1.0 >/dev/null 2>&1 || gh release create relaystrike-v0.1.0 --title "RelayStrike LAN 0.1.0 — playable alpha" --notes-file games/relaystrike/docs/RELEASE_NOTES.md --prerelease
+          gh release upload relaystrike-v0.1.0 out/RelayStrike_Windows_v0.1.0.zip out/SHA256SUMS.txt --clobber
+      - uses: actions/upload-artifact@v4
+        with:
+          name: RelayStrike-Windows
+          path: out/RelayStrike_Windows_v0.1.0.zip
