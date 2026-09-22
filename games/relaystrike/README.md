@@ -1,10 +1,10 @@
-# RelayStrike LAN 0.1.0
+# Internal N Crush 0.1.0
 
 Windows x64용 내부망 FPS의 첫 플레이 가능한 개발 버전입니다. 실행에는 Python·Godot 편집기·외부 인터넷·온라인 계정이 필요 없습니다. 그래픽과 사운드는 간단한 자체 제작 자산이며, 상용 FPS의 에셋을 사용하지 않습니다.
 
 ## 빠른 시작
 
-1. ZIP을 모두 풀고 `RelayStrike.exe`를 실행합니다. `.pck`는 exe 옆에 있어야 합니다.
+1. ZIP을 모두 풀고 `InternalNCrush.exe`를 실행합니다. `.pck`는 exe 옆에 있어야 합니다.
 2. 한 PC에서 **방 만들기** → 모드·맵·인원·스킬 등을 선택합니다.
 3. 다른 PC는 **내부망 방 찾기 / IP로 접속**을 사용합니다. 검색되지 않으면 방장 화면에 표시된 IP를 직접 입력합니다.
 4. 대기실에서 병과·장비를 고르고 방장이 경기를 시작합니다.
@@ -80,4 +80,4 @@ Windows 방화벽에서 이 게임의 내부망 통신을 허용해야 합니다
 
 Godot 4.4.1 Standard로 `project.godot`를 엽니다. 무기 수치는 `assets/weapons.json`, 모드·경제 규칙은 `scripts/game.gd`와 `rules.gd`, 맵은 `scripts/arena.gd`에서 수정합니다. GitHub 소스에서 빌드할 때는 `python tools/prepare_assets.py`를 먼저 실행해 오디오와 OFL 글꼴을 준비합니다. 배포 ZIP에는 준비된 자산이 포함되어 있습니다.
 
-수정한 모든 클라이언트와 서버는 동일 버전으로 배포하세요. 런타임 설정은 `%APPDATA%/Godot/app_userdata/RelayStrike LAN/settings.cfg`에 저장됩니다.
+수정한 모든 클라이언트와 서버는 동일 버전으로 배포하세요. 런타임 설정은 `%APPDATA%/Godot/app_userdata/Internal N Crush/settings.cfg`에 저장됩니다.

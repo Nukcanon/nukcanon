@@ -1,6 +1,6 @@
 # 검증 기록 — 2026-09-23
 
-버전: RelayStrike LAN 0.1.0 / Godot 4.4.1
+버전: Internal N Crush 0.1.0 / Godot 4.4.1
 
 ## 수행한 검증
 

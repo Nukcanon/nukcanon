@@ -45,7 +45,7 @@ func make_panel(title:String,width=780):
 	panel=PanelContainer.new();panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER);panel.position=Vector2(-width/2.,-300);panel.custom_minimum_size=Vector2(width,0);root.add_child(panel)
 	var scroll=ScrollContainer.new();scroll.custom_minimum_size=Vector2(width,590);panel.add_child(scroll)
 	stack=VBoxContainer.new();stack.size_flags_horizontal=Control.SIZE_EXPAND_FILL;stack.add_theme_constant_override("separation",12);scroll.add_child(stack)
-	var eyebrow=Label.new();eyebrow.text="NUKCANON  /  RELAYSTRIKE LAN";eyebrow.add_theme_color_override("font_color",Color("5ce1c3"));eyebrow.add_theme_font_size_override("font_size",14);stack.add_child(eyebrow)
+	var eyebrow=Label.new();eyebrow.text="NUKCANON  /  INTERNAL N CRUSH";eyebrow.add_theme_color_override("font_color",Color("5ce1c3"));eyebrow.add_theme_font_size_override("font_size",14);stack.add_child(eyebrow)
 	label(title,30)
 func label(text:String,size=18,parent:Node=null) -> Label:
 	var l=Label.new();l.text=text;l.add_theme_font_size_override("font_size",size);l.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;(parent if parent else stack).add_child(l);return l

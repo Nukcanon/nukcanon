@@ -17,7 +17,7 @@ static func ammo_pickup(capacity:int) -> int:
 static func rating(p:Dictionary) -> float:
 	return (p.get("kills",0)*100.0 + p.get("assists",0)*50.0 + p.get("objective",0)*35.0 + p.get("healed",0)*0.3 - p.get("deaths",0)*25.0) / maxf(1.0,p.get("played",60.0)/60.0)
 static func default_options() -> Dictionary:
-	return {"room":"RelayStrike LAN", "mode":0,"map":0,"max_players":32,"skills":true,"classes":true,"infinite":false,"join":2,"teams":0,"next_teams":0,"lives":3,"shared_lives":false,"minutes":10,"target":60,"bots":0,"friendly":false,"autoheal":true,"password":"","rounds":7}
+	return {"room":"Internal N Crush", "mode":0,"map":0,"max_players":32,"skills":true,"classes":true,"infinite":false,"join":2,"teams":0,"next_teams":0,"lives":3,"shared_lives":false,"minutes":10,"target":60,"bots":0,"friendly":false,"autoheal":true,"password":"","rounds":7}
 static func balanced_ids(ps:Dictionary) -> Dictionary:
 	var ids=ps.keys()
 	ids.sort_custom(func(a,b):return rating(ps[a])>rating(ps[b]))

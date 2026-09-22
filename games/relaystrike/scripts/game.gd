@@ -78,7 +78,12 @@ func _ready():
 		await get_tree().create_timer(12).timeout;print("TEST_EXIT players=",players.size()," phase=",phase);get_tree().quit()
 func load_profile():
 	var cfg=ConfigFile.new()
-	if cfg.load("user://settings.cfg")==OK:
+	var loaded=cfg.load("user://settings.cfg")
+	# Preserve the previous title's local preferences and player identity.
+	if loaded!=OK:
+		var previous=OS.get_user_data_dir().get_base_dir().path_join("RelayStrike LAN/settings.cfg")
+		if FileAccess.file_exists(previous):loaded=cfg.load(previous)
+	if loaded==OK:
 		for k in profile:profile[k]=cfg.get_value("player",k,profile[k])
 	if str(profile.token).is_empty():profile.token=Crypto.new().generate_random_bytes(16).hex_encode()
 func save_profile():
