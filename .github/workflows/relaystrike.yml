@@ -27,11 +27,16 @@ jobs:
           unzip -p /tmp/templates.tpz templates/windows_release_x86_64.exe > ~/.local/share/godot/export_templates/4.4.1.stable/windows_release_x86_64.exe
           unzip -p /tmp/templates.tpz templates/windows_debug_x86_64.exe > ~/.local/share/godot/export_templates/4.4.1.stable/windows_debug_x86_64.exe
           python3 games/relaystrike/tools/prepare_assets.py
-      - name: Import and test
+      - name: Import, bake original models, and test
         run: |
+          set -euo pipefail
+          /tmp/godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path games/relaystrike --editor --import --quit
+          /tmp/godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path games/relaystrike --script res://tools/build_models.gd
           /tmp/godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path games/relaystrike --editor --import --quit
           /tmp/godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path games/relaystrike --script res://tests/test_rules.gd
           /tmp/godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path games/relaystrike --script res://tests/test_regressions.gd
+          /tmp/godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path games/relaystrike --script res://tests/test_ai_aim.gd
+          /tmp/godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path games/relaystrike --script res://tests/test_bots.gd
           GODOT=/tmp/godot/Godot_v4.4.1-stable_linux.x86_64 python3 games/relaystrike/tests/run_network_probe.py
       - name: Export Windows and package
         run: |
@@ -41,16 +46,18 @@ jobs:
           cp games/relaystrike/assets/FONT_LICENSE.txt out/InternalNCrush/
           cp games/relaystrike/docs/TEST_REPORT.md out/InternalNCrush/
           cp games/relaystrike/tools/StartServer.cmd out/InternalNCrush/
+          mkdir -p out/InternalNCrush/ArtSource
+          cp games/relaystrike/assets/models/*.glb games/relaystrike/assets/models/manifest.json out/InternalNCrush/ArtSource/
           cd out
-          zip -q -r InternalNCrush_Windows_v0.2.0.zip InternalNCrush
-          sha256sum InternalNCrush_Windows_v0.2.0.zip > SHA256SUMS.txt
+          zip -q -r InternalNCrush_Windows_v0.3.0.zip InternalNCrush
+          sha256sum InternalNCrush_Windows_v0.3.0.zip > SHA256SUMS.txt
       - name: Publish downloadable build
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release view internal-n-crush-v0.2.0 >/dev/null 2>&1 || gh release create internal-n-crush-v0.2.0 --title "Internal N Crush 0.2.0 — playable alpha" --notes-file games/relaystrike/docs/RELEASE_NOTES.md --prerelease
-          gh release upload internal-n-crush-v0.2.0 out/InternalNCrush_Windows_v0.2.0.zip out/SHA256SUMS.txt --clobber
+          gh release view internal-n-crush-v0.3.0 >/dev/null 2>&1 || gh release create internal-n-crush-v0.3.0 --title "Internal N Crush 0.3.0 — playable alpha" --notes-file games/relaystrike/docs/RELEASE_NOTES.md --prerelease
+          gh release upload internal-n-crush-v0.3.0 out/InternalNCrush_Windows_v0.3.0.zip out/SHA256SUMS.txt --clobber
       - uses: actions/upload-artifact@v4
         with:
           name: InternalNCrush-Windows
-          path: out/InternalNCrush_Windows_v0.2.0.zip
+          path: out/InternalNCrush_Windows_v0.3.0.zip

@@ -1,0 +1,4 @@
+.godot/
+assets/models/*.scn
+assets/models/*.glb
+assets/models/*.import

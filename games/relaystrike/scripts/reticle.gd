@@ -13,7 +13,7 @@ func _draw():
 		for direction in [Vector2.LEFT,Vector2.RIGHT,Vector2.UP,Vector2.DOWN]:draw_line(center+direction*8,center+direction*205,Color(.05,.1,.13,.85),1.,true)
 		for i in [-3,-2,-1,1,2,3]:draw_line(center+Vector2(-4,i*35),center+Vector2(4,i*35),Color(.05,.1,.13,.85),1.,true)
 	elif not ads:
-		var gap=5.+minf(a.velocity.length(),12)*1.2+(12 if a.last_sprint else 0)+a.recoil*8
+		var gap=maxf(3.,AimModel.pixel_radius(a.visual_spread,a.camera.fov,size.y))
 		for direction in [Vector2.LEFT,Vector2.RIGHT,Vector2.UP,Vector2.DOWN]:
 			draw_line(center+direction*gap,center+direction*(gap+6),Color(.015,.035,.04,.8),4.)
 			draw_line(center+direction*gap,center+direction*(gap+6),color,2.)

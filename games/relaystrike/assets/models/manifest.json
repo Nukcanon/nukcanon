@@ -1,0 +1,201 @@
+{
+	"animations": [
+		"idle",
+		"walk",
+		"run",
+		"crouch",
+		"crouch_walk",
+		"jump",
+		"fall",
+		"fire",
+		"reload",
+		"hit",
+		"land",
+		"death"
+	],
+	"license": "Original Internal N Crush assets; see LICENSE.txt",
+	"operators": [
+		{
+			"name": "Vanguard",
+			"role": "돌격",
+			"scene": "res://assets/models/operator_0_0.scn",
+			"team": 0
+		},
+		{
+			"name": "Vanguard",
+			"role": "돌격",
+			"scene": "res://assets/models/operator_0_1.scn",
+			"team": 1
+		},
+		{
+			"name": "Pathfinder",
+			"role": "정찰",
+			"scene": "res://assets/models/operator_1_0.scn",
+			"team": 0
+		},
+		{
+			"name": "Pathfinder",
+			"role": "정찰",
+			"scene": "res://assets/models/operator_1_1.scn",
+			"team": 1
+		},
+		{
+			"name": "Bulwark",
+			"role": "중화기",
+			"scene": "res://assets/models/operator_2_0.scn",
+			"team": 0
+		},
+		{
+			"name": "Bulwark",
+			"role": "중화기",
+			"scene": "res://assets/models/operator_2_1.scn",
+			"team": 1
+		},
+		{
+			"name": "Mechanic",
+			"role": "공병",
+			"scene": "res://assets/models/operator_3_0.scn",
+			"team": 0
+		},
+		{
+			"name": "Mechanic",
+			"role": "공병",
+			"scene": "res://assets/models/operator_3_1.scn",
+			"team": 1
+		},
+		{
+			"name": "Warden",
+			"role": "통제",
+			"scene": "res://assets/models/operator_4_0.scn",
+			"team": 0
+		},
+		{
+			"name": "Warden",
+			"role": "통제",
+			"scene": "res://assets/models/operator_4_1.scn",
+			"team": 1
+		},
+		{
+			"name": "Lifeline",
+			"role": "메딕",
+			"scene": "res://assets/models/operator_5_0.scn",
+			"team": 0
+		},
+		{
+			"name": "Lifeline",
+			"role": "메딕",
+			"scene": "res://assets/models/operator_5_1.scn",
+			"team": 1
+		}
+	],
+	"weapons": [
+		{
+			"id": "a1",
+			"name": "@Node3D@644"
+		},
+		{
+			"id": "a2",
+			"name": "@Node3D@677"
+		},
+		{
+			"id": "a3",
+			"name": "@Node3D@708"
+		},
+		{
+			"id": "a4",
+			"name": "@Node3D@742"
+		},
+		{
+			"id": "r1",
+			"name": "@Node3D@780"
+		},
+		{
+			"id": "r2",
+			"name": "@Node3D@819"
+		},
+		{
+			"id": "r3",
+			"name": "@Node3D@855"
+		},
+		{
+			"id": "r4",
+			"name": "@Node3D@891"
+		},
+		{
+			"id": "r5",
+			"name": "@Node3D@927"
+		},
+		{
+			"id": "h1",
+			"name": "@Node3D@957"
+		},
+		{
+			"id": "h2",
+			"name": "@Node3D@993"
+		},
+		{
+			"id": "e1",
+			"name": "@Node3D@1022"
+		},
+		{
+			"id": "e2",
+			"name": "@Node3D@1052"
+		},
+		{
+			"id": "e3",
+			"name": "@Node3D@1084"
+		},
+		{
+			"id": "c1",
+			"name": "@Node3D@1116"
+		},
+		{
+			"id": "c2",
+			"name": "@Node3D@1148"
+		},
+		{
+			"id": "c3",
+			"name": "@Node3D@1180"
+		},
+		{
+			"id": "c4",
+			"name": "@Node3D@1209"
+		},
+		{
+			"id": "m1",
+			"name": "@Node3D@1222"
+		},
+		{
+			"id": "m2",
+			"name": "@Node3D@1255"
+		},
+		{
+			"id": "pistol",
+			"name": "@Node3D@1267"
+		},
+		{
+			"id": "heavy_pistol",
+			"name": "@Node3D@1281"
+		},
+		{
+			"id": "auto_pistol",
+			"name": "@Node3D@1294"
+		},
+		{
+			"id": "eng_pistol",
+			"name": "@Node3D@1307"
+		},
+		{
+			"id": "burst_pistol",
+			"name": "@Node3D@1320"
+		},
+		{
+			"id": "med_pistol",
+			"name": "@Node3D@1333"
+		},
+		{
+			"id": "repair",
+			"name": "@Node3D@1345"
+		}
+	]
+}

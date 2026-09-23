@@ -4,6 +4,9 @@ const C=preload("res://scripts/catalog.gd")
 const A=preload("res://scripts/actor.gd")
 const W=preload("res://scripts/arena.gd")
 const UI=preload("res://scripts/ui.gd")
+var bot_navigation:BotNavigation
+var bot_agents={}
+var bot_attack_site=0
 var options=R.default_options()
 var players={}
 var actors={}
@@ -49,6 +52,8 @@ var test_mode=false
 var smoke_visuals=[]
 var world_timer=0.0
 var step_events=0.0
+var wall_marks=[]
+var drop_nodes={}
 var incoming_at={}
 var cli_args=[]
 var snapshot_sequence=0
@@ -103,6 +108,7 @@ func setup_input():
 func build_world():
 	if arena:arena.queue_free()
 	arena=W.new();add_child(arena);arena.build(int(options.map))
+	bot_navigation=BotNavigation.new();bot_navigation.build(arena);bot_agents.clear()
 	if not is_instance_valid(spectator_camera):
 		spectator_camera=Camera3D.new();spectator_camera.near=.1;spectator_camera.far=350;add_child(spectator_camera)
 func host_game():
@@ -113,7 +119,7 @@ func host_game():
 	discovery=PacketPeerUDP.new();discovery.set_broadcast_enabled(true)
 	if discovery.bind(R.DISCOVERY)!=OK:discovery=null
 	if not dedicated:add_player(1,profile.nick,profile.token)
-	for i in range(int(options.bots)):add_player(-i-1,"BOT %02d"%(i+1),"bot"+str(i))
+	for i in range(mini(int(options.bots),int(options.max_players)-(0 if dedicated else 1))):add_player(-i-1,"BOT %02d"%(i+1),"bot"+str(i))
 	ui.lobby();broadcast_state(true);print("SERVER_READY port=",R.PORT)
 func join_game(ip:String):
 	if phase!="menu":return
@@ -159,10 +165,13 @@ func add_player(id:int,nick:String,token:String):
 	elif phase!="lobby":
 		p.spectator=int(options.join)==1
 		p.alive=false;p.respawn=clock+3 if int(options.join)==2 and int(options.mode)!=4 else 1e12
-	if int(options.mode)!=4:p.armor_max=50
+	p.bloom=0.;p.shot_time=-100.;p.spray_index=0;p.bot_action=""
 	p.pending_loadout={};p.trigger_seen=0;p.fire_prev=false;p.burst_left=0;p.trigger_until=0.;p.reload_started=0.;p.switch_until=0.
+	if id<0 and p.role==3:p.secondary="repair"
 	players[id]=p;ensure_actor(id);equip_ammo(p)
 	if phase=="lobby":spawn(id)
+	if id<0:
+		var brain=BotAgent.new();brain.setup(self,id);bot_agents[id]=brain
 func ensure_actor(id:int):
 	if actors.has(id):return
 	var a=A.new();a.pid=id;a.game=self;a.name="Player_"+str(id);add_child(a);actors[id]=a;a.set_local(id==local_id and not dedicated);a.set_team(int(players[id].team));a.target_pos=Vector3.ZERO
@@ -182,7 +191,7 @@ func spawn(id:int):
 		distance+=randf()*5
 		if distance>safest:safest=distance;best=pos
 	a.collision_layer=2;a.position=best;a.target_pos=best;a.velocity=Vector3.ZERO;p.alive=true;p.hp=100.;p.armor=p.armor_max;p.reload=0.;p.protect=clock+2.;p.energy=180.;p.heal_mag=3;p.heal_reserve=3;p.repair_energy=100.;p.gadget_count=2 if p.role==3 else 3 if p.role==4 else 1;p.smoke=1 if p.role==4 and p.gadget==1 else 2;p.flash_count=2 if p.role==4 and p.gadget==1 else 1;p.last_hit=clock;p.contributors={};p.spectator=false
-	a.reset_view(0. if p.team==1 else PI);p.fire_ready=clock+.3;p.burst_left=0;p.fire_prev=false;p.trigger_until=0.;p.trigger_seen=int(a.input_state.get("trigger_seq",0));p.slot=0;p.switch_until=clock+.3;equip_ammo(p)
+	a.reset_view(0. if p.team==1 else PI);p.fire_ready=clock+.3;p.burst_left=0;p.fire_prev=false;p.trigger_until=0.;p.trigger_seen=int(a.input_state.get("trigger_seq",0));p.slot=0;p.bloom=0.;p.spray_index=0;p.shot_time=-100.;p.switch_until=clock+.3;equip_ammo(p)
 	if id==local_id:Input.mouse_mode=Input.MOUSE_MODE_CAPTURED
 func disconnected(id:int):
 	if not players.has(id):return
@@ -190,7 +199,7 @@ func disconnected(id:int):
 		var p=players[id];p.alive=false;reconnects[p.token]=p.duplicate(true)
 		for did in devices.keys():
 			if devices[did].owner==id:remove_device(did)
-	players.erase(id)
+	players.erase(id);bot_agents.erase(id)
 	if actors.has(id):actors[id].queue_free();actors.erase(id)
 	if server:call_deferred("broadcast_state",true)
 func leave_game(message:String=""):
@@ -198,9 +207,14 @@ func leave_game(message:String=""):
 	multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new()
 	server=false;phase="menu"
 	for a in actors.values():a.queue_free()
-	actors.clear();players.clear()
+	actors.clear();players.clear();bot_agents.clear();bot_navigation=null
 	for n in device_nodes.values():n.queue_free()
 	device_nodes.clear();devices.clear();fields.clear();drops.clear();reconnects.clear()
+	for node in drop_nodes.values():node.queue_free()
+	drop_nodes.clear()
+	for node in wall_marks:
+		if is_instance_valid(node):node.queue_free()
+	wall_marks.clear()
 	if arena:arena.queue_free();arena=null
 	if discovery:discovery.close();discovery=null
 	Input.mouse_mode=Input.MOUSE_MODE_VISIBLE;ui.menu();ui.notice(message)
@@ -297,6 +311,7 @@ func ping_request(sent:int):
 @rpc("authority","call_remote","unreliable",2)
 func ping_reply(sent:int):ping_ms=maxi(0,Time.get_ticks_msec()-sent)
 func server_tick(dt:float):
+	if bot_navigation:bot_navigation.refresh(devices,clock)
 	for id in players:
 		var p=players[id];var a=actors[id]
 		if id<0:bot_input(id,dt)
@@ -308,6 +323,9 @@ func server_tick(dt:float):
 		a.simulate(dt,clock,phase in ["combat","lobby"])
 		if phase!="combat":continue
 		p.played+=dt
+		var held_weapon=current_weapon(p)
+		if clock-float(p.get("shot_time",-100.))>(.18 if int(p.get("spray_index",0))>8 else .09):p.bloom=maxf(0,float(p.get("bloom",0))-float(held_weapon.get("bloom_recovery",3.))*dt*(.55 if int(p.get("spray_index",0))>8 else 1.))
+		if clock-float(p.get("shot_time",-100.))>.42:p.spray_index=0
 		if p.reload>0 and clock>=p.reload:
 			var wid=p.reload_weapon;var w=C.get_weapon(wid);var need=int(w.mag)-int(p.mag.get(wid,0));var got=need if options.infinite else mini(need,int(p.reserve.get(wid,0)))
 			p.mag[wid]=int(p.mag.get(wid,0))+got
@@ -330,26 +348,7 @@ func server_tick(dt:float):
 		elif phase=="result" and remaining<=0:next_match()
 		elif phase=="combat":check_objectives(dt)
 func bot_input(id:int,dt:float):
-	var p=players[id];var a=actors[id]
-	if not p.alive:return
-	var target=0;var dist=1e8
-	for other in players:
-		if other!=id and players[other].alive and enemies(p,players[other]):
-			var d=a.position.distance_to(actors[other].position)
-			if d<dist:dist=d;target=other
-	var dest=arena.zones[absi(id)%3]
-	if target!=0:dest=actors[target].position+Vector3.UP*(.7 if actors[target].input_state.crouch else 1.1)
-	var v=dest-a.eye();var yaw=atan2(-v.x,-v.z);var pitch=atan2(v.y,Vector2(v.x,v.z).length())
-	a.input_state.yaw=lerp_angle(float(a.input_state.yaw),yaw+sin(clock*1.7+id)*.045,minf(dt*3,1));a.input_state.pitch=clampf(pitch+sin(clock*2.3+id)*.035,-1.3,1.3)
-	var seen=target!=0 and dist<65 and clear_line(a.eye(),dest,[a.get_rid(),actors[target].get_rid()]) and not in_smoke_line(a.eye(),dest)
-	if not seen or int(p.get("bot_target",0))!=target:p.bot_seen=clock+.55
-	p.bot_target=target
-	var firing=seen and clock>p.get("bot_seen",clock+.55) and fmod(clock+abs(id)*.31,1.7)<.65 and absf(angle_difference(a.input_state.yaw,yaw))<.12
-	if firing and clock>=p.get("bot_click",0):a.input_state.trigger_seq=int(a.input_state.get("trigger_seq",0))+1;p.bot_click=clock+.35
-	a.input_state.fire=firing;a.input_state.ads=dist>20;a.input_state.sprint=false;a.input_state.crouch=false;a.input_state.x=sin(clock*.7+id)*.7;a.input_state.z=-1. if dist>18 else 0.
-	a.input_state.jump=a.is_on_wall()
-	if a.is_on_wall():a.input_state.x=1.
-	if int(p.mag.get(p.primary,0))==0:begin_reload(id)
+	if bot_agents.has(id):bot_agents[id].tick(dt)
 func enemies(p:Dictionary,q:Dictionary) -> bool:return int(options.mode)==1 or p.team!=q.team
 func medic_count(team:int) -> int:
 	var n=0
@@ -413,7 +412,7 @@ func commit_loadout(id:int,d:Dictionary):
 	if role==5 and p.role!=5 and options.classes and medic_count(p.team)>=R.medic_cap(team_count(p.team)):feedback(id,"","메딕 정원이 차서 이전 장비를 유지합니다.");return
 	var wid=str(d.get("primary",C.first(role)));var sec=R.SECONDARIES[role]
 	if role==3 and d.get("repair",false):sec="repair"
-	var armor=clampi(int(d.get("armor",2 if int(options.mode)!=4 else 0)),0,2)*25;var gadget=clampi(int(d.get("gadget",0)),0,2)
+	var armor=clampi(int(d.get("armor",0)),0,2)*25;var gadget=clampi(int(d.get("gadget",0)),0,2)
 	var cost=loadout_cost(p,d) if phase=="buy" else 0
 	if p.cash<cost:feedback(id,"","구매 실패 · 필요 %d / 보유 %d 크레딧"%[cost,p.cash]);return
 	p.cash-=cost
@@ -465,15 +464,13 @@ func fire(id:int):
 	if w.kind=="repair":repair(id);return
 	if int(p.mag.get(wid,0))<=0:begin_reload(id);return
 	p.mag[wid]-=1;p.fire_ready=clock+float(w.interval);p.protect=0.
-	var spread=float(w.spread)
-	if a.input_state.ads:spread*=.2
-	if a.input_state.crouch:spread*=.65
-	if p.get("mounted",0)>clock and a.velocity.length()<.3:spread*=.35
-	if a.velocity.length()>1:spread*=2.1
-	if not a.is_on_floor():spread*=3
+	var spread=a.spread_angle
+	var spray=AimModel.spray_offset(w,int(p.get("spray_index",0)))
+	p.shot_time=clock;p.spray_index=int(p.get("spray_index",0))+1;p.bloom=minf(float(w.get("bloom_max",1.2)),float(p.get("bloom",0))+float(w.get("shot_bloom",.12)))
 	var origin=a.muzzle_world();var eye=a.eye();var last_end=origin+a.direction()*200
 	for pellet in range(int(w.pellets)):
-		var dir=a.direction();dir=(dir+Vector3(randf_range(-1,1),randf_range(-1,1),randf_range(-1,1))*deg_to_rad(spread)).normalized()
+		var forward=Basis(Vector3.UP,a.aim_yaw-deg_to_rad(spray.x))*Basis(Vector3.RIGHT,a.aim_pitch+deg_to_rad(spray.y))*Vector3.FORWARD
+		var dir=AimModel.cone_direction(forward,spread,randf(),randf())
 		var aim_hit=ray(eye,eye+dir*300,[a.get_rid()]);var aim_point=aim_hit.get("position",eye+dir*300)
 		var hit=ray(origin,origin+(aim_point-origin).normalized()*minf(300,origin.distance_to(aim_point)+.15),[a.get_rid()]);last_end=hit.get("position",aim_point)
 		if hit.is_empty():continue
@@ -487,6 +484,7 @@ func fire(id:int):
 			dmg*=R.damage_water(arena.submerged(hit.position),arena.wading(a.position),not arena.wading(collider.position))
 			damage(collider.pid,dmg,id,head)
 		elif collider.has_meta("device"):damage_device(int(collider.get_meta("device")),dmg,id)
+		elif pellet==0:wall_mark.rpc(hit.position,hit.normal)
 	effect.rpc("shot",origin,last_end,id)
 	if int(p.mag[wid])==0:begin_reload(id)
 func damage(target:int,amount:float,source:int,critical:bool=false):
@@ -499,13 +497,14 @@ func damage(target:int,amount:float,source:int,critical:bool=false):
 		if actors[target].direction().dot(dir)>.4:amount*=.15
 	var armored=p.armor>0
 	var absorb=minf(p.armor,amount);p.armor-=absorb;p.hp-=amount-absorb;p.last_hit=clock
+	if target<0 and bot_navigation:bot_navigation.danger(actors[target].position)
 	var push=(actors[target].position-actors[source].position).normalized() if actors.has(source) and source!=target else Vector3.FORWARD
 	impact.rpc(actors[target].eye()-Vector3.UP*.35,push,false,int(p.team))
 	hit_reaction.rpc(target,push)
 	if source!=target:p.contributors[source]=clock
 	if source>0:feedback(source,"hit",("정밀 명중" if critical else "방어구 명중" if armored else "명중")+" · "+str(int(round(amount))))
 	if p.hp<=0:
-		impact.rpc(actors[target].position,push,true,int(p.team))
+		impact.rpc(actors[target].position,push,true,int(p.team),int(p.role))
 		p.hp=0;p.alive=false;p.deaths+=1;p.lives-=1;p.respawn=clock+4.;
 		p.can_respawn=p.lives>0
 		if int(options.mode)==2 and options.shared_lives:
@@ -778,7 +777,7 @@ func enforce_medics():
 				n+=1
 				if n>R.medic_cap(team_count(team)):p.role=0;p.primary="a1";p.secondary="pistol";equip_ammo(p)
 func begin_round():
-	round_no+=1;phase="buy";remaining=20.;bomb={"planted":false,"site":-1,"time":0.,"actor":0,"progress":0.,"position":Vector3.ZERO}
+	round_no+=1;bot_attack_site=randi()%2;phase="buy";remaining=20.;bomb={"planted":false,"site":-1,"time":0.,"actor":0,"progress":0.,"position":Vector3.ZERO}
 	for did in devices.keys():remove_device(did)
 	fields.clear();drops.clear()
 	if round_no>1 and (round_no-1)%3==0:
@@ -812,7 +811,7 @@ func next_match():
 func broadcast_state(force:bool):
 	var list=[]
 	for id in players:
-		var p=players[id];var a=actors[id];var d=p.duplicate();d.erase("token");d.erase("contributors");d.pos=a.position;d.yaw=a.aim_yaw;d.pitch=a.aim_pitch;d.crouch=a.input_state.crouch;list.append(d)
+		var p=players[id];var a=actors[id];var d=p.duplicate();d.erase("token");d.erase("contributors");d.pos=a.position;d.yaw=a.aim_yaw;d.pitch=a.aim_pitch;d.crouch=a.input_state.crouch;d.velocity=a.velocity;d.grounded=a.is_on_floor();d.sprint=a.last_sprint;d.ads=a.input_state.ads;d.spread_angle=a.spread_angle;list.append(d)
 	var supplies=[]
 	for s in arena.supplies:supplies.append(s.ready)
 	var state={"clock":clock,"phase":phase,"remaining":remaining,"scores":scores,"tickets":tickets,"round":round_no,"players":list,"devices":devices,"fields":fields,"drops":drops,"zones":zone_owner,"supplies":supplies,"bomb":bomb}
@@ -854,7 +853,7 @@ func receive_state(s:Dictionary):
 			if fresh:a.position=p.pos;a.velocity=Vector3.ZERO;a.reset_view(p.yaw)
 			if a.position.distance_to(p.pos)>2 or not p.alive:a.position=p.pos
 			else:a.position=a.position.lerp(p.pos,.25)
-		else:a.target_pos=p.pos;a.aim_yaw=p.yaw;a.aim_pitch=p.pitch;a.input_state.crouch=p.crouch
+		else:a.target_pos=p.pos;a.aim_yaw=p.yaw;a.aim_pitch=p.pitch;a.input_state.crouch=p.crouch;a.net_velocity=p.get("velocity",Vector3.ZERO);a.net_grounded=p.get("grounded",true);a.net_sprint=p.get("sprint",false);a.remote_ads=p.get("ads",false)
 	for id in players.keys():
 		if not present.has(id):players.erase(id);actors[id].queue_free();actors.erase(id)
 	devices=s.devices
@@ -885,8 +884,13 @@ func update_world_visuals(dt:float):
 		smoke_visuals.clear()
 		for f in fields:
 			var n=MeshInstance3D.new();var m=SphereMesh.new();m.radius=5;m.height=6 if f.kind=="smoke" else .2;m.radial_segments=12;m.rings=5;n.mesh=m;n.position=f.pos+Vector3.UP*(2 if f.kind=="smoke" else .1);n.material_override=arena.mat(Color(.55,.64,.67,.92) if f.kind=="smoke" else Color(.7,.42,.2,.4));add_child(n);smoke_visuals.append(n)
-		for d in drops:
-			var n=arena.box(d.pos,Vector3(.8,.12,.25),Color("efc56a"),false);smoke_visuals.append(n)
+	var live_drops={}
+	for d in drops:
+		var key=str(d.until)+str(d.pos)+d.weapon;live_drops[key]=true
+		if not drop_nodes.has(key):
+			var n=WeaponVisual.new();add_child(n);n.build(Catalog.get_weapon(d.weapon),false);n.position=d.pos;n.rotation=Vector3(0,0,PI/2);drop_nodes[key]=n
+	for key in drop_nodes.keys():
+		if not live_drops.has(key):drop_nodes[key].queue_free();drop_nodes.erase(key)
 func feedback(id:int,sound:String,message:String):
 	if id<0:return
 	if id==local_id:personal(sound,message)
@@ -912,7 +916,7 @@ func effect(kind:String,from:Vector3,to:Vector3,owner:int):
 		if length>.01:
 			var n=arena.box((from+to)*.5,Vector3(.025,.025,length),Color("ffe2a0") if kind=="shot" else Color("63ecc6"),false)
 			n.look_at(to);get_tree().create_timer(.045 if kind=="shot" else .09).timeout.connect(n.queue_free)
-	if owner==local_id and actors.has(owner) and kind=="shot":actors[owner].recoil=1.
+	if actors.has(owner) and kind=="shot":actors[owner].recoil=1.
 func play_sound(kind:String,pos:Vector3,spatial:bool):
 	if not sounds.has(kind) or dedicated:return
 	var n:Node
@@ -933,17 +937,18 @@ func footstep(pos:Vector3,id:int):
 	if id!=local_id:play_sound("step",pos,true)
 
 @rpc("authority","call_local","unreliable",2)
-func impact(pos:Vector3,push:Vector3,eliminated:bool,team:int):
+func impact(pos:Vector3,push:Vector3,eliminated:bool,team:int,role:int=0):
 	if dedicated or arena==null:return
 	if eliminated:
 		var model=Node3D.new();add_child(model);model.position=pos
-		arena.box(Vector3(0,.75,0),Vector3(.55,1.1,.36),Color("359dc4") if team==0 else Color("e18b56"),false,model)
-		arena.box(Vector3(0,1.5,0),Vector3(.4,.35,.38),Color("233749"),false,model)
+		var body=CharacterVisual.new();model.add_child(body);body.build(role,team);body.animator.play("death");body.animator.advance(0.)
+		var pose=create_tween();pose.tween_method(func(t):
+			if is_instance_valid(body):body.animator.seek(t,true),0.,.65,.65)
 		var end=pos+push*1.2;end.y=.3
 		var obstruction=ray(pos+Vector3.UP*.7,end+Vector3.UP*.7,[],1|4)
 		if not obstruction.is_empty():end=pos
 		model.rotation.y=atan2(push.x,push.z)
-		var t=create_tween().set_parallel(true);t.tween_property(model,"position",end,.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT);t.tween_property(model,"rotation:x",-PI/2,.35)
+		var t=create_tween().set_parallel(true);t.tween_property(model,"position",end,.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 		get_tree().create_timer(5).timeout.connect(func():
 			if is_instance_valid(model):
 				var fade=create_tween();fade.tween_property(model,"scale",Vector3.ZERO,1.);fade.tween_callback(model.queue_free))
@@ -974,3 +979,13 @@ func update_spectator():
 @rpc("authority","call_local","unreliable",2)
 func hit_reaction(id:int,push:Vector3):
 	if actors.has(id):actors[id].react_hit(push)
+
+@rpc("authority","call_local","unreliable",2)
+func wall_mark(pos:Vector3,normal:Vector3):
+	if dedicated or arena==null:return
+	var mark=MeshInstance3D.new();var mesh=PlaneMesh.new();mesh.size=Vector2(.085,.085);mark.mesh=mesh
+	var material=StandardMaterial3D.new();material.albedo_color=Color("3a4040");material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;mark.material_override=material
+	add_child(mark);mark.position=pos+normal*.009;mark.quaternion=Quaternion(Vector3.UP,normal.normalized());wall_marks.append(mark)
+	if wall_marks.size()>100:
+		var first=wall_marks.pop_front()
+		if is_instance_valid(first):first.queue_free()

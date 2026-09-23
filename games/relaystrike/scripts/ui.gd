@@ -96,11 +96,21 @@ N CRUSH";title.position=Vector2(72,175);title.add_theme_font_size_override("font
 	var nick=LineEdit.new();nick.text=game.profile.nick;nick.placeholder_text="플레이어 이름";nick.custom_minimum_size.y=42;nick.text_changed.connect(func(t):game.profile.nick=t.left(20);game.save_profile());stack.add_child(nick)
 	button("방 만들기",host_settings)
 	button("내부망 방 찾기 / IP 접속",join_menu)
-	button("봇 연습 시작",func():game.options=Rules.default_options();game.options.bots=7;game.host_game();game.start_match())
+	button("봇 연습 · 난이도 선택",practice_menu)
 	button("설정 · 감도 / 화면 / 조작법",settings)
 	button("종료",func():game.get_tree().quit())
 	notice_label=label("계정 없이 연결합니다.
 같은 버전의 게임으로 접속하세요.",14);notice_label.modulate=Color("92adbc")
+func practice_menu():
+	make_panel("봇 연습")
+	game.options.bots=maxi(3,int(game.options.bots))
+	option("난이도",["하 · 반응과 조준을 완화","중 · 목표와 지원 역할 수행","상 · 빠른 반응, 사격·후퇴 판단 강화"],game.options.get("bot_difficulty",1),func(i):game.options.bot_difficulty=i)
+	option("봇 인원",["3명","7명","15명","31명"],maxi(0,[3,7,15,31].find(game.options.bots)),func(i):game.options.bots=[3,7,15,31][i])
+	option("게임 모드",Rules.MODES,game.options.mode,func(i):game.options.mode=i)
+	option("맵",["TIDAL YARD · 항구","DRY DOCK · 창고"],game.options.map,func(i):game.options.map=i)
+	label("장애물 우회 · 목표 수행 · 회복/수리 · 가젯/스킬 사용\n체력, 탄약, 최근 교전 상황에 따라 행동을 바꿉니다.",16)
+	button("연습 시작",func():game.options.max_players=32;game.host_game();game.start_match())
+	button("돌아가기",menu)
 func host_settings():
 	make_panel("방 설정")
 	edit("방 이름",game.options.room,func(t):game.options.room=t.left(40))
@@ -120,7 +130,8 @@ func host_settings():
 	option("제한 부활 목숨",["1","3","5","10"],[1,3,5,10].find(game.options.lives),func(i):game.options.lives=[1,3,5,10][i])
 	option("경기 시간",["5분","10분","15분","20분"],[5,10,15,20].find(game.options.minutes),func(i):game.options.minutes=[5,10,15,20][i])
 	option("목표 점수",["30","60","100","200"],[30,60,100,200].find(game.options.target),func(i):game.options.target=[30,60,100,200][i])
-	option("연습 봇",["없음","3명","7명","15명"],[0,3,7,15].find(game.options.bots),func(i):game.options.bots=[0,3,7,15][i])
+	option("연습 봇",["없음","3명","7명","15명","31명"],[0,3,7,15,31].find(game.options.bots),func(i):game.options.bots=[0,3,7,15,31][i])
+	option("봇 난이도",["하 · 느린 반응","중 · 균형","상 · 빠른 판단"],game.options.get("bot_difficulty",1),func(i):game.options.bot_difficulty=i)
 	button("이 설정으로 방 만들기",func():game.host_game())
 	button("뒤로",menu)
 func join_menu():
@@ -224,7 +235,7 @@ func refresh_gear_detail():
 	if not game.options.skills:gear_detail.text+=" (이 방에서는 스킬 OFF)"
 	if not game.options.classes:gear_detail.text+="\n병과 OFF · 가젯/스킬 없이 공격 무기 사용"
 	var p=game.players[game.local_id];var cost=game.loadout_cost(p,selected_loadout())
-	gear_price.text="예상 비용 %d / 보유 %d 크레딧"%[cost,p.cash] if game.options.mode==4 else "장비 선택 무료 · 기본 권장: HP 100 + 방어구 50"
+	gear_price.text="예상 비용 %d / 보유 %d 크레딧"%[cost,p.cash] if game.options.mode==4 else "장비 선택 무료 · 기본 체력 100 / 기본 방어구 없음"
 	gear_submit.text="구매하기" if game.phase=="buy" else "장비 적용" if game.phase=="lobby" else "다음 부활에 적용 예약" if game.options.mode!=4 else "다음 라운드 구매 예약"
 func toggle_pause():
 	if is_instance_valid(panel):clear_panel();Input.mouse_mode=Input.MOUSE_MODE_CAPTURED;return
