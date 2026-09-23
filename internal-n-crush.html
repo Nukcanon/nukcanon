@@ -1,21 +1,58 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Internal N Crush · Nukcanon</title><meta name="description" content="Windows 내부망 FPS Internal N Crush 다운로드와 실행 안내"><link rel="stylesheet" href="css/style.css?v=20260915-7"><style>.game-hero{background:#142c42;color:#fff;border-radius:22px;padding:clamp(24px,5vw,56px);margin:24px 0}.game-hero h1{font-size:clamp(36px,7vw,70px);margin:12px 0}.game-hero p{max-width:700px;line-height:1.8}.download{display:inline-flex;background:#5be0c0;color:#10293d;padding:16px 24px;border-radius:12px;font-weight:800;text-decoration:none;margin:16px 12px 12px 0}.details{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}.detail{padding:24px;border:1px solid #d9e3ed;border-radius:16px;background:white}.detail p,.detail li{line-height:1.8}.badge{color:#61e4c6;font-weight:700;letter-spacing:.12em}.small{font-size:14px;opacity:.85}.controls{line-height:2}h2{margin-top:0}main{max-width:1120px;margin:auto;padding:20px}</style></head><body><header class="site-header">
-    <div class="header-inner">
-      <a class="brand" href="./index.html" aria-label="Nukcanon 홈">
-        <span class="brand-copy">
-          <strong>Nukcanon</strong>
-          <small>Project Archive</small>
-        </span>
-      </a>
-      <nav aria-label="주요 메뉴">
-        <a class="home-link" href="./index.html" aria-current="page">
-          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8v9a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-9Z"/></svg>
-          Home
-        </a>
-      </nav>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0066cc">
+  <title>Internal N Crush · Nukcanon</title>
+  <meta name="description" content="Windows 내부망 FPS Internal N Crush 다운로드와 실행 안내">
+  <link rel="stylesheet" href="css/style.css?v=20260915-7">
+  <style>
+    .game-page .hero{max-width:800px}
+    .game-page .hero .intro{max-width:680px;color:var(--home-muted);line-height:1.8}
+    .game-page .download{display:inline-flex;align-items:center;gap:12px;padding:15px 22px;margin:8px 0 0;border-radius:12px;color:#fff;background:var(--home-primary);font-weight:800;box-shadow:var(--home-shadow)}
+    .game-page .download:hover{background:var(--home-primary-dark);text-decoration:none}
+    .game-page .download:focus-visible{outline:3px solid var(--home-accent);outline-offset:4px}
+    .game-page .download-note{color:var(--home-muted);font-size:.85rem;line-height:1.7}
+    .game-page .details{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+    .game-page .detail{display:block;padding:24px;border:1px solid var(--home-line);border-radius:18px;background:var(--home-surface);box-shadow:var(--home-shadow);min-width:0}
+    .game-page .detail h2{font-size:1.15rem;margin:0 0 12px;color:var(--home-ink)}
+    .game-page .detail p,.game-page .detail li{color:var(--home-muted);line-height:1.8}
+    .game-page .detail ol{padding-left:21px;margin-bottom:0}
+    .game-page .detail a{color:var(--home-primary);text-decoration:underline;text-underline-offset:3px}
+    .game-page .wide{margin-top:18px}
+    .game-page figure{margin:20px 0 26px;overflow:hidden;border:1px solid var(--home-line);border-radius:18px;background:var(--home-surface)}
+    .game-page figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+    .game-page figcaption{padding:14px 20px;font-size:.82rem;color:var(--home-muted)}
+    .game-page .controls{line-height:2}
+    @media(max-width:760px){.game-page .details{grid-template-columns:1fr}.game-page .detail{padding:20px}.game-page .download{justify-content:center;width:100%;font-size:.95rem}}
+  </style>
+</head>
+<body class="home-page game-page">
+  <a class="skip-link" href="#main-content">본문으로 바로가기</a>
+  <header class="site-header"><div class="header-inner">
+    <a class="brand" href="./index.html" aria-label="Nukcanon 홈"><span class="brand-copy"><strong>Nukcanon</strong><small>Project Archive</small></span></a>
+    <nav aria-label="주요 메뉴"><a class="home-link" href="./index.html"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8v9a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-9Z"/></svg>Home</a></nav>
+  </div></header>
+  <main id="main-content" class="home-main">
+    <section class="hero" aria-labelledby="game-title">
+      <p class="eyebrow">WINDOWS · LOCAL NETWORK · PLAYABLE ALPHA</p>
+      <h1 id="game-title">Internal N Crush</h1>
+      <p class="intro">함께 지키고, 함께 돌파하세요.<br>6개 병과와 5가지 게임 모드로 즐기는 내부망 FPS. 같은 네트워크에서 최대 32명이 함께 플레이하고, 혼자서는 난이도를 골라 봇과 연습하세요.</p>
+      <a class="download" href="https://github.com/Nukcanon/nukcanon/releases/download/internal-n-crush-v0.3.0/InternalNCrush_Windows_v0.3.0.zip">Windows 64비트 다운로드 <span aria-hidden="true">↓</span></a>
+      <p class="download-note">v0.3.0 · ZIP 압축 해제 후 실행 · Python / Godot 편집기 설치 불필요</p>
+    </section>
+    <figure><img src="image/internal-n-crush-operators-v030.png" width="1280" height="720" alt="각기 다른 의상과 장비를 가진 메딕, 통제, 공병, 중화기, 정찰, 돌격 캐릭터"><figcaption>0.3.0의 실제 병과 모델. 병과별 장비와 관절 애니메이션을 적용했습니다.</figcaption></figure>
+    <div class="details">
+      <section class="detail"><h2>시작하기</h2><ol><li>ZIP을 모두 압축 해제합니다.</li><li><strong>InternalNCrush.exe</strong>를 실행합니다. pck 파일도 같은 폴더에 두세요.</li><li>한 명이 방을 만들고, 다른 사람은 방 검색 또는 IP 입력으로 접속합니다.</li><li>장비를 고른 뒤 방장이 시작합니다.</li></ol></section>
+      <section class="detail"><h2>목표에 맞춰 플레이</h2><p>팀 데스매치 · 개인전 · 제한 부활 · 거점 점령 · 설치/해체</p><p>병과, 스킬 ON/OFF, 무한 공격 탄약, 중간 참가, 다음 경기 팀 재편성을 방장이 설정합니다.</p></section>
+      <section class="detail"><h2>봇과 연습하기</h2><p>봇 연습에서 <strong>하 · 중 · 상</strong> 난이도와 3/7/15/31봇, 모드와 맵을 선택합니다.</p><p>봇은 장애물을 우회하며 점령·설치·해체, 회복·수리와 장비 사용을 수행합니다. 체력과 탄약, 목표 상태에 따라 행동을 바꿉니다.</p></section>
     </div>
-  </header><main>
-<section class="game-hero"><div class="badge">WINDOWS · LOCAL NETWORK · PLAYABLE ALPHA</div><h1>Internal N Crush</h1><p>함께 지키고, 함께 돌파하세요.<br>6개 병과와 5가지 게임 모드로 즐기는 내부망 FPS. 방을 만들고 같은 네트워크의 친구들과 접속하세요.</p><a class="download" href="https://github.com/Nukcanon/nukcanon/releases/download/internal-n-crush-v0.2.0/InternalNCrush_Windows_v0.2.0.zip">Windows 64비트 다운로드 ↓</a><p class="small">v0.2.0 · 약 40MB · 압축 해제 후 실행 · Python / Godot 편집기 설치 불필요</p></section>
-<div class="details"><section class="detail"><h2>시작하기</h2><ol><li>ZIP을 모두 압축 해제합니다.</li><li><strong>InternalNCrush.exe</strong>를 실행합니다. pck 파일도 같은 폴더에 두세요.</li><li>한 명이 방을 만들고, 다른 사람은 방 검색 또는 IP 입력으로 접속합니다.</li><li>장비를 고른 뒤 방장이 시작합니다.</li></ol></section><section class="detail"><h2>전장을 선택하세요</h2><p>팀 데스매치 · 개인전 · 제한 부활 · 거점 점령 · 설치/해체</p><p>스킬 ON/OFF, 병과 사용, 무한 공격 탄약, 중간 참가, 다음 경기 팀 재편성을 설정할 수 있습니다.</p></section><section class="detail"><h2>팀의 역할을 고르세요</h2><p>돌격 · 정찰 · 중화기 · 공병 · 통제 · 메딕</p><p>공병 포탑과 엄폐물, 의료 무기, 연막·섬광 등 장비를 활용하세요. 모든 공격 무기는 정조준할 수 있습니다.</p></section></div>
-<section class="detail" style="margin-top:20px"><h2>기본 조작</h2><p class="controls">WASD 이동 · Shift 달리기 · Ctrl 앉기 · Space 점프<br>왼쪽 클릭 발사 · 오른쪽 클릭 정조준 · R 재장전 · 1 주무기 · 2 보조무기<br>3 가젯 · 4 추가 가젯 · 선택 후 클릭으로 사용<br>F 스킬 · Q 의료 회복탄 · G 가젯 즉시 사용<br>E 상호작용 · B 장비 선택 · Tab 점수판 · Esc 메뉴</p><p>설정에서 일반 마우스 감도와 정조준 감도를 따로 조절하고 저장할 수 있습니다. 화면 오른쪽 위에 FPS와 핑이 표시됩니다.</p></section>
-<section class="detail" style="margin-top:20px"><h2>현재 버전 안내</h2><p>전투 중 병과·장비 변경은 다음 부활에 적용됩니다. 일반 모드는 장비 선택이 무료이며, 크레딧은 설치/해체 모드 구매 시간에 사용합니다. 장비 창에 비용과 효과를 표시합니다.</p><p>0.2.0은 부활 후 시점·사격, 정조준 가림과 장비 선택을 개선한 버전입니다. 단발·연발·3점사, 자동 재장전, 새 무기·손 모델과 동작, 더 빠른 이동을 적용했습니다. 규칙·회귀 검사 86개와 별도 서버/클라이언트의 부활 후 사격, 32개 동시 접속을 확인했습니다. 실제 Windows 여러 대의 LAN 및 내장그래픽 성능 검증은 아직 필요합니다.</p><p>게임은 다운로드 후 외부 인터넷 없이 실행됩니다. 내부망에서 PC 간 통신이 허용되어야 하며, 방화벽은 UDP 27888·27889를 사용합니다.</p><p><a href="https://github.com/Nukcanon/nukcanon/tree/main/games/relaystrike">소스와 상세 설명서</a> · <a href="https://github.com/Nukcanon/nukcanon/releases/tag/internal-n-crush-v0.2.0">배포 기록</a></p></section></main><script src="css/patch.js"></script></body></html>
+    <section class="detail wide"><h2>이번 버전에서 달라진 점</h2><p>기본 체력은 100, 기본 방어구는 0입니다. 6개 병과 모델과 27종 장비, 걷기·달리기·앉기·재장전·피격 동작을 추가하고 창고 통로와 항구 엄폐물을 배치했습니다.</p><p>이동 속도와 연사에 따라 정확도가 떨어지고, 멈추거나 정조준하면 회복됩니다. 연발 무기는 초반 수직 상승 뒤 좌우로 뻗는 자체 T자 반동을 사용하며 십자선은 실제 탄 퍼짐과 연동됩니다.</p><p>병과·장비 변경은 다음 부활에 적용됩니다. 일반 모드는 장비 선택이 무료이고, 크레딧은 설치/해체 모드 구매 시간에 사용합니다.</p></section>
+    <section class="detail wide"><h2>기본 조작</h2><p class="controls">WASD 이동 · Shift 달리기 · Ctrl 앉기 · Space 점프<br>왼쪽 클릭 발사 · 오른쪽 클릭 정조준 · R 재장전 · 1 주무기 · 2 보조무기<br>3 가젯 · 4 추가 가젯 · 선택 후 클릭으로 사용<br>F 스킬 · Q 의료 회복탄 · G 가젯 즉시 사용<br>E 상호작용 · B 장비 선택 · Tab 점수판 · Esc 메뉴</p><p>일반 감도와 정조준 감도를 따로 조절할 수 있습니다. 화면 오른쪽 위에 FPS와 핑이 표시됩니다.</p></section>
+    <section class="detail wide"><h2>실행 환경과 검증</h2><p>다운로드 후 외부 인터넷 없이 실행됩니다. 내부망에서 PC 간 통신이 허용되어야 하며 UDP 27888·27889를 사용합니다. 모든 참가자는 같은 버전으로 실행하세요.</p><p>규칙·회귀·AI·조준·목표 수행 검사 130개와 별도 ENet 서버/클라이언트의 부활 후 사격, 32개 동시 접속을 확인했습니다. 실제 Windows 여러 대의 LAN과 특정 내장그래픽 성능은 아직 확인이 필요합니다. 그래픽·연출과 봇 팀 전술은 계속 다듬는 개발 버전입니다.</p><p><a href="https://github.com/Nukcanon/nukcanon/tree/main/games/relaystrike">소스와 상세 설명서</a> · <a href="https://github.com/Nukcanon/nukcanon/releases/tag/internal-n-crush-v0.3.0">배포 기록</a></p></section>
+  </main>
+  <footer class="site-footer"><p><strong>Nukcanon</strong><span aria-hidden="true">·</span> Maker project archive</p></footer>
+  <script src="css/patch.js"></script>
+</body>
+</html>
