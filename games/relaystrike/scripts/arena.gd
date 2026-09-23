@@ -12,6 +12,7 @@ var obstacles=[]
 var mats={}
 var map_index=0
 var indoors=false
+var bounds=Vector2(100,90)
 var building=false
 var architecture:Node3D
 var chunk_count=0
@@ -89,12 +90,12 @@ func tree(pos:Vector3):
 	box(pos+Vector3(0,2.1,0),Vector3(.7,4.2,.7),Color("897759"))
 	M.sphere(architecture,pos+Vector3(0,5.5,0),Vector3(5.8,5.8,5.8),Color("789b79"));M.sphere(architecture,pos+Vector3(-1.7,4.7,.7),Vector3(3.4,3.4,3.4),Color("8fa782"))
 func build(which:int):
-	map_index=which;indoors=which in [2,3];has_water=which in [0,5];building=true;architecture=Node3D.new();architecture.name="Architecture";add_child(architecture)
-	box(Vector3(0,-.5,0),Vector3(200,1,180),Color("b9b5a5") if has_water else Color("c5b69a"))
-	for x in [-100,100]:box(Vector3(x,1.6,0),Vector3(2,3.2,182),Color("98a7a4"))
-	for z in [-90,90]:box(Vector3(0,1.6,z),Vector3(202,3.2,2),Color("98a7a4"))
-	for x in [-100,100]:detail(Vector3(x,3.3,0),Vector3(2.2,.18,182),Color("e0d8be"))
-	for z in [-90,90]:detail(Vector3(0,3.3,z),Vector3(202,.18,2.2),Color("e0d8be"))
+	map_index=which;indoors=which in [2,3,6,8,11,14,15];has_water=which in [0,5];bounds=MapLayouts.extent(which);building=true;architecture=Node3D.new();architecture.name="Architecture";add_child(architecture)
+	box(Vector3(0,-.5,0),Vector3(bounds.x*2,1,bounds.y*2),Color("b9b5a5") if has_water else Color("c5b69a"))
+	for x in [-bounds.x,bounds.x]:box(Vector3(x,1.6,0),Vector3(2,3.2,bounds.y*2+2),Color("98a7a4"))
+	for z in [-bounds.y,bounds.y]:box(Vector3(0,1.6,z),Vector3(bounds.x*2+2,3.2,2),Color("98a7a4"))
+	for x in [-bounds.x,bounds.x]:detail(Vector3(x,3.3,0),Vector3(2.2,.18,bounds.y*2+2),Color("e0d8be"))
+	for z in [-bounds.y,bounds.y]:detail(Vector3(0,3.3,z),Vector3(bounds.x*2+2,.18,2.2),Color("e0d8be"))
 	if which<2:
 		# Broad navigation lanes, traversable warehouse passages, and readable cover heights.
 		for x in [-44,0,44]:detail(Vector3(x,.009,0),Vector3(22,.015,172),Color("a2acaa"))
@@ -129,7 +130,8 @@ func build(which:int):
 			for z in [-35,35]:detail(Vector3(0,.07,z),Vector3(20,.14,2.2),Color("849e9f"))
 		else:
 			for z in [-24,24]:container_box(Vector3(0,0,z),Color("a48668"),11.)
-	else:MapLayouts.build(self,which)
+	elif which<6:MapLayouts.build(self,which)
+	else:MapLayouts.build_sized(self,which)
 	for i in range(zones.size()):
 		var pos=zones[i]
 		for x in [-6,6]:detail(pos+Vector3(x,.025,0),Vector3(.16,.025,12),Color("e3bf68"))
@@ -137,13 +139,14 @@ func build(which:int):
 		text3d(["A","C","B"][i],pos+Vector3(0,3.4,0),Color("f5e0a1"),65)
 		if i!=1:
 			box(pos+Vector3(-5,.45,-5),Vector3(1.2,.9,1.2),Color("486773"));detail(pos+Vector3(-5,.92,-5),Vector3(.9,.035,.8),Color("78b0b2"))
-	for pos in [Vector3(-30,.3,0),Vector3(30,.3,0),Vector3(0,.3,-49),Vector3(0,.3,49)]:
+	var supply_positions=[Vector3(-30,.3,0),Vector3(30,.3,0),Vector3(0,.3,-49),Vector3(0,.3,49)] if which<6 else [Vector3(-bounds.x*.55,.3,0),Vector3(bounds.x*.55,.3,0),Vector3(0,.3,-bounds.y*.52),Vector3(0,.3,bounds.y*.52)]
+	for pos in supply_positions:
 		var n=Node3D.new();add_child(n);n.position=pos
 		M.box(n,Vector3.ZERO,Vector3(.9,.5,.65),Color("455f56"));M.box(n,Vector3(0,.265,0),Vector3(.96,.05,.7),Color("798e6c"))
 		for x in [-.31,.31]:M.box(n,Vector3(x,0,-.334),Vector3(.07,.3,.03),Color("d2ba76"))
 		M.merge_children(n);var label=text3d("AMMO",Vector3(0,.6,0),Color("e1d6a3"),21,n);label.visibility_range_end=20
 		supplies.append({"pos":pos,"node":n,"ready":0.})
-	MapLayouts.finish_detail(self,which)
+	if which<6:MapLayouts.finish_detail(self,which)
 	building=false;batch_architecture();apply_surface_detail()
 	var environment=WorldEnvironment.new();var e=Environment.new();e.background_mode=Environment.BG_SKY
 	var sky=Sky.new();var sky_material=ProceduralSkyMaterial.new();sky_material.sky_top_color=Color("76a4c0");sky_material.sky_horizon_color=Color("ced9d6");sky_material.ground_horizon_color=Color("c0c4b6");sky_material.ground_bottom_color=Color("86947f");sky.sky_material=sky_material;e.sky=sky
@@ -164,7 +167,7 @@ func gather_meshes(node:Node,out:Array):
 		if child is MeshInstance3D:out.append(child)
 		else:gather_meshes(child,out)
 func point_clear(pos:Vector3) -> bool:
-	if absf(pos.x)>94 or absf(pos.z)>84:return false
+	if absf(pos.x)>bounds.x-6 or absf(pos.z)>bounds.y-6:return false
 	for rect in obstacles:
 		if rect.grow(.2).has_point(Vector2(pos.x,pos.z)):return false
 	return true
@@ -173,9 +176,12 @@ func spawn_candidates(team:int,roaming:bool) -> Array:
 	for pos in (ffa_spawns if roaming else spawn_points[team]):
 		if point_clear(pos):out.append(pos)
 	for i in range(48):
-		var pos=Vector3(randf_range(-88,88),.12,randf_range(-82,82) if roaming else randf_range(-83,-68) if team==0 else randf_range(68,83))
+		var margin=12. if map_index<6 else 7.
+		var z=randf_range(-bounds.y+8,bounds.y-8) if roaming else randf_range(-bounds.y+7,-bounds.y+22) if team==0 else randf_range(bounds.y-22,bounds.y-7)
+		if map_index>=6 and not roaming:z=(-1 if team==0 else 1)*randf_range(bounds.y-10,bounds.y-7)
+		var pos=Vector3(randf_range(-bounds.x+margin,bounds.x-margin),.12,z)
 		if point_clear(pos) and not wading(pos):out.append(pos)
-	if out.is_empty():out.append(Vector3(0,.12,-80 if team==0 else 80))
+	if out.is_empty():out.append(Vector3(0,.12,(-1 if team==0 else 1)*(bounds.y-10)))
 	return out
 func make_water():
 	var water=box(Vector3(0,.31,0),Vector3(18,.6,66),Color(.18,.52,.59,.50),false)

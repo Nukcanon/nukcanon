@@ -57,8 +57,10 @@ var team_columns:HBoxContainer
 var team_signature=""
 var scoreboard:MatchScoreboard
 var kill_feed:KillFeed
+var damage_indicator:DamageIndicator
 func _ready():
 	root=Control.new();root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);root.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(root)
+	damage_indicator=DamageIndicator.new();damage_indicator.game=game;root.add_child(damage_indicator)
 	theme=Theme.new();theme.default_font_size=20
 	if ResourceLoader.exists("res://assets/Korean.ttf"):
 		var font=FontVariation.new();font.base_font=load("res://assets/Korean.ttf");font.variation_opentype={TextServerManager.get_primary_interface().name_to_tag("wght"):650.0};font.variation_embolden=.2;theme.default_font=font
@@ -116,7 +118,7 @@ func menu():
 	var shade=ColorRect.new();shade.color=Color(.015,.04,.065,.58);shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);background.add_child(shade)
 	var brand=Label.new();brand.text="NUKCANON  /  TACTICAL LAN FPS";brand.position=Vector2(68,102);brand.add_theme_font_size_override("font_size",19);brand.modulate=Color("7be4cd");background.add_child(brand)
 	var title=Label.new();title.text="INTERNAL\nN CRUSH";title.position=Vector2(62,166);title.add_theme_font_size_override("font_size",72);background.add_child(title)
-	var intro=Label.new();intro.text="함께 짜는 전술, 맞붙는 화력.\n32인 LAN 전투 · 6개 병과 · 6개 전장";intro.position=Vector2(68,400);intro.add_theme_font_size_override("font_size",22);intro.modulate=Color("d6e5ed");background.add_child(intro)
+	var intro=Label.new();intro.text="함께 짜는 전술, 맞붙는 화력.\n32인 LAN 전투 · 6개 병과 · 19개 전장";intro.position=Vector2(68,400);intro.add_theme_font_size_override("font_size",22);intro.modulate=Color("d6e5ed");background.add_child(intro)
 	version_box=VBoxContainer.new();version_box.position=Vector2(68,545);version_box.custom_minimum_size.x=560;background.add_child(version_box)
 	panel=PanelContainer.new();panel.position=Vector2(748,38);panel.custom_minimum_size=Vector2(456,0);root.add_child(panel)
 	stack=VBoxContainer.new();stack.add_theme_constant_override("separation",9);panel.add_child(stack)
@@ -142,9 +144,9 @@ func practice_menu():
 	make_panel("봇 연습")
 	game.options.bots=maxi(3,int(game.options.bots))
 	option("난이도",["하 · 반응과 조준을 완화","중 · 목표와 지원 역할 수행","상 · 빠른 반응, 사격·후퇴 판단 강화"],game.options.get("bot_difficulty",1),func(i):game.options.bot_difficulty=i)
-	option("봇 인원",["3명","7명","15명","31명"],maxi(0,[3,7,15,31].find(game.options.bots)),func(i):game.options.bots=[3,7,15,31][i])
+	option("봇 인원",["3명","5명","7명","15명","31명"],maxi(0,[3,5,7,15,31].find(game.options.bots)),func(i):game.options.bots=[3,5,7,15,31][i])
 	option("게임 모드",Rules.MODES,game.options.mode,func(i):game.options.mode=i)
-	option("맵",Rules.MAPS,game.options.map,func(i):game.options.map=i)
+	map_selector()
 	label("장애물 우회 · 목표 수행 · 회복/수리 · 가젯/스킬 사용\n체력, 탄약, 최근 교전 상황에 따라 행동을 바꿉니다.",16)
 	button("연습 시작",func():game.options.max_players=32;game.host_game();game.start_match())
 	button("돌아가기",menu)
@@ -162,11 +164,11 @@ func host_settings():
 	edit("방 이름",game.options.room,func(t):game.options.room=t.left(40))
 	edit("비밀번호 (선택)",str(game.options.get("password","")),func(t):game.options.password=t,true)
 	option("게임 모드",Rules.MODES,game.options.mode,func(i):game.options.mode=i)
-	option("맵",Rules.MAPS,game.options.map,func(i):game.options.map=i)
+	map_selector()
 	option("경기 시간",["5분","10분","15분","20분"],[5,10,15,20].find(game.options.minutes),func(i):game.options.minutes=[5,10,15,20][i])
 	option("목표 점수",["30","60","100","200"],[30,60,100,200].find(game.options.target),func(i):game.options.target=[30,60,100,200][i])
 	stack=groups[1]
-	option("최대 인원",["8","16","24","32"],[8,16,24,32].find(game.options.max_players),func(i):game.options.max_players=[8,16,24,32][i])
+	option("최대 인원",["6","8","16","24","32"],[6,8,16,24,32].find(game.options.max_players),func(i):game.options.max_players=[6,8,16,24,32][i])
 	option("진행 중 참가",["금지","관전만","참가 허용 · 폭탄은 다음 라운드"],game.options.join,func(i):game.options.join=i)
 	option("다음 경기 팀",["현재 팀 유지","무작위","기록으로 균형 편성"],game.options.next_teams,func(i):game.options.next_teams=i)
 	label("입장할 때 인원에 맞춰 자동 배치합니다.\n대기실에서는 각자 팀을 고르고 방장은 모든 참가자를 이동시킬 수 있습니다.\n경기 중에는 방장만 팀을 변경할 수 있습니다.",16)
@@ -181,7 +183,7 @@ func host_settings():
 	check("체력 자동 회복",game.options.autoheal,func(v):game.options.autoheal=v)
 	label("마지막 사격·피격 10초 후 초당 1 HP 회복. 부활 횟수와 별개입니다.",17)
 	stack=groups[3]
-	option("봇 인원",["없음","3명","7명","15명","31명"],maxi(0,[0,3,7,15,31].find(game.options.bots)),func(i):game.options.bots=[0,3,7,15,31][i])
+	option("봇 인원",["없음","3명","5명","7명","15명","31명"],maxi(0,[0,3,5,7,15,31].find(game.options.bots)),func(i):game.options.bots=[0,3,5,7,15,31][i])
 	option("봇 난이도",["하 · 느린 반응","중 · 균형","상 · 빠른 판단"],game.options.get("bot_difficulty",1),func(i):game.options.bot_difficulty=i)
 	label("봇도 참가 인원에 포함됩니다.\n선택 인원이 방 정원을 넘으면 정원까지 추가합니다.",16)
 	stack=outer;var actions=HBoxContainer.new();actions.add_theme_constant_override("separation",12);stack.add_child(actions);button("이 설정으로 방 만들기",func():game.host_game(),actions);button("뒤로",menu,actions);pin_actions(actions);notice_label=label("",14)
@@ -499,3 +501,20 @@ func refresh():
 	elif Time.get_ticks_msec()>notice_until:banner.text=""
 	scoreboard.visible=Input.is_action_pressed("score") or game.phase=="result"
 	if scoreboard.visible:scoreboard.refresh_scores()
+
+func map_selector():
+	var counts=[6,8,16,32];var selected=Rules.MAP_PLAYERS[clampi(int(game.options.map),0,Rules.MAPS.size()-1)]
+	label("맵 권장 인원",18)
+	var size_choice=OptionButton.new();size_choice.custom_minimum_size.y=40;stack.add_child(size_choice)
+	for count in counts:size_choice.add_item("%d인용 · %d개 맵"%[count,Rules.maps_for_size(count).size()])
+	size_choice.select(counts.find(selected))
+	var map_choice=OptionButton.new();map_choice.custom_minimum_size.y=42;stack.add_child(map_choice)
+	var populate=func(count):
+		map_choice.clear()
+		for index in Rules.maps_for_size(count):map_choice.add_item(Rules.MAPS[index],index)
+		for i in range(map_choice.item_count):
+			if map_choice.get_item_id(i)==int(game.options.map):map_choice.select(i)
+	populate.call(selected)
+	size_choice.item_selected.connect(func(i):game.options.map=Rules.maps_for_size(counts[i])[0];populate.call(counts[i]))
+	map_choice.item_selected.connect(func(i):game.options.map=map_choice.get_item_id(i))
+	label("권장 인원에 맞춘 전장 크기입니다. 참가 인원은 별도로 설정합니다.",15)

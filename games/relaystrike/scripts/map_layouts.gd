@@ -126,3 +126,77 @@ static func finish_detail(a:Node,which:int):
 				for x in [-7,-3,3,7]:a.detail(Vector3(x,.615,z),Vector3(.045,.02,4.5),Color("788e90"))
 		for z in range(-74,75,8):
 			for x in [-78,78]:a.detail(Vector3(x,.024,z),Vector3(.14,.02,3),Color("e1d7ab"))
+
+static func extent(which:int) -> Vector2:
+	if which<6:return Vector2(100,90)
+	if which==6:return Vector2(72,64)
+	return Vector2(26,30) if which<13 else Vector2(36,42)
+
+# Each row is a distinct layout: normalized x/z center and width/depth.
+# Coordinates reserve a central crossing, side routes and objective pockets.
+const SIZED_LAYOUTS=[
+	[[.35,.55,.32,.10],[-.35,-.55,.32,.10],[-.68,.30,.10,.35],[.68,-.30,.10,.35],[.23,-.30,.12,.22],[-.23,.30,.12,.22]],
+	[[.48,.42,.28,.12],[-.48,-.42,.28,.12],[.55,-.45,.13,.24],[-.55,.45,.13,.24]],
+	[[-.43,-.44,.38,.12],[.43,.44,.38,.12],[-.60,.3,.13,.25],[.60,-.3,.13,.25]],
+	[[-.4,-.45,.46,.10],[.4,-.05,.46,.10],[-.4,.40,.46,.10],[.6,.48,.12,.13]],
+	[[-.57,-.50,.15,.17],[.57,.50,.15,.17],[-.57,.10,.15,.17],[.57,-.10,.15,.17],[-.12,.48,.14,.15],[.12,-.48,.14,.15]],
+	[[-.53,-.34,.18,.38],[.53,.34,.18,.38],[.45,-.53,.3,.10],[-.45,.53,.3,.10]],
+	[[-.35,-.42,.18,.14],[.35,.42,.18,.14],[-.60,.25,.14,.16],[.60,-.25,.14,.16]],
+	[[-.55,-.45,.40,.11],[.4,-.12,.35,.11],[-.4,.12,.35,.11],[.55,.45,.40,.11],[.63,-.52,.12,.16],[-.63,.52,.12,.16]],
+	[[-.53,-.40,.12,.34],[.53,.40,.12,.34],[-.23,-.54,.35,.1],[.23,.54,.35,.1],[-.64,.4,.20,.12],[.64,-.4,.20,.12]],
+	[[-.50,-.45,.27,.18],[.50,.45,.27,.18],[-.60,.35,.18,.2],[.60,-.35,.18,.2],[.15,-.5,.10,.28],[-.15,.5,.10,.28]],
+	[[-.54,-.45,.32,.12],[.54,.45,.32,.12],[-.56,.40,.15,.20],[.56,-.40,.15,.20],[.30,.04,.10,.20],[-.30,-.04,.10,.20]],
+	[[-.56,-.44,.18,.21],[.56,.44,.18,.21],[-.56,.44,.18,.21],[.56,-.44,.18,.21],[-.25,-.48,.14,.12],[.25,.48,.14,.12]],
+	[[-.50,-.48,.32,.23],[.50,.48,.32,.23],[-.64,.30,.12,.28],[.64,-.30,.12,.28],[-.22,.35,.12,.15],[.22,-.35,.12,.15]]
+]
+static func build_sized(a:Node,which:int):
+	var b=a.bounds;var theme=(which-6)%6
+	var walls=[Color("c2c9c8"),Color("cdbb9a"),Color("aabec7"),Color("b1b7a2"),Color("c8bbac"),Color("c1d0cb")]
+	var accent=[Color("63899a"),Color("b19762"),Color("789794"),Color("82926c"),Color("aa8866"),Color("698f9a")]
+	a.sites=[Vector3(-b.x*.44,0,-b.y*.16),Vector3(b.x*.44,0,b.y*.16)]
+	a.zones=[a.sites[0],Vector3.ZERO,a.sites[1]]
+	for x in [-b.x*.72,0,b.x*.72]:a.detail(Vector3(x,.016,0),Vector3(3,.025,b.y*2-5),walls[theme].darkened(.12))
+	for z in [-b.y*.66,0,b.y*.66]:a.detail(Vector3(0,.018,z),Vector3(b.x*2-4,.027,3),walls[theme].darkened(.12))
+	var index=0
+	for row in SIZED_LAYOUTS[which-6]:
+		var pos=Vector3(row[0]*b.x,0,row[1]*b.y);var size=Vector3(row[2]*b.x,1.6 if index%3==0 else 3.2,row[3]*b.y)
+		var too_close=false
+		for objective in a.zones:
+			if Rect2(Vector2(pos.x-size.x*.5,pos.z-size.z*.5),Vector2(size.x,size.z)).grow(3.5).has_point(Vector2(objective.x,objective.z)):too_close=true
+		if too_close:pos.z+=signf(pos.z if pos.z!=0 else 1.)*4.
+		if theme in [0,2]:
+			a.box(pos+Vector3.UP*size.y*.5,size,accent[theme]);a.detail(pos+Vector3(0,size.y+.10,0),Vector3(size.x+.15,.20,size.z+.15),walls[theme])
+			for x in [-size.x*.35,size.x*.35]:a.detail(pos+Vector3(x,size.y*.5,-size.z*.5-.025),Vector3(.08,size.y-.2,.07),Color("e0dcc7"))
+		elif theme==1 or theme==4:a.crate(pos,size)
+		else:
+			a.box(pos+Vector3.UP*size.y*.5,size,accent[theme]);a.detail(pos+Vector3(0,size.y+.12,0),Vector3(size.x*.92,.22,size.z*.92),Color("99ae83") if theme==3 else walls[theme])
+		index+=1
+	# Distinct center landmarks preserve the crossing underneath.
+	if which in [6,8,14,15]:
+		for side in [-1,1]:
+			a.box(Vector3(side*b.x*.78,3.5,0),Vector3(1.,7.,1.),accent[theme]);a.detail(Vector3(side*b.x*.40,7.2,0),Vector3(b.x*.8,.45,1.2),accent[theme])
+	elif which==12:
+		for side in [-1,1]:a.box(Vector3(side*5,.5,0),Vector3(1.5,1.,4.5),Color("b2c9ce"))
+	elif which==10:
+		for x in [-b.x*.78,b.x*.78]:
+			for z in [-b.y*.42,b.y*.42]:a.tree(Vector3(x,0,z))
+	elif which==16:
+		for side in [-1,1]:a.pipe(Vector3(side*b.x*.65,1.1,side*b.y*.55),.35,2.2,Color("91a8ad"))
+	if a.indoors:
+		for x in [-b.x*.55,b.x*.55]:a.detail(Vector3(x,7.8,0),Vector3(b.x*.8,.4,b.y*2),walls[theme].darkened(.15))
+		for z in [-b.y*.6,0,b.y*.6]:a.detail(Vector3(0,7.8,z),Vector3(b.x*2,.45,.6),accent[theme])
+		for x in [-b.x*.58,b.x*.58]:
+			for z in [-b.y*.55,0,b.y*.55]:a.detail(Vector3(x,7.5,z),Vector3(3.5,.08,.45),Color("f1f4dd"))
+	else:
+		for side in [-1,1]:
+			a.detail(Vector3(side*(b.x+4),5,0),Vector3(5,10,b.y*.7),walls[theme]);a.detail(Vector3(0,6,side*(b.y+4)),Vector3(b.x*.75,12,5),walls[theme])
+	for team in [0,1]:
+		var side=-1 if team==0 else 1
+		for n in range(7):a.spawn_points[team].append(Vector3(lerpf(-b.x+8,b.x-8,n/6.),.12,side*(b.y-8)))
+		var color=Color("48cfff") if team==0 else Color("ffb149")
+		a.text3d("BLUE" if team==0 else "ORANGE",Vector3(0,3.8,side*(b.y-2)),color,42)
+		a.detail(Vector3(0,.03,side*(b.y-6)),Vector3(b.x*2-6,.04,.22),color)
+	for x in [-b.x*.72,0,b.x*.72]:
+		for z in [-b.y*.7,0,b.y*.7]:
+			var pos=Vector3(x,.12,z)
+			if a.point_clear(pos):a.ffa_spawns.append(pos)

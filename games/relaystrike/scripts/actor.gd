@@ -52,7 +52,14 @@ var recoil=0.0
 var hit_recoil=0.0
 var hit_side=0.0
 var old_visual_pos=Vector3.ZERO
+var gait=0.
+var net_gait=0.
+var motion_seed=0.
+var previous_yaw=0.
+var turn_sway=0.
+var shot_serial=0
 func _ready():
+	motion_seed=fposmod(float(pid)*2.39996,TAU)
 	collision_layer=2;collision_mask=1|4
 	shape=CollisionShape3D.new();var cap=CapsuleShape3D.new();cap.radius=.34;cap.height=1.8;shape.shape=cap;shape.position.y=.9;add_child(shape)
 	render_root=Node3D.new();add_child(render_root)
@@ -76,14 +83,17 @@ func set_team(t:int):
 	if role==shown_role and t==shown_team:return
 	shown_role=role;shown_team=t
 	if is_instance_valid(character):character.queue_free()
-	character=Character.new();render_root.add_child(character);character.build(role,t)
+	character=Character.new();render_root.add_child(character);character.build(role,t);character.motion_seed=motion_seed
 	shown_weapon=""
 
 func reset_view(yaw:float):
 	camera.top_level=false;camera.transform=Transform3D(Basis.IDENTITY,Vector3(0,1.62,0))
 	input_state.yaw=yaw;input_state.pitch=0.;input_state.crouch=false;input_state.sprint=false;input_state.fire=false;input_state.ads=false;input_state.x=0.;input_state.z=0.;input_state.jump=false
 	aim_yaw=yaw;aim_pitch=0.;rotation=Vector3(0,yaw,0);last_sprint=false;sprint_release=0.;old_visual_pos=global_position;spread_angle=.4;visual_spread=.4;seen_shot=-100.;recoil=0.;land_kick=0.
-	if local:camera.current=true
+	gait=0.;net_gait=0.;turn_sway=0.;previous_yaw=yaw
+	if local:
+		camera.current=true
+		if is_instance_valid(game.ui.damage_indicator):game.ui.damage_indicator.clear_hits()
 func eye() -> Vector3:return global_position+Vector3(0,1.05 if input_state.crouch else 1.62,0)
 func direction() -> Vector3:return Basis(Vector3.UP,aim_yaw)*Basis(Vector3.RIGHT,aim_pitch)*Vector3.FORWARD
 func muzzle_world() -> Vector3:
@@ -121,10 +131,13 @@ func simulate(dt:float,now:float,can_move:bool):
 	elif input_state.jump and not grounded_jump and can_move:velocity.y=6
 	grounded_jump=bool(input_state.jump)
 	was_grounded=is_on_floor()
+	var before=global_position
 	move_and_slide()
+	if is_on_floor():gait+=Vector2(global_position.x-before.x,global_position.z-before.z).length()/(2.*Rules.step_length(sprint,crouch))
 	if not was_grounded and is_on_floor():land_kick=.055
 	update_spread(dt,now)
-	global_position.x=clampf(global_position.x,-98,98);global_position.z=clampf(global_position.z,-88,88)
+	var bound=game.arena.bounds if is_instance_valid(game.arena) else Vector2(100,90)
+	global_position.x=clampf(global_position.x,-bound.x+2,bound.x-2);global_position.z=clampf(global_position.z,-bound.y+2,bound.y-2)
 	if global_position.y< -4:global_position.y=.2;velocity.y=0
 func update_spread(dt:float,now:float):
 	if not game.players.has(pid):return
@@ -144,16 +157,22 @@ func visual(dt:float,p:Dictionary,now:float):
 	var wid=p.primary if p.slot==0 else p.secondary
 	if shown_weapon!=wid:shown_weapon=wid;build_gun(wid)
 	var w=Catalog.get_weapon(wid);var age=now-float(p.get("shot_time",-100.))
-	if float(p.get("shot_time",-100.))>seen_shot:seen_shot=float(p.shot_time);recoil=1.
-	recoil=move_toward(recoil,0,dt*6);hit_recoil=move_toward(hit_recoil,0,dt*4);land_kick=lerpf(land_kick,0,1.-exp(-dt*12))
+	if float(p.get("shot_time",-100.))>seen_shot:show_shot(float(p.shot_time))
+	recoil=move_toward(recoil,0,dt*5.5);hit_recoil=move_toward(hit_recoil,0,dt*4);land_kick=lerpf(land_kick,0,1.-exp(-dt*12))
 	var speed=Vector2(velocity.x,velocity.z).length() if local or game.server else Vector2(net_velocity.x,net_velocity.z).length()
 	var moving_velocity=velocity if local or game.server else net_velocity
 	var grounded=is_on_floor() if local or game.server else net_grounded
 	var sprint=last_sprint if local or game.server else net_sprint
 	var progress=clampf((now-float(p.get("reload_started",0)))/maxf(.01,float(w.reload)),0,1) if p.reload>now else -1.
-	move_blend=lerpf(move_blend,minf(1,speed/7.4),1.-exp(-dt*9));bob+=dt*(14 if sprint else 9)*clampf(speed/7.4,.35,1.5)
-	character.update_pose(dt,moving_velocity,sprint,bool(input_state.crouch),grounded,aim_pitch,progress,recoil)
-	if is_instance_valid(world_weapon):world_weapon.visible=p.slot<2;world_weapon.animate_reload(progress,recoil,age)
+	move_blend=lerpf(move_blend,minf(1,speed/7.4),1.-exp(-dt*9))
+	if not local and not game.server and grounded:net_gait+=dt*speed/(2.*Rules.step_length(sprint,bool(input_state.crouch)))
+	var phase=gait if local or game.server else net_gait
+	bob=phase*TAU
+	var yaw_delta=wrapf(aim_yaw-previous_yaw,-PI,PI);previous_yaw=aim_yaw;turn_sway=lerpf(turn_sway,clampf(yaw_delta/maxf(dt,.001),-4,4),1.-exp(-dt*10))
+	character.update_pose(dt,moving_velocity,sprint,bool(input_state.crouch),grounded,aim_pitch,progress,recoil,phase,turn_sway)
+	if is_instance_valid(world_weapon):
+		world_weapon.visible=p.slot<2;world_weapon.animate_reload(progress,recoil,age)
+		world_weapon.position=Vector3(0,0,recoil*.055);world_weapon.rotation=Vector3(recoil*.12,0,sin(shot_serial*2.3)*recoil*.025)
 	if not local:
 		if not game.server:global_position=global_position.lerp(target_pos,minf(1,dt*14));rotation.y=lerp_angle(rotation.y,aim_yaw,minf(1,dt*15))
 		shape.shape.height=1.15 if input_state.crouch else 1.8;shape.position.y=shape.shape.height*.5
@@ -173,13 +192,22 @@ func visual(dt:float,p:Dictionary,now:float):
 	var base=Vector3(.255,-.255,-.46).lerp(Vector3(0,-.14,-.5),ads_blend)
 	var motion=move_blend*(1.-ads_blend*.93)
 	base.y+=sin(now*1.9)*.002*(1.-move_blend)*(1.-ads_blend)
-	base+=Vector3(cos(bob*.5)*.016,absf(sin(bob))*.015,0)*motion
-	var rotation_target=Vector3(recoil*.065,-.09 if sprint else 0.,-.08*motion*sin(bob*.5))
+	base+=Vector3(cos(bob)*.022,cos(bob*2)*.017,0)*motion
+	var rotation_target=Vector3(recoil*.16,-.09 if sprint else -turn_sway*.012,-.05*motion*sin(bob)+sin(shot_serial*2.3)*recoil*.025)
 	if sprint:base+=Vector3(.075,-.055,.055);rotation_target+=Vector3(-.2,.3,.23)
 	if reloading:
 		base+=Vector3(.035,.015,.085)*sin(progress*PI);rotation_target+=Vector3(.10,-.15,-.31)*sin(progress*PI)
 	var swap=clampf((float(p.get("switch_until",0))-now)/.32,0,1);base.y-=swap*.32;rotation_target.z-=swap*.3
-	base.z+=recoil*(.025 if w.slot==1 else .045);base.y-=land_kick*.6
+	base.x-=turn_sway*.004*(1.-ads_blend*.85)
+	base.z+=recoil*(.060 if w.slot==1 else .09);base.y-=land_kick*.6
 	gun.position=gun.position.lerp(base,1.-exp(-dt*20));gun.rotation=gun.rotation.lerp(rotation_target,1.-exp(-dt*22))
 	view_weapon.visible=p.slot<2 and not scoped;item_model.visible=p.slot>=2;view_weapon.animate_reload(progress,recoil,age)
 	visual_spread=lerpf(visual_spread,spread_angle,1.-exp(-dt*20))
+
+func show_shot(at:float) -> bool:
+	if at<=seen_shot:return false
+	seen_shot=at;shot_serial+=1;recoil=minf(1.45,recoil*.35+1.)
+	if local and is_instance_valid(view_weapon) and is_instance_valid(game.combat_fx) and game.players.has(pid) and game.players[pid].slot<2:
+		var source=gun.to_global(Vector3(.09,.01,-.16))
+		game.combat_fx.eject_case(source,camera.global_basis.x,camera.global_basis.y,global_position.y,shot_serial+pid)
+	return true

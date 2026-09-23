@@ -3,6 +3,7 @@ var g:Node
 var started=0
 var saw_dead=false
 var saw_feed=false
+var saw_damage=false
 var queued=false
 var ticks=0
 var done=false
@@ -30,6 +31,7 @@ func drive():
 	for event in g.kill_events:
 		if int(event.victim)==g.local_id and event.weapon=="world" and str(event.victim_name).begins_with("PROBE #"):saw_feed=true
 	var p=g.players[g.local_id];var a=g.actors[g.local_id]
+	if not g.ui.damage_indicator.hits.is_empty():saw_damage=true
 	if not queued and p.alive:
 		g.command("loadout",{"role":3,"primary":"e1","armor":2,"gadget":1,"repair":true});queued=true
 	if queued and not p.alive:
@@ -46,7 +48,8 @@ func drive():
 			# The original regression detached the camera horizontally and moved the observed actor.
 			print("PROBE_RESPAWN_SHOT primary=",p.primary," mag=",p.mag.e1," camera_xz=",horizontal," camera_y=",offset.y," repair=",p.secondary)
 			print("PROBE_KILL_FEED ",saw_feed)
-			done=true;finish_probe(0 if horizontal<.001 and absf(offset.y)<.07 and not a.camera.top_level and p.secondary=="repair" and saw_feed else 1)
+			print("PROBE_DAMAGE_FEEDBACK ",saw_damage)
+			done=true;finish_probe(0 if horizontal<.001 and absf(offset.y)<.07 and not a.camera.top_level and p.secondary=="repair" and saw_feed and saw_damage else 1)
 
 func finish_probe(code:int):
 	g.set_physics_process(false)

@@ -5,7 +5,7 @@ var transients=[]
 const M=preload("res://scripts/mesh_factory.gd")
 func clear():
 	for child in get_children():child.queue_free()
-	field_nodes.clear();transients.clear()
+	field_nodes.clear();transients.clear();casings.clear();scuffs.clear()
 func group(pos:Vector3) -> Node3D:
 	while transients.size()>=96:
 		var old=transients.pop_front()
@@ -83,3 +83,43 @@ func throw_item(from:Vector3,to:Vector3):
 	var tween=node.create_tween();tween.tween_method(func(t):
 		if is_instance_valid(node):node.position=from.lerp(to,t)+Vector3.UP*sin(t*PI)*2.;node.rotation=Vector3(t*7,0,t*4),0.,1.,.35)
 	finish(node,.36)
+
+var casings:Array=[]
+var scuffs:Array=[]
+const MAX_CASINGS=36
+const MAX_SCUFFS=36
+func eject_case(origin:Vector3,right:Vector3,up:Vector3,ground_y:float,seed_value:int=0):
+	while casings.size()>=MAX_CASINGS:
+		var old=casings.pop_front()
+		if is_instance_valid(old.node):old.node.queue_free()
+	var node=Node3D.new();add_child(node);node.position=origin
+	var mesh=M.cylinder(node,Vector3.ZERO,.014,.064,Color("d8b267"),Vector3(0,0,PI/2),.012,6);mesh.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	var variation=sin(float(seed_value)*2.31)
+	casings.append({"node":node,"velocity":right*(1.55+variation*.22)+up*(1.15+variation*.12),"floor":ground_y+.025,"age":0.,"bounced":false,"spin":Vector3(8,12,9+variation*3)})
+func _process(dt:float):
+	for item in casings.duplicate():
+		if not is_instance_valid(item.node):casings.erase(item);continue
+		item.age+=dt
+		if item.age>1.8:item.node.queue_free();casings.erase(item);continue
+		item.velocity.y-=7.5*dt;item.node.position+=item.velocity*dt;item.node.rotation+=item.spin*dt
+		if item.node.position.y<float(item.floor):
+			item.node.position.y=item.floor
+			if not item.bounced:item.velocity=Vector3(item.velocity.x*.35,absf(item.velocity.y)*.28,item.velocity.z*.35);item.bounced=true;item.spin*=.2
+			else:item.velocity=Vector3.ZERO;item.spin=Vector3.ZERO
+		item.node.scale=Vector3.ONE*clampf((1.8-float(item.age))/.35,0,1)
+func armor_impact(pos:Vector3,push:Vector3,color:Color):
+	var node=group(pos);var t=node.create_tween().set_parallel(true)
+	for i in range(6):
+		var spark=M.box(node,Vector3.ZERO,Vector3(.025,.025,.09),color)
+		spark.material_override=glow(color);spark.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		var direction=push*.22+Vector3(randf_range(-.35,.35),randf_range(.08,.4),randf_range(-.35,.35))
+		t.tween_property(spark,"position",direction,.23).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT);t.tween_property(spark,"scale",Vector3.ZERO,.25)
+	finish(node,.27)
+func scuff(pos:Vector3):
+	# Neutral impact dust, never biological material. A small quad works in Compatibility.
+	while scuffs.size()>=MAX_SCUFFS:
+		var old=scuffs.pop_front()
+		if is_instance_valid(old):old.queue_free()
+	var node=MeshInstance3D.new();var plane=PlaneMesh.new();plane.size=Vector2(.26,.19);node.mesh=plane;node.position=pos;node.rotation.y=randf()*TAU;node.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	node.material_override=glow(Color(.22,.25,.25,.28));add_child(node);scuffs.append(node)
+	var fade=node.create_tween();fade.tween_interval(3.5);fade.tween_property(node.material_override,"albedo_color:a",0.,1.);fade.tween_callback(node.queue_free)

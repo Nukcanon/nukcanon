@@ -40,6 +40,7 @@ jobs:
           /tmp/godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path games/relaystrike --script res://tests/test_v04.gd
           /tmp/godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path games/relaystrike --script res://tests/test_v05.gd
           /tmp/godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path games/relaystrike --script res://tests/test_kill_feed.gd
+          /tmp/godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path games/relaystrike --script res://tests/test_v06.gd
           GODOT=/tmp/godot/Godot_v4.4.1-stable_linux.x86_64 python3 games/relaystrike/tests/run_network_probe.py
           GODOT=/tmp/godot/Godot_v4.4.1-stable_linux.x86_64 python3 games/relaystrike/tests/run_network_lifecycle.py
           GODOT=/tmp/godot/Godot_v4.4.1-stable_linux.x86_64 python3 games/relaystrike/tests/run_network_capacity.py
@@ -53,9 +54,9 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release view internal-n-crush-v0.5.0 >/dev/null 2>&1 || gh release create internal-n-crush-v0.5.0 --target "$GITHUB_SHA" --title "Internal N Crush 0.5.0 — playable alpha" --notes-file games/relaystrike/docs/RELEASE_NOTES.md --prerelease
-          gh release upload internal-n-crush-v0.5.0 out/InternalNCrush_Windows_v0.5.0.zip out/SHA256SUMS.txt --clobber
+          gh release view internal-n-crush-v0.6.0 >/dev/null 2>&1 || gh release create internal-n-crush-v0.6.0 --target "$GITHUB_SHA" --title "Internal N Crush 0.6.0 — playable alpha" --notes-file games/relaystrike/docs/RELEASE_NOTES.md --prerelease
+          gh release upload internal-n-crush-v0.6.0 out/InternalNCrush_Windows_v0.6.0.zip out/SHA256SUMS.txt --clobber
       - uses: actions/upload-artifact@v4
         with:
           name: InternalNCrush-Windows
-          path: out/InternalNCrush_Windows_v0.5.0.zip
+          path: out/InternalNCrush_Windows_v0.6.0.zip

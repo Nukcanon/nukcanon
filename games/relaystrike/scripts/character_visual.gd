@@ -21,6 +21,8 @@ var hit_time=0.
 var hit_sign=0.
 var shot=0.
 var airborne_time=0.
+var motion_seed=0.
+var motion_clock=0.
 func build(which:int,side:int):
 	role=which;team=side
 	var key=str(role)+"_"+str(team)
@@ -33,14 +35,16 @@ func build(which:int,side:int):
 	add_child(rig);hips=rig.get_node("Hips");chest=hips.get_node("Chest");head=chest.get_node("Head");right_arm=chest.get_node("RightArm");left_arm=chest.get_node("LeftArm");right_elbow=right_arm.get_node("Elbow");left_elbow=left_arm.get_node("Elbow");socket=chest.get_node("WeaponSocket");animator=rig.get_node("AnimationPlayer")
 	animator.play("idle")
 func react(direction:float):hit_time=.32;hit_sign=direction
-func update_pose(dt:float,move:Vector3,sprint:bool,crouch:bool,grounded:bool,pitch:float,reloading:float,kick:float):
+func update_pose(dt:float,move:Vector3,sprint:bool,crouch:bool,grounded:bool,pitch:float,reloading:float,kick:float,gait_phase:float=-1.,turn:float=0.):
 	var speed=Vector2(move.x,move.z).length();var next="idle"
 	if not grounded:next="jump" if move.y>0 else "fall"
 	elif crouch:next="crouch_walk" if speed>.25 else "crouch"
 	elif speed>.25:next="run" if sprint else "walk"
 	if next!=current_state:animator.play(next,.13);current_state=next
 	animator.speed_scale=clampf(speed/(10. if next=="run" else 3.1 if next=="crouch_walk" else 6.),.65,1.6) if next in ["walk","run","crouch_walk"] else 1.
-	animator.advance(dt)
+	motion_clock+=dt
+	if gait_phase>=0 and next in ["walk","run","crouch_walk"]:animator.seek(fposmod(gait_phase,1.)*animator.current_animation_length,true)
+	else:animator.advance(dt)
 	# Locomotion clips own legs and pelvis; upper-body overlays retain a steady grip.
 	var aiming=clampf(pitch,-.8,.8)
 	chest.rotation.x=lerpf(chest.rotation.x,-aiming*.45,1.-exp(-dt*18))
@@ -49,7 +53,7 @@ func update_pose(dt:float,move:Vector3,sprint:bool,crouch:bool,grounded:bool,pit
 	right_arm.rotation.x=lerpf(right_arm.rotation.x,.65+aiming*.55,1.-exp(-dt*18));left_arm.rotation.x=lerpf(left_arm.rotation.x,.96+aiming*.55,1.-exp(-dt*18))
 	right_elbow.rotation.x=.8;left_elbow.rotation.x=.55
 	if sprint and speed>.25:
-		var swing=sin(animator.current_animation_position/maxf(.01,animator.current_animation_length)*TAU)*.17
+		var swing=sin(animator.current_animation_position/maxf(.01,animator.current_animation_length)*TAU)*.24
 		right_arm.rotation.x=.35+swing;left_arm.rotation.x=.55-swing;socket.rotation.z=.2;socket.rotation.x=.25
 	else:socket.rotation.z=0
 	if reloading>=0:
@@ -58,12 +62,25 @@ func update_pose(dt:float,move:Vector3,sprint:bool,crouch:bool,grounded:bool,pit
 	hit_time=maxf(0,hit_time-dt);var hit=sin(hit_time/.32*PI)*.2
 	var strafe=to_local(global_position+move).x
 	chest.rotation.z=hit*hit_sign-clampf(strafe/11.,-.1,.1)*.4;chest.rotation.x+=hit*.45;head.rotation.x-=hit*.4;right_arm.rotation.x-=kick*.06
+	var phase=animator.current_animation_position/maxf(.01,animator.current_animation_length)*TAU
+	var movement=clampf(speed/7.4,0,1) if grounded else 0.
+	var breath=sin(motion_clock*(1.8+sin(motion_seed)*.12)+motion_seed)
+	var shift=sin(motion_clock*.63+motion_seed)*sin(motion_clock*.27+motion_seed*.7)
+	chest.rotation.y+=sin(phase)*movement*.055+shift*.012*(1.-movement)-turn*.018
+	chest.rotation.z+=sin(phase)*movement*(.055 if sprint else .03)
+	chest.rotation.x+=breath*.008*(1.-movement)
+	head.rotation.y-=sin(phase)*movement*.028+shift*.018*(1.-movement)
+	right_arm.rotation.z+=sin(phase)*movement*.045;left_arm.rotation.z-=sin(phase)*movement*.045
+	right_arm.position.y=.13+cos(phase)*movement*.016;left_arm.position.y=.13-cos(phase)*movement*.016
+	socket.rotation.y=-turn*.012+breath*.004*(1.-movement)
+	socket.rotation.z+=sin(phase)*movement*.025
+
 static func joint(parent:Node,name:String,pos:Vector3) -> Node3D:
 	var n=Node3D.new();n.name=name;n.position=pos;parent.add_child(n);return n
 static func make_rig(which:int,side:int) -> Node3D:
 	var root=Node3D.new();root.name=ROLE_NAMES[which]
-	var team_color=Color("1da9f2") if side==0 else Color("ff8833")
-	var cloth=Color("326f9b") if side==0 else Color("b95629")
+	var team_color=Color("17baff") if side==0 else Color("ff931f")
+	var cloth=Color("197dd4") if side==0 else Color("df7026")
 	var plate=Color("c9d2cd") if which==5 else Color("788b8e") if which==3 else team_color.darkened(.16)
 	var dark=Color("243844");var accent=ROLE_ACCENTS[which];var skin=Color("be987e")
 	var h=joint(root,"Hips",Vector3(0,.94,0));var torso=joint(h,"Chest",Vector3(0,.3,0))
@@ -72,7 +89,8 @@ static func make_rig(which:int,side:int) -> Node3D:
 	M.box(h,Vector3(0,.065,-.178),Vector3(.085,.055,.022),accent)
 	M.tapered(torso,Vector3(0,.015,0),Vector3(.52 if which!=2 else .61,.46,.31),cloth,.75)
 	M.tapered(torso,Vector3(0,.015,-.135),Vector3(.42,.36,.12),team_color,.87)
-	M.box(torso,Vector3(0,.158,-.21),Vector3(.21,.025,.024),accent)
+	M.box(torso,Vector3(0,.158,-.21),Vector3(.30,.035,.025),Color("d9f7ff") if side==0 else Color("fff0bc"))
+	M.box(torso,Vector3(0,.12,.19),Vector3(.36,.08,.045),team_color.lightened(.26))
 	for side_x in [-1,1]:
 		M.box(torso,Vector3(side_x*.188,.05,-.19),Vector3(.034,.33,.038),dark,Vector3(0,0,side_x*-.15))
 		var arm=joint(torso,"LeftArm" if side_x<0 else "RightArm",Vector3(side_x*.29,.13,0))

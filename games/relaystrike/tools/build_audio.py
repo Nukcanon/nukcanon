@@ -68,6 +68,8 @@ for variant in range(4):
  splash=highpass(lowpass(noise,3200),400)
  write('step_water_'+str(variant),mix(.49,(grass,.48,0),(step,.28,0),(splash,.42,.015)),gain=-8)
 metal=sample('impactMetal_light_0',1.2,.19);soft=sample('impactSoft_medium_000',1.4,.13);glass=sample('impactGlass_light_000',1.3,.2)
+write('hurt',mix(.28,(lowpass(sample('impactSoft_medium_000',.80,.25),1800),.75,0),(metal,.13,.018)),gain=-4)
+write('armor_hurt',mix(.25,(lowpass(metal,3200),.65,0),(soft,.3,.01)),gain=-5)
 write('hit',mix(.17,(metal,.45,0),(soft,.32,0)),'hit_volume',-5)
 write('confirm',mix(.32,(metal,.44,0),(glass,.26,.045)),'hit_volume',-4)
 write('ui',sample('ui_click_001',1.15,.12),'ui_volume',-10)

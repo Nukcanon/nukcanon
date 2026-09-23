@@ -16,6 +16,8 @@ func build(world:Node):
 	for x in range(100):
 		for y in range(90):
 			var id=Vector2i(x,y)
+			var world_point=point(id)
+			if absf(world_point.x)>arena.bounds.x-2 or absf(world_point.z)>arena.bounds.y-2:grid.set_point_solid(id);static_solid[id]=true
 			if not grid.is_point_solid(id):grid.set_point_weight_scale(id,1.3 if arena.wading(point(id)) else 1.)
 func cell(pos:Vector3) -> Vector2i:return Vector2i(clampi(int(round((pos.x+99)/2)),0,99),clampi(int(round((pos.z+89)/2)),0,89))
 func point(id:Vector2i) -> Vector3:return Vector3(-99+id.x*2,0,-89+id.y*2)

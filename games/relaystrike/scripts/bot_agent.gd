@@ -144,8 +144,10 @@ func choose_action():
 	action="patrol"
 	if a.position.distance_to(goal)<3 or path.is_empty():
 		roam_index=(roam_index+1)%5
-		set_goal([game.arena.zones[0],Vector3(-66,0,30),game.arena.zones[1],game.arena.zones[2],Vector3(66,0,-30)][roam_index])
+		set_goal([game.arena.zones[0],Vector3(-game.arena.bounds.x*.66,0,game.arena.bounds.y/3.),game.arena.zones[1],game.arena.zones[2],Vector3(game.arena.bounds.x*.66,0,-game.arena.bounds.y/3.)][roam_index])
 func set_goal(pos:Vector3):
+	var bounds=game.arena.bounds-Vector2.ONE*6
+	pos.x=clampf(pos.x,-bounds.x,bounds.x);pos.z=clampf(pos.z,-bounds.y,bounds.y)
 	if goal.distance_to(pos)>3:next_path=0.
 	goal=pos
 func navigate(destination:Vector3,dt:float):

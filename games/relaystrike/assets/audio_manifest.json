@@ -295,6 +295,22 @@
     "license": "CC0-1.0",
     "duration": 0.49
   },
+  "hurt": {
+    "file": "res://assets/audio/hurt.wav",
+    "category": "combat",
+    "gain_db": -4,
+    "sha256": "0c6d1f07061362abf48c541e54f31b48c37f9a0b2cbad154fe1f8cdc5d82dc69",
+    "license": "CC0-1.0",
+    "duration": 0.28
+  },
+  "armor_hurt": {
+    "file": "res://assets/audio/armor_hurt.wav",
+    "category": "combat",
+    "gain_db": -5,
+    "sha256": "58742afa75512716ff7becf9b05eaec95a1e6a4d9f743b0ae6cee3c29b55219d",
+    "license": "CC0-1.0",
+    "duration": 0.25
+  },
   "hit": {
     "file": "res://assets/audio/hit.wav",
     "category": "hit_volume",

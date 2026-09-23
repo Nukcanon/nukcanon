@@ -59,6 +59,7 @@ var audio_bank:GameAudio
 var ping_ms=0
 var ping_timer=0.0
 var test_mode=false
+var last_hurt_sound=-100.
 var smoke_visuals=[]
 var world_timer=0.0
 var step_events=0.0
@@ -261,7 +262,7 @@ func spawn(id:int):
 		var requested=p.pending_loadout.duplicate();p.pending_loadout={};commit_loadout(id,requested)
 	var best=choose_spawn(id)
 	a.collision_layer=2;a.position=best;a.target_pos=best;a.velocity=Vector3.ZERO;p.alive=true;p.hp=100.;p.armor=p.armor_max;p.reload=0.;p.protect=clock+R.SPAWN_PROTECTION;p.energy=180.;p.heal_mag=3;p.heal_reserve=3;p.repair_energy=100.;p.gadget_count=2 if p.role==3 else 3 if p.role==4 else 1;p.smoke=1 if p.role==4 and p.gadget==1 else 2;p.flash_count=2 if p.role==4 and p.gadget==1 else 1;p.last_hit=clock;p.contributors={};p.spectator=false
-	a.reset_view(0. if p.team==1 else PI);p.fire_ready=clock+.3;p.burst_left=0;p.fire_prev=false;p.trigger_until=0.;p.trigger_seen=int(a.input_state.get("trigger_seq",0));p.slot=0;p.bloom=0.;p.spray_index=0;p.spray_phase=0.;p.shot_time=-100.;p.switch_until=clock+.3;equip_ammo(p)
+	a.reset_view(0. if p.team==1 else PI);p.fire_ready=clock+.3;p.burst_left=0;p.fire_prev=false;p.trigger_until=0.;p.trigger_seen=int(a.input_state.get("trigger_seq",0));p.slot=0;p.step_distance=0.;p.step_index=0;p.gait=0.;p.bloom=0.;p.spray_index=0;p.spray_phase=0.;p.shot_time=-100.;p.switch_until=clock+.3;equip_ammo(p)
 	if id==local_id:Input.mouse_mode=Input.MOUSE_MODE_CAPTURED
 func choose_spawn(id:int) -> Vector3:
 	var p=players[id];var pts=arena.spawn_candidates(int(p.team),int(options.mode)==1 or int(options.mode)==3)
@@ -326,6 +327,7 @@ func disconnected(id:int):
 	if server:call_deferred("broadcast_state",true)
 func leave_game(message:String=""):
 	kill_events.clear();kill_serial=0
+	if is_instance_valid(ui.damage_indicator):ui.damage_indicator.clear_hits()
 	combat_fx.clear();heal_sound_times.clear()
 	if is_instance_valid(audio_bank):audio_bank.stop_all()
 	if multiplayer.multiplayer_peer:multiplayer.multiplayer_peer.close()
@@ -462,9 +464,10 @@ func server_tick(dt:float):
 		AimModel.recover(p,current_weapon(p),dt,clock)
 		var before_move=a.position
 		a.simulate(dt,clock,phase in ["combat","lobby"])
-		p.step_distance=float(p.get("step_distance",0))+Vector2(a.position.x-before_move.x,a.position.z-before_move.z).length()
-		if a.is_on_floor() and p.step_distance>(2.75 if a.last_sprint else 1.45 if a.input_state.crouch else 2.1):
-			p.step_distance=0.;p.step_variant=(int(p.get("step_variant",0))+1)%4
+		p.gait=a.gait
+		p.step_distance=float(p.get("step_distance",0))+(Vector2(a.position.x-before_move.x,a.position.z-before_move.z).length() if a.is_on_floor() else 0.)
+		if a.is_on_floor() and int(floor(a.gait*2))>int(p.get("step_index",0)):
+			p.step_index=int(floor(a.gait*2));p.step_variant=int(p.step_index)%4
 			var surface="water" if arena.wading(a.position) else "metal" if absf(a.position.x)>72 and absf(a.position.z)<35 else "stone"
 			step_sound.rpc(a.position,id,surface,p.step_variant,-7. if a.input_state.crouch else 2. if a.last_sprint else 0.)
 		if phase!="combat":continue
@@ -655,9 +658,9 @@ func fire(id:int):
 			damage(collider.pid,dmg,id,head,wid)
 		elif collider.has_meta("device"):damage_device(int(collider.get_meta("device")),dmg,id)
 		elif pellet==0:wall_mark.rpc(hit.position,hit.normal)
-	effect.rpc("shot",origin,last_end,id)
+	effect.rpc("shot",origin,last_end,id,clock)
 	if int(p.mag[wid])==0:begin_reload(id)
-func damage(target:int,amount:float,source:int,critical:bool=false,weapon_id:String="world"):
+func damage(target:int,amount:float,source:int,critical:bool=false,weapon_id:String="world",hit_origin:Vector3=Vector3.INF):
 	if not players.has(target) or not players[target].alive:return
 	var p=players[target]
 	if p.protect>clock:return
@@ -668,9 +671,12 @@ func damage(target:int,amount:float,source:int,critical:bool=false,weapon_id:Str
 	var armored=p.armor>0
 	var absorb=minf(p.armor,amount);p.armor-=absorb;p.hp-=amount-absorb;p.last_hit=clock
 	if target<0 and bot_navigation:bot_navigation.danger(actors[target].position)
-	var push=(actors[target].position-actors[source].position).normalized() if actors.has(source) and source!=target else Vector3.FORWARD
+	var origin=hit_origin if hit_origin.is_finite() else actors[source].position if actors.has(source) and source!=target else actors[target].position
+	var push=(actors[target].position-origin).normalized() if origin.distance_squared_to(actors[target].position)>.001 else Vector3.FORWARD
 	impact.rpc(actors[target].eye()-Vector3.UP*.35,push,false,int(p.team))
 	hit_reaction.rpc(target,push)
+	if target==local_id:damage_notice(target,origin,amount,armored)
+	elif target>0 and target in multiplayer.get_peers():damage_notice.rpc_id(target,target,origin,amount,armored)
 	if source!=target:p.contributors[source]=clock
 	if source>0:feedback(source,"hit",("정밀 명중" if critical else "방어구 명중" if armored else "명중")+" · "+str(int(round(amount))))
 	if p.hp<=0:
@@ -850,7 +856,7 @@ func update_devices(dt:float):
 		if target!=0 and clock>=d.lock and clock>=d.next_fire:
 			d.next_fire=clock+.25;var damage_amount=(20.+(d.level-1)*4)*.25
 			if arena.wading(d.pos) and not arena.wading(actors[target].position):damage_amount*=.5
-			damage(target,damage_amount,int(d.owner),false,"turret");effect.rpc("shot",origin,actors[target].eye(),0)
+			damage(target,damage_amount,int(d.owner),false,"turret",origin);effect.rpc("shot",origin,actors[target].eye(),0)
 func update_fields(dt:float):
 	fields=fields.filter(func(f):return f.until>clock)
 	for f in fields:
@@ -942,6 +948,7 @@ func check_objectives(dt:float):
 				if alive[1-attackers]==0 and team_count(1-attackers)>0:finish_round(attackers,"수비팀 전원 Dead")
 func start_match():
 	kill_events.clear()
+	if is_instance_valid(ui.damage_indicator):ui.damage_indicator.clear_hits()
 	if not server:return
 	for p in players.values():
 		p.kills=0;p.deaths=0;p.assists=0;p.objective=0;p.healed=0.;p.played=0.;p.lives=int(options.lives);p.cash=800;p.skill_ready=0.;p.spectator=false;p.can_respawn=true
@@ -1046,7 +1053,7 @@ func receive_state(s:Dictionary):
 			if fresh:a.position=p.pos;a.velocity=Vector3.ZERO;a.reset_view(p.yaw)
 			if a.position.distance_to(p.pos)>2 or not p.alive:a.position=p.pos
 			else:a.position=a.position.lerp(p.pos,.25)
-		else:a.target_pos=p.pos;a.aim_yaw=p.yaw;a.aim_pitch=p.pitch;a.input_state.crouch=p.crouch;a.net_velocity=p.get("velocity",Vector3.ZERO);a.net_grounded=p.get("grounded",true);a.net_sprint=p.get("sprint",false);a.remote_ads=p.get("ads",false)
+		else:a.target_pos=p.pos;a.aim_yaw=p.yaw;a.aim_pitch=p.pitch;a.input_state.crouch=p.crouch;a.net_velocity=p.get("velocity",Vector3.ZERO);a.net_grounded=p.get("grounded",true);a.net_sprint=p.get("sprint",false);a.remote_ads=p.get("ads",false);a.net_gait=float(p.get("gait",0.))
 	for id in players.keys():
 		if not present.has(id):players.erase(id);actors[id].queue_free();actors.erase(id)
 	devices=s.devices
@@ -1094,7 +1101,7 @@ func announce(message:String):
 @rpc("authority","call_local","reliable",0)
 func announcement(message:String):ui.notice(message)
 @rpc("authority","call_local","unreliable",2)
-func effect(kind:String,from:Vector3,to:Vector3,owner:int):
+func effect(kind:String,from:Vector3,to:Vector3,owner:int,shot_at:float=-100.):
 	if dedicated:return
 	var sound={"heal":"heal","flash":"flash","explosion":"explosion","deploy":"deploy","skill":"skill","smoke":"smoke"}.get(kind,"")
 	if kind=="shot":sound="gun_"+(players[owner].primary if players[owner].slot==0 else players[owner].secondary) if players.has(owner) else "gun_a1"
@@ -1108,7 +1115,7 @@ func effect(kind:String,from:Vector3,to:Vector3,owner:int):
 	elif arena:
 		var color=Color("78e1cb") if players.has(owner) and players[owner].team==0 else Color("ffd190")
 		combat_fx.burst(kind,from,color)
-	if actors.has(owner) and kind=="shot":actors[owner].recoil=1.
+	if actors.has(owner) and kind=="shot":actors[owner].show_shot(shot_at if shot_at> -100 else clock)
 func play_sound(kind:String,pos:Vector3,spatial:bool):
 	if dedicated or not is_instance_valid(audio_bank):return
 	audio_bank.play(kind,pos,spatial)
@@ -1120,20 +1127,33 @@ func step_sound(pos:Vector3,id:int,surface:String,variant:int,gain:float):
 func impact(pos:Vector3,push:Vector3,eliminated:bool,team:int,role:int=0,variant:int=0,facing:float=0.,crouched:bool=false):
 	if dedicated or arena==null:return
 	if eliminated:
-		var model=Node3D.new();arena.add_child(model);model.position=pos
-		var body=CharacterVisual.new();model.add_child(body);body.build(role,team);body.animator.play(["fall_back","fall_front","fall_left","fall_right","fall_fold"][variant%5]);body.animator.seek(.12 if crouched else 0.,true)
+		var model=combat_fx.group(pos)
+		var body=CharacterVisual.new();model.add_child(body);body.build(role,team)
+		var local_push=Basis(Vector3.UP,-facing)*push
+		var fall_index=(3 if local_push.x>0 else 2) if absf(local_push.x)>absf(local_push.z) else (0 if local_push.z>0 else 1)
+		body.animator.play(["fall_back","fall_front","fall_left","fall_right","fall_fold"][fall_index]);model.rotation.y=facing
 		var pose=model.create_tween();pose.tween_method(func(t):
 			if is_instance_valid(body):body.animator.seek(t,true),.12 if crouched else 0.,.9,.78 if crouched else .9)
-		var end=pos+push*(.5 if crouched else .7+variant*.1);end.y=pos.y
-		var obstruction=ray(pos+Vector3.UP*.7,end+Vector3.UP*.7,[],1|4)
-		if not obstruction.is_empty():end=pos
-		model.rotation.y=facing
-		var t=model.create_tween().set_parallel(true);t.tween_property(model,"position",end,.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-		var lifetime=model.create_tween();lifetime.tween_interval(5.5);lifetime.tween_callback(model.queue_free)
+		var flat=Vector3(push.x,0,push.z).normalized();var distance=1.1 if crouched else 1.5+variant*.22
+		var end=pos+flat*distance
+		var obstruction=ray(pos+Vector3.UP*.55,end+Vector3.UP*.55,[],1|4)
+		if not obstruction.is_empty():end=obstruction.position+obstruction.normal*.45-Vector3.UP*.55
+		end.y=pos.y
+		var move=model.create_tween();move.tween_method(func(t):
+			if is_instance_valid(model):model.position=pos.lerp(end,1.-pow(1.-t,2))+Vector3.UP*sin(t*PI)*(.12 if crouched else .28),0.,1.,.55)
+		var lifetime=model.create_tween();lifetime.tween_interval(5.0);lifetime.tween_property(model,"scale",Vector3.ONE*.001,.5);lifetime.tween_callback(model.queue_free)
 	else:
-		for i in range(4):
-			var n=arena.box(pos,Vector3(.045,.045,.045),Color("c64b52"),false)
-			var t=n.create_tween().set_parallel(true);t.tween_property(n,"position",pos+push*.25+Vector3(randf_range(-.3,.3),randf_range(-.2,.3),randf_range(-.3,.3)),.18);t.tween_property(n,"scale",Vector3.ZERO,.22);t.chain().tween_callback(n.queue_free)
+		combat_fx.armor_impact(pos,push,Color("79d9ff") if team==0 else Color("ffd07a"))
+		var floor_hit=ray(pos,pos-Vector3.UP*4,[],1)
+		if not floor_hit.is_empty() and floor_hit.normal.y>.65:combat_fx.scuff(floor_hit.position+Vector3.UP*.012)
+
+@rpc("authority","call_local","reliable",2)
+func damage_notice(target:int,origin:Vector3,amount:float,armored:bool):
+	if dedicated or target!=local_id or not actors.has(target):return
+	var direction=origin-actors[target].position
+	ui.damage_indicator.register_hit(direction,amount,Time.get_ticks_msec()/1000.)
+	var now=Time.get_ticks_msec()/1000.
+	if now-last_hurt_sound>.075:play_sound("armor_hurt" if armored else "hurt",Vector3.ZERO,false);last_hurt_sound=now
 
 func cycle_spectator():
 	if not players.has(local_id) or players[local_id].alive:return

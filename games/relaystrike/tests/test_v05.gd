@@ -50,7 +50,7 @@ func run():
 	expect(g.audio_bank.category_gain("ui_volume")==.2 and g.audio_bank.category_gain("hit_volume")==.4,"UI and hit volumes remain adjustable")
 	expect(VersionCheck.newer("0.10.0","0.9.9") and not VersionCheck.newer("0.5.0","0.5.0"),"update comparison is numeric, not lexicographic")
 	expect(not VersionCheck.newer("9.x.0","0.5.0") and not VersionCheck.newer("0.4.9","0.5.0"),"malformed and older versions do not produce false updates")
-	var version=VersionCheck.new();root.add_child(version);version.completed(HTTPRequest.RESULT_SUCCESS,200,PackedStringArray(),'{"version":"0.6.0"}'.to_utf8_buffer());expect(version.state=="newer","new manifest triggers update warning")
+	var version=VersionCheck.new();root.add_child(version);version.completed(HTTPRequest.RESULT_SUCCESS,200,PackedStringArray(),'{"version":"0.7.0"}'.to_utf8_buffer());expect(version.state=="newer","new manifest triggers update warning")
 	version.completed(HTTPRequest.RESULT_CANT_CONNECT,0,PackedStringArray(),PackedByteArray());expect(version.state=="offline" and g.phase=="combat","offline update check does not stop the game");version.queue_free()
 	g.leave_game();g.queue_free();await process_frame;await process_frame
 	for index in range(Rules.MAPS.size()):
@@ -59,7 +59,7 @@ func run():
 			for pos in arena.spawn_candidates(team,false):
 				if not arena.point_clear(pos):clear=false
 			for target in arena.sites+arena.zones:
-				var route=nav.route(Vector3(0,0,-77 if team==0 else 77),target)
+				var route=nav.route(arena.spawn_candidates(team,false)[0],target)
 				if route.is_empty() or route[-1].distance_to(target)>4.5:connected=false
 		expect(clear,"map "+str(index)+" spawns avoid solid objects")
 		expect(connected,"map "+str(index)+" both teams can reach every objective")
