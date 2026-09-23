@@ -30,7 +30,7 @@ func run():
 		g.clock=131;g.actors[1].aim_pitch=.05
 		g.use_skill(1);expect(g.devices.size()==1 and g.devices[did].level==2,"aimed turret upgrade preserves singleton")
 		g.remove_device(did);expect(g.players[1].skill_ready==161,"destruction does not refund charge")
-	g.players[1].alive=false;g.phase="buy";g.options.mode=4;g.players[1].cash=800;g.players[1].primary="pistol";g.players[1].owned_primary=false
+	g.players[1].alive=false;g.phase="buy";g.options.mode=4;g.players[1].cash=800;g.players[1].armor=0;g.players[1].primary="pistol";g.players[1].owned_primary=false
 	g.apply_loadout(1,{"role":0,"primary":"a1","armor":2});expect(g.players[1].cash==800 and g.players[1].primary=="pistol","insufficient funds rejected")
 	g.players[1].cash=4000;g.apply_loadout(1,{"role":0,"primary":"a1","armor":2});expect(g.players[1].cash==1000 and g.players[1].primary=="a1","purchase costs deducted")
 	g.players[1].alive=false;g.apply_loadout(1,{"role":0,"primary":"r2"});expect(g.players[1].primary=="a1","class weapon restriction")

@@ -24,7 +24,7 @@ func box(pos:Vector3,size:Vector3,color:Color,solid=true,parent:Node=null) -> No
 		var c=CollisionShape3D.new();var s=BoxShape3D.new();s.size=size;c.shape=s;root.add_child(c)
 	return root
 func text3d(txt:String,pos:Vector3,color:Color,size:int=100,parent:Node=null):
-	var l=Label3D.new();l.text=txt;l.position=pos;l.font_size=size;l.pixel_size=.012;l.modulate=color;l.billboard=BaseMaterial3D.BILLBOARD_ENABLED;l.no_depth_test=false
+	var l=Label3D.new();l.text=txt;l.position=pos;l.font_size=size;l.pixel_size=.012;l.modulate=color;l.billboard=BaseMaterial3D.BILLBOARD_ENABLED;l.no_depth_test=false;l.visibility_range_end=45;l.visibility_range_end_margin=8
 	(parent if parent else self).add_child(l);return l
 func build(which:int):
 	has_water=which==0
@@ -48,18 +48,17 @@ func build(which:int):
 			var s=Vector3(-68+i*19,0.15,sx*77)
 			spawn_points[0 if sx<0 else 1].append(s);ffa_spawns.append(s)
 		box(Vector3(0,.015,sx*77),Vector3(158,.03,7),Color("387e9a") if sx<0 else Color("a76552"),false)
-		text3d("NORTH / A" if sx<0 else "SOUTH / B",Vector3(0,5,sx*84),Color.WHITE,150)
+		text3d("NORTH / A" if sx<0 else "SOUTH / B",Vector3(0,5,sx*84),Color.WHITE,70)
 	if has_water:
 		box(Vector3(0,.31,0),Vector3(18,.6,66),Color(.12,.6,.75,.38),false)
 		for z in [-35,35]:box(Vector3(0,.05,z),Vector3(20,.1,2),Color("5c91a0"),false)
-		text3d("SHALLOW WATER",Vector3(0,1.6,-30),Color("67cfe4"),60)
 	for i in range(zones.size()):
 		var pos=zones[i]
 		box(pos+Vector3(0,.025,0),Vector3(12,.05,12),Color("ddc186"),false)
-		text3d(["A","C","B"][i],pos+Vector3(0,4,0),Color("f5d788"),170)
+		text3d(["A","C","B"][i],pos+Vector3(0,4,0),Color("f5d788"),70)
 	for pos in [Vector3(-30,.3,0),Vector3(30,.3,0),Vector3(0,.3,-49),Vector3(0,.3,49)]:
 		var n=box(pos,Vector3(1.5,.6,1.5),Color("55d5b2"),false)
-		text3d("AMMO",Vector3(0,1.5,0),Color("45bc96"),55,n);supplies.append({"pos":pos,"node":n,"ready":0.0})
+		text3d("AMMO",Vector3(0,.65,0),Color("d4fff0"),24,n);supplies.append({"pos":pos,"node":n,"ready":0.0})
 	var env=WorldEnvironment.new();var e=Environment.new();e.background_mode=Environment.BG_COLOR;e.background_color=Color("b7d0dd");e.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;e.ambient_light_color=Color("d0e2ed");e.ambient_light_energy=.75;env.environment=e;add_child(env)
 	var sun=DirectionalLight3D.new();sun.rotation_degrees=Vector3(-55,-25,0);sun.light_energy=1.15;sun.shadow_enabled=false;add_child(sun)
 func wading(pos:Vector3) -> bool:

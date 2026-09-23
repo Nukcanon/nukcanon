@@ -1,9 +1,9 @@
 {
   "a1": {
-    "name": "VECTOR-24 균형 소총",
+    "name": "VECTOR-24",
     "role": 0,
     "slot": 0,
-    "damage": 28,
+    "damage": 24,
     "interval": 0.115,
     "mag": 30,
     "reserve": 120,
@@ -13,10 +13,13 @@
     "reach": 65,
     "zoom": 58,
     "reload": 2.2,
-    "kind": "gun"
+    "kind": "gun",
+    "fire_mode": "auto",
+    "model_index": 0,
+    "reload_style": "rifle"
   },
   "a2": {
-    "name": "RAPID-9 고연사 소총",
+    "name": "RAPID-9",
     "role": 0,
     "slot": 0,
     "damage": 23,
@@ -28,11 +31,14 @@
     "pellets": 1,
     "reach": 65,
     "zoom": 58,
-    "reload": 2.2,
-    "kind": "gun"
+    "reload": 1.95,
+    "kind": "gun",
+    "fire_mode": "auto",
+    "model_index": 1,
+    "reload_style": "rifle"
   },
   "a3": {
-    "name": "ATLAS 중형 소총",
+    "name": "ATLAS",
     "role": 0,
     "slot": 0,
     "damage": 36,
@@ -44,15 +50,18 @@
     "pellets": 1,
     "reach": 65,
     "zoom": 58,
-    "reload": 2.2,
-    "kind": "gun"
+    "reload": 2.6,
+    "kind": "gun",
+    "fire_mode": "auto",
+    "model_index": 2,
+    "reload_style": "rifle"
   },
   "a4": {
-    "name": "TRIAD 정밀 소총",
+    "name": "TRIAD",
     "role": 0,
     "slot": 0,
     "damage": 32,
-    "interval": 0.18,
+    "interval": 0.105,
     "mag": 27,
     "reserve": 108,
     "price": 2200,
@@ -60,11 +69,14 @@
     "pellets": 1,
     "reach": 65,
     "zoom": 58,
-    "reload": 2.2,
-    "kind": "gun"
+    "reload": 2.35,
+    "kind": "gun",
+    "fire_mode": "burst",
+    "model_index": 3,
+    "reload_style": "rifle"
   },
   "r1": {
-    "name": "SCOUT 경량 저격",
+    "name": "SCOUT",
     "role": 1,
     "slot": 0,
     "damage": 76,
@@ -77,10 +89,13 @@
     "reach": 120,
     "zoom": 28,
     "reload": 2.4,
-    "kind": "gun"
+    "kind": "gun",
+    "fire_mode": "semi",
+    "model_index": 4,
+    "reload_style": "rifle"
   },
   "r2": {
-    "name": "MONOLITH 중형 저격",
+    "name": "MONOLITH",
     "role": 1,
     "slot": 0,
     "damage": 112,
@@ -93,10 +108,13 @@
     "reach": 170,
     "zoom": 20,
     "reload": 3.2,
-    "kind": "gun"
+    "kind": "gun",
+    "fire_mode": "semi",
+    "model_index": 5,
+    "reload_style": "rifle"
   },
   "r3": {
-    "name": "ECHO 반자동 저격",
+    "name": "ECHO",
     "role": 1,
     "slot": 0,
     "damage": 57,
@@ -109,10 +127,13 @@
     "reach": 130,
     "zoom": 25,
     "reload": 2.7,
-    "kind": "gun"
+    "kind": "gun",
+    "fire_mode": "semi",
+    "model_index": 6,
+    "reload_style": "rifle"
   },
   "r4": {
-    "name": "LARK 지정사수",
+    "name": "LARK",
     "role": 1,
     "slot": 0,
     "damage": 43,
@@ -124,11 +145,14 @@
     "pellets": 1,
     "reach": 100,
     "zoom": 38,
-    "reload": 2.2,
-    "kind": "gun"
+    "reload": 2.05,
+    "kind": "gun",
+    "fire_mode": "semi",
+    "model_index": 7,
+    "reload_style": "rifle"
   },
   "r5": {
-    "name": "KESTREL 지정사수",
+    "name": "KESTREL",
     "role": 1,
     "slot": 0,
     "damage": 55,
@@ -140,11 +164,14 @@
     "pellets": 1,
     "reach": 120,
     "zoom": 32,
-    "reload": 2.2,
-    "kind": "gun"
+    "reload": 2.55,
+    "kind": "gun",
+    "fire_mode": "semi",
+    "model_index": 8,
+    "reload_style": "rifle"
   },
   "h1": {
-    "name": "ANCHOR 경기관총",
+    "name": "ANCHOR",
     "role": 2,
     "slot": 0,
     "damage": 27,
@@ -157,10 +184,13 @@
     "reach": 85,
     "zoom": 60,
     "reload": 3.6,
-    "kind": "gun"
+    "kind": "gun",
+    "fire_mode": "auto",
+    "model_index": 9,
+    "reload_style": "box"
   },
   "h2": {
-    "name": "BASTION 지원기관총",
+    "name": "BASTION",
     "role": 2,
     "slot": 0,
     "damage": 30,
@@ -173,10 +203,13 @@
     "reach": 95,
     "zoom": 62,
     "reload": 4.5,
-    "kind": "gun"
+    "kind": "gun",
+    "fire_mode": "auto",
+    "model_index": 10,
+    "reload_style": "box"
   },
   "e1": {
-    "name": "PULSE 펌프 샷건",
+    "name": "PULSE",
     "role": 3,
     "slot": 0,
     "damage": 13,
@@ -189,10 +222,13 @@
     "reach": 16,
     "zoom": 62,
     "reload": 2.5,
-    "kind": "gun"
+    "kind": "gun",
+    "fire_mode": "semi",
+    "model_index": 11,
+    "reload_style": "shell"
   },
   "e2": {
-    "name": "TIDAL 반자동 샷건",
+    "name": "TIDAL",
     "role": 3,
     "slot": 0,
     "damage": 10,
@@ -205,10 +241,13 @@
     "reach": 13,
     "zoom": 62,
     "reload": 2.8,
-    "kind": "gun"
+    "kind": "gun",
+    "fire_mode": "semi",
+    "model_index": 12,
+    "reload_style": "rifle"
   },
   "e3": {
-    "name": "FOLD 소형 샷건",
+    "name": "FOLD",
     "role": 3,
     "slot": 0,
     "damage": 12,
@@ -221,10 +260,13 @@
     "reach": 11,
     "zoom": 62,
     "reload": 1.7,
-    "kind": "gun"
+    "kind": "gun",
+    "fire_mode": "semi",
+    "model_index": 13,
+    "reload_style": "break"
   },
   "c1": {
-    "name": "SWIFT 경량 기관단총",
+    "name": "SWIFT",
     "role": 4,
     "slot": 0,
     "damage": 20,
@@ -236,11 +278,14 @@
     "pellets": 1,
     "reach": 32,
     "zoom": 58,
-    "reload": 2.2,
-    "kind": "gun"
+    "reload": 1.65,
+    "kind": "gun",
+    "fire_mode": "auto",
+    "model_index": 14,
+    "reload_style": "rifle"
   },
   "c2": {
-    "name": "FLUX 고연사 기관단총",
+    "name": "FLUX",
     "role": 4,
     "slot": 0,
     "damage": 18,
@@ -252,11 +297,14 @@
     "pellets": 1,
     "reach": 27,
     "zoom": 58,
-    "reload": 2.2,
-    "kind": "gun"
+    "reload": 1.8,
+    "kind": "gun",
+    "fire_mode": "auto",
+    "model_index": 15,
+    "reload_style": "rifle"
   },
   "c3": {
-    "name": "LINE 안정 기관단총",
+    "name": "LINE",
     "role": 4,
     "slot": 0,
     "damage": 24,
@@ -268,11 +316,14 @@
     "pellets": 1,
     "reach": 40,
     "zoom": 58,
-    "reload": 2.2,
-    "kind": "gun"
+    "reload": 2.1,
+    "kind": "gun",
+    "fire_mode": "auto",
+    "model_index": 16,
+    "reload_style": "rifle"
   },
   "c4": {
-    "name": "HIVE 대용량 기관단총",
+    "name": "HIVE",
     "role": 4,
     "slot": 0,
     "damage": 21,
@@ -284,11 +335,14 @@
     "pellets": 1,
     "reach": 34,
     "zoom": 58,
-    "reload": 2.2,
-    "kind": "gun"
+    "reload": 2.65,
+    "kind": "gun",
+    "fire_mode": "auto",
+    "model_index": 17,
+    "reload_style": "rifle"
   },
   "m1": {
-    "name": "LINK 지속 회복기",
+    "name": "LINK",
     "role": 5,
     "slot": 0,
     "damage": 0,
@@ -301,10 +355,13 @@
     "reach": 10,
     "zoom": 64,
     "reload": 1,
-    "kind": "heal"
+    "kind": "heal",
+    "fire_mode": "auto",
+    "model_index": 18,
+    "reload_style": "tool"
   },
   "m2": {
-    "name": "PIPER 의료 카빈",
+    "name": "PIPER",
     "role": 5,
     "slot": 0,
     "damage": 24,
@@ -316,11 +373,14 @@
     "pellets": 1,
     "reach": 55,
     "zoom": 58,
-    "reload": 2.2,
-    "kind": "gun"
+    "reload": 2.3,
+    "kind": "gun",
+    "fire_mode": "auto",
+    "model_index": 19,
+    "reload_style": "rifle"
   },
   "pistol": {
-    "name": "SIDE 균형 권총",
+    "name": "SIDE",
     "role": 0,
     "slot": 1,
     "damage": 25,
@@ -332,11 +392,14 @@
     "pellets": 1,
     "reach": 65,
     "zoom": 58,
-    "reload": 2.2,
-    "kind": "gun"
+    "reload": 1.55,
+    "kind": "gun",
+    "fire_mode": "semi",
+    "model_index": 20,
+    "reload_style": "pistol"
   },
   "heavy_pistol": {
-    "name": "CHIME 중형 권총",
+    "name": "CHIME",
     "role": 1,
     "slot": 1,
     "damage": 46,
@@ -348,11 +411,14 @@
     "pellets": 1,
     "reach": 65,
     "zoom": 58,
-    "reload": 2.2,
-    "kind": "gun"
+    "reload": 2.05,
+    "kind": "gun",
+    "fire_mode": "semi",
+    "model_index": 21,
+    "reload_style": "pistol"
   },
   "auto_pistol": {
-    "name": "SPARK 자동 권총",
+    "name": "SPARK",
     "role": 2,
     "slot": 1,
     "damage": 16,
@@ -364,11 +430,14 @@
     "pellets": 1,
     "reach": 65,
     "zoom": 58,
-    "reload": 2.2,
-    "kind": "gun"
+    "reload": 1.7,
+    "kind": "gun",
+    "fire_mode": "auto",
+    "model_index": 22,
+    "reload_style": "pistol"
   },
   "eng_pistol": {
-    "name": "RIVET 공병 권총",
+    "name": "RIVET",
     "role": 3,
     "slot": 1,
     "damage": 30,
@@ -380,15 +449,18 @@
     "pellets": 1,
     "reach": 65,
     "zoom": 58,
-    "reload": 2.2,
-    "kind": "gun"
+    "reload": 1.8,
+    "kind": "gun",
+    "fire_mode": "semi",
+    "model_index": 23,
+    "reload_style": "pistol"
   },
   "burst_pistol": {
-    "name": "TRIO 속사 권총",
+    "name": "TRIO",
     "role": 4,
     "slot": 1,
     "damage": 18,
-    "interval": 0.13,
+    "interval": 0.085,
     "mag": 15,
     "reserve": 60,
     "price": 0,
@@ -396,11 +468,14 @@
     "pellets": 1,
     "reach": 65,
     "zoom": 58,
-    "reload": 2.2,
-    "kind": "gun"
+    "reload": 1.9,
+    "kind": "gun",
+    "fire_mode": "burst",
+    "model_index": 24,
+    "reload_style": "pistol"
   },
   "med_pistol": {
-    "name": "FEATHER 경량 권총",
+    "name": "FEATHER",
     "role": 5,
     "slot": 1,
     "damage": 22,
@@ -412,11 +487,14 @@
     "pellets": 1,
     "reach": 65,
     "zoom": 58,
-    "reload": 2.2,
-    "kind": "gun"
+    "reload": 1.45,
+    "kind": "gun",
+    "fire_mode": "semi",
+    "model_index": 25,
+    "reload_style": "pistol"
   },
   "repair": {
-    "name": "FIX 수리 도구",
+    "name": "FIX",
     "role": 3,
     "slot": 1,
     "damage": 0,
@@ -429,6 +507,9 @@
     "reach": 4,
     "zoom": 65,
     "reload": 1,
-    "kind": "repair"
+    "kind": "repair",
+    "fire_mode": "auto",
+    "model_index": 26,
+    "reload_style": "tool"
   }
 }

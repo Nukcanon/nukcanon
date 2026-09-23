@@ -21,6 +21,10 @@ var scores=[0,0]
 var losses=[0,0]
 var tickets=[0,0]
 var spectator_target=0
+var spectator_camera:Camera3D
+var spectator_yaw=0.0
+var spectator_pitch=-.12
+var trigger_seq=0
 var preview:Node3D
 var round_no=0
 var next_device=1
@@ -30,7 +34,7 @@ var bomb={"planted":false,"site":-1,"time":0.0,"actor":0,"progress":0.0,"positio
 var server=false
 var dedicated=false
 var local_id=1
-var profile={"nick":"Player","token":"","sensitivity":.0023,"volume":.65,"window":true}
+var profile={"nick":"Player","token":"","sensitivity":.0023,"ads_sensitivity":.75,"volume":.65,"window":true}
 var pending_loadout={"role":0,"primary":"a1","secondary":"pistol","armor":0,"team":-1,"gadget":0}
 var snapshot_timer=0.0
 var input_timer=0.0
@@ -92,12 +96,15 @@ func save_profile():
 	cfg.save("user://settings.cfg")
 	AudioServer.set_bus_volume_db(0,linear_to_db(maxf(.001,float(profile.volume))))
 func setup_input():
-	var binds={"left":KEY_A,"right":KEY_D,"forward":KEY_W,"back":KEY_S,"sprint":KEY_SHIFT,"crouch":KEY_CTRL,"jump":KEY_SPACE,"reload":KEY_R,"use":KEY_E,"skill":KEY_Q,"gadget":KEY_G,"gear":KEY_B,"score":KEY_TAB,"primary":KEY_1,"secondary":KEY_2,"medical":KEY_F,"gadget_mode":KEY_V}
+	var binds={"left":KEY_A,"right":KEY_D,"forward":KEY_W,"back":KEY_S,"sprint":KEY_SHIFT,"crouch":KEY_CTRL,"jump":KEY_SPACE,"reload":KEY_R,"use":KEY_E,"skill":KEY_F,"gadget":KEY_G,"gear":KEY_B,"score":KEY_TAB,"primary":KEY_1,"secondary":KEY_2,"medical":KEY_Q,"gadget_mode":KEY_V,"item3":KEY_3,"item4":KEY_4}
 	for k in binds:
-		InputMap.add_action(k);var ev=InputEventKey.new();ev.physical_keycode=binds[k];InputMap.action_add_event(k,ev)
+		if not InputMap.has_action(k):InputMap.add_action(k)
+		var ev=InputEventKey.new();ev.physical_keycode=binds[k];InputMap.action_add_event(k,ev)
 func build_world():
 	if arena:arena.queue_free()
 	arena=W.new();add_child(arena);arena.build(int(options.map))
+	if not is_instance_valid(spectator_camera):
+		spectator_camera=Camera3D.new();spectator_camera.near=.1;spectator_camera.far=350;add_child(spectator_camera)
 func host_game():
 	if phase!="menu":return
 	var peer=ENetMultiplayerPeer.new();var err=peer.create_server(R.PORT,32,3)
@@ -152,6 +159,8 @@ func add_player(id:int,nick:String,token:String):
 	elif phase!="lobby":
 		p.spectator=int(options.join)==1
 		p.alive=false;p.respawn=clock+3 if int(options.join)==2 and int(options.mode)!=4 else 1e12
+	if int(options.mode)!=4:p.armor_max=50
+	p.pending_loadout={};p.trigger_seen=0;p.fire_prev=false;p.burst_left=0;p.trigger_until=0.;p.reload_started=0.;p.switch_until=0.
 	players[id]=p;ensure_actor(id);equip_ammo(p)
 	if phase=="lobby":spawn(id)
 func ensure_actor(id:int):
@@ -161,7 +170,10 @@ func equip_ammo(p:Dictionary):
 	for id in [p.primary,p.secondary]:
 		var w=C.get_weapon(id);p.mag[id]=int(w.mag);p.reserve[id]=int(w.reserve)
 func spawn(id:int):
-	var p=players[id];var a=actors[id];var pts=arena.ffa_spawns if int(options.mode)==1 else arena.spawn_points[int(p.team)]
+	var p=players[id];var a=actors[id]
+	if not p.get("pending_loadout",{}).is_empty():
+		var requested=p.pending_loadout.duplicate();p.pending_loadout={};commit_loadout(id,requested)
+	var pts=arena.ffa_spawns if int(options.mode)==1 else arena.spawn_points[int(p.team)]
 	var best=pts[0];var safest=-1.
 	for pos in pts:
 		var distance=200.
@@ -169,8 +181,8 @@ func spawn(id:int):
 			if other!=id and players[other].alive and enemies(p,players[other]):distance=minf(distance,pos.distance_to(actors[other].position))
 		distance+=randf()*5
 		if distance>safest:safest=distance;best=pos
-	a.collision_layer=2;a.position=best;a.target_pos=best;a.velocity=Vector3.ZERO;p.alive=true;p.hp=100.;p.armor=p.armor_max;p.reload=0.;p.protect=clock+2.;p.energy=180.;p.heal_mag=3;p.heal_reserve=3;p.repair_energy=100.;p.gadget_count=2 if p.role==3 else 3 if p.role==4 else 1;p.smoke=2;p.flash_count=1;p.last_hit=clock;p.contributors={};p.spectator=false
-	a.input_state.yaw=0. if p.team==1 else PI;a.aim_yaw=a.input_state.yaw;equip_ammo(p)
+	a.collision_layer=2;a.position=best;a.target_pos=best;a.velocity=Vector3.ZERO;p.alive=true;p.hp=100.;p.armor=p.armor_max;p.reload=0.;p.protect=clock+2.;p.energy=180.;p.heal_mag=3;p.heal_reserve=3;p.repair_energy=100.;p.gadget_count=2 if p.role==3 else 3 if p.role==4 else 1;p.smoke=1 if p.role==4 and p.gadget==1 else 2;p.flash_count=2 if p.role==4 and p.gadget==1 else 1;p.last_hit=clock;p.contributors={};p.spectator=false
+	a.reset_view(0. if p.team==1 else PI);p.fire_ready=clock+.3;p.burst_left=0;p.fire_prev=false;p.trigger_until=0.;p.trigger_seen=int(a.input_state.get("trigger_seq",0));p.slot=0;p.switch_until=clock+.3;equip_ammo(p)
 	if id==local_id:Input.mouse_mode=Input.MOUSE_MODE_CAPTURED
 func disconnected(id:int):
 	if not players.has(id):return
@@ -215,7 +227,15 @@ func _unhandled_input(event):
 	if not actors.has(local_id) or Input.mouse_mode!=Input.MOUSE_MODE_CAPTURED:return
 	var a=actors[local_id]
 	if event is InputEventMouseMotion:
-		a.input_state.yaw-=event.relative.x*float(profile.sensitivity);a.input_state.pitch=clampf(a.input_state.pitch-event.relative.y*float(profile.sensitivity),-1.45,1.45)
+		var sensitivity=float(profile.sensitivity)*(float(profile.ads_sensitivity) if a.input_state.ads and players[local_id].alive else 1.)
+		if players[local_id].alive:
+			a.input_state.yaw-=event.relative.x*sensitivity;a.input_state.pitch=clampf(a.input_state.pitch-event.relative.y*sensitivity,-1.45,1.45)
+		else:
+			spectator_yaw-=event.relative.x*sensitivity;spectator_pitch=clampf(spectator_pitch-event.relative.y*sensitivity,-1.2,1.2)
+	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and players[local_id].alive:
+		trigger_seq+=1;a.input_state.trigger_seq=trigger_seq
+	for index in range(3,5):
+		if event.is_action_pressed("item"+str(index)):command("slot",{"slot":index-1})
 	if event.is_action_pressed("reload"):command("reload",{})
 	if event.is_action_pressed("primary"):command("slot",{"slot":0})
 	if event.is_action_pressed("secondary"):command("slot",{"slot":1})
@@ -243,11 +263,11 @@ func send_input(data:Dictionary):
 	for k in ["x","z","yaw","pitch"]:
 		if not data.has(k) or not (data[k] is float or data[k] is int) or not is_finite(float(data[k])):return
 	if absf(data.yaw)>1e8:return
-	a.input_state={"x":clampf(data.x,-1,1),"z":clampf(data.z,-1,1),"yaw":wrapf(data.yaw,-PI,PI),"pitch":clampf(data.pitch,-1.45,1.45),"ads":bool(data.get("ads",false)),"sprint":bool(data.get("sprint",false)),"crouch":bool(data.get("crouch",false)),"fire":bool(data.get("fire",false)),"alt":bool(data.get("alt",false)),"jump":bool(data.get("jump",false)),"use":bool(data.get("use",false))}
+	a.input_state={"x":clampf(data.x,-1,1),"z":clampf(data.z,-1,1),"yaw":wrapf(data.yaw,-PI,PI),"pitch":clampf(data.pitch,-1.45,1.45),"ads":bool(data.get("ads",false)),"sprint":bool(data.get("sprint",false)),"crouch":bool(data.get("crouch",false)),"fire":bool(data.get("fire",false)),"alt":bool(data.get("alt",false)),"jump":bool(data.get("jump",false)),"use":bool(data.get("use",false)),"trigger_seq":maxi(0,int(data.get("trigger_seq",0)))}
 	players[id].input_time=clock
 func collect_input():
 	if not actors.has(local_id):return
-	var a=actors[local_id];var on=Input.mouse_mode==Input.MOUSE_MODE_CAPTURED
+	var a=actors[local_id];var on=Input.mouse_mode==Input.MOUSE_MODE_CAPTURED and players[local_id].alive
 	a.input_state.x=Input.get_axis("left","right") if on else 0.;a.input_state.z=Input.get_axis("forward","back") if on else 0.
 	for k in ["sprint","crouch","jump","use"]:a.input_state[k]=on and Input.is_action_pressed(k)
 	a.input_state.ads=on and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT);a.input_state.fire=on and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT);a.input_state.alt=on and Input.is_action_pressed("medical")
@@ -292,13 +312,13 @@ func server_tick(dt:float):
 			var wid=p.reload_weapon;var w=C.get_weapon(wid);var need=int(w.mag)-int(p.mag.get(wid,0));var got=need if options.infinite else mini(need,int(p.reserve.get(wid,0)))
 			p.mag[wid]=int(p.mag.get(wid,0))+got
 			if not options.infinite:p.reserve[wid]=int(p.reserve.get(wid,0))-got
-			p.reload=0.
+			p.reload=0.;p.trigger_until=0.
 		if options.autoheal and int(options.mode) in [0,1,3] and clock-p.last_hit>5:p.hp=minf(100,p.hp+10*dt)
 		if int(options.mode) in [0,1,3]:
 			p.energy=minf(180,p.energy+dt*5)
 			if clock>=p.heal_ready+8 and p.heal_mag<3:p.heal_mag+=1;p.heal_ready=clock
 		p.repair_energy=minf(100,p.repair_energy+dt*8 if not a.input_state.fire else p.repair_energy)
-		if a.input_state.fire:fire(id)
+		process_trigger(id)
 		if a.input_state.alt and p.role==5 and p.primary=="m2" and p.slot==0:heal_burst(id)
 		if a.input_state.use:interact(id,dt)
 		p.last_pos=a.position
@@ -318,13 +338,18 @@ func bot_input(id:int,dt:float):
 			var d=a.position.distance_to(actors[other].position)
 			if d<dist:dist=d;target=other
 	var dest=arena.zones[absi(id)%3]
-	if target!=0:dest=actors[target].eye()
+	if target!=0:dest=actors[target].position+Vector3.UP*(.7 if actors[target].input_state.crouch else 1.1)
 	var v=dest-a.eye();var yaw=atan2(-v.x,-v.z);var pitch=atan2(v.y,Vector2(v.x,v.z).length())
-	a.input_state.yaw=lerp_angle(float(a.input_state.yaw),yaw,minf(dt*3,1));a.input_state.pitch=clampf(pitch+sin(clock*2+id)*.025,-1.3,1.3)
-	a.input_state.fire=target!=0 and dist<65 and clear_line(a.eye(),dest,[a.get_rid(),actors[target].get_rid()]);a.input_state.ads=dist>20;a.input_state.sprint=false;a.input_state.crouch=false;a.input_state.x=sin(clock*.7+id)*.7;a.input_state.z=-1. if dist>18 else 0.
-	if a.is_on_wall():a.input_state.x=1.;a.input_state.jump=true
-	else:a.input_state.jump=false
-	if int(p.mag.get(p.primary,0))==0:handle_command(id,"reload",{})
+	a.input_state.yaw=lerp_angle(float(a.input_state.yaw),yaw+sin(clock*1.7+id)*.045,minf(dt*3,1));a.input_state.pitch=clampf(pitch+sin(clock*2.3+id)*.035,-1.3,1.3)
+	var seen=target!=0 and dist<65 and clear_line(a.eye(),dest,[a.get_rid(),actors[target].get_rid()]) and not in_smoke_line(a.eye(),dest)
+	if not seen or int(p.get("bot_target",0))!=target:p.bot_seen=clock+.55
+	p.bot_target=target
+	var firing=seen and clock>p.get("bot_seen",clock+.55) and fmod(clock+abs(id)*.31,1.7)<.65 and absf(angle_difference(a.input_state.yaw,yaw))<.12
+	if firing and clock>=p.get("bot_click",0):a.input_state.trigger_seq=int(a.input_state.get("trigger_seq",0))+1;p.bot_click=clock+.35
+	a.input_state.fire=firing;a.input_state.ads=dist>20;a.input_state.sprint=false;a.input_state.crouch=false;a.input_state.x=sin(clock*.7+id)*.7;a.input_state.z=-1. if dist>18 else 0.
+	a.input_state.jump=a.is_on_wall()
+	if a.is_on_wall():a.input_state.x=1.
+	if int(p.mag.get(p.primary,0))==0:begin_reload(id)
 func enemies(p:Dictionary,q:Dictionary) -> bool:return int(options.mode)==1 or p.team!=q.team
 func medic_count(team:int) -> int:
 	var n=0
@@ -343,12 +368,14 @@ func handle_command(id:int,action:String,data:Dictionary):
 		"start":
 			if id==1 and phase=="lobby":start_match()
 		"slot":
-			p.slot=clampi(int(data.get("slot",0)),0,1);p.reload=0.;p.fire_ready=maxf(p.fire_ready,clock+.25)
-		"reload":
-			if not p.alive or p.reload>0:return
-			var wid=p.primary if p.slot==0 else p.secondary;var w=C.get_weapon(wid)
-			if w.kind!="gun":return
-			if int(p.mag[wid])<int(w.mag) and (options.infinite or int(p.reserve[wid])>0):p.reload=clock+float(w.reload);p.reload_weapon=wid;feedback(id,"reload","")
+			var slot=clampi(int(data.get("slot",0)),0,3)
+			if slot>=2 and not options.classes:return
+			if slot==3 and p.role!=4:return
+			if slot==4 and not options.skills:return
+			if slot==p.slot:return
+			p.slot=slot;p.reload=0.;p.burst_left=0;p.trigger_until=0.;p.fire_ready=maxf(p.fire_ready,clock+.32);p.switch_until=clock+.32
+			if p.role==4 and slot in [2,3]:p.gadget=slot-2
+		"reload":begin_reload(id)
 		"loadout":apply_loadout(id,data)
 		"team":
 			if phase!="lobby" or int(options.teams)!=1:return
@@ -359,43 +386,84 @@ func handle_command(id:int,action:String,data:Dictionary):
 		"gadget":use_gadget(id)
 		"gadget_mode":
 			if p.role==4:p.gadget=0 if p.gadget==1 else 1
+func valid_loadout(p:Dictionary,d:Dictionary) -> bool:
+	var role=clampi(int(d.get("role",p.role)),0,5);var wid=str(d.get("primary",C.first(role)))
+	if not C.weapons.has(wid) or C.get_weapon(wid).slot!=0:return false
+	if options.classes and int(C.get_weapon(wid).role)!=role:return false
+	if not options.classes and C.get_weapon(wid).kind!="gun":return false
+	return true
+func loadout_cost(p:Dictionary,d:Dictionary) -> int:
+	if int(options.mode)!=4:return 0
+	var cost=0;var wid=str(d.get("primary",p.primary));var role=int(d.get("role",p.role));var armor=clampi(int(d.get("armor",0)),0,2)*25
+	if wid!=p.primary or not p.get("owned_primary",false):cost+=int(C.get_weapon(wid).price)
+	if armor>p.armor:cost+=300 if armor==25 else 600
+	if role==3:cost+=[300,600,1000][clampi(int(d.get("gadget",0)),0,2)]
+	elif role==4:cost+=400
+	return cost
 func apply_loadout(id:int,d:Dictionary):
 	var p=players[id]
-	if p.alive and phase not in ["lobby","buy"]:feedback(id,"","장비 변경은 대기실·구매 시간·탈락 후에 가능합니다.");return
+	if not valid_loadout(p,d):feedback(id,"","이 병과에서 선택할 수 없는 무기입니다.");return
+	if phase not in ["lobby","buy"]:
+		p.pending_loadout=d.duplicate();feedback(id,"","선택 예약 완료 · 다음 부활"+(" / 다음 라운드 구매 시간" if int(options.mode)==4 else "")+"에 적용됩니다.");return
+	commit_loadout(id,d)
+func commit_loadout(id:int,d:Dictionary):
+	var p=players[id]
+	if not valid_loadout(p,d):return
 	var role=clampi(int(d.get("role",p.role)),0,5)
-	if role==5 and p.role!=5 and options.classes and medic_count(p.team)>=R.medic_cap(team_count(p.team)):feedback(id,"","팀 메딕 정원이 찼습니다.");return
-	var wid=str(d.get("primary",C.first(role)))
-	if not C.weapons.has(wid) or C.get_weapon(wid).slot!=0:return
-	if options.classes and int(C.get_weapon(wid).role)!=role:return
-	if not options.classes and C.get_weapon(wid).kind!="gun":feedback(id,"","병과 없는 방에서는 일반 공격 무기를 선택하세요.");return
-	var sec=R.SECONDARIES[role]
+	if role==5 and p.role!=5 and options.classes and medic_count(p.team)>=R.medic_cap(team_count(p.team)):feedback(id,"","메딕 정원이 차서 이전 장비를 유지합니다.");return
+	var wid=str(d.get("primary",C.first(role)));var sec=R.SECONDARIES[role]
 	if role==3 and d.get("repair",false):sec="repair"
-	var armor=clampi(int(d.get("armor",0)),0,2)*25
-	var gadget=clampi(int(d.get("gadget",0)),0,2)
-	var cost=0
-	if phase=="buy" and int(options.mode)==4:
-		if wid!=p.primary or not p.get("owned_primary",false):cost+=int(C.get_weapon(wid).price)
-		if armor>p.armor:cost+=300 if armor==25 else 600
-		if role==3:cost+=[300,600,1000][gadget]
-		elif role==4:cost+=400
-		if p.cash<cost:feedback(id,"","크레딧이 부족합니다. 필요: "+str(cost));return
-		p.cash-=cost
+	var armor=clampi(int(d.get("armor",2 if int(options.mode)!=4 else 0)),0,2)*25;var gadget=clampi(int(d.get("gadget",0)),0,2)
+	var cost=loadout_cost(p,d) if phase=="buy" else 0
+	if p.cash<cost:feedback(id,"","구매 실패 · 필요 %d / 보유 %d 크레딧"%[cost,p.cash]);return
+	p.cash-=cost
 	if p.role!=role:
 		for did in devices.keys():
 			if devices[did].owner==id:remove_device(did)
-	p.role=role;p.primary=wid;p.secondary=sec;p.armor_max=armor;p.armor=armor;p.slot=0;p.gadget=gadget;p.gadget_count=1 if role==3 else 3 if role==4 else 1;p.smoke=1 if gadget==1 else 2;p.flash_count=2 if gadget==1 else 1;p.reload=0.;p.owned_primary=true;p.armor=p.armor_max;equip_ammo(p)
-	feedback(id,"","장비 적용 완료")
+	p.role=role;p.primary=wid;p.secondary=sec;p.armor_max=armor;p.armor=armor;p.slot=0;p.gadget=gadget;p.gadget_count=2 if role==3 else 3 if role==4 else 1;p.smoke=1 if gadget==1 else 2;p.flash_count=2 if gadget==1 else 1;p.reload=0.;p.owned_primary=true;p.burst_left=0;p.trigger_until=0.;p.switch_until=clock+.32;p.fire_ready=clock+.32;equip_ammo(p)
+	feedback(id,"","구매 완료 · %d 크레딧 사용"%cost if cost>0 else "장비 적용 완료")
+func begin_reload(id:int):
+	var p=players[id]
+	if not p.alive or p.reload>0 or p.slot>1:return
+	var wid=p.primary if p.slot==0 else p.secondary;var w=C.get_weapon(wid)
+	if w.kind!="gun":return
+	if int(p.mag.get(wid,0))<int(w.mag) and (options.infinite or int(p.reserve.get(wid,0))>0):
+		p.reload=clock+float(w.reload);p.reload_started=clock;p.reload_weapon=wid;p.burst_left=0;feedback(id,"reload","")
+func process_trigger(id:int):
+	var p=players[id];var a=actors[id];var held=bool(a.input_state.fire);var seq=int(a.input_state.get("trigger_seq",0))
+	var pressed=seq>int(p.get("trigger_seen",0)) or (held and not p.get("fire_prev",false))
+	p.trigger_seen=maxi(seq,int(p.get("trigger_seen",0)));p.fire_prev=held
+	if p.slot>=2:
+		if pressed and clock>=p.fire_ready:
+			if p.slot==4:use_skill(id)
+			else:
+				if p.role==4:p.gadget=p.slot-2
+				use_gadget(id)
+		return
+	var w=current_weapon(p);var mode=w.get("fire_mode","auto")
+	if pressed and p.reload<=0:p.trigger_until=clock+.55
+	if mode=="auto":
+		if held:fire(id)
+		return
+	if clock<p.fire_ready or p.reload>0 or clock<a.sprint_release or a.last_sprint:return
+	if p.get("burst_left",0)==0 and p.get("trigger_until",0)>clock:
+		p.trigger_until=0.;p.burst_left=3 if mode=="burst" else 1
+	if p.get("burst_left",0)>0:
+		var before=int(p.mag.get(p.primary if p.slot==0 else p.secondary,0));fire(id)
+		if before>int(p.mag.get(p.primary if p.slot==0 else p.secondary,0)):
+			p.burst_left=maxi(0,p.burst_left-1)
+			if mode=="burst" and p.burst_left==0:p.fire_ready=clock+.3
 func current_weapon(p:Dictionary) -> Dictionary:return C.get_weapon(p.primary if p.slot==0 else p.secondary)
 func ray(from:Vector3,to:Vector3,exclude:Array=[],mask:int=7) -> Dictionary:
 	var q=PhysicsRayQueryParameters3D.create(from,to,mask);q.exclude=exclude;return get_world_3d().direct_space_state.intersect_ray(q)
 func clear_line(from:Vector3,to:Vector3,exclude:Array=[]) -> bool:return ray(from,to,exclude,1|4).is_empty()
 func fire(id:int):
 	var p=players[id];var a=actors[id]
-	if clock<p.fire_ready or p.reload>0 or clock<a.sprint_release or a.last_sprint or p.shield>clock:return
+	if p.slot>1 or not p.alive or clock<p.fire_ready or p.reload>0 or clock<a.sprint_release or a.last_sprint or p.shield>clock:return
 	var wid=p.primary if p.slot==0 else p.secondary;var w=C.get_weapon(wid)
 	if w.kind=="heal":continuous_heal(id);return
 	if w.kind=="repair":repair(id);return
-	if int(p.mag.get(wid,0))<=0:return
+	if int(p.mag.get(wid,0))<=0:begin_reload(id);return
 	p.mag[wid]-=1;p.fire_ready=clock+float(w.interval);p.protect=0.
 	var spread=float(w.spread)
 	if a.input_state.ads:spread*=.2
@@ -403,10 +471,11 @@ func fire(id:int):
 	if p.get("mounted",0)>clock and a.velocity.length()<.3:spread*=.35
 	if a.velocity.length()>1:spread*=2.1
 	if not a.is_on_floor():spread*=3
-	var origin=a.eye();var last_end=origin+a.direction()*200
+	var origin=a.muzzle_world();var eye=a.eye();var last_end=origin+a.direction()*200
 	for pellet in range(int(w.pellets)):
 		var dir=a.direction();dir=(dir+Vector3(randf_range(-1,1),randf_range(-1,1),randf_range(-1,1))*deg_to_rad(spread)).normalized()
-		var hit=ray(origin,origin+dir*300,[a.get_rid()]);last_end=hit.get("position",origin+dir*200)
+		var aim_hit=ray(eye,eye+dir*300,[a.get_rid()]);var aim_point=aim_hit.get("position",eye+dir*300)
+		var hit=ray(origin,origin+(aim_point-origin).normalized()*minf(300,origin.distance_to(aim_point)+.15),[a.get_rid()]);last_end=hit.get("position",aim_point)
 		if hit.is_empty():continue
 		var dist=origin.distance_to(hit.position);var dmg=float(w.damage)*lerpf(1.,.4,clampf((dist-float(w.reach))/maxf(float(w.reach),1),0,1))
 		var collider=hit.collider
@@ -414,11 +483,12 @@ func fire(id:int):
 			var q=players[collider.pid]
 			if not q.alive:continue
 			var head=hit.position.y-collider.position.y>(.86 if collider.input_state.crouch else 1.38)
-			if head:dmg*=1.8
+			if head:dmg*=1.5
 			dmg*=R.damage_water(arena.submerged(hit.position),arena.wading(a.position),not arena.wading(collider.position))
 			damage(collider.pid,dmg,id,head)
 		elif collider.has_meta("device"):damage_device(int(collider.get_meta("device")),dmg,id)
 	effect.rpc("shot",origin,last_end,id)
+	if int(p.mag[wid])==0:begin_reload(id)
 func damage(target:int,amount:float,source:int,critical:bool=false):
 	if not players.has(target) or not players[target].alive:return
 	var p=players[target]
@@ -431,8 +501,9 @@ func damage(target:int,amount:float,source:int,critical:bool=false):
 	var absorb=minf(p.armor,amount);p.armor-=absorb;p.hp-=amount-absorb;p.last_hit=clock
 	var push=(actors[target].position-actors[source].position).normalized() if actors.has(source) and source!=target else Vector3.FORWARD
 	impact.rpc(actors[target].eye()-Vector3.UP*.35,push,false,int(p.team))
+	hit_reaction.rpc(target,push)
 	if source!=target:p.contributors[source]=clock
-	if source>0:feedback(source,"hit","치명 명중" if critical else "방어구 명중" if armored else "명중")
+	if source>0:feedback(source,"hit",("정밀 명중" if critical else "방어구 명중" if armored else "명중")+" · "+str(int(round(amount))))
 	if p.hp<=0:
 		impact.rpc(actors[target].position,push,true,int(p.team))
 		p.hp=0;p.alive=false;p.deaths+=1;p.lives-=1;p.respawn=clock+4.;
@@ -528,7 +599,7 @@ func use_skill(id:int):
 				if not hit.is_empty() and int(hit.collider.get_meta("device",0))==existing:
 					var d=devices[existing]
 					if d.level>=4:feedback(id,"","이미 최대 4단계입니다.");return
-					d.level+=1;d.max_hp+=50;d.hp+=50;d.disabled=clock+2;p.skill_ready=clock+30;return
+					d.level+=1;d.max_hp+=50;d.hp+=50;d.disabled=clock+2;p.skill_ready=clock+30;feedback(id,"heal","포탑 %d단계 업그레이드"%d.level);return
 			var pos=placement(id)
 			if not valid_placement(pos,a.aim_yaw):feedback(id,"","설치 공간이 부족하거나 제한 구역입니다.");return
 			if existing:remove_device(existing)
@@ -539,14 +610,17 @@ func use_skill(id:int):
 			var tid=aim_player(id,15,true)
 			if tid==0:tid=id
 			players[tid].slow=0.;players[tid].mark=0.;players[tid].flash=0.;players[tid].cleanse=clock+4;p.skill_ready=clock+20
+	feedback(id,"heal",["기동 스킬 사용","감지 파동 · 3초","방호 활성 · 4초","포탑 설치 완료 · 재충전 30초","둔화 구역 전개 · 8초","상태 정화 · 4초"][int(p.role)])
 func use_gadget(id:int):
 	var p=players[id];var a=actors[id]
 	if not options.classes or not p.alive or phase!="combat" or p.gadget_count<=0 or clock<p.gadget_ready:return
 	match int(p.role):
-		0:p.armor=minf(50,p.armor+25);p.armor_max=maxi(p.armor_max,25)
+		0:
+			if p.armor>=50:feedback(id,"","방어구가 이미 가득 찼습니다.");return
+			p.armor=minf(50,p.armor+25)
 		1:
 			var tid=aim_player(id,160,false)
-			if tid==0:return
+			if tid==0:feedback(id,"","표식할 상대를 조준하세요.");return
 			players[tid].mark=clock+4
 		2:
 			if not a.input_state.crouch:feedback(id,"","앉아서 거치대를 사용하세요.");return
@@ -577,9 +651,10 @@ func use_gadget(id:int):
 		5:
 			var tid=aim_player(id,4,true)
 			if tid==0:tid=id
-			if players[tid].hp>=100:return
+			if players[tid].hp>=100:feedback(id,"","체력이 이미 가득 찼습니다.");return
 			heal_target(id,tid,25)
 	p.gadget_count-=1;p.gadget_ready=clock+.6
+	feedback(id,"heal",["방어구 +25","상대 표식 · 4초","거치대 활성 · 15초 동안 정지 사격 정확도 증가","엄폐물 설치 완료","섬광탄 사용" if p.gadget==1 else "연막탄 전개 · 12초","응급 회복 +25"][int(p.role)])
 func remove_device(did:int):
 	devices.erase(did)
 	if device_nodes.has(did):device_nodes[did].queue_free();device_nodes.erase(did)
@@ -776,7 +851,7 @@ func receive_state(s:Dictionary):
 	for p in s.players:
 		var id=int(p.id);var fresh=not players.has(id) or (not players[id].alive and p.alive);present.append(id);players[id]=p;ensure_actor(id);var a=actors[id];a.set_team(int(p.team));a.collision_layer=2 if p.alive else 0
 		if id==local_id:
-			if fresh:a.input_state.yaw=p.yaw;a.input_state.pitch=0.;a.position=p.pos
+			if fresh:a.position=p.pos;a.velocity=Vector3.ZERO;a.reset_view(p.yaw)
 			if a.position.distance_to(p.pos)>2 or not p.alive:a.position=p.pos
 			else:a.position=a.position.lerp(p.pos,.25)
 		else:a.target_pos=p.pos;a.aim_yaw=p.yaw;a.aim_pitch=p.pitch;a.input_state.crouch=p.crouch
@@ -832,11 +907,12 @@ func effect(kind:String,from:Vector3,to:Vector3,owner:int):
 	if kind=="shot" and players.has(owner) and current_weapon(players[owner]).role in [1,2,3]:sound="heavy"
 	play_sound(sound,from,true)
 	if kind in ["shot","heal"] and arena:
+		if owner==local_id and actors.has(owner) and players[owner].alive and players[owner].slot<2:from=actors[owner].visual_muzzle()
 		var length=from.distance_to(to)
 		if length>.01:
 			var n=arena.box((from+to)*.5,Vector3(.025,.025,length),Color("ffe2a0") if kind=="shot" else Color("63ecc6"),false)
 			n.look_at(to);get_tree().create_timer(.045 if kind=="shot" else .09).timeout.connect(n.queue_free)
-	if owner==local_id and actors.has(owner) and kind=="shot":actors[owner].gun.rotation.x=.05
+	if owner==local_id and actors.has(owner) and kind=="shot":actors[owner].recoil=1.
 func play_sound(kind:String,pos:Vector3,spatial:bool):
 	if not sounds.has(kind) or dedicated:return
 	var n:Node
@@ -884,10 +960,17 @@ func cycle_spectator():
 	if ids.is_empty():spectator_target=0;return
 	spectator_target=ids[(ids.find(spectator_target)+1)%ids.size()]
 func update_spectator():
-	if dedicated or not players.has(local_id):return
+	if dedicated or not players.has(local_id) or not is_instance_valid(spectator_camera):return
 	var local_actor=actors[local_id]
 	if players[local_id].alive:
-		local_actor.camera.top_level=false;return
+		local_actor.camera.current=true;return
 	if not players.has(spectator_target) or not players[spectator_target].alive:cycle_spectator()
-	if actors.has(spectator_target):
-		local_actor.camera.top_level=true;local_actor.camera.global_position=actors[spectator_target].eye();local_actor.camera.global_rotation=Vector3(actors[spectator_target].aim_pitch,actors[spectator_target].aim_yaw,0)
+	var focus=actors[spectator_target].eye() if actors.has(spectator_target) else local_actor.eye()
+	var facing=Basis(Vector3.UP,spectator_yaw)*Basis(Vector3.RIGHT,spectator_pitch)*Vector3.FORWARD
+	var desired=focus-facing*3+Vector3.UP*.5
+	var obstruction=ray(focus,desired,[],1|4)
+	if not obstruction.is_empty():desired=obstruction.position+obstruction.normal*.2
+	spectator_camera.global_position=desired;spectator_camera.rotation=Vector3(spectator_pitch,spectator_yaw,0);spectator_camera.current=true
+@rpc("authority","call_local","unreliable",2)
+func hit_reaction(id:int,push:Vector3):
+	if actors.has(id):actors[id].react_hit(push)
