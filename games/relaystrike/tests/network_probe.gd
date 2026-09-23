@@ -37,9 +37,12 @@ func drive():
 		a.input_state.yaw=.5;a.input_state.pitch=0.;a.input_state.fire=true;a.input_state.trigger_seq=1;a.input_state.x=.3
 		if ticks%2==0:g.send_input.rpc_id(1,a.input_state)
 		if p.primary=="e1" and p.mag.e1<6:
-			var error=a.camera.global_position.distance_to(a.eye())
-			print("PROBE_RESPAWN_SHOT primary=",p.primary," mag=",p.mag.e1," camera_error=",error," repair=",p.secondary)
-			done=true;finish_probe(0 if error<.01 and p.secondary=="repair" else 1)
+			var offset=a.camera.global_position-a.eye()
+			var horizontal=Vector2(offset.x,offset.z).length()
+			# Landing compression intentionally offsets the camera vertically by up to 5.5 cm.
+			# The original regression detached the camera horizontally and moved the observed actor.
+			print("PROBE_RESPAWN_SHOT primary=",p.primary," mag=",p.mag.e1," camera_xz=",horizontal," camera_y=",offset.y," repair=",p.secondary)
+			done=true;finish_probe(0 if horizontal<.001 and absf(offset.y)<.07 and not a.camera.top_level and p.secondary=="repair" else 1)
 
 func finish_probe(code:int):
 	g.set_physics_process(false)

@@ -37,7 +37,7 @@ var bomb={"planted":false,"site":-1,"time":0.0,"actor":0,"progress":0.0,"positio
 var server=false
 var dedicated=false
 var local_id=1
-var profile={"nick":"Player","token":"","sensitivity":.0023,"ads_sensitivity":.75,"volume":.65,"window":true}
+var profile={"nick":"Player","token":"","sensitivity":.0023,"ads_sensitivity":.75,"volume":.65,"window":true,"resolution":0,"weapon_volume":.85,"step_volume":.7,"ui_volume":.7}
 var pending_loadout={"role":0,"primary":"a1","secondary":"pistol","armor":0,"team":-1,"gadget":0}
 var snapshot_timer=0.0
 var input_timer=0.0
@@ -46,6 +46,7 @@ var browser:PacketPeerUDP
 var discover_timer=0.0
 var rooms={}
 var sounds={}
+var audio_bank:GameAudio
 var ping_ms=0
 var ping_timer=0.0
 var test_mode=false
@@ -60,13 +61,26 @@ var snapshot_sequence=0
 var received_sequence=-1
 var received_parts={}
 var expected_parts=0
+var snapshot_buffers={}
+var session_started=0
+var last_snapshot_ms=0
+var last_server_ip=""
+var connection_busy=false
+var connection_deadline=0
+var peer_activity={}
+var pending_peers={}
+var full_sync_timer=0.
+var room_search_active=false
+var room_search_timer=0.
+var connection_notice=false
 func _ready():
-	C.load_all();load_profile();setup_input()
-	for s in ["shot","heavy","hit","confirm","reload","step","heal"]:sounds[s]=load("res://assets/audio/"+s+".wav")
+	C.load_all();load_profile();setup_input();apply_display_settings()
+	audio_bank=GameAudio.new();add_child(audio_bank);audio_bank.profile=profile
 	ui=UI.new();ui.game=self;add_child(ui);ui.menu();save_profile()
 	multiplayer.peer_disconnected.connect(disconnected)
 	multiplayer.connected_to_server.connect(connected)
-	multiplayer.connection_failed.connect(func():ui.notice("서버에 연결하지 못했습니다. IP·방화벽을 확인하세요."))
+	multiplayer.connection_failed.connect(func():leave_game("서버에 연결하지 못했습니다. IP·방화벽을 확인하고 다시 접속하세요."))
+	multiplayer.peer_connected.connect(peer_opened)
 	multiplayer.server_disconnected.connect(func():leave_game("서버 연결이 종료되었습니다."))
 	cli_args=OS.get_cmdline_user_args()
 	for s in cli_args:
@@ -100,6 +114,10 @@ func save_profile():
 	for k in profile:cfg.set_value("player",k,profile[k])
 	cfg.save("user://settings.cfg")
 	AudioServer.set_bus_volume_db(0,linear_to_db(maxf(.001,float(profile.volume))))
+func apply_display_settings():
+	if DisplayServer.get_name()=="headless":return
+	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED if profile.window else DisplayServer.WINDOW_MODE_FULLSCREEN)
+	if profile.window:DisplayServer.window_set_size([Vector2i(1280,720),Vector2i(1600,900),Vector2i(1920,1080)][clampi(int(profile.resolution),0,2)])
 func setup_input():
 	var binds={"left":KEY_A,"right":KEY_D,"forward":KEY_W,"back":KEY_S,"sprint":KEY_SHIFT,"crouch":KEY_CTRL,"jump":KEY_SPACE,"reload":KEY_R,"use":KEY_E,"skill":KEY_F,"gadget":KEY_G,"gear":KEY_B,"score":KEY_TAB,"primary":KEY_1,"secondary":KEY_2,"medical":KEY_Q,"gadget_mode":KEY_V,"item3":KEY_3,"item4":KEY_4}
 	for k in binds:
@@ -112,7 +130,8 @@ func build_world():
 	if not is_instance_valid(spectator_camera):
 		spectator_camera=Camera3D.new();spectator_camera.near=.1;spectator_camera.far=350;add_child(spectator_camera)
 func host_game():
-	if phase!="menu":return
+	if phase!="menu" or connection_busy:return
+	reset_transport_state();stop_room_search()
 	var peer=ENetMultiplayerPeer.new();var err=peer.create_server(R.PORT,32,3)
 	if err!=OK:ui.notice("방을 만들 수 없습니다. 다른 서버가 실행 중인지 확인하세요. 코드 "+str(err));return
 	multiplayer.multiplayer_peer=peer;multiplayer.server_relay=false;server=true;local_id=1;phase="lobby";build_world()
@@ -121,13 +140,44 @@ func host_game():
 	if not dedicated:add_player(1,profile.nick,profile.token)
 	for i in range(mini(int(options.bots),int(options.max_players)-(0 if dedicated else 1))):add_player(-i-1,"BOT %02d"%(i+1),"bot"+str(i))
 	ui.lobby();broadcast_state(true);print("SERVER_READY port=",R.PORT)
+func reset_transport_state():
+	received_sequence=-1;snapshot_sequence=0;snapshot_buffers.clear();received_parts.clear();expected_parts=0;incoming_at.clear();peer_activity.clear();pending_peers.clear();snapshot_timer=0.;input_timer=0.;ping_timer=0.;ping_ms=0;full_sync_timer=0.;connection_busy=false;connection_notice=false;last_snapshot_ms=Time.get_ticks_msec();session_started=last_snapshot_ms
+func peer_opened(id:int):
+	if multiplayer.multiplayer_peer is ENetMultiplayerPeer:
+		var peer=multiplayer.multiplayer_peer.get_peer(id)
+		peer.set_timeout(32,10000,45000);peer.ping_interval(1000)
+	if server:pending_peers[id]=Time.get_ticks_msec()
 func join_game(ip:String):
-	if phase!="menu":return
-	var peer=ENetMultiplayerPeer.new();var err=peer.create_client(ip.strip_edges(),R.PORT,3)
-	if err!=OK:ui.notice("연결을 시작할 수 없습니다.");return
-	multiplayer.multiplayer_peer=peer;server=false;ui.notice("서버에 연결 중…")
+	if phase!="menu" or connection_busy:return
+	last_server_ip=ip.strip_edges()
+	if last_server_ip.is_empty():ui.notice("서버 IP를 입력하세요.");return
+	if multiplayer.multiplayer_peer:multiplayer.multiplayer_peer.close()
+	multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new();reset_transport_state();stop_room_search()
+	var peer=ENetMultiplayerPeer.new();var err=peer.create_client(last_server_ip,R.PORT,3)
+	if err!=OK:ui.notice("연결을 시작할 수 없습니다. IP를 확인하세요.");return
+	multiplayer.multiplayer_peer=peer;server=false;connection_busy=true;connection_deadline=Time.get_ticks_msec()+15000;ui.notice("서버에 연결 중… 취소하거나 다시 시도할 수 있습니다.")
 func connected():
-	local_id=multiplayer.get_unique_id();register.rpc_id(1,profile.nick,profile.token,options.password,R.VERSION)
+	local_id=multiplayer.get_unique_id();peer_opened(1)
+	register.rpc_id(1,profile.nick,profile.token,options.password,R.VERSION)
+func request_leave():
+	if not server and phase!="menu" and multiplayer.multiplayer_peer.get_connection_status()==MultiplayerPeer.CONNECTION_CONNECTED:
+		depart.rpc_id(1);await get_tree().create_timer(.12).timeout
+	leave_game()
+@rpc("any_peer","call_remote","reliable",0)
+func depart():
+	if server:disconnected(multiplayer.get_remote_sender_id())
+func connection_watchdog():
+	var now=Time.get_ticks_msec()
+	if connection_busy and now>connection_deadline:leave_game("연결 시간이 초과되었습니다. 재접속 버튼으로 다시 시도하세요.");return
+	if server:
+		for id in pending_peers.keys():
+			if now-int(pending_peers[id])>20000:multiplayer.multiplayer_peer.disconnect_peer(id);pending_peers.erase(id)
+		for id in peer_activity.keys():
+			if now-int(peer_activity[id])>45000:multiplayer.multiplayer_peer.disconnect_peer(id);disconnected(id)
+	elif phase!="menu" and not connection_busy:
+		var age=now-last_snapshot_ms
+		if age>20000:leave_game("서버 응답이 끊겼습니다. 게임을 종료하지 않고 재접속할 수 있습니다.")
+		elif age>4000 and not connection_notice:connection_notice=true;ui.notice("서버 응답 대기 중… 연결을 확인하고 있습니다.")
 @rpc("any_peer","call_remote","reliable",0)
 func register(nick:String,token:String,password:String,version:String):
 	if not server:return
@@ -136,14 +186,17 @@ func register(nick:String,token:String,password:String,version:String):
 	var reason=""
 	if version!=R.VERSION:reason="게임 버전이 다릅니다. 모두 같은 배포 파일을 사용하세요."
 	elif password!=options.password:reason="방 비밀번호가 다릅니다."
-	elif players.size()>=int(options.max_players):reason="방이 가득 찼습니다."
 	elif phase!="lobby" and int(options.join)==0:reason="진행 중 참가가 금지된 방입니다."
 	elif token.length()<16 or token.length()>80:reason="플레이어 식별 정보가 올바르지 않습니다."
 	if not reason.is_empty():reject.rpc_id(id,reason);return
-	for p in players.values():
-		if p.token==token:reject.rpc_id(id,"같은 플레이어가 이미 접속해 있습니다.");return
-	add_player(id,nick.left(20),token)
-	configure.rpc_id(id,public_options());broadcast_state(true)
+	for old_id in players.keys():
+		if players[old_id].token!=token:continue
+		if old_id==1 or Time.get_ticks_msec()-int(peer_activity.get(old_id,0))<5000:
+			reject.rpc_id(id,"같은 플레이어의 이전 연결이 아직 남아 있습니다. 5초 뒤 다시 접속하세요.");return
+		multiplayer.multiplayer_peer.disconnect_peer(old_id);disconnected(old_id)
+	if players.size()>=int(options.max_players):reject.rpc_id(id,"방이 가득 찼습니다.");return
+	add_player(id,nick.left(20),token);peer_activity[id]=Time.get_ticks_msec();pending_peers.erase(id)
+	configure.rpc_id(id,public_options());broadcast_state(true,id)
 	print("JOIN ",id," count=",players.size())
 @rpc("authority","call_remote","reliable",0)
 func reject(message:String):
@@ -152,7 +205,7 @@ func public_options() -> Dictionary:
 	var d=options.duplicate();d.erase("password");return d
 @rpc("authority","call_remote","reliable",0)
 func configure(opts:Dictionary):
-	options=opts;build_world();phase="lobby";ui.lobby()
+	var saved_password=str(options.get("password",""));options=R.default_options();options.merge(opts,true);options.password=saved_password;connection_busy=false;received_sequence=-1;snapshot_buffers.clear();last_snapshot_ms=Time.get_ticks_msec();build_world();phase="lobby";ui.lobby()
 func add_player(id:int,nick:String,token:String):
 	var t=0;var counts=[0,0]
 	for p in players.values():counts[p.team]+=1
@@ -165,7 +218,7 @@ func add_player(id:int,nick:String,token:String):
 	elif phase!="lobby":
 		p.spectator=int(options.join)==1
 		p.alive=false;p.respawn=clock+3 if int(options.join)==2 and int(options.mode)!=4 else 1e12
-	p.bloom=0.;p.shot_time=-100.;p.spray_index=0;p.bot_action=""
+	p.bloom=0.;p.shot_time=-100.;p.spray_index=0;p.spray_phase=0.;p.bot_action=""
 	p.pending_loadout={};p.trigger_seen=0;p.fire_prev=false;p.burst_left=0;p.trigger_until=0.;p.reload_started=0.;p.switch_until=0.
 	if id<0 and p.role==3:p.secondary="repair"
 	players[id]=p;ensure_actor(id);equip_ammo(p)
@@ -191,9 +244,10 @@ func spawn(id:int):
 		distance+=randf()*5
 		if distance>safest:safest=distance;best=pos
 	a.collision_layer=2;a.position=best;a.target_pos=best;a.velocity=Vector3.ZERO;p.alive=true;p.hp=100.;p.armor=p.armor_max;p.reload=0.;p.protect=clock+2.;p.energy=180.;p.heal_mag=3;p.heal_reserve=3;p.repair_energy=100.;p.gadget_count=2 if p.role==3 else 3 if p.role==4 else 1;p.smoke=1 if p.role==4 and p.gadget==1 else 2;p.flash_count=2 if p.role==4 and p.gadget==1 else 1;p.last_hit=clock;p.contributors={};p.spectator=false
-	a.reset_view(0. if p.team==1 else PI);p.fire_ready=clock+.3;p.burst_left=0;p.fire_prev=false;p.trigger_until=0.;p.trigger_seen=int(a.input_state.get("trigger_seq",0));p.slot=0;p.bloom=0.;p.spray_index=0;p.shot_time=-100.;p.switch_until=clock+.3;equip_ammo(p)
+	a.reset_view(0. if p.team==1 else PI);p.fire_ready=clock+.3;p.burst_left=0;p.fire_prev=false;p.trigger_until=0.;p.trigger_seen=int(a.input_state.get("trigger_seq",0));p.slot=0;p.bloom=0.;p.spray_index=0;p.spray_phase=0.;p.shot_time=-100.;p.switch_until=clock+.3;equip_ammo(p)
 	if id==local_id:Input.mouse_mode=Input.MOUSE_MODE_CAPTURED
 func disconnected(id:int):
+	peer_activity.erase(id);pending_peers.erase(id)
 	if not players.has(id):return
 	if server:
 		var p=players[id];p.alive=false;reconnects[p.token]=p.duplicate(true)
@@ -203,9 +257,10 @@ func disconnected(id:int):
 	if actors.has(id):actors[id].queue_free();actors.erase(id)
 	if server:call_deferred("broadcast_state",true)
 func leave_game(message:String=""):
+	if is_instance_valid(audio_bank):audio_bank.stop_all()
 	if multiplayer.multiplayer_peer:multiplayer.multiplayer_peer.close()
 	multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new()
-	server=false;phase="menu"
+	server=false;phase="menu";reset_transport_state();stop_room_search()
 	for a in actors.values():a.queue_free()
 	actors.clear();players.clear();bot_agents.clear();bot_navigation=null
 	for n in device_nodes.values():n.queue_free()
@@ -219,10 +274,14 @@ func leave_game(message:String=""):
 	if discovery:discovery.close();discovery=null
 	Input.mouse_mode=Input.MOUSE_MODE_VISIBLE;ui.menu();ui.notice(message)
 func search_rooms():
-	rooms.clear()
+	room_search_active=true;room_search_timer=3.;rooms.clear()
+	ui.update_rooms()
 	if browser:browser.close()
 	browser=PacketPeerUDP.new();browser.bind(0);browser.set_broadcast_enabled(true);browser.set_dest_address("255.255.255.255",R.DISCOVERY);browser.put_packet("RELAYSTRIKE_DISCOVER".to_utf8_buffer())
 	browser.set_dest_address("127.0.0.1",R.DISCOVERY);browser.put_packet("RELAYSTRIKE_DISCOVER".to_utf8_buffer())
+func stop_room_search():
+	room_search_active=false
+	if browser:browser.close();browser=null
 func network_discovery():
 	if discovery:
 		while discovery.get_available_packet_count()>0:
@@ -278,7 +337,7 @@ func send_input(data:Dictionary):
 		if not data.has(k) or not (data[k] is float or data[k] is int) or not is_finite(float(data[k])):return
 	if absf(data.yaw)>1e8:return
 	a.input_state={"x":clampf(data.x,-1,1),"z":clampf(data.z,-1,1),"yaw":wrapf(data.yaw,-PI,PI),"pitch":clampf(data.pitch,-1.45,1.45),"ads":bool(data.get("ads",false)),"sprint":bool(data.get("sprint",false)),"crouch":bool(data.get("crouch",false)),"fire":bool(data.get("fire",false)),"alt":bool(data.get("alt",false)),"jump":bool(data.get("jump",false)),"use":bool(data.get("use",false)),"trigger_seq":maxi(0,int(data.get("trigger_seq",0)))}
-	players[id].input_time=clock
+	players[id].input_time=clock;peer_activity[id]=Time.get_ticks_msec()
 func collect_input():
 	if not actors.has(local_id):return
 	var a=actors[local_id];var on=Input.mouse_mode==Input.MOUSE_MODE_CAPTURED and players[local_id].alive
@@ -288,16 +347,22 @@ func collect_input():
 	if server:players[local_id].input_time=clock
 	else:send_input.rpc_id(1,a.input_state)
 func _physics_process(dt:float):
-	clock+=dt;network_discovery()
+	clock+=dt;network_discovery();connection_watchdog()
+	if room_search_active:
+		room_search_timer-=dt
+		if room_search_timer<=0:search_rooms()
 	if phase=="menu":return
 	input_timer-=dt
 	if input_timer<=0:collect_input();input_timer=1./30
 	if server:
 		server_tick(dt)
 		snapshot_timer-=dt
-		if snapshot_timer<=0:broadcast_state(false);snapshot_timer=1./15
+		full_sync_timer-=dt
+		if snapshot_timer<=0:broadcast_state(full_sync_timer<=0);snapshot_timer=1./15
+		if full_sync_timer<=0:full_sync_timer=3.
 	else:
 		if actors.has(local_id) and players[local_id].alive:
+			AimModel.recover(players[local_id],current_weapon(players[local_id]),dt,clock)
 			actors[local_id].simulate(dt,clock,phase=="combat" or phase=="lobby")
 		ping_timer-=dt
 		if ping_timer<=0:ping_request.rpc_id(1,Time.get_ticks_msec());ping_timer=1.
@@ -307,7 +372,8 @@ func _physics_process(dt:float):
 	update_spectator();ui.refresh()
 @rpc("any_peer","call_remote","unreliable",2)
 func ping_request(sent:int):
-	if server and rate_limit(multiplayer.get_remote_sender_id(),"ping",.5):ping_reply.rpc_id(multiplayer.get_remote_sender_id(),sent)
+	if server and players.has(multiplayer.get_remote_sender_id()) and rate_limit(multiplayer.get_remote_sender_id(),"ping",.5):
+		peer_activity[multiplayer.get_remote_sender_id()]=Time.get_ticks_msec();ping_reply.rpc_id(multiplayer.get_remote_sender_id(),sent)
 @rpc("authority","call_remote","unreliable",2)
 func ping_reply(sent:int):ping_ms=maxi(0,Time.get_ticks_msec()-sent)
 func server_tick(dt:float):
@@ -320,12 +386,17 @@ func server_tick(dt:float):
 		if not p.alive:
 			if phase=="combat" and clock>=p.respawn and not p.spectator and int(options.mode)!=4 and (int(options.mode)!=2 or (p.can_respawn if options.shared_lives else p.lives>0)):spawn(id)
 			continue
+		AimModel.recover(p,current_weapon(p),dt,clock)
+		var before_move=a.position
 		a.simulate(dt,clock,phase in ["combat","lobby"])
+		p.step_distance=float(p.get("step_distance",0))+Vector2(a.position.x-before_move.x,a.position.z-before_move.z).length()
+		if a.is_on_floor() and p.step_distance>(2.75 if a.last_sprint else 1.45 if a.input_state.crouch else 2.1):
+			p.step_distance=0.;p.step_variant=(int(p.get("step_variant",0))+1)%4
+			var surface="water" if arena.wading(a.position) else "metal" if absf(a.position.x)>72 and absf(a.position.z)<35 else "stone"
+			step_sound.rpc(a.position,id,surface,p.step_variant,-7. if a.input_state.crouch else 2. if a.last_sprint else 0.)
 		if phase!="combat":continue
 		p.played+=dt
 		var held_weapon=current_weapon(p)
-		if clock-float(p.get("shot_time",-100.))>(.18 if int(p.get("spray_index",0))>8 else .09):p.bloom=maxf(0,float(p.get("bloom",0))-float(held_weapon.get("bloom_recovery",3.))*dt*(.55 if int(p.get("spray_index",0))>8 else 1.))
-		if clock-float(p.get("shot_time",-100.))>.42:p.spray_index=0
 		if p.reload>0 and clock>=p.reload:
 			var wid=p.reload_weapon;var w=C.get_weapon(wid);var need=int(w.mag)-int(p.mag.get(wid,0));var got=need if options.infinite else mini(need,int(p.reserve.get(wid,0)))
 			p.mag[wid]=int(p.mag.get(wid,0))+got
@@ -373,18 +444,41 @@ func handle_command(id:int,action:String,data:Dictionary):
 			if slot==4 and not options.skills:return
 			if slot==p.slot:return
 			p.slot=slot;p.reload=0.;p.burst_left=0;p.trigger_until=0.;p.fire_ready=maxf(p.fire_ready,clock+.32);p.switch_until=clock+.32
+			feedback(id,"switch","")
 			if p.role==4 and slot in [2,3]:p.gadget=slot-2
 		"reload":begin_reload(id)
 		"loadout":apply_loadout(id,data)
-		"team":
-			if phase!="lobby" or int(options.teams)!=1:return
-			var t=clampi(int(data.get("team",0)),0,1)
-			if t!=p.team and team_count(t)>=team_count(p.team):feedback(id,"","팀 인원 차이가 너무 큽니다.");return
-			p.team=t;actors[id].set_team(t);enforce_medics();spawn(id)
+		"team":change_team(id,int(data.get("player_id",id)),int(data.get("team",0)))
+		"team_swap":swap_teams(id,int(data.get("first",0)),int(data.get("second",0)))
+		"team_policy":
+			if id!=1:return
+			options.next_teams=clampi(int(data.get("next_teams",options.next_teams)),0,2);broadcast_state(true)
 		"skill":use_skill(id)
 		"gadget":use_gadget(id)
 		"gadget_mode":
 			if p.role==4:p.gadget=0 if p.gadget==1 else 1
+func change_team(requester:int,target:int,team:int) -> bool:
+	if not players.has(target) or team not in [0,1] or int(options.mode)==1:return false
+	if requester!=1 and (phase!="lobby" or requester!=target):feedback(requester,"","경기 중 팀 변경은 방장만 할 수 있습니다.");return false
+	var p=players[target]
+	if p.team==team:return true
+	if team_count(team)>=16:feedback(requester,"","한 팀은 최대 16명입니다.");return false
+	p.team=team
+	finish_team_change(target);enforce_medics();broadcast_state(true);return true
+func swap_teams(requester:int,first:int,second:int) -> bool:
+	if requester!=1 or first==second or not players.has(first) or not players.has(second) or int(options.mode)==1:return false
+	var one=players[first];var two=players[second]
+	if one.team==two.team:return false
+	var old_team=one.team;one.team=two.team;two.team=old_team
+	finish_team_change(first);finish_team_change(second);enforce_medics();broadcast_state(true);return true
+func finish_team_change(target:int):
+	var p=players[target]
+	for did in devices.keys():
+		if devices[did].owner==target:remove_device(did)
+	if phase=="lobby":spawn(target)
+	else:
+		p.alive=false;p.protect=0.;p.reload=0.;p.respawn=clock+3.;p.spectator=int(options.mode)==4;p.can_respawn=p.lives>0;actors[target].collision_layer=0
+	actors[target].set_team(p.team)
 func valid_loadout(p:Dictionary,d:Dictionary) -> bool:
 	var role=clampi(int(d.get("role",p.role)),0,5);var wid=str(d.get("primary",C.first(role)))
 	if not C.weapons.has(wid) or C.get_weapon(wid).slot!=0:return false
@@ -465,8 +559,8 @@ func fire(id:int):
 	if int(p.mag.get(wid,0))<=0:begin_reload(id);return
 	p.mag[wid]-=1;p.fire_ready=clock+float(w.interval);p.protect=0.
 	var spread=a.spread_angle
-	var spray=AimModel.spray_offset(w,int(p.get("spray_index",0)))
-	p.shot_time=clock;p.spray_index=int(p.get("spray_index",0))+1;p.bloom=minf(float(w.get("bloom_max",1.2)),float(p.get("bloom",0))+float(w.get("shot_bloom",.12)))
+	var spray=AimModel.current_spray(w,p)
+	p.shot_time=clock;p.spray_phase=float(p.get("spray_phase",0))+1.;p.spray_index=int(p.spray_phase);p.bloom=minf(float(w.get("bloom_max",1.2)),float(p.get("bloom",0))+float(w.get("shot_bloom",.12)))
 	var origin=a.muzzle_world();var eye=a.eye();var last_end=origin+a.direction()*200
 	for pellet in range(int(w.pellets)):
 		var forward=Basis(Vector3.UP,a.aim_yaw-deg_to_rad(spray.x))*Basis(Vector3.RIGHT,a.aim_pitch+deg_to_rad(spray.y))*Vector3.FORWARD
@@ -504,7 +598,7 @@ func damage(target:int,amount:float,source:int,critical:bool=false):
 	if source!=target:p.contributors[source]=clock
 	if source>0:feedback(source,"hit",("정밀 명중" if critical else "방어구 명중" if armored else "명중")+" · "+str(int(round(amount))))
 	if p.hp<=0:
-		impact.rpc(actors[target].position,push,true,int(p.team),int(p.role))
+		impact.rpc(actors[target].position,push,true,int(p.team),int(p.role),randi()%5,actors[target].aim_yaw,bool(actors[target].input_state.crouch))
 		p.hp=0;p.alive=false;p.deaths+=1;p.lives-=1;p.respawn=clock+4.;
 		p.can_respawn=p.lives>0
 		if int(options.mode)==2 and options.shared_lives:
@@ -512,7 +606,7 @@ func damage(target:int,amount:float,source:int,critical:bool=false):
 			if p.can_respawn:tickets[p.team]-=1
 		p.owned_primary=false
 		actors[target].collision_layer=0
-		var wid=p.primary;drops.append({"pos":actors[target].position+Vector3.UP*.25,"amount":int(p.mag.get(wid,0))+int(p.reserve.get(wid,0)),"weapon":wid,"until":clock+40})
+		var wid=p.secondary if p.slot==1 else p.primary;drops.append({"pos":actors[target].position+Vector3.UP*.18,"yaw":actors[target].aim_yaw,"amount":int(p.mag.get(wid,0))+int(p.reserve.get(wid,0)),"weapon":wid,"until":clock+40})
 		if players.has(source) and source!=target:
 			players[source].kills+=1
 			if int(options.mode)==0:scores[players[source].team]+=1
@@ -808,7 +902,8 @@ func next_match():
 		var ids=players.keys();ids.shuffle()
 		for i in range(ids.size()):players[ids[i]].team=i%2;actors[ids[i]].set_team(i%2)
 	start_match()
-func broadcast_state(force:bool):
+func broadcast_state(force:bool,target_peer:int=0):
+	if not server or arena==null:return
 	var list=[]
 	for id in players:
 		var p=players[id];var a=actors[id];var d=p.duplicate();d.erase("token");d.erase("contributors");d.pos=a.position;d.yaw=a.aim_yaw;d.pitch=a.aim_pitch;d.crouch=a.input_state.crouch;d.velocity=a.velocity;d.grounded=a.is_on_floor();d.sprint=a.last_sprint;d.ads=a.input_state.ads;d.spread_angle=a.spread_angle;list.append(d)
@@ -816,35 +911,44 @@ func broadcast_state(force:bool):
 	for s in arena.supplies:supplies.append(s.ready)
 	var state={"clock":clock,"phase":phase,"remaining":remaining,"scores":scores,"tickets":tickets,"round":round_no,"players":list,"devices":devices,"fields":fields,"drops":drops,"zones":zone_owner,"supplies":supplies,"bomb":bomb}
 	if multiplayer.get_peers().size()>0:
+		snapshot_sequence+=1;state.sequence=snapshot_sequence
+		state.team_policy={"teams":options.teams,"next_teams":options.next_teams}
 		var packed=var_to_bytes(state).compress(FileAccess.COMPRESSION_DEFLATE)
-		snapshot_sequence+=1
 		var parts=int(ceil(packed.size()/1000.0))
 		for peer in multiplayer.get_peers():
-			if not players.has(peer):continue
+			if (target_peer!=0 and peer!=target_peer) or not players.has(peer):continue
 			var link=multiplayer.multiplayer_peer.get_peer(peer)
 			if link.get_state()!=ENetPacketPeer.STATE_CONNECTED:continue
 			if force:full_state.rpc_id(peer,state)
 			else:
 				for i in range(parts):snapshot_chunk.rpc_id(peer,snapshot_sequence,i,parts,packed.slice(i*1000,mini(packed.size(),(i+1)*1000)))
-@rpc("authority","call_remote","unreliable_ordered",1)
+@rpc("authority","call_remote","unreliable",1)
 func snapshot_chunk(seq:int,index:int,count:int,bytes:PackedByteArray):
-	if seq<received_sequence or count<1 or count>128 or index<0 or index>=count or bytes.size()>1000:return
-	if seq>received_sequence:received_sequence=seq;received_parts={};expected_parts=count
-	if count!=expected_parts:return
-	received_parts[index]=bytes
-	if received_parts.size()==count:
+	# Individual chunks may arrive out of order; apply only complete, newer frames.
+	if seq<=received_sequence or count<1 or count>128 or index<0 or index>=count or bytes.size()>1000:return
+	if not snapshot_buffers.has(seq):snapshot_buffers[seq]={"count":count,"parts":{},"at":Time.get_ticks_msec()}
+	var frame=snapshot_buffers[seq]
+	if count!=int(frame.count):return
+	frame.parts[index]=bytes
+	if frame.parts.size()==count:
 		var joined=PackedByteArray()
-		for i in range(count):joined.append_array(received_parts[i])
+		for i in range(count):joined.append_array(frame.parts[i])
 		var unpacked=joined.decompress_dynamic(512000,FileAccess.COMPRESSION_DEFLATE)
 		var state=bytes_to_var(unpacked)
 		if state is Dictionary:receive_state(state)
-		received_parts.clear()
+	var keys=snapshot_buffers.keys();keys.sort()
+	for key in keys:
+		if key<=received_sequence or snapshot_buffers.size()>4 or Time.get_ticks_msec()-int(snapshot_buffers[key].at)>1000:snapshot_buffers.erase(key)
 @rpc("authority","call_remote","reliable",0)
 func full_state(s:Dictionary):receive_state(s)
 @rpc("authority","call_remote","unreliable_ordered",1)
 func snapshot(s:Dictionary):receive_state(s)
 func receive_state(s:Dictionary):
 	if server or arena==null:return
+	var sequence=int(s.get("sequence",received_sequence+1))
+	if sequence<=received_sequence:return
+	received_sequence=sequence;last_snapshot_ms=Time.get_ticks_msec();connection_notice=false
+	if s.has("team_policy"):options.merge(s.team_policy,true)
 	clock=s.clock;var old_phase=phase;phase=s.phase;remaining=s.remaining;scores=s.scores;tickets=s.tickets;round_no=s.round;bomb=s.bomb;zone_owner=s.zones;fields=s.fields;drops=s.drops
 	var present=[]
 	for p in s.players:
@@ -888,7 +992,8 @@ func update_world_visuals(dt:float):
 	for d in drops:
 		var key=str(d.until)+str(d.pos)+d.weapon;live_drops[key]=true
 		if not drop_nodes.has(key):
-			var n=WeaponVisual.new();add_child(n);n.build(Catalog.get_weapon(d.weapon),false);n.position=d.pos;n.rotation=Vector3(0,0,PI/2);drop_nodes[key]=n
+			var n=WeaponVisual.new();add_child(n);n.build(Catalog.get_weapon(d.weapon),false);n.position=d.pos;n.rotation=Vector3(0,float(d.get("yaw",0)),PI/2);drop_nodes[key]=n
+			var tag=arena.text3d(Catalog.get_weapon(d.weapon).name+" · E",Vector3(0,.4,0),Color("d7e8ef"),24,n);tag.top_level=true;tag.global_position=d.pos+Vector3.UP*.5;tag.visibility_range_end=12;tag.visibility_range_end_margin=1.5;tag.pixel_size=.004
 	for key in drop_nodes.keys():
 		if not live_drops.has(key):drop_nodes[key].queue_free();drop_nodes.erase(key)
 func feedback(id:int,sound:String,message:String):
@@ -907,9 +1012,9 @@ func announcement(message:String):ui.notice(message)
 @rpc("authority","call_local","unreliable",2)
 func effect(kind:String,from:Vector3,to:Vector3,owner:int):
 	if dedicated:return
-	var sound="shot" if kind=="shot" else "heal" if kind=="heal" else "confirm"
-	if kind=="shot" and players.has(owner) and current_weapon(players[owner]).role in [1,2,3]:sound="heavy"
-	play_sound(sound,from,true)
+	var sound="heal" if kind=="heal" else "confirm"
+	if kind=="shot" and players.has(owner):sound="gun_"+(players[owner].primary if players[owner].slot==0 else players[owner].secondary)
+	play_sound(sound,from,owner!=local_id)
 	if kind in ["shot","heal"] and arena:
 		if owner==local_id and actors.has(owner) and players[owner].alive and players[owner].slot<2:from=actors[owner].visual_muzzle()
 		var length=from.distance_to(to)
@@ -918,40 +1023,27 @@ func effect(kind:String,from:Vector3,to:Vector3,owner:int):
 			n.look_at(to);get_tree().create_timer(.045 if kind=="shot" else .09).timeout.connect(n.queue_free)
 	if actors.has(owner) and kind=="shot":actors[owner].recoil=1.
 func play_sound(kind:String,pos:Vector3,spatial:bool):
-	if not sounds.has(kind) or dedicated:return
-	var n:Node
-	if spatial:
-		n=AudioStreamPlayer3D.new();n.max_distance=100;n.unit_size=8;add_child(n);n.position=pos;n.volume_db=-8
-	else:n=AudioStreamPlayer.new();add_child(n);n.volume_db=-8
-	n.stream=sounds[kind];n.pitch_scale=randf_range(.95,1.05);n.finished.connect(n.queue_free);n.play()
-func local_step(pos:Vector3):
-	play_sound("step",Vector3.ZERO,false)
-	if server:footstep.rpc(pos,local_id)
-	else:step_request.rpc_id(1)
-@rpc("any_peer","call_remote","unreliable",2)
-func step_request():
-	var id=multiplayer.get_remote_sender_id()
-	if server and players.has(id) and players[id].alive and actors[id].velocity.length()>1 and rate_limit(id,"step",.25):footstep.rpc(actors[id].position,id)
-@rpc("authority","call_remote","unreliable",2)
-func footstep(pos:Vector3,id:int):
-	if id!=local_id:play_sound("step",pos,true)
-
+	if dedicated or not is_instance_valid(audio_bank):return
+	audio_bank.play(kind,pos,spatial)
 @rpc("authority","call_local","unreliable",2)
-func impact(pos:Vector3,push:Vector3,eliminated:bool,team:int,role:int=0):
+func step_sound(pos:Vector3,id:int,surface:String,variant:int,gain:float):
+	if dedicated:return
+	audio_bank.play("step_"+surface+"_"+str(variant%4),pos,id!=local_id,gain)
+@rpc("authority","call_local","unreliable",2)
+func impact(pos:Vector3,push:Vector3,eliminated:bool,team:int,role:int=0,variant:int=0,facing:float=0.,crouched:bool=false):
 	if dedicated or arena==null:return
 	if eliminated:
 		var model=Node3D.new();add_child(model);model.position=pos
-		var body=CharacterVisual.new();model.add_child(body);body.build(role,team);body.animator.play("death");body.animator.advance(0.)
+		var body=CharacterVisual.new();model.add_child(body);body.build(role,team);body.animator.play(["fall_back","fall_front","fall_left","fall_right","fall_fold"][variant%5]);body.animator.seek(.12 if crouched else 0.,true)
 		var pose=create_tween();pose.tween_method(func(t):
-			if is_instance_valid(body):body.animator.seek(t,true),0.,.65,.65)
-		var end=pos+push*1.2;end.y=.3
+			if is_instance_valid(body):body.animator.seek(t,true),.12 if crouched else 0.,.9,.78 if crouched else .9)
+		var end=pos+push*(.5 if crouched else .7+variant*.1);end.y=pos.y
 		var obstruction=ray(pos+Vector3.UP*.7,end+Vector3.UP*.7,[],1|4)
 		if not obstruction.is_empty():end=pos
-		model.rotation.y=atan2(push.x,push.z)
+		model.rotation.y=facing
 		var t=create_tween().set_parallel(true);t.tween_property(model,"position",end,.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-		get_tree().create_timer(5).timeout.connect(func():
-			if is_instance_valid(model):
-				var fade=create_tween();fade.tween_property(model,"scale",Vector3.ZERO,1.);fade.tween_callback(model.queue_free))
+		get_tree().create_timer(5.5).timeout.connect(func():
+			if is_instance_valid(model):model.queue_free())
 	else:
 		for i in range(4):
 			var n=arena.box(pos,Vector3(.045,.045,.045),Color("c64b52"),false)

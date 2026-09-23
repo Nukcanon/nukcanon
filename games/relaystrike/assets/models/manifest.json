@@ -11,7 +11,12 @@
 		"reload",
 		"hit",
 		"land",
-		"death"
+		"death",
+		"fall_back",
+		"fall_front",
+		"fall_left",
+		"fall_right",
+		"fall_fold"
 	],
 	"license": "Original Internal N Crush assets; see LICENSE.txt",
 	"operators": [
@@ -91,111 +96,111 @@
 	"weapons": [
 		{
 			"id": "a1",
-			"name": "@Node3D@644"
+			"name": "VECTOR-24"
 		},
 		{
 			"id": "a2",
-			"name": "@Node3D@677"
+			"name": "RAPID-9"
 		},
 		{
 			"id": "a3",
-			"name": "@Node3D@708"
+			"name": "ATLAS"
 		},
 		{
 			"id": "a4",
-			"name": "@Node3D@742"
+			"name": "TRIAD"
 		},
 		{
 			"id": "r1",
-			"name": "@Node3D@780"
+			"name": "SCOUT"
 		},
 		{
 			"id": "r2",
-			"name": "@Node3D@819"
+			"name": "MONOLITH"
 		},
 		{
 			"id": "r3",
-			"name": "@Node3D@855"
+			"name": "ECHO"
 		},
 		{
 			"id": "r4",
-			"name": "@Node3D@891"
+			"name": "LARK"
 		},
 		{
 			"id": "r5",
-			"name": "@Node3D@927"
+			"name": "KESTREL"
 		},
 		{
 			"id": "h1",
-			"name": "@Node3D@957"
+			"name": "ANCHOR"
 		},
 		{
 			"id": "h2",
-			"name": "@Node3D@993"
+			"name": "BASTION"
 		},
 		{
 			"id": "e1",
-			"name": "@Node3D@1022"
+			"name": "PULSE"
 		},
 		{
 			"id": "e2",
-			"name": "@Node3D@1052"
+			"name": "TIDAL"
 		},
 		{
 			"id": "e3",
-			"name": "@Node3D@1084"
+			"name": "FOLD"
 		},
 		{
 			"id": "c1",
-			"name": "@Node3D@1116"
+			"name": "SWIFT"
 		},
 		{
 			"id": "c2",
-			"name": "@Node3D@1148"
+			"name": "FLUX"
 		},
 		{
 			"id": "c3",
-			"name": "@Node3D@1180"
+			"name": "LINE"
 		},
 		{
 			"id": "c4",
-			"name": "@Node3D@1209"
+			"name": "HIVE"
 		},
 		{
 			"id": "m1",
-			"name": "@Node3D@1222"
+			"name": "LINK"
 		},
 		{
 			"id": "m2",
-			"name": "@Node3D@1255"
+			"name": "PIPER"
 		},
 		{
 			"id": "pistol",
-			"name": "@Node3D@1267"
+			"name": "SIDE"
 		},
 		{
 			"id": "heavy_pistol",
-			"name": "@Node3D@1281"
+			"name": "CHIME"
 		},
 		{
 			"id": "auto_pistol",
-			"name": "@Node3D@1294"
+			"name": "SPARK"
 		},
 		{
 			"id": "eng_pistol",
-			"name": "@Node3D@1307"
+			"name": "RIVET"
 		},
 		{
 			"id": "burst_pistol",
-			"name": "@Node3D@1320"
+			"name": "TRIO"
 		},
 		{
 			"id": "med_pistol",
-			"name": "@Node3D@1333"
+			"name": "FEATHER"
 		},
 		{
 			"id": "repair",
-			"name": "@Node3D@1345"
+			"name": "FIX"
 		}
 	]
 }

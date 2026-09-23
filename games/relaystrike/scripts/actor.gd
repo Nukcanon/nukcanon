@@ -129,7 +129,7 @@ func update_spread(dt:float,now:float):
 	if not game.players.has(pid):return
 	var p=game.players[pid];var w=game.current_weapon(p)
 	var target=Aim.spread(w,Vector2(velocity.x,velocity.z).length(),bool(input_state.ads),bool(input_state.crouch),last_sprint,is_on_floor(),float(p.get("bloom",0)),p.get("mounted",0)>now,velocity.y)
-	spread_angle=lerpf(spread_angle,target,1.-exp(-dt*(18 if target>spread_angle else 9)))
+	spread_angle=lerpf(spread_angle,target,1.-exp(-dt*(18 if target>spread_angle else 5.5)))
 func visual(dt:float,p:Dictionary,now:float):
 	visible=p.alive;set_team(int(p.team))
 	var wid=p.primary if p.slot==0 else p.secondary
@@ -149,7 +149,7 @@ func visual(dt:float,p:Dictionary,now:float):
 		if not game.server:global_position=global_position.lerp(target_pos,minf(1,dt*14));rotation.y=lerp_angle(rotation.y,aim_yaw,minf(1,dt*15))
 		shape.shape.height=1.15 if input_state.crouch else 1.8;shape.position.y=shape.shape.height*.5
 		tag.visible=game.players.has(game.local_id) and (p.team==game.players[game.local_id].team or p.mark>now)
-		tag.modulate=Color("ffd086") if p.mark>now else Color.WHITE;tag.text=p.nick
+		tag.modulate=Color("ffae65") if p.mark>now else Color("6ccaff") if p.team==0 else Color("ff9b55");tag.text=("◆ " if p.team==0 else "● ")+p.nick
 		return
 	var reloading=p.reload>now;var ads=input_state.ads and p.slot<2 and not reloading;var scoped=ads and float(w.zoom)<=38
 	ads_blend=lerpf(ads_blend,1. if ads else 0.,1.-exp(-dt*14));crouch_blend=lerpf(crouch_blend,1. if input_state.crouch else 0.,1.-exp(-dt*14))
@@ -167,6 +167,3 @@ func visual(dt:float,p:Dictionary,now:float):
 	gun.position=gun.position.lerp(base,1.-exp(-dt*20));gun.rotation=gun.rotation.lerp(rotation_target,1.-exp(-dt*22))
 	view_weapon.visible=p.slot<2 and not scoped;item_model.visible=p.slot>=2;view_weapon.animate_reload(progress,recoil,age)
 	visual_spread=lerpf(visual_spread,spread_angle,1.-exp(-dt*20))
-	if speed>1 and is_on_floor():
-		step_clock-=dt
-		if step_clock<=0:step_clock=.29 if sprint else .43;game.local_step(global_position)

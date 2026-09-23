@@ -29,3 +29,15 @@ static func spray_offset(w:Dictionary,index:int) -> Vector2:
 	elif phase<16:x=lerpf(1.7,-1.7,(phase-6)/9.)
 	else:x=lerpf(-1.7,0.,(phase-16)/5.)
 	return Vector2(x,2.18+sin(phase*.55)*.11)*scale
+
+static func recover(p:Dictionary,w:Dictionary,dt:float,now:float):
+	var age=maxf(0,now-float(p.get("shot_time",-100.)))
+	var phase=float(p.get("spray_phase",p.get("spray_index",0)))
+	var long_burst=phase>6.
+	var delay=.22 if long_burst else .12
+	if age>delay:
+		p.bloom=move_toward(float(p.get("bloom",0)),0.,dt*(.9 if long_burst else 1.9))
+		phase=move_toward(phase,0.,dt*(18. if long_burst else 25.));p.spray_phase=phase;p.spray_index=int(phase)
+static func current_spray(w:Dictionary,p:Dictionary) -> Vector2:
+	var phase=float(p.get("spray_phase",p.get("spray_index",0)))
+	return spray_offset(w,int(floor(phase))).lerp(spray_offset(w,int(floor(phase))+1),fmod(phase,1.))

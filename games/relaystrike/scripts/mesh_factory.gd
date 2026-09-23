@@ -10,7 +10,7 @@ static func material(color:Color) -> StandardMaterial3D:
 	materials[color]=m;return m
 static func instance(parent:Node,mesh:Mesh,pos:Vector3,color:Color,rot=Vector3.ZERO) -> MeshInstance3D:
 	var node=MeshInstance3D.new();node.mesh=mesh;node.position=pos;node.rotation=rot;node.material_override=material(color);parent.add_child(node);return node
-static func box(parent:Node,pos:Vector3,size:Vector3,color:Color,rot=Vector3.ZERO,bevel=.16) -> MeshInstance3D:
+static func box(parent:Node,pos:Vector3,size:Vector3,color:Color,rot=Vector3.ZERO,bevel=.3) -> MeshInstance3D:
 	var key=str(size)+str(bevel)
 	if not meshes.has(key):meshes[key]=beveled_box(size,bevel)
 	return instance(parent,meshes[key],pos,color,rot)

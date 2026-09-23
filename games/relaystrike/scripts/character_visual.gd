@@ -61,10 +61,10 @@ static func joint(parent:Node,name:String,pos:Vector3) -> Node3D:
 	var n=Node3D.new();n.name=name;n.position=pos;parent.add_child(n);return n
 static func make_rig(which:int,side:int) -> Node3D:
 	var root=Node3D.new();root.name=ROLE_NAMES[which]
-	var team_color=Color("368fac") if side==0 else Color("c97251")
-	var cloth=Color("344857") if side==0 else Color("594a49")
-	var plate=Color("c9d2cd") if which==5 else Color("788b8e") if which==3 else Color("425d6c")
-	var dark=Color("253641");var accent=ROLE_ACCENTS[which];var skin=Color("be987e")
+	var team_color=Color("279fe4") if side==0 else Color("ff8736")
+	var cloth=Color("326f9b") if side==0 else Color("b95629")
+	var plate=Color("c9d2cd") if which==5 else Color("788b8e") if which==3 else team_color.darkened(.16)
+	var dark=Color("243844");var accent=ROLE_ACCENTS[which];var skin=Color("be987e")
 	var h=joint(root,"Hips",Vector3(0,.94,0));var torso=joint(h,"Chest",Vector3(0,.3,0))
 	M.tapered(h,Vector3(0,.005,0),Vector3(.43,.25,.28),cloth,.83)
 	M.box(h,Vector3(0,.065,-.01),Vector3(.48,.055,.31),dark)
@@ -90,17 +90,17 @@ static func make_rig(which:int,side:int) -> Node3D:
 		M.tapered(knee,Vector3(0,-.19,0),Vector3(.17,.36,.195),cloth,.9)
 		var foot=joint(knee,"Foot",Vector3(0,-.415,0));M.box(foot,Vector3(0,.03,-.06),Vector3(.215,.17,.34),dark,Vector3.ZERO,.4)
 		M.box(foot,Vector3(0,-.035,-.067),Vector3(.22,.042,.35),Color("182b35"))
-		M.box(foot,Vector3(0,.045,-.2),Vector3(.19,.07,.04),plate)
+		M.box(foot,Vector3(0,.045,-.2),Vector3(.19,.07,.04),team_color)
 	var head=joint(torso,"Head",Vector3(0,.36,0))
 	M.cylinder(torso,Vector3(0,.255,0),.095,.14,skin)
 	M.sphere(head,Vector3(0,.035,0),Vector3(.35,.38,.35),skin)
-	M.sphere(head,Vector3(0,.107,.016),Vector3(.39,.31,.41),plate if which==5 else accent if which==3 else dark)
+	M.sphere(head,Vector3(0,.107,.016),Vector3(.39,.31,.41),plate if which==5 else accent if which==3 else team_color)
 	M.box(head,Vector3(0,.061,-.172),Vector3(.29,.112,.073),Color("1b3442"),Vector3.ZERO,.45)
 	M.box(head,Vector3(0,.087,-.216),Vector3(.24,.022,.012),Color("89d2d6"),Vector3.ZERO,.1)
 	for x in [-.18,.18]:M.cylinder(head,Vector3(x,.034,.015),.07,.055,dark,Vector3(0,0,PI/2))
 	match which:
 		0:
-			for x in [-.11,0,.11]:M.box(torso,Vector3(x,-.048,-.228),Vector3(.078,.145,.064),accent,Vector3(-.12,0,0))
+			for x in [-.085,.085]:M.box(torso,Vector3(x,-.048,-.228),Vector3(.12,.14,.05),accent,Vector3(-.12,0,0))
 			M.box(torso,Vector3(.13,.14,.22),Vector3(.13,.28,.14),dark)
 			M.cylinder(torso,Vector3(.15,.42,.22),.008,.35,accent)
 		1:
@@ -112,7 +112,7 @@ static func make_rig(which:int,side:int) -> Node3D:
 			M.box(torso,Vector3(0,.08,.255),Vector3(.46,.48,.23),dark)
 			for x in [-.33,.33]:M.box(torso,Vector3(x,.17,0),Vector3(.26,.17,.37),plate,Vector3(0,0,sign(x)*.18))
 			M.box(head,Vector3(0,-.061,-.14),Vector3(.31,.16,.18),plate)
-			for x in [-.12,0,.12]:M.box(torso,Vector3(x,-.1,-.25),Vector3(.085,.22,.11),accent)
+			for x in [-.1,.1]:M.box(torso,Vector3(x,-.1,-.25),Vector3(.085,.22,.11),accent)
 		3:
 			M.cylinder(head,Vector3(0,.12,0),.235,.03,accent,Vector3.ZERO,-1.,12)
 			M.box(head,Vector3(0,.225,0),Vector3(.047,.05,.29),Color("efd19c"))
@@ -129,6 +129,7 @@ static func make_rig(which:int,side:int) -> Node3D:
 			M.box(torso,Vector3(0,.03,.356),Vector3(.065,.24,.016),accent);M.box(torso,Vector3(0,.03,.357),Vector3(.24,.065,.016),accent)
 			M.box(torso,Vector3(0,.08,-.213),Vector3(.045,.16,.025),accent);M.box(torso,Vector3(0,.08,-.214),Vector3(.16,.045,.025),accent)
 			for x in [-.2,.2]:M.cylinder(h,Vector3(x,-.12,-.1),.033,.16,accent)
+	M.box(torso,Vector3(0,.07,.17),Vector3(.38,.3,.045),team_color)
 	joint(torso,"WeaponSocket",Vector3(.145,-.13,-.32))
 	M.merge_rig(root);add_clips(root)
 	return root
@@ -167,4 +168,15 @@ static func add_clips(root:Node3D):
 			var poses=[body,head_pose,left,left_elbow,right,right_elbow,weapon]
 			for j in range(poses.size()):anim.track_insert_key(8+j,t*anim.length,poses[j])
 		library.add_animation(state,anim)
+	for index in range(5):
+		var anim=Animation.new();anim.length=.9
+		var tracks=["Hips:position","Hips:rotation","Hips/Chest:rotation","Hips/Chest/LeftArm:rotation","Hips/Chest/RightArm:rotation","Hips/LeftLeg:rotation","Hips/RightLeg:rotation","Hips/LeftLeg/Knee:rotation","Hips/RightLeg/Knee:rotation"]
+		for path in tracks:var track=anim.add_track(Animation.TYPE_VALUE);anim.track_set_path(track,NodePath(path))
+		for frame in range(13):
+			var t=frame/12.;var fall=sin(clampf((t-.12)/.88,0,1)*PI/2);var crouch=sin(t*PI)*.15
+			var end_rot=[Vector3(-1.45,0,.13),Vector3(1.45,0,-.12),Vector3(.15,0,-1.45),Vector3(-.12,0,1.45),Vector3(.9,.2,.7)][index]
+			var hip=Vector3(0,lerpf(.94,.27,fall)-crouch,0)
+			var poses=[hip,end_rot*fall,Vector3(sin(t*PI)*.16,0,0),Vector3(.96-fall*(1.3 if index%2==0 else .3),0,-fall*.4),Vector3(.65-fall*.7,0,fall*.35),Vector3(fall*.55,0,-fall*.16),Vector3(fall*.2,0,fall*.2),Vector3(-fall*.85,0,0),Vector3(-fall*.4,0,0)]
+			for j in range(poses.size()):anim.track_insert_key(j,t*.9,poses[j])
+		library.add_animation(["fall_back","fall_front","fall_left","fall_right","fall_fold"][index],anim)
 	player.add_animation_library("",library)

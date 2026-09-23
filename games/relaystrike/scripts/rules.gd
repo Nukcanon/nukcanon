@@ -1,6 +1,6 @@
 extends RefCounted
 class_name Rules
-const VERSION = "0.3.0"
+const VERSION = "0.4.0"
 const PORT = 27888
 const DISCOVERY = 27889
 const CLASSES = ["돌격", "정찰", "중화기", "공병", "통제", "메딕"]

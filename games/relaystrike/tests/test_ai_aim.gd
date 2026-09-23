@@ -32,7 +32,7 @@ func run():
 	expect(AimModel.pixel_radius(2,52,720)>AimModel.pixel_radius(2,82,720),"reticle projects the same cone through camera FOV")
 	for role in range(6):
 		var model=CharacterVisual.new();root.add_child(model);model.build(role,0)
-		var animator=model.animator;var clips=animator.get_animation_list();expect(clips.size()==12 and clips.has("run") and clips.has("reload") and clips.has("hit"),"operator %d contains 12 action clips"%role)
+		var animator=model.animator;var clips=animator.get_animation_list();expect(clips.size()>=17 and clips.has("run") and clips.has("reload") and clips.has("hit"),"operator %d contains locomotion and five distinct fall clips"%role)
 		animator.play("walk");animator.seek(.2,true);var start=model.rig.get_node("Hips/LeftLeg").rotation.x;animator.seek(.6,true)
 		expect(absf(start-model.rig.get_node("Hips/LeftLeg").rotation.x)>.2,"operator %d walking moves actual leg joints"%role)
 		model.queue_free()

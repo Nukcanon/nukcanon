@@ -1,0 +1,260 @@
+{
+  "gun_a1": {
+    "file": "res://assets/audio/gun_a1.wav",
+    "category": "weapon_volume",
+    "gain_db": -3,
+    "sha256": "36f570dcf120191d263271d0e1d766d0f2749f33b06bf0105704138eb00ddb07"
+  },
+  "gun_a2": {
+    "file": "res://assets/audio/gun_a2.wav",
+    "category": "weapon_volume",
+    "gain_db": -3,
+    "sha256": "7e34b5dc5eff5dc679b9f912e095a34d0a8f3dbb9c757c29951579c15bfa49b8"
+  },
+  "gun_a3": {
+    "file": "res://assets/audio/gun_a3.wav",
+    "category": "weapon_volume",
+    "gain_db": -3,
+    "sha256": "4a25b217d1ec48645c001178699bebdd590e14a5e3660c88617ed2f5001d047a"
+  },
+  "gun_a4": {
+    "file": "res://assets/audio/gun_a4.wav",
+    "category": "weapon_volume",
+    "gain_db": -3,
+    "sha256": "2c78a4bc9ff174fde067dec2673b7445d3d08c29d66ca17bc204b1a2eec8f7f2"
+  },
+  "gun_r1": {
+    "file": "res://assets/audio/gun_r1.wav",
+    "category": "weapon_volume",
+    "gain_db": -1,
+    "sha256": "467068537dc87ae8f7122bf87218dadbaf81b6bc2803b384ca30f41dd010e5e2"
+  },
+  "gun_r2": {
+    "file": "res://assets/audio/gun_r2.wav",
+    "category": "weapon_volume",
+    "gain_db": -1,
+    "sha256": "1e707d5288b97af833e658bdc0b60cf9d1af4c02d7ce370838b0814d69c6a09f"
+  },
+  "gun_r3": {
+    "file": "res://assets/audio/gun_r3.wav",
+    "category": "weapon_volume",
+    "gain_db": -1,
+    "sha256": "f933d7d286a5a2846d676bd7fe0ca982263a95a28875c6fedaff001222a44832"
+  },
+  "gun_r4": {
+    "file": "res://assets/audio/gun_r4.wav",
+    "category": "weapon_volume",
+    "gain_db": -1,
+    "sha256": "35ea3d0b5ceece50dd4a64ed7e878c1f08cd820036059395df129301793e9c94"
+  },
+  "gun_r5": {
+    "file": "res://assets/audio/gun_r5.wav",
+    "category": "weapon_volume",
+    "gain_db": -1,
+    "sha256": "22f592a3935c24529b52b39b70fd3932fd0769a14b8a1ea370247b7dae50dda2"
+  },
+  "gun_h1": {
+    "file": "res://assets/audio/gun_h1.wav",
+    "category": "weapon_volume",
+    "gain_db": -3,
+    "sha256": "882cf390403142af7c3904981458926c59a0a55b7cbf7b1fbe1b035e5a90d127"
+  },
+  "gun_h2": {
+    "file": "res://assets/audio/gun_h2.wav",
+    "category": "weapon_volume",
+    "gain_db": -3,
+    "sha256": "ea3e7aa3ef13df0e4920e08de664107722d005de25ce821113a4f7dffd93ec8b"
+  },
+  "gun_e1": {
+    "file": "res://assets/audio/gun_e1.wav",
+    "category": "weapon_volume",
+    "gain_db": -1,
+    "sha256": "7d781584b5b4c9f9ec541e04762edafc5fe2f6d302ce8d64460d45835084c443"
+  },
+  "gun_e2": {
+    "file": "res://assets/audio/gun_e2.wav",
+    "category": "weapon_volume",
+    "gain_db": -1,
+    "sha256": "a20107b2ff3219d5ceaa550efd538a6d55c533ba0fc6a1151ea0bc25fcbfea7a"
+  },
+  "gun_e3": {
+    "file": "res://assets/audio/gun_e3.wav",
+    "category": "weapon_volume",
+    "gain_db": -1,
+    "sha256": "a2cbcd725f332dead3543defaf5e558d1855f7fde3f7066cc3f1fbed65cff28c"
+  },
+  "gun_c1": {
+    "file": "res://assets/audio/gun_c1.wav",
+    "category": "weapon_volume",
+    "gain_db": -3,
+    "sha256": "efb5f5dfb4ed1277565113399f5993cde8c55f399b15068bc3915192ab5b8509"
+  },
+  "gun_c2": {
+    "file": "res://assets/audio/gun_c2.wav",
+    "category": "weapon_volume",
+    "gain_db": -3,
+    "sha256": "88e68267de09bd327b095770e70142af6e7bb3beb5b596d6350f8831e06ef166"
+  },
+  "gun_c3": {
+    "file": "res://assets/audio/gun_c3.wav",
+    "category": "weapon_volume",
+    "gain_db": -3,
+    "sha256": "28f8cebfed61d364f767a52fea982988df74606069cfba7aab04bf1b65d61a63"
+  },
+  "gun_c4": {
+    "file": "res://assets/audio/gun_c4.wav",
+    "category": "weapon_volume",
+    "gain_db": -3,
+    "sha256": "0f86dc70938e84a5f4da3ad44edc5577b452f1289e27f37bca791b5c0188101e"
+  },
+  "gun_m2": {
+    "file": "res://assets/audio/gun_m2.wav",
+    "category": "weapon_volume",
+    "gain_db": -3,
+    "sha256": "f1edf422f99bf984552f2dd014b5a8f194aaccbda8838868fe74094ddfd2eb11"
+  },
+  "gun_pistol": {
+    "file": "res://assets/audio/gun_pistol.wav",
+    "category": "weapon_volume",
+    "gain_db": -3,
+    "sha256": "ed25f44eff81003a5c203a57b78524443347907171c3a34bc18cc7640e9b796c"
+  },
+  "gun_heavy_pistol": {
+    "file": "res://assets/audio/gun_heavy_pistol.wav",
+    "category": "weapon_volume",
+    "gain_db": -1,
+    "sha256": "7ac10952be982ba20e1d3d844c0d7199a0c6cbf0d46292c1915b10e6ad765879"
+  },
+  "gun_auto_pistol": {
+    "file": "res://assets/audio/gun_auto_pistol.wav",
+    "category": "weapon_volume",
+    "gain_db": -3,
+    "sha256": "2df35f8813adfd0672012a7b210ecb870619bad5210792a11f631ca4c3fc9c79"
+  },
+  "gun_eng_pistol": {
+    "file": "res://assets/audio/gun_eng_pistol.wav",
+    "category": "weapon_volume",
+    "gain_db": -1,
+    "sha256": "904fd1a4ba5570f914b9844a41011067d86becb9b7a57a3a80f470b41568a649"
+  },
+  "gun_burst_pistol": {
+    "file": "res://assets/audio/gun_burst_pistol.wav",
+    "category": "weapon_volume",
+    "gain_db": -3,
+    "sha256": "ab7fe39e995b0883390058873c6e151c506471f4a87b560dd0167c95ca142680"
+  },
+  "gun_med_pistol": {
+    "file": "res://assets/audio/gun_med_pistol.wav",
+    "category": "weapon_volume",
+    "gain_db": -3,
+    "sha256": "18db213fe1bcc6f56671483d89be611c798fd7f39ce635db428f7a86f0b997d7"
+  },
+  "step_stone_0": {
+    "file": "res://assets/audio/step_stone_0.wav",
+    "category": "step_volume",
+    "gain_db": -1,
+    "sha256": "4d892c6c4c48e6cf19fe089509165a7c7b4331334378826f0ca3809750a2f848"
+  },
+  "step_stone_1": {
+    "file": "res://assets/audio/step_stone_1.wav",
+    "category": "step_volume",
+    "gain_db": -1,
+    "sha256": "54a1319021695ece52ffe6119d69bc727415fc0cf5da2aa4b3e40c01c91d1e07"
+  },
+  "step_stone_2": {
+    "file": "res://assets/audio/step_stone_2.wav",
+    "category": "step_volume",
+    "gain_db": -1,
+    "sha256": "be629b67a8e3ef8f7f17f71344b6c2d02573a2a431b727d90213928ed2d9fae9"
+  },
+  "step_stone_3": {
+    "file": "res://assets/audio/step_stone_3.wav",
+    "category": "step_volume",
+    "gain_db": -1,
+    "sha256": "81da24f0b6c8be571dee272cb4630a9bff3ca27eb8d7bffdf26172ffb823f84a"
+  },
+  "step_metal_0": {
+    "file": "res://assets/audio/step_metal_0.wav",
+    "category": "step_volume",
+    "gain_db": -1,
+    "sha256": "c145365af6ed4d15be26adda71cdbb0c3915049546d998953079b77bff40436f"
+  },
+  "step_metal_1": {
+    "file": "res://assets/audio/step_metal_1.wav",
+    "category": "step_volume",
+    "gain_db": -1,
+    "sha256": "108112059ed314e3f4e72122aea876996891a8aa692fe3e927e2d5aa6faebe46"
+  },
+  "step_metal_2": {
+    "file": "res://assets/audio/step_metal_2.wav",
+    "category": "step_volume",
+    "gain_db": -1,
+    "sha256": "fa819c0efa7ef6f80ada60aec8e021066bd9d19aee6422c7f0b4b1ec592c5d41"
+  },
+  "step_metal_3": {
+    "file": "res://assets/audio/step_metal_3.wav",
+    "category": "step_volume",
+    "gain_db": -1,
+    "sha256": "0406497802de620e8f88bb830173904c1306eae9beabf7a9ea0154fc30ba8a75"
+  },
+  "step_water_0": {
+    "file": "res://assets/audio/step_water_0.wav",
+    "category": "step_volume",
+    "gain_db": -1,
+    "sha256": "2f27c2ccb46c0fe535d5c84ca71a3b1e7cb8ccc4dc82fbe016e31995cc43d964"
+  },
+  "step_water_1": {
+    "file": "res://assets/audio/step_water_1.wav",
+    "category": "step_volume",
+    "gain_db": -1,
+    "sha256": "2b928285aa2679f2152d24db389e6d10555dc31bdc74aeb6373e8260b504a62f"
+  },
+  "step_water_2": {
+    "file": "res://assets/audio/step_water_2.wav",
+    "category": "step_volume",
+    "gain_db": -1,
+    "sha256": "b495ebf2686a02ed16e7107b40dcb89b0631371881c61ecd4489205ab4929984"
+  },
+  "step_water_3": {
+    "file": "res://assets/audio/step_water_3.wav",
+    "category": "step_volume",
+    "gain_db": -1,
+    "sha256": "e0395778efbb20f2a3cee8766dcaae2bda8e87e0464eec46df36c5885ddc98ab"
+  },
+  "hit": {
+    "file": "res://assets/audio/hit.wav",
+    "category": "ui_volume",
+    "gain_db": 0,
+    "sha256": "a18777310bbad47f20ad7412f46a104a7f02901026f66ff2b6d0e330f0ca8764"
+  },
+  "confirm": {
+    "file": "res://assets/audio/confirm.wav",
+    "category": "ui_volume",
+    "gain_db": 0,
+    "sha256": "d8d1153953ad14e7821d28b417b42764aadff4f8ecd46eda76cd4561eb40bf4f"
+  },
+  "heal": {
+    "file": "res://assets/audio/heal.wav",
+    "category": "ui_volume",
+    "gain_db": 0,
+    "sha256": "2142c43c1ca849411caa8f12312b9280d8026ec2b236577112b6bf8b1557e029"
+  },
+  "reload": {
+    "file": "res://assets/audio/reload.wav",
+    "category": "ui_volume",
+    "gain_db": 0,
+    "sha256": "e3beba793dc15782604651362f3b8cfbc4f4a221b0aa1298b4f59ab6c9b22bd5"
+  },
+  "switch": {
+    "file": "res://assets/audio/switch.wav",
+    "category": "ui_volume",
+    "gain_db": 0,
+    "sha256": "4f7c1253e6b5b4d63ab21322e71910c5919b09851f459180940840cb1b7cadae"
+  },
+  "ui": {
+    "file": "res://assets/audio/ui.wav",
+    "category": "ui_volume",
+    "gain_db": 0,
+    "sha256": "67487707e183768bb3bc104db4f8edd98efd7a82254b74b27bdeb032a46c98cd"
+  }
+}

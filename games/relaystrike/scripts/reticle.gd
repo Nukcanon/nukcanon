@@ -9,11 +9,16 @@ func _draw():
 	var color=Color("d6fff4");var ads=a.input_state.ads and p.slot<2
 	var scoped=ads and float(game.current_weapon(p).zoom)<=38 and p.reload<=game.clock
 	if scoped:
-		draw_circle(center,225,Color(.025,.06,.08,.5),false,2.,true)
+		var radius=minf(size.x,size.y)*.36
+		var reach=maxf(size.x,size.y)*2
+		for i in range(96):
+			var first=Vector2.from_angle(i*TAU/96.);var next=Vector2.from_angle((i+1)*TAU/96.)
+			draw_colored_polygon(PackedVector2Array([center+first*radius,center+first*reach,center+next*reach,center+next*radius]),Color.BLACK)
+		draw_circle(center,radius,Color("14212a"),false,4.,true)
 		for direction in [Vector2.LEFT,Vector2.RIGHT,Vector2.UP,Vector2.DOWN]:draw_line(center+direction*8,center+direction*205,Color(.05,.1,.13,.85),1.,true)
 		for i in [-3,-2,-1,1,2,3]:draw_line(center+Vector2(-4,i*35),center+Vector2(4,i*35),Color(.05,.1,.13,.85),1.,true)
-	elif not ads:
-		var gap=maxf(3.,AimModel.pixel_radius(a.visual_spread,a.camera.fov,size.y))
+	else:
+		var gap=maxf(2.5,AimModel.pixel_radius(a.visual_spread,a.camera.fov,size.y))
 		for direction in [Vector2.LEFT,Vector2.RIGHT,Vector2.UP,Vector2.DOWN]:
 			draw_line(center+direction*gap,center+direction*(gap+6),Color(.015,.035,.04,.8),4.)
 			draw_line(center+direction*gap,center+direction*(gap+6),color,2.)
