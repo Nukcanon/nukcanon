@@ -37,6 +37,8 @@ func run():
 		expect(absf(start-model.rig.get_node("Hips/LeftLeg").rotation.x)>.2,"operator %d walking moves actual leg joints"%role)
 		model.queue_free()
 	g=load("res://scripts/game.gd").new();root.add_child(g);g.dedicated=true;g.host_game();g.set_physics_process(false);g.options.classes=true;g.options.skills=true;g.options.mode=0;g.phase="combat";g.clock=100;g.remaining=1000
+	expect(g.players.is_empty(),"dedicated server does not occupy a player slot")
+	g.options.classes=false;g.add_player(-5,"NOCLASS","noclass");expect(g.players[-5].armor==0 and g.current_weapon(g.players[-5]).kind=="gun","classless bots start with an attack weapon and zero armor");g.disconnected(-5);g.options.classes=true
 	g.add_player(-1,"TEST","test");g.add_player(-2,"ALLY","ally");g.spawn(-1);g.spawn(-2)
 	var b=g.bot_agents[-1];var a=g.actors[-1];var q=g.players[-2];var p=reset_bot(5,"m1");q.team=0;q.hp=40.;q.last_hit=0.;g.actors[-2].position=a.position+Vector3(0,0,-5)
 	await physics_frame

@@ -157,7 +157,7 @@ func add_player(id:int,nick:String,token:String):
 	var t=0;var counts=[0,0]
 	for p in players.values():counts[p.team]+=1
 	t=randi()%2 if counts[0]==counts[1] else 0 if counts[0]<counts[1] else 1
-	var role=0 if id>0 else absi(id)%6
+	var role=0 if id>0 or not options.classes else absi(id)%6
 	if role==5 and medic_count(t)>=R.medic_cap(counts[t]+1):role=0
 	var p={"id":id,"nick":nick,"token":token,"team":t,"role":role,"primary":C.first(role),"secondary":R.SECONDARIES[role],"slot":0,"hp":100.,"armor":0.,"armor_max":0,"alive":false,"kills":0,"deaths":0,"assists":0,"objective":0,"healed":0.,"played":0.,"cash":800,"lives":int(options.lives),"respawn":0.,"mag":{},"reserve":{},"reload":0.,"reload_weapon":"","fire_ready":0.,"heal_ready":0.,"heal_mag":3,"heal_reserve":3,"energy":180.,"repair_energy":100.,"skill_ready":0.,"gadget_count":1,"gadget":0,"protect":0.,"shield":0.,"slow":0.,"dash":0.,"mark":0.,"flash":0.,"last_hit":-20.,"contributors":{},"input_time":clock,"gadget_ready":0.,"last_pos":Vector3.ZERO,"spectator":false,"round_bonus":0,"can_respawn":true,"smoke":2,"flash_count":1}
 	if reconnects.has(token):

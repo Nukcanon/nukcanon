@@ -31,6 +31,7 @@ func setup(world:Node,pid:int):
 func tick(dt:float):
 	var p=game.players[id];var a=game.actors[id];var now=game.clock
 	var previous_yaw=float(a.input_state.yaw)
+	if target!=0 and not game.players.has(target):target=0;visible_target=false
 	a.input_state.fire=false;a.input_state.alt=false;a.input_state.use=false;a.input_state.jump=false;a.input_state.crouch=false;a.input_state.sprint=false;a.input_state.ads=false;a.input_state.x=0.;a.input_state.z=0.
 	if not p.alive:path.clear();target=0;visible_target=false;next_decision=0.;return
 	if game.phase=="buy":shop();return
