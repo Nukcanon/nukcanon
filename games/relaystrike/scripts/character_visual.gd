@@ -56,12 +56,13 @@ func update_pose(dt:float,move:Vector3,sprint:bool,crouch:bool,grounded:bool,pit
 		var reach=sin(reloading*PI);left_arm.rotation.x+=reach*.45;left_elbow.rotation.x-=reach*.7;left_arm.rotation.z=-reach*.25;socket.rotation.z=-reach*.18
 	else:left_arm.rotation.z=0
 	hit_time=maxf(0,hit_time-dt);var hit=sin(hit_time/.32*PI)*.2
-	chest.rotation.z=hit*hit_sign;chest.rotation.x+=hit*.45;head.rotation.x-=hit*.4;right_arm.rotation.x-=kick*.06
+	var strafe=to_local(global_position+move).x
+	chest.rotation.z=hit*hit_sign-clampf(strafe/11.,-.1,.1)*.4;chest.rotation.x+=hit*.45;head.rotation.x-=hit*.4;right_arm.rotation.x-=kick*.06
 static func joint(parent:Node,name:String,pos:Vector3) -> Node3D:
 	var n=Node3D.new();n.name=name;n.position=pos;parent.add_child(n);return n
 static func make_rig(which:int,side:int) -> Node3D:
 	var root=Node3D.new();root.name=ROLE_NAMES[which]
-	var team_color=Color("279fe4") if side==0 else Color("ff8736")
+	var team_color=Color("1da9f2") if side==0 else Color("ff8833")
 	var cloth=Color("326f9b") if side==0 else Color("b95629")
 	var plate=Color("c9d2cd") if which==5 else Color("788b8e") if which==3 else team_color.darkened(.16)
 	var dark=Color("243844");var accent=ROLE_ACCENTS[which];var skin=Color("be987e")
@@ -77,7 +78,7 @@ static func make_rig(which:int,side:int) -> Node3D:
 		var arm=joint(torso,"LeftArm" if side_x<0 else "RightArm",Vector3(side_x*.29,.13,0))
 		M.tapered(arm,Vector3(0,-.135,0),Vector3(.19,.29,.21),cloth,.82)
 		M.box(arm,Vector3(side_x*.024,-.045,.006),Vector3(.23 if which==2 else .19,.16,.245),team_color,Vector3(0,0,side_x*.13))
-		M.box(arm,Vector3(side_x*.128,-.04,0),Vector3(.012,.047,.09),accent)
+		M.box(arm,Vector3(side_x*.128,-.04,0),Vector3(.018,.095,.16),team_color.lightened(.28))
 		var elbow=joint(arm,"Elbow",Vector3(0,-.28,0));M.sphere(elbow,Vector3.ZERO,Vector3(.145,.15,.15),dark)
 		M.tapered(elbow,Vector3(0,-.115,0),Vector3(.145,.235,.17),plate if which in [2,5] else cloth,.76)
 		M.box(elbow,Vector3(0,-.235,0),Vector3(.16,.055,.185),dark)
@@ -130,9 +131,30 @@ static func make_rig(which:int,side:int) -> Node3D:
 			M.box(torso,Vector3(0,.08,-.213),Vector3(.045,.16,.025),accent);M.box(torso,Vector3(0,.08,-.214),Vector3(.16,.045,.025),accent)
 			for x in [-.2,.2]:M.cylinder(h,Vector3(x,-.12,-.1),.033,.16,accent)
 	M.box(torso,Vector3(0,.07,.17),Vector3(.38,.3,.045),team_color)
+	role_badge(torso,which,Vector3(0,.10,-.26),1.)
+	role_badge(torso,which,Vector3(0,.09,.39),1.4)
+	M.box(head,Vector3(0,.17,-.153),Vector3(.25,.04,.03),team_color)
 	joint(torso,"WeaponSocket",Vector3(.145,-.13,-.32))
 	M.merge_rig(root);add_clips(root)
 	return root
+static func role_badge(parent:Node3D,which:int,pos:Vector3,factor:float):
+	var badge=joint(parent,"RoleBadge",pos);badge.scale=Vector3.ONE*factor
+	M.box(badge,Vector3.ZERO,Vector3(.18,.16,.015),Color("17364a"))
+	var white=Color("edf8eb");var depth=-.012 if pos.z<0 else .012
+	match which:
+		0:
+			for side in [-1,1]:M.box(badge,Vector3(side*.032,0,depth),Vector3(.024,.093,.015),white,Vector3(0,0,side*-.65))
+		1:
+			M.cylinder(badge,Vector3(0,0,depth),.047,.012,white,Vector3(PI/2,0,0),-1.,12)
+			M.cylinder(badge,Vector3(0,0,depth*1.6),.025,.014,Color("17364a"),Vector3(PI/2,0,0),-1.,12)
+		2:
+			for x in [-.04,0,.04]:M.box(badge,Vector3(x,0,depth),Vector3(.024,.095,.016),white)
+		3:
+			for rot in [-.7,.7]:M.box(badge,Vector3(0,0,depth),Vector3(.023,.115,.016),Color("ffd27c"),Vector3(0,0,rot))
+		4:
+			for x in [-.038,.038]:M.cylinder(badge,Vector3(x,0,depth),.024,.016,white,Vector3(PI/2,0,0))
+		5:
+			M.box(badge,Vector3(0,0,depth),Vector3(.031,.117,.015),Color("78ffcb"));M.box(badge,Vector3(0,0,depth*1.1),Vector3(.117,.031,.015),Color("78ffcb"))
 static func leg_angles(hip_y:float,foot_z:float,foot_y:float) -> Vector3:
 	var dy=hip_y-.025-foot_y-.1;var d=clampf(sqrt(dy*dy+foot_z*foot_z),.12,.829)
 	var bend=acos(clampf(d/(2*.415),-1,1));var upper=atan2(-foot_z,dy)+bend;var lower=-2*bend
@@ -140,12 +162,12 @@ static func leg_angles(hip_y:float,foot_z:float,foot_y:float) -> Vector3:
 static func add_clips(root:Node3D):
 	var player=AnimationPlayer.new();player.callback_mode_process=AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL;player.name="AnimationPlayer";root.add_child(player);var library=AnimationLibrary.new()
 	for state in ["idle","walk","run","crouch","crouch_walk","jump","fall","fire","reload","hit","land","death"]:
-		var anim=Animation.new();anim.length={"idle":2.,"walk":.82,"run":.62,"crouch":2.,"crouch_walk":1.05,"jump":.32,"fall":.6,"fire":.15,"reload":2.2,"hit":.3,"land":.2,"death":.65}[state]
+		var anim=Animation.new();anim.length={"idle":2.,"walk":.64,"run":.5,"crouch":2.,"crouch_walk":1.05,"jump":.32,"fall":.6,"fire":.15,"reload":2.2,"hit":.3,"land":.2,"death":.65}[state]
 		anim.loop_mode=Animation.LOOP_LINEAR if state in ["idle","walk","run","crouch","crouch_walk","fall"] else Animation.LOOP_NONE
 		var paths=["Hips:position","Hips:rotation","Hips/LeftLeg:rotation","Hips/LeftLeg/Knee:rotation","Hips/LeftLeg/Knee/Foot:rotation","Hips/RightLeg:rotation","Hips/RightLeg/Knee:rotation","Hips/RightLeg/Knee/Foot:rotation","Hips/Chest:rotation","Hips/Chest/Head:rotation","Hips/Chest/LeftArm:rotation","Hips/Chest/LeftArm/Elbow:rotation","Hips/Chest/RightArm:rotation","Hips/Chest/RightArm/Elbow:rotation","Hips/Chest/WeaponSocket:rotation"]
 		for path in paths:var track=anim.add_track(Animation.TYPE_VALUE);anim.track_set_path(track,NodePath(path));anim.track_set_interpolation_type(track,Animation.INTERPOLATION_LINEAR)
 		for frame in range(17):
-			var t=frame/16.;var moving=state in ["walk","run","crouch_walk"];var crouched=state in ["crouch","crouch_walk"];var stride=.48 if state=="run" else .27 if state=="walk" else .14
+			var t=frame/16.;var moving=state in ["walk","run","crouch_walk"];var crouched=state in ["crouch","crouch_walk"];var stride=.58 if state=="run" else .46 if state=="walk" else .25
 			var y=.61 if crouched else .94
 			if moving:y+=cos(t*TAU*2)*.018
 			elif state=="idle":y+=sin(t*TAU)*.006
@@ -155,7 +177,7 @@ static func add_clips(root:Node3D):
 			anim.track_insert_key(0,t*anim.length,Vector3(0,y,0))
 			anim.track_insert_key(1,t*anim.length,Vector3(-.09 if state=="run" else -t*1.45 if state=="death" else 0,0,sin(t*TAU)*.035 if moving else 0))
 			for leg in range(2):
-				var phase=t*TAU+leg*PI;var z=sin(phase)*stride if moving else -.09 if crouched else 0.;var foot_y=maxf(0,cos(phase))*(.14 if state=="run" else .085) if moving else 0.
+				var phase=fmod(t+leg*.5,1.);var stance=phase<.58;var z=lerpf(stride,-stride,phase/.58) if stance else lerpf(-stride,stride,smoothstep(.58,1.,phase));z=z if moving else -.09 if crouched else 0.;var foot_y=sin((phase-.58)/.42*PI)*(.18 if state=="run" else .11) if moving and not stance else 0.
 				var angles=leg_angles(y,z,foot_y)
 				for j in range(3):anim.track_insert_key(2+leg*3+j,t*anim.length,Vector3(angles[j],0,0))
 			var pulse=sin(t*PI)

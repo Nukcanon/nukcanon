@@ -10,9 +10,12 @@ var sites=[Vector3(-44,0,-23),Vector3(44,0,23)]
 var zones=[Vector3(-44,0,-23),Vector3(0,0,0),Vector3(44,0,23)]
 var obstacles=[]
 var mats={}
+var map_index=0
+var indoors=false
 var building=false
 var architecture:Node3D
 var chunk_count=0
+static var world_font:Font
 func mat(color:Color,emission:bool=false) -> StandardMaterial3D:
 	var key=str(color)+str(emission)
 	if mats.has(key):return mats[key]
@@ -30,7 +33,9 @@ func box(pos:Vector3,size:Vector3,color:Color,solid=true,parent:Node=null) -> No
 		if building and pos.y+size.y*.5>.35 and pos.y-size.y*.5<1.9:obstacles.append(Rect2(Vector2(pos.x-size.x*.5,pos.z-size.z*.5),Vector2(size.x,size.z)).grow(.6))
 	return node
 func text3d(txt:String,pos:Vector3,color:Color,size:int=32,parent:Node=null):
-	var l=Label3D.new();l.text=txt;l.position=pos;l.font_size=size;l.pixel_size=.008;l.modulate=color;l.billboard=BaseMaterial3D.BILLBOARD_ENABLED;l.no_depth_test=false;l.visibility_range_end=60;l.visibility_range_end_margin=10
+	if world_font==null and ResourceLoader.exists("res://assets/Korean.ttf"):
+		var f=FontVariation.new();f.base_font=load("res://assets/Korean.ttf");f.variation_opentype={TextServerManager.get_primary_interface().name_to_tag("wght"):650.0};world_font=f
+	var l=Label3D.new();l.font=world_font;l.outline_size=8;l.outline_modulate=Color("102535");l.text=txt;l.position=pos;l.font_size=size;l.pixel_size=.008;l.modulate=color;l.billboard=BaseMaterial3D.BILLBOARD_ENABLED;l.no_depth_test=false;l.visibility_range_end=60;l.visibility_range_end_margin=10
 	(parent if parent else self).add_child(l);return l
 func detail(pos:Vector3,size:Vector3,color:Color,rot=Vector3.ZERO):
 	return M.box(architecture,pos,size,color,rot,.08)
@@ -84,45 +89,47 @@ func tree(pos:Vector3):
 	box(pos+Vector3(0,2.1,0),Vector3(.7,4.2,.7),Color("897759"))
 	M.sphere(architecture,pos+Vector3(0,5.5,0),Vector3(5.8,5.8,5.8),Color("789b79"));M.sphere(architecture,pos+Vector3(-1.7,4.7,.7),Vector3(3.4,3.4,3.4),Color("8fa782"))
 func build(which:int):
-	has_water=which==0;building=true;architecture=Node3D.new();architecture.name="Architecture";add_child(architecture)
+	map_index=which;indoors=which in [2,3];has_water=which in [0,5];building=true;architecture=Node3D.new();architecture.name="Architecture";add_child(architecture)
 	box(Vector3(0,-.5,0),Vector3(200,1,180),Color("b9b5a5") if has_water else Color("c5b69a"))
 	for x in [-100,100]:box(Vector3(x,1.6,0),Vector3(2,3.2,182),Color("98a7a4"))
 	for z in [-90,90]:box(Vector3(0,1.6,z),Vector3(202,3.2,2),Color("98a7a4"))
 	for x in [-100,100]:detail(Vector3(x,3.3,0),Vector3(2.2,.18,182),Color("e0d8be"))
 	for z in [-90,90]:detail(Vector3(0,3.3,z),Vector3(202,.18,2.2),Color("e0d8be"))
-	# Broad navigation lanes, traversable warehouse passages, and readable cover heights.
-	for x in [-44,0,44]:detail(Vector3(x,.009,0),Vector3(22,.015,172),Color("a2acaa"))
-	for z in [-75,0,75]:detail(Vector3(0,.012,z),Vector3(190,.012,12),Color("a2acaa"))
-	for sx in [-1,1]:
-		for sz in [-1,1]:
-			warehouse(Vector3(sx*43,0,sz*51),which)
-			container_box(Vector3(sx*79,0,sz*26),Color("608e90") if sz<0 else Color("b06d57"),12.)
-			container_box(Vector3(sx*79,2.8,sz*26),Color("839da2"),10.)
-			for k in range(3):cover(Vector3(sx*(22+k*13),0,sz*9))
-			crate(Vector3(sx*23,0,sz*34),Vector3(7,2.1,3.))
-			crate(Vector3(sx*66,0,sz*63),Vector3(3.6,2.4,3.6))
-			crate(Vector3(sx*69.7,0,sz*62),Vector3(2.5,1.5,2.5))
-			container_box(Vector3(sx*81,0,sz*60),Color("c9b374"),9.)
-			for tx in [87,94]:tree(Vector3(sx*tx,0,sz*77))
-			# Harbor crane silhouette stays outside playable lanes.
-			for z in [-4,4]:detail(Vector3(sx*95,10,sz*45+z),Vector3(.8,20,.8),Color("b18b51"))
-			detail(Vector3(sx*88,20,sz*45),Vector3(17,.8,8.8),Color("c09b60"))
-		for z in [-69,-42,-14,14,42,69]:
-			cover(Vector3(sx*12,0,z),3.5)
-		for i in range(8):
-			var spawn=Vector3(-68+i*19,.15,sx*77);spawn_points[0 if sx<0 else 1].append(spawn);ffa_spawns.append(spawn)
-		for x in [-70,-32,32,70]:
-			detail(Vector3(x,.02,sx*83),Vector3(10,.018,.12),Color("e6d7ac"))
-			for k in range(4):detail(Vector3(x-3+k*2,.02,sx*81),Vector3(.15,.02,3.5),Color("e6d7ac"))
-		text3d("NORTH TERMINAL" if sx<0 else "SOUTH TERMINAL",Vector3(0,3.3,sx*88),Color("f3eddb"),65).pixel_size=.015
-	if has_water:
-		var water=box(Vector3(0,.31,0),Vector3(18,.6,66),Color(.18,.52,.59,.50),false)
-		var shader=Shader.new();shader.code="shader_type spatial; render_mode blend_mix, cull_disabled; uniform vec4 tint : source_color = vec4(0.12,0.47,0.53,0.5); void fragment(){float ripple=sin(UV.x*100.0+TIME*0.7)*sin(UV.y*55.0-TIME*0.4); ALBEDO=tint.rgb+vec3(ripple*0.035); ROUGHNESS=0.3; ALPHA=tint.a;}"
-		var material=ShaderMaterial.new();material.shader=shader;water.get_child(0).material_override=material
-		for x in [-9.3,9.3]:detail(Vector3(x,.17,0),Vector3(.6,.32,66.6),Color("cfceba"))
-		for z in [-35,35]:detail(Vector3(0,.07,z),Vector3(20,.14,2.2),Color("849e9f"))
-	else:
-		for z in [-24,24]:container_box(Vector3(0,0,z),Color("a48668"),11.)
+	if which<2:
+		# Broad navigation lanes, traversable warehouse passages, and readable cover heights.
+		for x in [-44,0,44]:detail(Vector3(x,.009,0),Vector3(22,.015,172),Color("a2acaa"))
+		for z in [-75,0,75]:detail(Vector3(0,.012,z),Vector3(190,.012,12),Color("a2acaa"))
+		for sx in [-1,1]:
+			for sz in [-1,1]:
+				warehouse(Vector3(sx*43,0,sz*51),which)
+				container_box(Vector3(sx*79,0,sz*26),Color("608e90") if sz<0 else Color("b06d57"),12.)
+				container_box(Vector3(sx*79,2.8,sz*26),Color("839da2"),10.)
+				for k in range(3):cover(Vector3(sx*(22+k*13),0,sz*9))
+				crate(Vector3(sx*23,0,sz*34),Vector3(7,2.1,3.))
+				crate(Vector3(sx*66,0,sz*63),Vector3(3.6,2.4,3.6))
+				crate(Vector3(sx*69.7,0,sz*62),Vector3(2.5,1.5,2.5))
+				container_box(Vector3(sx*81,0,sz*60),Color("c9b374"),9.)
+				for tx in [87,94]:tree(Vector3(sx*tx,0,sz*77))
+				# Harbor crane silhouette stays outside playable lanes.
+				for z in [-4,4]:detail(Vector3(sx*95,10,sz*45+z),Vector3(.8,20,.8),Color("b18b51"))
+				detail(Vector3(sx*88,20,sz*45),Vector3(17,.8,8.8),Color("c09b60"))
+			for z in [-69,-42,-14,14,42,69]:
+				cover(Vector3(sx*12,0,z),3.5)
+			for i in range(8):
+				var spawn=Vector3(-68+i*19,.15,sx*77);spawn_points[0 if sx<0 else 1].append(spawn);ffa_spawns.append(spawn)
+			for x in [-70,-32,32,70]:
+				detail(Vector3(x,.02,sx*83),Vector3(10,.018,.12),Color("e6d7ac"))
+				for k in range(4):detail(Vector3(x-3+k*2,.02,sx*81),Vector3(.15,.02,3.5),Color("e6d7ac"))
+			text3d("NORTH TERMINAL" if sx<0 else "SOUTH TERMINAL",Vector3(0,3.3,sx*88),Color("f3eddb"),65).pixel_size=.015
+		if has_water:
+			var water=box(Vector3(0,.31,0),Vector3(18,.6,66),Color(.18,.52,.59,.50),false)
+			var shader=Shader.new();shader.code="shader_type spatial; render_mode blend_mix, cull_disabled; uniform vec4 tint : source_color = vec4(0.12,0.47,0.53,0.5); void fragment(){float ripple=sin(UV.x*100.0+TIME*0.7)*sin(UV.y*55.0-TIME*0.4); ALBEDO=tint.rgb+vec3(ripple*0.035); ROUGHNESS=0.3; ALPHA=tint.a;}"
+			var material=ShaderMaterial.new();material.shader=shader;water.get_child(0).material_override=material
+			for x in [-9.3,9.3]:detail(Vector3(x,.17,0),Vector3(.6,.32,66.6),Color("cfceba"))
+			for z in [-35,35]:detail(Vector3(0,.07,z),Vector3(20,.14,2.2),Color("849e9f"))
+		else:
+			for z in [-24,24]:container_box(Vector3(0,0,z),Color("a48668"),11.)
+	else:MapLayouts.build(self,which)
 	for i in range(zones.size()):
 		var pos=zones[i]
 		for x in [-6,6]:detail(pos+Vector3(x,.025,0),Vector3(.16,.025,12),Color("e3bf68"))
@@ -136,12 +143,13 @@ func build(which:int):
 		for x in [-.31,.31]:M.box(n,Vector3(x,0,-.334),Vector3(.07,.3,.03),Color("d2ba76"))
 		M.merge_children(n);var label=text3d("AMMO",Vector3(0,.6,0),Color("e1d6a3"),21,n);label.visibility_range_end=20
 		supplies.append({"pos":pos,"node":n,"ready":0.})
-	building=false;batch_architecture()
+	MapLayouts.finish_detail(self,which)
+	building=false;batch_architecture();apply_surface_detail()
 	var environment=WorldEnvironment.new();var e=Environment.new();e.background_mode=Environment.BG_SKY
 	var sky=Sky.new();var sky_material=ProceduralSkyMaterial.new();sky_material.sky_top_color=Color("76a4c0");sky_material.sky_horizon_color=Color("ced9d6");sky_material.ground_horizon_color=Color("c0c4b6");sky_material.ground_bottom_color=Color("86947f");sky.sky_material=sky_material;e.sky=sky
-	e.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;e.ambient_light_color=Color("c8deec");e.ambient_light_energy=.32
+	e.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;e.ambient_light_color=Color("c8deec");e.ambient_light_energy=.68 if indoors else .42
 	e.tonemap_mode=Environment.TONE_MAPPER_LINEAR;environment.environment=e;add_child(environment)
-	var sun=DirectionalLight3D.new();sun.name="Sun";sun.rotation_degrees=Vector3(-52,-28,0);sun.light_color=Color("fff0d2");sun.light_energy=.85;sun.shadow_enabled=true;sun.directional_shadow_mode=DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS;sun.directional_shadow_max_distance=75;sun.shadow_bias=.08;add_child(sun)
+	var sun=DirectionalLight3D.new();sun.name="Sun";sun.rotation_degrees=Vector3(-52,-28,0);sun.light_color=Color("fff0d2");sun.light_energy=.35 if indoors else .9;sun.shadow_enabled=true;sun.directional_shadow_mode=DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS;sun.directional_shadow_max_distance=75;sun.shadow_bias=.08;add_child(sun)
 func batch_architecture():
 	var meshes=[];gather_meshes(architecture,meshes);var chunks={}
 	for mesh in meshes:
@@ -155,5 +163,48 @@ func gather_meshes(node:Node,out:Array):
 	for child in node.get_children():
 		if child is MeshInstance3D:out.append(child)
 		else:gather_meshes(child,out)
-func wading(pos:Vector3) -> bool:return has_water and water_rect.has_point(Vector2(pos.x,pos.z)) and pos.y<.61
+func point_clear(pos:Vector3) -> bool:
+	if absf(pos.x)>94 or absf(pos.z)>84:return false
+	for rect in obstacles:
+		if rect.grow(.2).has_point(Vector2(pos.x,pos.z)):return false
+	return true
+func spawn_candidates(team:int,roaming:bool) -> Array:
+	var out=[]
+	for pos in (ffa_spawns if roaming else spawn_points[team]):
+		if point_clear(pos):out.append(pos)
+	for i in range(48):
+		var pos=Vector3(randf_range(-88,88),.12,randf_range(-82,82) if roaming else randf_range(-83,-68) if team==0 else randf_range(68,83))
+		if point_clear(pos) and not wading(pos):out.append(pos)
+	if out.is_empty():out.append(Vector3(0,.12,-80 if team==0 else 80))
+	return out
+func make_water():
+	var water=box(Vector3(0,.31,0),Vector3(18,.6,66),Color(.18,.52,.59,.50),false)
+	var shader=Shader.new();shader.code="shader_type spatial; render_mode blend_mix, cull_disabled; void fragment(){float v=sin(UV.x*85.0+TIME)*sin(UV.y*70.0-TIME*.7); ALBEDO=vec3(.12,.4,.46)+v*.025; ROUGHNESS=.3; ALPHA=.45;}"
+	var mat_water=ShaderMaterial.new();mat_water.shader=shader;water.get_child(0).material_override=mat_water
+	for x in [-9.3,9.3]:detail(Vector3(x,.2,0),Vector3(.6,.4,66),Color("b4bab0"))
+func bridge(z:float):
+	var prior=building;building=false
+	box(Vector3(0,.3,z),Vector3(19,.6,4.6),Color("a1ada6"))
+	for side in [-1,1]:
+		var body=StaticBody3D.new();architecture.add_child(body);body.collision_layer=1
+		var points=PackedVector3Array()
+		for x in [9.5,13.5]:
+			for zz in [-2.3,2.3]:
+				points.append(Vector3(x*side,0,z+zz));points.append(Vector3(x*side,.6 if x==9.5 else .015,z+zz))
+		var shape=ConvexPolygonShape3D.new();shape.points=points;var collision=CollisionShape3D.new();collision.shape=shape;body.add_child(collision)
+		var mesh=SurfaceTool.new();mesh.begin(Mesh.PRIMITIVE_TRIANGLES)
+		for index in [1,3,5,3,7,5]:mesh.set_normal(Vector3.UP);mesh.add_vertex(points[index] if side==1 else points[{1:5,3:7,5:1,7:3}[index]])
+		var node=MeshInstance3D.new();node.mesh=mesh.commit();node.material_override=mat(Color("a1ada6"));body.add_child(node)
+	building=prior
+func apply_surface_detail():
+	var shader=Shader.new();shader.code="shader_type spatial; varying vec3 wp; varying vec3 wn; void vertex(){wp=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;wn=normalize(MODEL_NORMAL_MATRIX*NORMAL);} float noise(vec3 p){return fract(sin(dot(floor(p),vec3(12.989,78.233,37.719)))*43758.5453);} void fragment(){vec3 base=COLOR.rgb; float grain=noise(wp*24.0)*.08+.94; float grid=abs(wn.y)>.65?min(fract(wp.x*.25),fract(wp.z*.25)):fract(wp.y*1.6); float seam=smoothstep(.008,.025,grid); ALBEDO=base*grain*mix(.82,1.0,seam);ROUGHNESS=.78;}"
+	var material=ShaderMaterial.new();material.shader=shader
+	var list=[];gather_meshes(architecture,list)
+	for mesh in list:
+		if mesh.name=="Geometry":mesh.material_override=material
+func wading(pos:Vector3) -> bool:
+	if map_index==5:
+		for z in [-27,0,27]:
+			if absf(pos.z-z)<2.5:return false
+	return has_water and water_rect.has_point(Vector2(pos.x,pos.z)) and pos.y<.61
 func submerged(pos:Vector3) -> bool:return wading(pos) and pos.y<=.61

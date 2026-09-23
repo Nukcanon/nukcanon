@@ -7,6 +7,15 @@ const UI=preload("res://scripts/ui.gd")
 var bot_navigation:BotNavigation
 var bot_agents={}
 var bot_attack_site=0
+var combat_fx:CombatFX
+var heal_sound_times={}
+var version_check:VersionCheck
+var vote={}
+var vote_cooldowns={}
+var banned_tokens={}
+var public_serial=0
+var kill_events=[]
+var kill_serial=0
 var options=R.default_options()
 var players={}
 var actors={}
@@ -37,7 +46,7 @@ var bomb={"planted":false,"site":-1,"time":0.0,"actor":0,"progress":0.0,"positio
 var server=false
 var dedicated=false
 var local_id=1
-var profile={"nick":"Player","token":"","sensitivity":.0023,"ads_sensitivity":.75,"volume":.65,"window":true,"resolution":0,"weapon_volume":.85,"step_volume":.7,"ui_volume":.7}
+var profile={"nick":"Player","token":"","sensitivity":.0023,"ads_sensitivity":.75,"volume":.65,"window":true,"resolution":0,"ui_volume":.75,"hit_volume":.85}
 var pending_loadout={"role":0,"primary":"a1","secondary":"pistol","armor":0,"team":-1,"gadget":0}
 var snapshot_timer=0.0
 var input_timer=0.0
@@ -75,8 +84,12 @@ var room_search_timer=0.
 var connection_notice=false
 func _ready():
 	C.load_all();load_profile();setup_input();apply_display_settings()
+	combat_fx=CombatFX.new();add_child(combat_fx)
 	audio_bank=GameAudio.new();add_child(audio_bank);audio_bank.profile=profile
+	version_check=VersionCheck.new();add_child(version_check)
 	ui=UI.new();ui.game=self;add_child(ui);ui.menu();save_profile()
+	version_check.changed.connect(func():ui.update_version_badge())
+	if DisplayServer.get_name()!="headless" and not "--no-update-check" in OS.get_cmdline_user_args():version_check.call_deferred("check")
 	multiplayer.peer_disconnected.connect(disconnected)
 	multiplayer.connected_to_server.connect(connected)
 	multiplayer.connection_failed.connect(func():leave_game("서버에 연결하지 못했습니다. IP·방화벽을 확인하고 다시 접속하세요."))
@@ -99,6 +112,10 @@ func _ready():
 		get_viewport().get_texture().get_image().save_png("/tmp/relaystrike-game.png")
 	if "--quit-test" in cli_args:
 		await get_tree().create_timer(12).timeout;print("TEST_EXIT players=",players.size()," phase=",phase);get_tree().quit()
+func exit_game():
+	set_physics_process(false);audio_bank.stop_all();combat_fx.clear()
+	await get_tree().create_timer(.15).timeout
+	get_tree().quit()
 func load_profile():
 	var cfg=ConfigFile.new()
 	var loaded=cfg.load("user://settings.cfg")
@@ -113,6 +130,7 @@ func save_profile():
 	var cfg=ConfigFile.new()
 	for k in profile:cfg.set_value("player",k,profile[k])
 	cfg.save("user://settings.cfg")
+	AudioServer.set_bus_mute(0,float(profile.volume)<=0)
 	AudioServer.set_bus_volume_db(0,linear_to_db(maxf(.001,float(profile.volume))))
 func apply_display_settings():
 	if DisplayServer.get_name()=="headless":return
@@ -134,7 +152,7 @@ func host_game():
 	reset_transport_state();stop_room_search()
 	var peer=ENetMultiplayerPeer.new();var err=peer.create_server(R.PORT,32,3)
 	if err!=OK:ui.notice("방을 만들 수 없습니다. 다른 서버가 실행 중인지 확인하세요. 코드 "+str(err));return
-	multiplayer.multiplayer_peer=peer;multiplayer.server_relay=false;server=true;local_id=1;phase="lobby";build_world()
+	multiplayer.multiplayer_peer=peer;multiplayer.server_relay=false;server=true;local_id=1;phase="lobby";public_serial=0;banned_tokens.clear();vote.clear();vote_cooldowns.clear();build_world()
 	discovery=PacketPeerUDP.new();discovery.set_broadcast_enabled(true)
 	if discovery.bind(R.DISCOVERY)!=OK:discovery=null
 	if not dedicated:add_player(1,profile.nick,profile.token)
@@ -184,7 +202,9 @@ func register(nick:String,token:String,password:String,version:String):
 	var id=multiplayer.get_remote_sender_id()
 	if players.has(id):return
 	var reason=""
-	if version!=R.VERSION:reason="게임 버전이 다릅니다. 모두 같은 배포 파일을 사용하세요."
+	if Time.get_ticks_msec()<int(banned_tokens.get(token,0)):
+		reject.rpc_id(id,"강퇴된 방입니다. 잠시 후 다시 참가하세요.");return
+	if version!=R.VERSION:reason="버전이 다릅니다. 서버 "+R.VERSION+" / 내 게임 "+version+". 같은 버전을 내려받으세요."
 	elif password!=options.password:reason="방 비밀번호가 다릅니다."
 	elif phase!="lobby" and int(options.join)==0:reason="진행 중 참가가 금지된 방입니다."
 	elif token.length()<16 or token.length()>80:reason="플레이어 식별 정보가 올바르지 않습니다."
@@ -221,6 +241,10 @@ func add_player(id:int,nick:String,token:String):
 	p.bloom=0.;p.shot_time=-100.;p.spray_index=0;p.spray_phase=0.;p.bot_action=""
 	p.pending_loadout={};p.trigger_seen=0;p.fire_prev=false;p.burst_left=0;p.trigger_until=0.;p.reload_started=0.;p.switch_until=0.
 	if id<0 and p.role==3:p.secondary="repair"
+	if not p.has("number"):public_serial+=1;p.number=public_serial
+	p.base_nick=nick.strip_edges().replace("\n"," ").replace("\r"," ").left(20)
+	if p.base_nick.is_empty():p.base_nick="Player"
+	p.nick=p.base_nick+" #%02d"%int(p.number) if id>0 else p.base_nick
 	players[id]=p;ensure_actor(id);equip_ammo(p)
 	if phase=="lobby":spawn(id)
 	if id<0:
@@ -235,17 +259,61 @@ func spawn(id:int):
 	var p=players[id];var a=actors[id]
 	if not p.get("pending_loadout",{}).is_empty():
 		var requested=p.pending_loadout.duplicate();p.pending_loadout={};commit_loadout(id,requested)
-	var pts=arena.ffa_spawns if int(options.mode)==1 else arena.spawn_points[int(p.team)]
-	var best=pts[0];var safest=-1.
-	for pos in pts:
-		var distance=200.
-		for other in players:
-			if other!=id and players[other].alive and enemies(p,players[other]):distance=minf(distance,pos.distance_to(actors[other].position))
-		distance+=randf()*5
-		if distance>safest:safest=distance;best=pos
-	a.collision_layer=2;a.position=best;a.target_pos=best;a.velocity=Vector3.ZERO;p.alive=true;p.hp=100.;p.armor=p.armor_max;p.reload=0.;p.protect=clock+2.;p.energy=180.;p.heal_mag=3;p.heal_reserve=3;p.repair_energy=100.;p.gadget_count=2 if p.role==3 else 3 if p.role==4 else 1;p.smoke=1 if p.role==4 and p.gadget==1 else 2;p.flash_count=2 if p.role==4 and p.gadget==1 else 1;p.last_hit=clock;p.contributors={};p.spectator=false
+	var best=choose_spawn(id)
+	a.collision_layer=2;a.position=best;a.target_pos=best;a.velocity=Vector3.ZERO;p.alive=true;p.hp=100.;p.armor=p.armor_max;p.reload=0.;p.protect=clock+R.SPAWN_PROTECTION;p.energy=180.;p.heal_mag=3;p.heal_reserve=3;p.repair_energy=100.;p.gadget_count=2 if p.role==3 else 3 if p.role==4 else 1;p.smoke=1 if p.role==4 and p.gadget==1 else 2;p.flash_count=2 if p.role==4 and p.gadget==1 else 1;p.last_hit=clock;p.contributors={};p.spectator=false
 	a.reset_view(0. if p.team==1 else PI);p.fire_ready=clock+.3;p.burst_left=0;p.fire_prev=false;p.trigger_until=0.;p.trigger_seen=int(a.input_state.get("trigger_seq",0));p.slot=0;p.bloom=0.;p.spray_index=0;p.spray_phase=0.;p.shot_time=-100.;p.switch_until=clock+.3;equip_ammo(p)
 	if id==local_id:Input.mouse_mode=Input.MOUSE_MODE_CAPTURED
+func choose_spawn(id:int) -> Vector3:
+	var p=players[id];var pts=arena.spawn_candidates(int(p.team),int(options.mode)==1 or int(options.mode)==3)
+	var best=pts[0];var best_score=-1e9
+	for pos in pts:
+		var enemy_distance=160.;var ally_distance=60.;var exposed=0.;var occupied=false
+		for other in players:
+			if other==id or not players[other].alive:continue
+			var distance=pos.distance_to(actors[other].position)
+			if distance<1.3:occupied=true
+			if enemies(p,players[other]):
+				enemy_distance=minf(enemy_distance,distance)
+				if distance<65 and clear_line(pos+Vector3.UP*1.5,actors[other].eye()):exposed+=35.
+			else:ally_distance=minf(ally_distance,distance)
+		if occupied:continue
+		var score=minf(enemy_distance,100.)*1.5-ally_distance*.35-exposed+randf()*7
+		if score>best_score:best_score=score;best=pos
+	return best
+func can_attack(p:Dictionary) -> bool:return p.alive and float(p.get("protect",0))<=clock
+func passive_regen(p:Dictionary,dt:float):
+	if options.autoheal and p.alive and clock-maxf(p.last_hit,float(p.get("shot_time",-100.)))>=R.REGEN_DELAY:p.hp=minf(100.,p.hp+R.REGEN_RATE*dt)
+func kick_player(requester:int,target:int,by_vote=false) -> bool:
+	if not server or (requester!=1 and not by_vote) or target==1 or not players.has(target):return false
+	var name=players[target].nick;var token=players[target].token
+	if target>0:
+		banned_tokens[token]=Time.get_ticks_msec()+180000
+		if target in multiplayer.get_peers():
+			reject.rpc_id(target,"투표로 강퇴되었습니다. 3분 뒤 다시 참가할 수 있습니다." if by_vote else "방장이 강퇴했습니다. 3분 뒤 다시 참가할 수 있습니다.")
+			get_tree().create_timer(.25).timeout.connect(func():
+				if server and target in multiplayer.get_peers():multiplayer.multiplayer_peer.disconnect_peer(target))
+	disconnected(target);reconnects.erase(token);announce(name+" 강퇴");return true
+func start_kick_vote(requester:int,target:int) -> bool:
+	if not server or requester<=0 or target<=0 or target==1 or requester==target or not players.has(requester) or not players.has(target) or not vote.is_empty():return false
+	if Time.get_ticks_msec()<int(vote_cooldowns.get(requester,0)):return false
+	var eligible=[]
+	for id in players:
+		if id>0 and id!=target:eligible.append(id)
+	if eligible.size()<2:feedback(requester,"","강퇴 투표는 대상 외 참가자가 2명 이상 있어야 합니다.");return false
+	vote={"target":target,"name":players[target].nick,"eligible":eligible,"votes":{requester:true},"needed":maxi(2,int(ceil(eligible.size()*.6))),"until":clock+25.}
+	vote_cooldowns[requester]=Time.get_ticks_msec()+60000;announce(players[target].nick+" 강퇴 투표 · F6 찬성 / F7 반대");broadcast_state(true);return true
+func cast_kick_vote(id:int,yes:bool) -> bool:
+	if not server or vote.is_empty() or id not in vote.eligible or vote.votes.has(id):return false
+	vote.votes[id]=yes;update_kick_vote();broadcast_state(true);return true
+func update_kick_vote():
+	if vote.is_empty():return
+	if not players.has(vote.target):vote.clear();return
+	var yes=0
+	for id in vote.votes:
+		if players.has(id) and vote.votes[id]:yes+=1
+	if yes>=int(vote.needed):
+		var target=int(vote.target);vote.clear();kick_player(1,target,true)
+	elif clock>=float(vote.until):vote.clear();announce("강퇴 투표가 종료되었습니다.")
 func disconnected(id:int):
 	peer_activity.erase(id);pending_peers.erase(id)
 	if not players.has(id):return
@@ -257,10 +325,12 @@ func disconnected(id:int):
 	if actors.has(id):actors[id].queue_free();actors.erase(id)
 	if server:call_deferred("broadcast_state",true)
 func leave_game(message:String=""):
+	kill_events.clear();kill_serial=0
+	combat_fx.clear();heal_sound_times.clear()
 	if is_instance_valid(audio_bank):audio_bank.stop_all()
 	if multiplayer.multiplayer_peer:multiplayer.multiplayer_peer.close()
 	multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new()
-	server=false;phase="menu";reset_transport_state();stop_room_search()
+	server=false;phase="menu";vote.clear();vote_cooldowns.clear();reset_transport_state();stop_room_search()
 	for a in actors.values():a.queue_free()
 	actors.clear();players.clear();bot_agents.clear();bot_navigation=null
 	for n in device_nodes.values():n.queue_free()
@@ -295,6 +365,8 @@ func network_discovery():
 			var d=JSON.parse_string(raw.get_string_from_utf8())
 			if d is Dictionary and d.get("game")=="RelayStrike":rooms[ip]=d;ui.update_rooms()
 func _unhandled_input(event):
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode in [KEY_F6,KEY_F7]:
+		command("vote",{"yes":event.keycode==KEY_F6});get_viewport().set_input_as_handled();return
 	if event is InputEventKey and event.pressed and event.keycode==KEY_ESCAPE:
 		if phase!="menu":ui.toggle_pause();get_viewport().set_input_as_handled()
 	if not actors.has(local_id) or Input.mouse_mode!=Input.MOUSE_MODE_CAPTURED:return
@@ -348,6 +420,7 @@ func collect_input():
 	else:send_input.rpc_id(1,a.input_state)
 func _physics_process(dt:float):
 	clock+=dt;network_discovery();connection_watchdog()
+	if server:update_kick_vote()
 	if room_search_active:
 		room_search_timer-=dt
 		if room_search_timer<=0:search_rooms()
@@ -402,7 +475,7 @@ func server_tick(dt:float):
 			p.mag[wid]=int(p.mag.get(wid,0))+got
 			if not options.infinite:p.reserve[wid]=int(p.reserve.get(wid,0))-got
 			p.reload=0.;p.trigger_until=0.
-		if options.autoheal and int(options.mode) in [0,1,3] and clock-p.last_hit>5:p.hp=minf(100,p.hp+10*dt)
+		passive_regen(p,dt)
 		if int(options.mode) in [0,1,3]:
 			p.energy=minf(180,p.energy+dt*5)
 			if clock>=p.heal_ready+8 and p.heal_mag<3:p.heal_mag+=1;p.heal_ready=clock
@@ -448,6 +521,9 @@ func handle_command(id:int,action:String,data:Dictionary):
 			if p.role==4 and slot in [2,3]:p.gadget=slot-2
 		"reload":begin_reload(id)
 		"loadout":apply_loadout(id,data)
+		"kick":kick_player(id,int(data.get("target",0)))
+		"vote_kick":start_kick_vote(id,int(data.get("target",0)))
+		"vote":cast_kick_vote(id,bool(data.get("yes",false)))
 		"team":change_team(id,int(data.get("player_id",id)),int(data.get("team",0)))
 		"team_swap":swap_teams(id,int(data.get("first",0)),int(data.get("second",0)))
 		"team_policy":
@@ -552,12 +628,12 @@ func ray(from:Vector3,to:Vector3,exclude:Array=[],mask:int=7) -> Dictionary:
 func clear_line(from:Vector3,to:Vector3,exclude:Array=[]) -> bool:return ray(from,to,exclude,1|4).is_empty()
 func fire(id:int):
 	var p=players[id];var a=actors[id]
-	if p.slot>1 or not p.alive or clock<p.fire_ready or p.reload>0 or clock<a.sprint_release or a.last_sprint or p.shield>clock:return
+	if p.slot>1 or not can_attack(p) or clock<p.fire_ready or p.reload>0 or clock<a.sprint_release or a.last_sprint or p.shield>clock:return
 	var wid=p.primary if p.slot==0 else p.secondary;var w=C.get_weapon(wid)
 	if w.kind=="heal":continuous_heal(id);return
 	if w.kind=="repair":repair(id);return
 	if int(p.mag.get(wid,0))<=0:begin_reload(id);return
-	p.mag[wid]-=1;p.fire_ready=clock+float(w.interval);p.protect=0.
+	p.mag[wid]-=1;p.fire_ready=clock+float(w.interval)
 	var spread=a.spread_angle
 	var spray=AimModel.current_spray(w,p)
 	p.shot_time=clock;p.spray_phase=float(p.get("spray_phase",0))+1.;p.spray_index=int(p.spray_phase);p.bloom=minf(float(w.get("bloom_max",1.2)),float(p.get("bloom",0))+float(w.get("shot_bloom",.12)))
@@ -576,12 +652,12 @@ func fire(id:int):
 			var head=hit.position.y-collider.position.y>(.86 if collider.input_state.crouch else 1.38)
 			if head:dmg*=1.5
 			dmg*=R.damage_water(arena.submerged(hit.position),arena.wading(a.position),not arena.wading(collider.position))
-			damage(collider.pid,dmg,id,head)
+			damage(collider.pid,dmg,id,head,wid)
 		elif collider.has_meta("device"):damage_device(int(collider.get_meta("device")),dmg,id)
 		elif pellet==0:wall_mark.rpc(hit.position,hit.normal)
 	effect.rpc("shot",origin,last_end,id)
 	if int(p.mag[wid])==0:begin_reload(id)
-func damage(target:int,amount:float,source:int,critical:bool=false):
+func damage(target:int,amount:float,source:int,critical:bool=false,weapon_id:String="world"):
 	if not players.has(target) or not players[target].alive:return
 	var p=players[target]
 	if p.protect>clock:return
@@ -614,13 +690,18 @@ func damage(target:int,amount:float,source:int,critical:bool=false):
 			feedback(source,"confirm","처치 확인")
 		for aid in p.contributors:
 			if aid!=source and players.has(aid) and clock-p.contributors[aid]<8:players[aid].assists+=1
-		announce(p.nick+" 탈락")
+		var attacker=players.get(source,{})
+		kill_event.rpc({"attacker":source,"attacker_name":str(attacker.get("nick","환경")),"attacker_team":int(attacker.get("team",-1)),"victim":target,"victim_name":str(p.nick),"victim_team":int(p.team),"weapon":weapon_id})
+@rpc("authority","call_local","reliable",0)
+func kill_event(event:Dictionary):
+	var item=event.duplicate(true);kill_serial+=1;item.serial=kill_serial;item.received=Time.get_ticks_msec();kill_events.append(item)
+	while kill_events.size()>KillFeed.MAX_ROWS:kill_events.pop_front()
 func damage_device(did:int,amount:float,source:int):
 	if not devices.has(did):return
 	var d=devices[did]
 	if players.has(source) and d.team==players[source].team and int(options.mode)!=1 and not options.friendly:return
 	d.hp-=amount;d.last_hit=clock
-	if d.hp<=0:remove_device(did)
+	if d.hp<=0:effect.rpc("deploy",d.pos+Vector3.UP,Vector3.ZERO,source);remove_device(did)
 func aim_player(id:int,range_m:float,ally:bool) -> int:
 	var a=actors[id];var hit=ray(a.eye(),a.eye()+a.direction()*range_m,[a.get_rid()])
 	if hit.is_empty() or not hit.collider is Actor:return 0
@@ -674,7 +755,7 @@ func add_device(kind:String,pos:Vector3,id:int,hp:float) -> int:
 	return did
 func use_skill(id:int):
 	var p=players[id];var a=actors[id]
-	if not options.skills or not options.classes or not p.alive or phase!="combat":return
+	if not options.skills or not options.classes or not can_attack(p) or phase!="combat":return
 	if clock<p.skill_ready:feedback(id,"","스킬 충전 중: "+str(int(ceil(p.skill_ready-clock)))+"초");return
 	match int(p.role):
 		0:p.dash=clock+.28;p.fire_ready=clock+.6;p.skill_ready=clock+18
@@ -703,10 +784,11 @@ func use_skill(id:int):
 			var tid=aim_player(id,15,true)
 			if tid==0:tid=id
 			players[tid].slow=0.;players[tid].mark=0.;players[tid].flash=0.;players[tid].cleanse=clock+4;p.skill_ready=clock+20
-	feedback(id,"heal",["기동 스킬 사용","감지 파동 · 3초","방호 활성 · 4초","포탑 설치 완료 · 재충전 30초","둔화 구역 전개 · 8초","상태 정화 · 4초"][int(p.role)])
+	effect.rpc("skill",a.position,Vector3.ZERO,id)
+	feedback(id,"",["기동 스킬 사용","감지 파동 · 3초","방호 활성 · 4초","포탑 설치 완료 · 재충전 30초","둔화 구역 전개 · 8초","상태 정화 · 4초"][int(p.role)])
 func use_gadget(id:int):
 	var p=players[id];var a=actors[id]
-	if not options.classes or not p.alive or phase!="combat" or p.gadget_count<=0 or clock<p.gadget_ready:return
+	if not options.classes or not can_attack(p) or phase!="combat" or p.gadget_count<=0 or clock<p.gadget_ready:return
 	match int(p.role):
 		0:
 			if p.armor>=50:feedback(id,"","방어구가 이미 가득 찼습니다.");return
@@ -732,34 +814,32 @@ func use_gadget(id:int):
 			end.y=.3
 			if p.gadget==1:
 				if p.flash_count<=0:feedback(id,"","섬광탄 없음 · V로 연막탄 선택");return
-				p.flash_count-=1
-				for qid in players:
-					if players[qid].alive and actors[qid].position.distance_to(end)<15 and clear_line(end+Vector3.UP,actors[qid].eye(),[actors[qid].get_rid()]):players[qid].flash=clock+2.5
-				for d in devices.values():
-					if d.pos.distance_to(end)<15:d.disabled=clock+3
-				effect.rpc("flash",end,end,id)
+				p.flash_count-=1;effect.rpc("throw",a.muzzle_world(),end,id)
+				fields.append({"kind":"flash_pending","pos":end,"starts":clock+.35,"until":clock+1.,"team":p.team,"owner":id})
 			else:
 				if p.smoke<=0:feedback(id,"","연막탄 없음 · V로 섬광탄 선택");return
-				p.smoke-=1;fields.append({"kind":"smoke","pos":end,"until":clock+12,"team":p.team,"owner":id})
+				p.smoke-=1;effect.rpc("throw",a.muzzle_world(),end,id);fields.append({"kind":"smoke","pos":end,"starts":clock+.35,"until":clock+12.35,"team":p.team,"owner":id,"deployed":false})
 		5:
 			var tid=aim_player(id,4,true)
 			if tid==0:tid=id
 			if players[tid].hp>=100:feedback(id,"","체력이 이미 가득 찼습니다.");return
 			heal_target(id,tid,25)
 	p.gadget_count-=1;p.gadget_ready=clock+.6
-	feedback(id,"heal",["방어구 +25","상대 표식 · 4초","거치대 활성 · 15초 동안 정지 사격 정확도 증가","엄폐물 설치 완료","섬광탄 사용" if p.gadget==1 else "연막탄 전개 · 12초","응급 회복 +25"][int(p.role)])
+	if p.role!=4:effect.rpc("deploy",a.position,Vector3.ZERO,id)
+	feedback(id,"",["방어구 +25","상대 표식 · 4초","거치대 활성 · 15초 동안 정지 사격 정확도 증가","엄폐물 설치 완료","섬광탄 사용" if p.gadget==1 else "연막탄 전개 · 12초","응급 회복 +25"][int(p.role)])
 func remove_device(did:int):
 	devices.erase(did)
 	if device_nodes.has(did):device_nodes[did].queue_free();device_nodes.erase(did)
 func in_smoke_line(from:Vector3,to:Vector3) -> bool:
 	for f in fields:
-		if f.kind=="smoke" and Geometry3D.get_closest_point_to_segment(f.pos+Vector3.UP*2,from,to).distance_to(f.pos+Vector3.UP*2)<5:return true
+		if f.kind=="smoke" and float(f.get("starts",0))<=clock and Geometry3D.get_closest_point_to_segment(f.pos+Vector3.UP*2,from,to).distance_to(f.pos+Vector3.UP*2)<5:return true
 	return false
 func update_devices(dt:float):
 	for did in devices.keys():
 		var d=devices[did]
 		if clock>d.expires:remove_device(did);continue
 		if d.kind!="turret" or clock<d.disabled or phase!="combat":continue
+		if players.has(d.owner) and players[d.owner].protect>clock:continue
 		var origin=d.pos+Vector3.UP*1.75;var target=0;var best=25.+(d.level-1)*5
 		for id in players:
 			var p=players[id]
@@ -770,11 +850,19 @@ func update_devices(dt:float):
 		if target!=0 and clock>=d.lock and clock>=d.next_fire:
 			d.next_fire=clock+.25;var damage_amount=(20.+(d.level-1)*4)*.25
 			if arena.wading(d.pos) and not arena.wading(actors[target].position):damage_amount*=.5
-			damage(target,damage_amount,int(d.owner));effect.rpc("shot",origin,actors[target].eye(),0)
+			damage(target,damage_amount,int(d.owner),false,"turret");effect.rpc("shot",origin,actors[target].eye(),0)
 func update_fields(dt:float):
 	fields=fields.filter(func(f):return f.until>clock)
 	for f in fields:
-		if f.kind=="slow":
+		if float(f.get("starts",0))>clock:continue
+		if f.kind=="flash_pending":
+			for qid in players:
+				if players[qid].alive and actors[qid].position.distance_to(f.pos)<15 and clear_line(f.pos+Vector3.UP,actors[qid].eye(),[actors[qid].get_rid()]):players[qid].flash=clock+2.5
+			for device in devices.values():
+				if device.pos.distance_to(f.pos)<15:device.disabled=clock+3
+			effect.rpc("flash",f.pos,f.pos,int(f.owner));f.until=clock-1
+		elif f.kind=="smoke" and not f.get("deployed",true):f.deployed=true;effect.rpc("smoke",f.pos,f.pos,int(f.owner))
+		elif f.kind=="slow":
 			for id in players:
 				if players[id].alive and players[id].team!=f.team and players[id].get("cleanse",0)<clock and actors[id].position.distance_to(f.pos)<5:players[id].slow=clock+.2
 func update_pickups():
@@ -846,13 +934,14 @@ func check_objectives(dt:float):
 				if p.alive:alive[p.team]+=1
 			if bomb.planted:
 				bomb.time-=dt
-				if bomb.time<=0:finish_round(attackers,"장치 작동");return
-				if alive[1-attackers]==0 and team_count(1-attackers)>0:finish_round(attackers,"수비팀 전원 탈락");return
+				if bomb.time<=0:effect.rpc("explosion",bomb.position,Vector3.ZERO,0);finish_round(attackers,"장치 작동");return
+				if alive[1-attackers]==0 and team_count(1-attackers)>0:finish_round(attackers,"수비팀 전원 Dead");return
 			else:
 				if remaining<=0:finish_round(1-attackers,"설치 시간 종료");return
-				if alive[attackers]==0 and team_count(attackers)>0:finish_round(1-attackers,"공격팀 전원 탈락");return
-				if alive[1-attackers]==0 and team_count(1-attackers)>0:finish_round(attackers,"수비팀 전원 탈락")
+				if alive[attackers]==0 and team_count(attackers)>0:finish_round(1-attackers,"공격팀 전원 Dead");return
+				if alive[1-attackers]==0 and team_count(1-attackers)>0:finish_round(attackers,"수비팀 전원 Dead")
 func start_match():
+	kill_events.clear()
 	if not server:return
 	for p in players.values():
 		p.kills=0;p.deaths=0;p.assists=0;p.objective=0;p.healed=0.;p.played=0.;p.lives=int(options.lives);p.cash=800;p.skill_ready=0.;p.spectator=false;p.can_respawn=true
@@ -912,7 +1001,7 @@ func broadcast_state(force:bool,target_peer:int=0):
 	var state={"clock":clock,"phase":phase,"remaining":remaining,"scores":scores,"tickets":tickets,"round":round_no,"players":list,"devices":devices,"fields":fields,"drops":drops,"zones":zone_owner,"supplies":supplies,"bomb":bomb}
 	if multiplayer.get_peers().size()>0:
 		snapshot_sequence+=1;state.sequence=snapshot_sequence
-		state.team_policy={"teams":options.teams,"next_teams":options.next_teams}
+		state.team_policy={"teams":options.teams,"next_teams":options.next_teams};state.vote=vote
 		var packed=var_to_bytes(state).compress(FileAccess.COMPRESSION_DEFLATE)
 		var parts=int(ceil(packed.size()/1000.0))
 		for peer in multiplayer.get_peers():
@@ -949,7 +1038,7 @@ func receive_state(s:Dictionary):
 	if sequence<=received_sequence:return
 	received_sequence=sequence;last_snapshot_ms=Time.get_ticks_msec();connection_notice=false
 	if s.has("team_policy"):options.merge(s.team_policy,true)
-	clock=s.clock;var old_phase=phase;phase=s.phase;remaining=s.remaining;scores=s.scores;tickets=s.tickets;round_no=s.round;bomb=s.bomb;zone_owner=s.zones;fields=s.fields;drops=s.drops
+	vote=s.get("vote",{});clock=s.clock;var old_phase=phase;phase=s.phase;remaining=s.remaining;scores=s.scores;tickets=s.tickets;round_no=s.round;bomb=s.bomb;zone_owner=s.zones;fields=s.fields;drops=s.drops
 	var present=[]
 	for p in s.players:
 		var id=int(p.id);var fresh=not players.has(id) or (not players[id].alive and p.alive);present.append(id);players[id]=p;ensure_actor(id);var a=actors[id];a.set_team(int(p.team));a.collision_layer=2 if p.alive else 0
@@ -972,22 +1061,17 @@ func update_world_visuals(dt:float):
 		if not device_nodes.has(did):
 			var b=StaticBody3D.new();b.collision_layer=4;b.collision_mask=0;b.set_meta("device",did);add_child(b);device_nodes[did]=b
 			var size=Vector3(3.4,1.25,.65) if d.kind=="cover" else Vector3(.8,1.9,.8)
-			arena.box(Vector3(0,size.y/2,0),size,Color("365d73") if d.team==0 else Color("986343"),false,b)
+			CombatFX.device(b,d.kind,int(d.team))
 			var c=CollisionShape3D.new();var sh=BoxShape3D.new();sh.size=size;c.shape=sh;c.position.y=size.y/2;b.add_child(c)
-			if d.kind=="turret":arena.box(Vector3(0,1.7,-.5),Vector3(.22,.2,1.2),Color("233749"),false,b)
-			var label=arena.text3d("",Vector3(0,2.4,0),Color.WHITE,40,b);label.name="Label"
-		var node=device_nodes[did];node.position=d.pos;node.rotation.y=d.yaw;node.get_node("Label").text=("T"+str(d.level) if d.kind=="turret" else "COVER")+" · "+str(int(d.hp))
+			var label=arena.text3d("",Vector3(0,2.4,0),Color.WHITE,25,b);label.name="Label"
+		var node=device_nodes[did];node.position=d.pos;node.rotation.y=d.yaw;node.get_node("Label").text=("포탑 "+str(d.level) if d.kind=="turret" else "엄폐물")+" · "+str(int(d.hp))
+		if d.kind=="turret" and actors.has(int(d.target)):
+			var head=node.get_node("TurretHead");var target=actors[int(d.target)].eye();head.look_at(Vector3(target.x,head.global_position.y,target.z))
 	for did in device_nodes.keys():
 		if not devices.has(did):device_nodes[did].queue_free();device_nodes.erase(did)
 	for s in arena.supplies:
 		s.node.visible=s.ready<=clock
-	world_timer-=dt
-	if world_timer<=0:
-		world_timer=.3
-		for n in smoke_visuals:n.queue_free()
-		smoke_visuals.clear()
-		for f in fields:
-			var n=MeshInstance3D.new();var m=SphereMesh.new();m.radius=5;m.height=6 if f.kind=="smoke" else .2;m.radial_segments=12;m.rings=5;n.mesh=m;n.position=f.pos+Vector3.UP*(2 if f.kind=="smoke" else .1);n.material_override=arena.mat(Color(.55,.64,.67,.92) if f.kind=="smoke" else Color(.7,.42,.2,.4));add_child(n);smoke_visuals.append(n)
+	combat_fx.sync_fields(fields,clock)
 	var live_drops={}
 	for d in drops:
 		var key=str(d.until)+str(d.pos)+d.weapon;live_drops[key]=true
@@ -1012,15 +1096,18 @@ func announcement(message:String):ui.notice(message)
 @rpc("authority","call_local","unreliable",2)
 func effect(kind:String,from:Vector3,to:Vector3,owner:int):
 	if dedicated:return
-	var sound="heal" if kind=="heal" else "confirm"
-	if kind=="shot" and players.has(owner):sound="gun_"+(players[owner].primary if players[owner].slot==0 else players[owner].secondary)
-	play_sound(sound,from,owner!=local_id)
+	var sound={"heal":"heal","flash":"flash","explosion":"explosion","deploy":"deploy","skill":"skill","smoke":"smoke"}.get(kind,"")
+	if kind=="shot":sound="gun_"+(players[owner].primary if players[owner].slot==0 else players[owner].secondary) if players.has(owner) else "gun_a1"
+	if kind!="heal" or clock-float(heal_sound_times.get(owner,-100))>.22:
+		if not sound.is_empty():play_sound(sound,from,owner!=local_id)
+		if kind=="heal":heal_sound_times[owner]=clock
 	if kind in ["shot","heal"] and arena:
 		if owner==local_id and actors.has(owner) and players[owner].alive and players[owner].slot<2:from=actors[owner].visual_muzzle()
-		var length=from.distance_to(to)
-		if length>.01:
-			var n=arena.box((from+to)*.5,Vector3(.025,.025,length),Color("ffe2a0") if kind=="shot" else Color("63ecc6"),false)
-			n.look_at(to);get_tree().create_timer(.045 if kind=="shot" else .09).timeout.connect(n.queue_free)
+		combat_fx.beam(from,to,kind=="heal")
+	elif arena and kind=="throw":combat_fx.throw_item(from,to)
+	elif arena:
+		var color=Color("78e1cb") if players.has(owner) and players[owner].team==0 else Color("ffd190")
+		combat_fx.burst(kind,from,color)
 	if actors.has(owner) and kind=="shot":actors[owner].recoil=1.
 func play_sound(kind:String,pos:Vector3,spatial:bool):
 	if dedicated or not is_instance_valid(audio_bank):return
@@ -1033,21 +1120,20 @@ func step_sound(pos:Vector3,id:int,surface:String,variant:int,gain:float):
 func impact(pos:Vector3,push:Vector3,eliminated:bool,team:int,role:int=0,variant:int=0,facing:float=0.,crouched:bool=false):
 	if dedicated or arena==null:return
 	if eliminated:
-		var model=Node3D.new();add_child(model);model.position=pos
+		var model=Node3D.new();arena.add_child(model);model.position=pos
 		var body=CharacterVisual.new();model.add_child(body);body.build(role,team);body.animator.play(["fall_back","fall_front","fall_left","fall_right","fall_fold"][variant%5]);body.animator.seek(.12 if crouched else 0.,true)
-		var pose=create_tween();pose.tween_method(func(t):
+		var pose=model.create_tween();pose.tween_method(func(t):
 			if is_instance_valid(body):body.animator.seek(t,true),.12 if crouched else 0.,.9,.78 if crouched else .9)
 		var end=pos+push*(.5 if crouched else .7+variant*.1);end.y=pos.y
 		var obstruction=ray(pos+Vector3.UP*.7,end+Vector3.UP*.7,[],1|4)
 		if not obstruction.is_empty():end=pos
 		model.rotation.y=facing
-		var t=create_tween().set_parallel(true);t.tween_property(model,"position",end,.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-		get_tree().create_timer(5.5).timeout.connect(func():
-			if is_instance_valid(model):model.queue_free())
+		var t=model.create_tween().set_parallel(true);t.tween_property(model,"position",end,.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		var lifetime=model.create_tween();lifetime.tween_interval(5.5);lifetime.tween_callback(model.queue_free)
 	else:
 		for i in range(4):
 			var n=arena.box(pos,Vector3(.045,.045,.045),Color("c64b52"),false)
-			var t=create_tween().set_parallel(true);t.tween_property(n,"position",pos+push*.25+Vector3(randf_range(-.3,.3),randf_range(-.2,.3),randf_range(-.3,.3)),.18);t.tween_property(n,"scale",Vector3.ZERO,.22);t.chain().tween_callback(n.queue_free)
+			var t=n.create_tween().set_parallel(true);t.tween_property(n,"position",pos+push*.25+Vector3(randf_range(-.3,.3),randf_range(-.2,.3),randf_range(-.3,.3)),.18);t.tween_property(n,"scale",Vector3.ZERO,.22);t.chain().tween_callback(n.queue_free)
 
 func cycle_spectator():
 	if not players.has(local_id) or players[local_id].alive:return

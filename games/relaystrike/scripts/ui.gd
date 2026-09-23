@@ -2,6 +2,12 @@ extends CanvasLayer
 const Reticle=preload("res://scripts/reticle.gd")
 var reticle:Control
 var background:Control
+var version_box:VBoxContainer
+var vote_panel:PanelContainer
+var vote_text:Label
+var vote_yes:Button
+var vote_no:Button
+var member_signature=""
 var slots=[]
 var slot_panels=[]
 var weapon_title:Label
@@ -14,6 +20,8 @@ var gear_submit:Button
 var game:Node
 var root:Control
 var panel:PanelContainer
+var panel_body:VBoxContainer
+var panel_scroll:ScrollContainer
 var stack:VBoxContainer
 var hud:Control
 var status:Label
@@ -48,11 +56,12 @@ var role_detail:Label
 var team_columns:HBoxContainer
 var team_signature=""
 var scoreboard:MatchScoreboard
+var kill_feed:KillFeed
 func _ready():
 	root=Control.new();root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);root.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(root)
-	theme=Theme.new();theme.default_font_size=17
+	theme=Theme.new();theme.default_font_size=20
 	if ResourceLoader.exists("res://assets/Korean.ttf"):
-		var font=FontVariation.new();font.base_font=load("res://assets/Korean.ttf");font.variation_opentype={"wght":550};font.variation_embolden=.35;theme.default_font=font
+		var font=FontVariation.new();font.base_font=load("res://assets/Korean.ttf");font.variation_opentype={TextServerManager.get_primary_interface().name_to_tag("wght"):650.0};font.variation_embolden=.2;theme.default_font=font
 	var style=StyleBoxFlat.new();style.bg_color=Color("122536");style.border_color=Color("2c4554");style.set_border_width_all(1);style.set_corner_radius_all(14);style.content_margin_left=18;style.content_margin_right=18;style.content_margin_top=12;style.content_margin_bottom=12
 	theme.set_stylebox("panel","PanelContainer",style)
 	var btn=style.duplicate();btn.bg_color=Color("26465c");theme.set_stylebox("normal","Button",btn)
@@ -62,19 +71,25 @@ func _ready():
 		theme.set_stylebox("normal",type,btn);theme.set_stylebox("hover",type,hov);theme.set_stylebox("focus",type,pressed)
 	var disabled=btn.duplicate();disabled.bg_color=Color("20313e");theme.set_stylebox("disabled","Button",disabled)
 	theme.set_color("font_color","Label",Color("e8f2f3"));theme.set_color("font_color","Button",Color("e8f2f3"));root.theme=theme
+	theme.set_color("font_outline_color","Label",Color(0.01,0.025,0.04,.65));theme.set_constant("outline_size","Label",1)
 func clear_panel():
+	if is_instance_valid(vote_panel):vote_panel.visible=false
 	screen="";game.stop_room_search();team_signature=""
 	if is_instance_valid(background):background.queue_free();background=null
 	if panel:panel.queue_free();panel=null
 func make_panel(title:String,width=780):
 	clear_panel();Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
-	panel=PanelContainer.new();panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER);panel.position=Vector2(-width/2.,-300);panel.custom_minimum_size=Vector2(width,0);root.add_child(panel)
-	var scroll=ScrollContainer.new();scroll.custom_minimum_size=Vector2(width-40,560);panel.add_child(scroll)
+	panel=PanelContainer.new();panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER);panel.position=Vector2(-width/2.,-325);panel.custom_minimum_size=Vector2(width,0);root.add_child(panel)
+	panel_body=VBoxContainer.new();panel_body.add_theme_constant_override("separation",14);panel.add_child(panel_body)
+	var scroll=ScrollContainer.new();panel_scroll=scroll;scroll.custom_minimum_size=Vector2(width-40,560);panel_body.add_child(scroll)
 	stack=VBoxContainer.new();stack.size_flags_horizontal=Control.SIZE_EXPAND_FILL;stack.add_theme_constant_override("separation",12);scroll.add_child(stack)
 	var eyebrow=Label.new();eyebrow.text="NUKCANON  /  INTERNAL N CRUSH";eyebrow.add_theme_color_override("font_color",Color("5ce1c3"));eyebrow.add_theme_font_size_override("font_size",14);stack.add_child(eyebrow)
 	label(title,30)
-func label(text:String,size=18,parent:Node=null) -> Label:
-	var l=Label.new();l.text=text;l.add_theme_font_size_override("font_size",size);l.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;(parent if parent else stack).add_child(l);return l
+func pin_actions(node:Control):
+	node.get_parent().remove_child(node);panel_body.add_child(node)
+	panel_scroll.custom_minimum_size.y=535
+func label(text:String,size=20,parent:Node=null) -> Label:
+	var l=Label.new();l.text=text;l.add_theme_font_size_override("font_size",maxi(17,size));l.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;(parent if parent else stack).add_child(l);return l
 func button(text:String,callback:Callable,parent:Node=null) -> Button:
 	var b=Button.new();b.text=text;b.custom_minimum_size.y=42;b.pressed.connect(func():game.play_sound("ui",Vector3.ZERO,false);callback.call());(parent if parent else stack).add_child(b);return b
 func option(title:String,items:Array,selected:int,callback:Callable=Callable(),parent:Node=null) -> OptionButton:
@@ -93,36 +108,43 @@ func menu():
 	if not root:return
 	game.stop_room_search()
 	if hud:hud.queue_free();hud=null
-	clear_panel();Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
+	clear_panel();screen="menu";Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
 	background=Control.new();background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);root.add_child(background)
-	var bg=ColorRect.new();bg.color=Color("0b1722");bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);background.add_child(bg)
-	for i in range(8):
-		var stripe=ColorRect.new();stripe.color=Color(.12,.23,.28,.22);stripe.position=Vector2(60+i*150,-150);stripe.size=Vector2(65,1100);stripe.rotation=.28;background.add_child(stripe)
-	var brand=Label.new();brand.text="NUKCANON   /   LAN MULTIPLAYER";brand.position=Vector2(78,95);brand.add_theme_font_size_override("font_size",15);brand.modulate=Color("6dd7c6");background.add_child(brand)
-	var title=Label.new();title.text="INTERNAL
-N CRUSH";title.position=Vector2(72,175);title.add_theme_font_size_override("font_size",65);background.add_child(title)
-	var intro=Label.new();intro.text="같은 공간에서, 함께 플레이하세요.
-최대 32명  ·  6개 병과  ·  내부망 전용";intro.position=Vector2(80,395);intro.add_theme_font_size_override("font_size",18);intro.modulate=Color("9cb5c3");background.add_child(intro)
-	var chip=Label.new();chip.text="WINDOWS   /   v"+Rules.VERSION+"   /   PLAYTEST";chip.position=Vector2(80,624);chip.add_theme_font_size_override("font_size",14);chip.modulate=Color("6c8799");background.add_child(chip)
-	panel=PanelContainer.new();panel.position=Vector2(720,90);panel.custom_minimum_size=Vector2(475,545);root.add_child(panel)
-	stack=VBoxContainer.new();stack.add_theme_constant_override("separation",15);panel.add_child(stack)
-	label("플레이",29)
-	var nick=LineEdit.new();nick.text=game.profile.nick;nick.placeholder_text="플레이어 이름";nick.custom_minimum_size.y=42;nick.text_changed.connect(func(t):game.profile.nick=t.left(20);game.save_profile());stack.add_child(nick)
+	var bg=ColorRect.new();bg.color=Color("10242f");bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);background.add_child(bg)
+	if DisplayServer.get_name()!="headless" and ResourceLoader.exists("res://assets/menu_action.ogv"):
+		var video=VideoStreamPlayer.new();video.stream=load("res://assets/menu_action.ogv");video.expand=true;video.loop=true;video.volume=0;video.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);video.mouse_filter=Control.MOUSE_FILTER_IGNORE;background.add_child(video);video.play()
+	var shade=ColorRect.new();shade.color=Color(.015,.04,.065,.58);shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);background.add_child(shade)
+	var brand=Label.new();brand.text="NUKCANON  /  TACTICAL LAN FPS";brand.position=Vector2(68,102);brand.add_theme_font_size_override("font_size",19);brand.modulate=Color("7be4cd");background.add_child(brand)
+	var title=Label.new();title.text="INTERNAL\nN CRUSH";title.position=Vector2(62,166);title.add_theme_font_size_override("font_size",72);background.add_child(title)
+	var intro=Label.new();intro.text="함께 짜는 전술, 맞붙는 화력.\n32인 LAN 전투 · 6개 병과 · 6개 전장";intro.position=Vector2(68,400);intro.add_theme_font_size_override("font_size",22);intro.modulate=Color("d6e5ed");background.add_child(intro)
+	version_box=VBoxContainer.new();version_box.position=Vector2(68,545);version_box.custom_minimum_size.x=560;background.add_child(version_box)
+	panel=PanelContainer.new();panel.position=Vector2(748,38);panel.custom_minimum_size=Vector2(456,0);root.add_child(panel)
+	stack=VBoxContainer.new();stack.add_theme_constant_override("separation",9);panel.add_child(stack)
+	var name=label("닉네임",19);name.modulate=Color("a7c5d4")
+	var nick=LineEdit.new();nick.text=game.profile.nick;nick.placeholder_text="게임에서 사용할 닉네임";nick.max_length=20;nick.custom_minimum_size.y=47;nick.text_changed.connect(func(t):game.profile.nick=t;game.save_profile());stack.add_child(nick)
+	stack.add_child(HSeparator.new());label("플레이",25)
 	button("방 만들기",host_settings)
-	button("내부망 방 찾기 / IP 접속",join_menu)
-	if not game.last_server_ip.is_empty():button("최근 서버 재접속 · "+game.last_server_ip,func():game.join_game(game.last_server_ip))
-	button("봇 연습 · 난이도 선택",practice_menu)
-	button("설정 · 감도 / 화면 / 조작법",settings)
-	button("종료",func():game.get_tree().quit())
-	notice_label=label("계정 없이 연결합니다.
-같은 버전의 게임으로 접속하세요.",14);notice_label.modulate=Color("92adbc")
+	button("내부망 방 찾기",join_menu)
+	if not game.last_server_ip.is_empty():button("최근 서버 재접속",func():game.join_game(game.last_server_ip))
+	button("봇 연습",practice_menu)
+	stack.add_child(HSeparator.new());label("설정",25)
+	button("화면 · 조작 · 소리",settings)
+	stack.add_child(HSeparator.new());button("게임 종료",func():game.exit_game())
+	notice_label=label("",17);update_version_badge()
+func update_version_badge():
+	if screen!="menu" or not is_instance_valid(version_box):return
+	for child in version_box.get_children():version_box.remove_child(child);child.queue_free()
+	var version=label("WINDOWS  /  v"+Rules.VERSION,18,version_box);version.modulate=Color("b2c8d5")
+	if game.version_check.state=="newer":
+		var warning=label("새 버전 "+game.version_check.latest+"이 있습니다.\n함께 접속할 사람들과 버전을 맞춰 주세요.",18,version_box);warning.modulate=Color("ffd18d")
+		button("최신 버전 다운로드",func():OS.shell_open(VersionCheck.PAGE),version_box)
 func practice_menu():
 	make_panel("봇 연습")
 	game.options.bots=maxi(3,int(game.options.bots))
 	option("난이도",["하 · 반응과 조준을 완화","중 · 목표와 지원 역할 수행","상 · 빠른 반응, 사격·후퇴 판단 강화"],game.options.get("bot_difficulty",1),func(i):game.options.bot_difficulty=i)
 	option("봇 인원",["3명","7명","15명","31명"],maxi(0,[3,7,15,31].find(game.options.bots)),func(i):game.options.bots=[3,7,15,31][i])
 	option("게임 모드",Rules.MODES,game.options.mode,func(i):game.options.mode=i)
-	option("맵",["TIDAL YARD · 항구","DRY DOCK · 창고"],game.options.map,func(i):game.options.map=i)
+	option("맵",Rules.MAPS,game.options.map,func(i):game.options.map=i)
 	label("장애물 우회 · 목표 수행 · 회복/수리 · 가젯/스킬 사용\n체력, 탄약, 최근 교전 상황에 따라 행동을 바꿉니다.",16)
 	button("연습 시작",func():game.options.max_players=32;game.host_game();game.start_match())
 	button("돌아가기",menu)
@@ -140,7 +162,7 @@ func host_settings():
 	edit("방 이름",game.options.room,func(t):game.options.room=t.left(40))
 	edit("비밀번호 (선택)",str(game.options.get("password","")),func(t):game.options.password=t,true)
 	option("게임 모드",Rules.MODES,game.options.mode,func(i):game.options.mode=i)
-	option("맵",["TIDAL YARD · 항구","DRY DOCK · 창고"],game.options.map,func(i):game.options.map=i)
+	option("맵",Rules.MAPS,game.options.map,func(i):game.options.map=i)
 	option("경기 시간",["5분","10분","15분","20분"],[5,10,15,20].find(game.options.minutes),func(i):game.options.minutes=[5,10,15,20][i])
 	option("목표 점수",["30","60","100","200"],[30,60,100,200].find(game.options.target),func(i):game.options.target=[30,60,100,200][i])
 	stack=groups[1]
@@ -156,12 +178,13 @@ func host_settings():
 	label("스킬 OFF여도 회복 무기·수리 도구·가젯은 작동합니다.",14)
 	check("무한 공격 탄약 · 재장전은 필요",game.options.infinite,func(v):game.options.infinite=v)
 	check("아군 피해",game.options.friendly,func(v):game.options.friendly=v)
-	check("무한 부활 모드: 체력 자동 회복",game.options.autoheal,func(v):game.options.autoheal=v)
+	check("체력 자동 회복",game.options.autoheal,func(v):game.options.autoheal=v)
+	label("마지막 사격·피격 10초 후 초당 1 HP 회복. 부활 횟수와 별개입니다.",17)
 	stack=groups[3]
 	option("봇 인원",["없음","3명","7명","15명","31명"],maxi(0,[0,3,7,15,31].find(game.options.bots)),func(i):game.options.bots=[0,3,7,15,31][i])
 	option("봇 난이도",["하 · 느린 반응","중 · 균형","상 · 빠른 판단"],game.options.get("bot_difficulty",1),func(i):game.options.bot_difficulty=i)
 	label("봇도 참가 인원에 포함됩니다.\n선택 인원이 방 정원을 넘으면 정원까지 추가합니다.",16)
-	stack=outer;var actions=HBoxContainer.new();actions.add_theme_constant_override("separation",12);stack.add_child(actions);button("이 설정으로 방 만들기",func():game.host_game(),actions);button("뒤로",menu,actions);notice_label=label("",14)
+	stack=outer;var actions=HBoxContainer.new();actions.add_theme_constant_override("separation",12);stack.add_child(actions);button("이 설정으로 방 만들기",func():game.host_game(),actions);button("뒤로",menu,actions);pin_actions(actions);notice_label=label("",14)
 func join_menu():
 	make_panel("내부망 접속")
 	screen="join"
@@ -193,7 +216,7 @@ func lobby():
 		label("접속 주소  "+", ".join(ips),15)
 	label("대기실: 내 팀 선택 가능 · 방장: 모든 참가자 배치 가능",14)
 	var actions=HBoxContainer.new();actions.add_theme_constant_override("separation",12);stack.add_child(actions)
-	button("병과 · 무기 · 가젯",gear,actions);button("팀 편성 설정",teams_menu,actions)
+	button("병과 · 무기 · 가젯",gear,actions);button("팀 편성",teams_menu,actions);button("참가자 관리",members_menu,actions)
 	if game.server:button("경기 시작",func():game.start_match(),actions)
 	else:label("방장이 경기를 시작하면 참여합니다.",15)
 	button("방 나가기",func():game.request_leave(),actions);notice_label=label("",14)
@@ -253,20 +276,63 @@ func settings():
 	option("해상도",["1280 × 720","1600 × 900","1920 × 1080"],int(game.profile.resolution),func(i):game.profile.resolution=i;game.apply_display_settings();game.save_profile())
 	sensitivity_control("마우스 감도",float(game.profile.sensitivity)/.0023,.15,4.,func(v):game.profile.sensitivity=v*.0023;game.save_profile())
 	sensitivity_control("정조준 감도 배율",float(game.profile.ads_sensitivity),.2,1.5,func(v):game.profile.ads_sensitivity=v;game.save_profile())
-	label("감도는 즉시 적용되고 다음 실행에도 유지됩니다.",14)
 	label("화면과 감도 설정은 다음 실행에도 유지됩니다.",14)
 	stack=tabs[1]
-	var vol=HSlider.new();vol.min_value=0;vol.max_value=1;vol.step=.05;vol.value=game.profile.volume;stack.add_child(vol);vol.value_changed.connect(func(v):game.profile.volume=v;game.save_profile());label("위 슬라이더: 전체 음량",15)
-	for key in ["weapon_volume","step_volume","ui_volume"]:
-		var setting=key;sensitivity_control({"weapon_volume":"총소리","step_volume":"발소리","ui_volume":"명중·장비·UI"}[key],float(game.profile[key]),0.,1.,func(v):game.profile[setting]=v;game.save_profile())
-	var samples=HBoxContainer.new();stack.add_child(samples);button("소총 소리 듣기",func():game.play_sound("gun_a1",Vector3.ZERO,false),samples);button("발소리 듣기",func():game.play_sound("step_stone_0",Vector3.ZERO,false),samples)
+	sound_slider("전체 음량", "volume")
+	label("총소리·발소리·전투 효과는 전체 음량에 함께 적용됩니다.",17)
+	sound_slider("명중 알림", "hit_volume")
+	sound_slider("메뉴 소리", "ui_volume")
+	var samples=HBoxContainer.new();stack.add_child(samples);button("총소리 미리 듣기",func():game.play_sound("gun_a1",Vector3.ZERO,false),samples);button("발소리 미리 듣기",func():game.play_sound("step_stone_0",Vector3.ZERO,false),samples)
 	stack=tabs[2]
-	label("WASD 이동 · Shift 달리기 · Ctrl 앉기 · Space 점프\n왼쪽 클릭 발사 · 오른쪽 클릭 정조준 · R 재장전\n1 주무기 · 2 보조무기 · 3 가젯 · 4 추가 가젯(통제병)\nF 스킬/포탑 강화 · Q 의료 카빈 회복 · E 상호작용\nG 가젯 즉시 사용 · B 장비 · Tab 점수판 · Esc 메뉴\n설치·해체: 목표 구역에서 E 유지\n포탑 강화: 가까이에서 기존 포탑을 조준하고 F",17)
+	var diagram=ControlsDiagram.new();diagram.custom_minimum_size=Vector2(885,415);stack.add_child(diagram)
+	label("E 길게: 설치·해체  /  F: 스킬 · 포탑 강화  /  Q: 의료 카빈 회복\nG: 가젯 즉시 사용  /  V: 가젯 종류  /  F6·F7: 강퇴 투표",18)
 	stack=outer
-	button("돌아가기",func():
+	var back=button("돌아가기",func():
 		if game.phase=="menu":menu()
 		elif game.phase=="lobby":lobby()
 		else:clear_panel();Input.mouse_mode=Input.MOUSE_MODE_CAPTURED)
+	pin_actions(back)
+func sound_slider(title:String,key:String):
+	var row=HBoxContainer.new();stack.add_child(row);var text=label(title,20,row);text.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	var amount=label("%d%%"%roundi(float(game.profile[key])*100),18,row);amount.autowrap_mode=TextServer.AUTOWRAP_OFF;amount.custom_minimum_size.x=72;amount.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT
+	var slider=HSlider.new();slider.min_value=0;slider.max_value=1;slider.step=.01;slider.value=game.profile[key];slider.custom_minimum_size.y=28;stack.add_child(slider)
+	slider.value_changed.connect(func(v):game.profile[key]=v;amount.text="%d%%"%roundi(v*100);game.save_profile())
+func members_menu():
+	make_panel("참가자 관리",1020);screen="members";member_signature=""
+	label("방장은 바로 강퇴할 수 있습니다. 투표는 대상 외 참가자의 60% 이상(최소 2명)이 찬성하면 통과됩니다.",18)
+	room_list=VBoxContainer.new();stack.add_child(room_list);refresh_members()
+	button("돌아가기",func():
+		if game.phase=="lobby":lobby()
+		else:clear_panel();Input.mouse_mode=Input.MOUSE_MODE_CAPTURED)
+	notice_label=label("",17)
+func refresh_members():
+	if screen!="members" or not is_instance_valid(room_list):return
+	var signature=str(game.players.keys())
+	if signature==member_signature:return
+	member_signature=signature
+	for node in room_list.get_children():room_list.remove_child(node);node.queue_free()
+	for p in game.players.values():
+		var row=HBoxContainer.new();room_list.add_child(row);var pid=int(p.id)
+		var name=label(p.nick+(" · 방장" if pid==1 else " · 나" if pid==game.local_id else ""),20,row);name.size_flags_horizontal=Control.SIZE_EXPAND_FILL;name.modulate=Color("78caff") if p.team==0 else Color("ffb376")
+		if pid!=1 and pid!=game.local_id:
+			if game.server:button("강퇴",func():game.command("kick",{"target":pid}),row)
+			if pid>0:button("강퇴 투표",func():game.command("vote_kick",{"target":pid}),row)
+func refresh_vote():
+	if game.vote.is_empty():
+		if is_instance_valid(vote_panel):vote_panel.visible=false
+		return
+	if not is_instance_valid(vote_panel):
+		vote_panel=PanelContainer.new();vote_panel.position=Vector2(353,75);vote_panel.custom_minimum_size=Vector2(575,0);vote_panel.z_index=100;root.add_child(vote_panel)
+		var column=VBoxContainer.new();vote_panel.add_child(column);vote_text=label("",18,column)
+		var row=HBoxContainer.new();column.add_child(row)
+		vote_yes=button("F6  찬성",func():game.command("vote",{"yes":true}),row);vote_no=button("F7  반대",func():game.command("vote",{"yes":false}),row)
+	vote_panel.visible=true
+	var v=game.vote;var total=0
+	for result in v.get("votes",{}).values():
+		if result:total+=1
+	vote_text.text="%s 강퇴 투표  ·  찬성 %d / %d  ·  %d초"%[v.get("name",""),total,v.get("needed",2),maxi(0,int(v.get("until",0)-game.clock))]
+	var allowed=game.local_id in v.get("eligible",[]) and not v.get("votes",{}).has(game.local_id)
+	vote_yes.disabled=not allowed;vote_no.disabled=not allowed
 func sensitivity_control(title:String,value:float,low:float,high:float,callback:Callable):
 	var row=HBoxContainer.new();stack.add_child(row)
 	var l=Label.new();l.text=title;l.custom_minimum_size.x=155;row.add_child(l)
@@ -297,7 +363,7 @@ func gear():
 	preview_widget=EquipmentPreview.new();right.add_child(preview_widget)
 	preview_caption=label("",16,right);label("마우스로 끌어 회전할 수 있습니다.",13,right)
 	stack=outer
-	var actions=HBoxContainer.new();actions.add_theme_constant_override("separation",12);outer.add_child(actions)
+	var actions=HBoxContainer.new();actions.add_theme_constant_override("separation",12);outer.add_child(actions);pin_actions(actions)
 	gear_submit=button("선택 적용",func():
 		if not weapon_ids.is_empty():game.command("loadout",selected_loadout()),actions)
 	button("돌아가기",func():
@@ -351,7 +417,7 @@ func toggle_pause():
 	make_panel("일시 메뉴 · 경기는 계속 진행됩니다.",680)
 	if game.phase=="lobby":button("대기실로 돌아가기",lobby)
 	button("게임으로 돌아가기",func():clear_panel();Input.mouse_mode=Input.MOUSE_MODE_CAPTURED)
-	button("병과 · 무기 · 가젯",gear);button("팀 편성",teams_menu);button("환경 설정",settings);button("방 나가기",func():game.request_leave())
+	button("병과 · 무기 · 가젯",gear);button("팀 편성",teams_menu);button("참가자 관리",members_menu);button("환경 설정",settings);button("방 나가기",func():game.request_leave())
 func hud_label(text:String,pos:Vector2,size:int=20) -> Label:
 	var l=Label.new();l.text=text;l.position=pos;l.add_theme_font_size_override("font_size",size);l.add_theme_color_override("font_shadow_color",Color(0,0,0,.8));l.add_theme_constant_override("shadow_offset_x",1);l.add_theme_constant_override("shadow_offset_y",2);hud.add_child(l);return l
 func hud_plate(pos:Vector2,size:Vector2) -> Panel:
@@ -365,19 +431,20 @@ func show_hud():
 	hud=Control.new();hud.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);hud.mouse_filter=Control.MOUSE_FILTER_IGNORE;root.add_child(hud)
 	hud_plate(Vector2(406,15),Vector2(468,49))
 	status=hud_label("",Vector2(422,24),21);status.custom_minimum_size.x=436;status.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
-	stats=hud_label("",Vector2(1090,18),13)
+	stats=hud_label("",Vector2(1062,18),17)
 	hud_plate(Vector2(22,595),Vector2(259,98));health=hud_label("",Vector2(40,607),22)
 	health_bar=hud_bar(Vector2(40,648),Color("68dcc0"));armor_bar=hud_bar(Vector2(40,665),Color("7aafdc"))
 	hud_plate(Vector2(995,577),Vector2(263,116));weapon_title=hud_label("",Vector2(1012,589),16);ammo=hud_label("",Vector2(1012,615),30)
 	banner=hud_label("",Vector2(34,96),17)
-	info=hud_label("",Vector2(305,686),13)
+	info=hud_label("",Vector2(305,686),16)
 	skill_label=hud_label("",Vector2(313,590),16)
 	slots=[];slot_panels=[]
 	for i in range(4):
 		var plate=hud_plate(Vector2(305+i*169,622),Vector2(161,54));slot_panels.append(plate)
-		var l=hud_label("",Vector2(317+i*169,631),14);slots.append(l)
+		var l=hud_label("",Vector2(317+i*169,631),16);slots.append(l)
 	crosshair=hud_label("",Vector2(0,0),1)
 	reticle=Reticle.new();reticle.game=game;reticle.ui=self;reticle.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);reticle.mouse_filter=Control.MOUSE_FILTER_IGNORE;hud.add_child(reticle)
+	kill_feed=KillFeed.new();hud.add_child(kill_feed)
 	scoreboard=MatchScoreboard.new();scoreboard.game=game;hud.add_child(scoreboard);scoreboard.visible=false
 	flash_overlay=ColorRect.new();flash_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);flash_overlay.color=Color(.055,.065,.08,0);flash_overlay.mouse_filter=Control.MOUSE_FILTER_IGNORE;hud.add_child(flash_overlay)
 	Input.mouse_mode=Input.MOUSE_MODE_CAPTURED
@@ -385,14 +452,20 @@ func notice(message:String):
 	if message.is_empty():return
 	notice_until=Time.get_ticks_msec()+3500
 	if is_instance_valid(notice_label):notice_label.text=message
+	if game.phase=="menu" and message.contains("버전"):
+		var dialog=AcceptDialog.new();dialog.title="게임 버전 확인";dialog.dialog_text=message;dialog.ok_button_text="확인";root.add_child(dialog);dialog.add_button("다운로드",false,"download");dialog.custom_action.connect(func(action):
+			if action=="download":OS.shell_open(VersionCheck.PAGE))
+		dialog.confirmed.connect(dialog.queue_free);dialog.canceled.connect(dialog.queue_free);dialog.popup_centered(Vector2i(680,210))
 	if is_instance_valid(banner):banner.text=message
 func refresh():
+	refresh_vote();refresh_members()
 	if screen in ["lobby","teams"]:refresh_teams()
 	if not is_instance_valid(hud) or not game.players.has(game.local_id):return
 	var p=game.players[game.local_id];var a=game.actors[game.local_id];var wid=p.primary if p.slot==0 else p.secondary;var w=Catalog.get_weapon(wid)
+	kill_feed.refresh(game.kill_events,game.local_id,Time.get_ticks_msec())
 	stats.text="%d FPS  ·  %s"%[Engine.get_frames_per_second(),"HOST" if game.server else str(game.ping_ms)+" ms"]
 	var secs=maxi(0,int(game.remaining));status.text="BLUE %d    %02d:%02d    %d ORANGE"%[game.scores[0],secs/60,secs%60,game.scores[1]]
-	health.text=("◆ BLUE  " if p.team==0 else "● ORANGE  ")+"%d HP"%p.hp if p.alive else "관전" if game.options.mode==4 or p.spectator else "부활 %.0f초"%maxf(0,p.respawn-game.clock)
+	health.text=("◆ BLUE  " if p.team==0 else "● ORANGE  ")+"%d HP"%p.hp if p.alive else "Dead · 관전" if game.options.mode==4 or p.spectator else "Dead · 부활 %.0f초"%maxf(0,p.respawn-game.clock)
 	health_bar.size.x=220*clampf(p.hp/100.,0,1);armor_bar.size.x=220*clampf(p.armor/50.,0,1)
 	var fire_mode={"auto":"AUTO","semi":"SEMI","burst":"BURST"}.get(w.get("fire_mode","auto"),"")
 	weapon_title.text=w.name+"   /   "+fire_mode
@@ -418,7 +491,8 @@ func refresh():
 	if not p.alive:info.text="마우스: 관전 시점   ·   클릭: 관전 대상 변경   ·   B 다음 장비 선택"
 	reticle.queue_redraw()
 	flash_overlay.color.a=clampf((p.flash-game.clock)/2.5,0,.96)
-	if p.flash>game.clock:banner.text="섬광 · 시야 회복 중"
+	if p.alive and p.protect>game.clock:banner.text="부활 보호 %.1f초 · 공격 대기"%(p.protect-game.clock)
+	elif p.flash>game.clock:banner.text="섬광 · 시야 회복 중"
 	elif game.phase=="buy":banner.text="구매 시간 · B로 무기·방어구·가젯 구매"
 	elif game.bomb.planted:banner.text="장치 작동까지 %.1f초 · 해체 E 유지"%game.bomb.time
 	elif game.bomb.actor==game.local_id:banner.text="상호작용 %.1f초"%game.bomb.progress

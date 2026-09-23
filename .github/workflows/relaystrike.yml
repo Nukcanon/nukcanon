@@ -38,30 +38,24 @@ jobs:
           /tmp/godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path games/relaystrike --script res://tests/test_ai_aim.gd
           /tmp/godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path games/relaystrike --script res://tests/test_bots.gd
           /tmp/godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path games/relaystrike --script res://tests/test_v04.gd
+          /tmp/godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path games/relaystrike --script res://tests/test_v05.gd
+          /tmp/godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path games/relaystrike --script res://tests/test_kill_feed.gd
           GODOT=/tmp/godot/Godot_v4.4.1-stable_linux.x86_64 python3 games/relaystrike/tests/run_network_probe.py
           GODOT=/tmp/godot/Godot_v4.4.1-stable_linux.x86_64 python3 games/relaystrike/tests/run_network_lifecycle.py
           GODOT=/tmp/godot/Godot_v4.4.1-stable_linux.x86_64 python3 games/relaystrike/tests/run_network_capacity.py
       - name: Export Windows and package
         run: |
+          set -euo pipefail
           mkdir -p "$GITHUB_WORKSPACE/out/InternalNCrush"
           /tmp/godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path games/relaystrike --export-release "Windows Desktop" "$GITHUB_WORKSPACE/out/InternalNCrush/InternalNCrush.exe"
-          cp games/relaystrike/README.md games/relaystrike/LICENSE.txt games/relaystrike/GODOT_LICENSE.txt out/InternalNCrush/
-          cp games/relaystrike/assets/FONT_LICENSE.txt out/InternalNCrush/
-          cp games/relaystrike/docs/TEST_REPORT.md out/InternalNCrush/
-          cp games/relaystrike/tools/StartServer.cmd out/InternalNCrush/
-          mkdir -p out/InternalNCrush/ArtSource
-          cp games/relaystrike/assets/models/*.glb games/relaystrike/assets/models/manifest.json out/InternalNCrush/ArtSource/
-          cd out
-          zip -q -r InternalNCrush_Windows_v0.4.0.zip InternalNCrush
-          sha256sum InternalNCrush_Windows_v0.4.0.zip > SHA256SUMS.txt
+          python3 games/relaystrike/tools/package_release.py --build-dir out/InternalNCrush --output-dir out
       - name: Publish downloadable build
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release view internal-n-crush-v0.4.0 >/dev/null 2>&1 || gh release create internal-n-crush-v0.4.0 --title "Internal N Crush 0.4.0 — playable alpha" --notes-file games/relaystrike/docs/RELEASE_NOTES.md --prerelease
-          gh release upload internal-n-crush-v0.4.0 out/InternalNCrush_Windows_v0.4.0.zip out/SHA256SUMS.txt --clobber
+          gh release view internal-n-crush-v0.5.0 >/dev/null 2>&1 || gh release create internal-n-crush-v0.5.0 --target "$GITHUB_SHA" --title "Internal N Crush 0.5.0 — playable alpha" --notes-file games/relaystrike/docs/RELEASE_NOTES.md --prerelease
+          gh release upload internal-n-crush-v0.5.0 out/InternalNCrush_Windows_v0.5.0.zip out/SHA256SUMS.txt --clobber
       - uses: actions/upload-artifact@v4
         with:
           name: InternalNCrush-Windows
-          path: out/InternalNCrush_Windows_v0.4.0.zip
-
+          path: out/InternalNCrush_Windows_v0.5.0.zip

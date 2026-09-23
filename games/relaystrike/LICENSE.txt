@@ -1,4 +1,4 @@
-Internal N Crush original source, procedural geometry and synthesized audio
+Internal N Crush original source and procedural geometry
 Copyright (c) 2026 Nukcanon
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,3 +21,7 @@ SOFTWARE.
 
 Godot Engine is distributed under the MIT license; see GODOT_LICENSE.txt.
 Noto Sans KR is distributed under SIL OFL 1.1; see assets/FONT_LICENSE.txt.
+
+Sound assets have separate CC0 / CC BY-SA 3.0 licenses. See SOUND_CREDITS.md
+and the AUDIO_*_LICENSE.txt files. These third-party assets are excluded from
+the MIT license above. Gun sound adaptations retain CC BY-SA 3.0.

@@ -1,50 +1,85 @@
-"""Original layered game sounds. Deterministic synthesis; no sampled game audio."""
+"""Reproducible, sample-based mix. See SOUND_CREDITS.md for source/adaptation licenses.
+No network, ffmpeg, or third-party Python modules are needed on build machines.
+"""
 from pathlib import Path
-import json,math,random,wave,struct,hashlib
+import array,hashlib,io,json,math,random,sys,wave,zipfile
 root=Path(__file__).resolve().parents[1];dest=root/'assets/audio';dest.mkdir(exist_ok=True,parents=True)
-rate=44100;manifest={};weapons=json.loads((root/'assets/weapons.json').read_text())
-def write(name,values,category,gain=0):
- pcm=b''.join(struct.pack('<h',int(max(-.92,min(.92,v))*32767)) for v in values)
- with wave.open(str(dest/(name+'.wav')),'wb') as f:f.setparams((1,2,rate,0,'NONE','not compressed'));f.writeframes(pcm)
- manifest[name]={'file':'res://assets/audio/'+name+'.wav','category':category,'gain_db':gain,'sha256':hashlib.sha256(pcm).hexdigest()}
+rate=44100;manifest={};weapons=json.loads((root/'assets/weapons.json').read_text());sources={}
+with zipfile.ZipFile(root/'tools/audio_source.zip') as archive:
+ for name in archive.namelist():
+  if not name.endswith('.wav'):continue
+  with wave.open(io.BytesIO(archive.read(name)),'rb') as source:
+   assert source.getnchannels()==1 and source.getsampwidth()==2 and source.getframerate()==rate
+   pcm=array.array('h',source.readframes(source.getnframes()))
+   if sys.byteorder!='little':pcm.byteswap()
+   values=[v/32768 for v in pcm];peak=max(map(abs,values),default=1)
+   sources[name[:-4]]=[v*.8/max(.001,peak) for v in values]
+def sample(name,pitch=1.,seconds=None):
+ data=sources[name];count=int(len(data)/pitch)
+ if seconds is not None:count=min(count,int(seconds*rate))
+ out=[]
+ for i in range(count):
+  at=i*pitch;idx=int(at);fraction=at-idx
+  out.append(data[idx]*(1-fraction)+data[min(idx+1,len(data)-1)]*fraction)
+ return out
+def lowpass(values,hz):
+ alpha=1-math.exp(-2*math.pi*hz/rate);lp=0;out=[]
+ for v in values:lp+=alpha*(v-lp);out.append(lp)
+ return out
+def highpass(values,hz):return [a-b for a,b in zip(values,lowpass(values,hz))]
+def mix(duration,*layers):
+ out=[0.]*int(duration*rate)
+ for values,gain,delay in layers:
+  start=int(delay*rate)
+  for i,v in enumerate(values[:max(0,len(out)-start)]):out[start+i]+=v*gain
+ return out
+def write(name,values,category='combat',gain=0,license='CC0-1.0'):
+ # Remove DC and leave headroom. Millisecond fades prevent clicks at cut boundaries.
+ mean=sum(values)/max(1,len(values));values=[v-mean for v in values];peak=max(map(abs,values),default=1);factor=.89/max(.89,peak)
+ for i in range(len(values)):
+  values[i]*=factor*min(1,i/44,(len(values)-1-i)/260)
+ pcm=array.array('h',(int(max(-.95,min(.95,v))*32767) for v in values))
+ if sys.byteorder!='little':pcm.byteswap()
+ data=pcm.tobytes()
+ with wave.open(str(dest/(name+'.wav')),'wb') as f:f.setparams((1,2,rate,0,'NONE','not compressed'));f.writeframes(data)
+ manifest[name]={'file':'res://assets/audio/'+name+'.wav','category':category,'gain_db':gain,'sha256':hashlib.sha256(data).hexdigest(),'license':license,'duration':round(len(values)/rate,3)}
 for index,(wid,w) in enumerate(weapons.items()):
  if w['kind']!='gun':continue
- rng=random.Random(217+index*511);role=int(w['role']);side=w['slot']==1
- duration=.23 if side else [.32,.62,.39,.48,.22,.3][role]
- body=(160 if side else [130,67,89,74,196,148][role])*(.86+(index%5)*.08)
- cutoff=(2200 if side else [2600,1800,2100,1600,3100,2700][role])*(.84+index%4*.11)
- lp=slow=0.;values=[];phase=0.;alpha=1-math.exp(-2*math.pi*cutoff/rate)
- for i in range(int(duration*rate)):
-  t=i/rate;n=rng.uniform(-1,1);lp+=alpha*(n-lp);slow+=.055*(n-slow)
-  attack=min(1,t/.0012);crack=(n-lp)*math.exp(-t/(.009 if role==4 else .018))
-  blast=lp*math.exp(-t/(duration*.19))*.95
-  phase+=2*math.pi*body*(.6+.8*math.exp(-t*45))/rate
-  thump=math.sin(phase)*math.exp(-t/(.04 if side else .075))*.4
-  tail=slow*math.exp(-t/(duration*.45))*.45
-  # Each fictional model has its own mechanical tick and body tuning.
-  action=max(0,t-(.036+index%4*.014));tick=(math.sin(action*(3800+index*127))+n*.25)*math.exp(-action*170)*.08 if action>0 else 0
-  v=(crack*.58+blast+thump+tail+tick)*attack*.66
-  values.append(math.tanh(v*1.2)*.82)
- write('gun_'+wid,values,'weapon_volume',-1 if role in [1,3] else -3)
-for surface in ['stone','metal','water']:
- for variant in range(4):
-  rng=random.Random(1001+variant+['stone','metal','water'].index(surface)*99);values=[];lp=0.
-  for i in range(int(rate*.28)):
-   t=i/rate;n=rng.uniform(-1,1);lp+=(.026 if surface=='stone' else .065)*(n-lp)
-   heel=math.exp(-((t-.025)/.018)**2);toe=math.exp(-((t-.098-variant*.006)/.035)**2)
-   soft=lp*(heel*.8+toe*.65);body=math.sin(2*math.pi*(95+variant*9)*t)*heel*.08
-   if surface=='metal':body+=math.sin(2*math.pi*(480+variant*97)*t)*math.exp(-t*37)*min(1,t/.003)*.03
-   if surface=='water':soft=lp*(heel+toe)*1.4;body+=math.sin(2*math.pi*(260*t-190*t*t))*toe*.025
-   values.append((soft+body)*.9)
-  write('step_'+surface+'_'+str(variant),values,'step_volume',-1)
-for name,duration,frequency in [('hit',.09,1400),('confirm',.18,1050),('heal',.22,680),('reload',.55,430),('switch',.12,270),('ui',.065,650)]:
- rng=random.Random(188+len(name));values=[];lp=0.
- for i in range(int(rate*duration)):
-  t=i/rate;fade=(1-t/duration)**2;lp+=.1*(rng.uniform(-1,1)-lp)
-  if name in ['reload','switch']:
-   v=sum(math.exp(-max(0,t-at)*75)*(.14*lp+.055*math.sin(2*math.pi*(frequency+at*900)*t)) for at in ([.015,.19,.39] if name=='reload' else [.01,.055]) if t>at)
-  else:v=math.sin(2*math.pi*frequency*t)*fade*.07+math.sin(2*math.pi*frequency*1.5*t)*fade*.025
-  values.append(v*min(1,t/.004))
- write(name,values,'ui_volume')
+ role=int(w['role']);side=w['slot']==1;variant=index%3
+ base='pistol' if side else ['rifle','rifle','minigun','shotgun','minigun','rifle'][role]
+ suffix=['','2','3'][variant];pitch=(1.04 if side else [.97,.75,.88,.84,1.24,1.10][role])*(.95+(index%5)*.024)
+ duration=.45 if side else [.64,.99,.70,.94,.41,.55][role]
+ blast=sample('q_'+base+suffix,pitch,duration)
+ decay=.095 if side else [.12,.23,.16,.22,.08,.12][role]
+ blast=[v*(.05+.95*math.exp(-i/rate/decay)) for i,v in enumerate(blast)]
+ bass=lowpass(sample('cannon_01',.95 if side else .74,duration),310)
+ action=highpass(sample('impactMetal_light_'+str(variant),1.4,.15),950)
+ tail=lowpass(blast,1900)
+ output=mix(duration,(blast,.79,0),(bass,.15 if side else .33,0),(action,.13,.055),(tail,.13,.063),(tail,.045,.124))
+ write('gun_'+wid,output,gain=-2 if role in [1,3] and not side else -4,license='CC-BY-SA-3.0')
+for variant in range(4):
+ step=sample('footstep_concrete_'+str(variant),.94+variant*.025,.39)
+ gear=highpass(sample('impactGeneric_light_000',1.6+variant*.06,.12),1700)
+ write('step_stone_'+str(variant),mix(.42,(step,.82,0),(gear,.045,.07)),gain=-8)
+ plate=sample('impactPlate_light_'+str(variant),.74,.35)
+ write('step_metal_'+str(variant),mix(.47,(step,.60,0),(plate,.22,.012),(gear,.045,.05)),gain=-8)
+ grass=sample('footstep_grass_'+str(variant),.87,.4)
+ rng=random.Random(800+variant);noise=[rng.uniform(-1,1)*max(0,math.sin(i/rate/.37*math.pi))**2 for i in range(int(.37*rate))]
+ splash=highpass(lowpass(noise,3200),400)
+ write('step_water_'+str(variant),mix(.49,(grass,.48,0),(step,.28,0),(splash,.42,.015)),gain=-8)
+metal=sample('impactMetal_light_0',1.2,.19);soft=sample('impactSoft_medium_000',1.4,.13);glass=sample('impactGlass_light_000',1.3,.2)
+write('hit',mix(.17,(metal,.45,0),(soft,.32,0)),'hit_volume',-5)
+write('confirm',mix(.32,(metal,.44,0),(glass,.26,.045)),'hit_volume',-4)
+write('ui',sample('ui_click_001',1.15,.12),'ui_volume',-10)
+write('switch',mix(.23,(metal,.3,0),(sample('ui_close_001',1.1,.16),.42,.03)),gain=-9)
+write('reload',mix(.24,(sample('ui_open_002',1.,.22),.55,0),(metal,.25,.065)),gain=-7)
+write('magazine',mix(.3,(sample('ui_drop_003',.85,.3),.5,0),(metal,.27,.045)),gain=-7)
+write('bolt',mix(.3,(metal,.8,0),(sample('impactPlate_light_1',1.6,.17),.4,.055)),gain=-7)
+write('heal',mix(.30,(sample('ui_glass_003',.95,.3),.23,0),(glass,.09,.09)),gain=-13)
+write('deploy',mix(.65,(sample('impactMetal_heavy_000',.85,.6),.53,0),(metal,.22,.10)),gain=-5)
+write('explosion',mix(1.9,(sample('bang_03',.87,1.9),.74,0),(sample('cannon_01',.73,1.8),.55,.024)),gain=-1)
+write('flash',mix(.7,(highpass(sample('shot_01',1.3,.6),650),.55,0),(glass,.3,.025)),gain=-5)
+write('skill',mix(.64,(sample('ui_glass_003',.77,.6),.47,0),(sample('ui_open_002',.75,.5),.30,.06)),gain=-7)
+write('smoke',mix(.75,(sample('fw_02',1.15,.75),.34,0),(metal,.18,.05)),gain=-9)
 (root/'assets/audio_manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
-print('AUDIO_BUILT',len(manifest),'unique original clips;',sum(1 for k in manifest if k.startswith('gun_')),'weapon voices')
+print('AUDIO_BUILT',len(manifest),'sample-based clips;',sum(k.startswith('gun_') for k in manifest),'distinct weapon mixes')

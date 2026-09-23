@@ -70,7 +70,7 @@ func run():
 	await physics_frame
 	p=reset_bot(4,"c1");b.visible_target=true;b.last_known=a.position+Vector3(0,0,-35);q.team=1;g.actors[-2].position=a.position+Vector3(0,0,-30);p.flash_count=0;g.options.skills=false;b.utilities()
 	expect(g.fields.any(func(f):return f.kind=="smoke") and p.smoke==1,"control bot deploys smoke with skills off")
-	p.gadget_ready=0.;p.flash_count=1;p.hp=100;g.actors[-2].position=a.position+Vector3(0,0,-20);g.options.skills=true;await physics_frame;b.utilities()
+	p.gadget_ready=0.;p.flash_count=1;p.hp=100;g.actors[-2].position=a.position+Vector3(0,0,-20);g.options.skills=true;await physics_frame;b.utilities();g.clock+=.36;g.update_fields(.36)
 	expect(p.flash_count==0 and q.flash>g.clock and g.fields.any(func(f):return f.kind=="slow"),"control bot uses flash and slow field")
 	g.fields.clear();p=reset_bot(5,"m1");p.hp=50;p.mark=g.clock+3;b.utilities()
 	expect(p.hp>50 and p.mark==0 and p.skill_ready>g.clock,"medic bot treats itself and clears status")

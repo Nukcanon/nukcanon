@@ -1,4 +1,4 @@
-"""Rebuild original synthetic audio and fetch the redistributable OFL font for build machines."""
+"""Rebuild licensed sample-based audio and fetch the redistributable OFL font for build machines."""
 from pathlib import Path
 import urllib.request, hashlib, math, random, wave, struct
 assets=Path(__file__).resolve().parents[1]/'assets'

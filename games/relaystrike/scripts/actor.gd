@@ -17,6 +17,9 @@ var view_weapon:WeaponVisual
 var world_weapon:WeaponVisual
 var render_root:Node3D
 var character:CharacterVisual
+var protected_visual:MeshInstance3D
+var item_signature=""
+var reload_stage=-1
 var shown_role=-1
 var shown_team=-1
 var spread_angle=.4
@@ -53,14 +56,12 @@ func _ready():
 	collision_layer=2;collision_mask=1|4
 	shape=CollisionShape3D.new();var cap=CapsuleShape3D.new();cap.radius=.34;cap.height=1.8;shape.shape=cap;shape.position.y=.9;add_child(shape)
 	render_root=Node3D.new();add_child(render_root)
-	tag=Label3D.new();tag.position.y=2.;tag.font_size=24;tag.pixel_size=.004;tag.billboard=BaseMaterial3D.BILLBOARD_ENABLED;add_child(tag)
+	tag=Label3D.new();tag.font=game.ui.theme.default_font;tag.position.y=2.;tag.font_size=32;tag.outline_size=8;tag.outline_modulate=Color("101f2d");tag.pixel_size=.004;tag.billboard=BaseMaterial3D.BILLBOARD_ENABLED;add_child(tag)
 	camera=Camera3D.new();camera.position.y=1.62;camera.fov=82;camera.far=350;camera.near=.025;add_child(camera)
 	gun=Node3D.new();camera.add_child(gun)
 	item_model=Node3D.new();gun.add_child(item_model)
-	game.arena.box(Vector3(0,-.035,-.14),Vector3(.14,.18,.18),Color("506d77"),false,item_model)
-	game.arena.box(Vector3(0,.06,-.14),Vector3(.095,.035,.13),Color("70d5bf"),false,item_model)
-	game.arena.box(Vector3(.04,-.14,.04),Vector3(.1,.1,.25),Color("c4ab8a"),false,item_model)
-	game.arena.box(Vector3(.015,-.075,-.03),Vector3(.12,.09,.12),Color("35454a"),false,item_model)
+	protected_visual=MeshInstance3D.new();var shield=CapsuleMesh.new();shield.radius=.54;shield.height=2.05;protected_visual.mesh=shield;protected_visual.position.y=1.;render_root.add_child(protected_visual)
+	var mat=StandardMaterial3D.new();mat.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;mat.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;mat.albedo_color=Color(.3,.8,1,.25);mat.cull_mode=BaseMaterial3D.CULL_DISABLED;protected_visual.material_override=mat;protected_visual.visible=false;protected_visual.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 func build_gun(wid:String):
 	if is_instance_valid(view_weapon):view_weapon.queue_free()
 	if is_instance_valid(world_weapon):world_weapon.queue_free()
@@ -132,6 +133,14 @@ func update_spread(dt:float,now:float):
 	spread_angle=lerpf(spread_angle,target,1.-exp(-dt*(18 if target>spread_angle else 5.5)))
 func visual(dt:float,p:Dictionary,now:float):
 	visible=p.alive;set_team(int(p.team))
+	protected_visual.visible=p.alive and float(p.get("protect",0))>now
+	protected_visual.material_override.albedo_color=Color(.20,.66,1,.24+sin(now*9)*.045) if p.team==0 else Color(1,.60,.17,.24+sin(now*9)*.045)
+	if p.slot>=2:
+		var signature=str([p.role,p.gadget,p.slot])
+		if signature!=item_signature:
+			item_signature=signature
+			for child in item_model.get_children():item_model.remove_child(child);child.queue_free()
+			EquipmentPreview.gadget_model(item_model,int(p.role),int(p.gadget));item_model.scale=Vector3.ONE*.45;item_model.position=Vector3(0,-.15,-.18)
 	var wid=p.primary if p.slot==0 else p.secondary
 	if shown_weapon!=wid:shown_weapon=wid;build_gun(wid)
 	var w=Catalog.get_weapon(wid);var age=now-float(p.get("shot_time",-100.))
@@ -151,12 +160,19 @@ func visual(dt:float,p:Dictionary,now:float):
 		tag.visible=game.players.has(game.local_id) and (p.team==game.players[game.local_id].team or p.mark>now)
 		tag.modulate=Color("ffae65") if p.mark>now else Color("6ccaff") if p.team==0 else Color("ff9b55");tag.text=("◆ " if p.team==0 else "● ")+p.nick
 		return
-	var reloading=p.reload>now;var ads=input_state.ads and p.slot<2 and not reloading;var scoped=ads and float(w.zoom)<=38
+	var reloading=p.reload>now
+	var stage=0 if progress<.3 else 1 if progress<.76 else 2
+	if reloading and stage!=reload_stage:
+		reload_stage=stage
+		if stage>0:game.play_sound("magazine" if stage==1 else "bolt",Vector3.ZERO,false)
+	elif not reloading:reload_stage=-1
+	var ads=input_state.ads and p.slot<2 and not reloading;var scoped=ads and float(w.zoom)<=38
 	ads_blend=lerpf(ads_blend,1. if ads else 0.,1.-exp(-dt*14));crouch_blend=lerpf(crouch_blend,1. if input_state.crouch else 0.,1.-exp(-dt*14))
 	camera.position.x=0.;camera.position.z=0.;camera.rotation=Vector3(aim_pitch,0,0);camera.position.y=lerpf(1.62,1.05,crouch_blend)-land_kick
 	camera.fov=lerpf(camera.fov,float(w.zoom) if ads else 88. if sprint else 82.,1.-exp(-dt*12))
 	var base=Vector3(.255,-.255,-.46).lerp(Vector3(0,-.14,-.5),ads_blend)
 	var motion=move_blend*(1.-ads_blend*.93)
+	base.y+=sin(now*1.9)*.002*(1.-move_blend)*(1.-ads_blend)
 	base+=Vector3(cos(bob*.5)*.016,absf(sin(bob))*.015,0)*motion
 	var rotation_target=Vector3(recoil*.065,-.09 if sprint else 0.,-.08*motion*sin(bob*.5))
 	if sprint:base+=Vector3(.075,-.055,.055);rotation_target+=Vector3(-.2,.3,.23)

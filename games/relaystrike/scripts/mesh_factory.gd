@@ -32,16 +32,24 @@ static func tapered(parent:Node,pos:Vector3,size:Vector3,color:Color,ratio=.75) 
 	var out=ArrayMesh.new();out.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
 	return instance(parent,out,pos,color)
 static func beveled_box(size:Vector3,amount=.16) -> ArrayMesh:
-	var x=size.x*.5;var y=size.y*.5;var z=size.z*.5;var c=minf(x,y)*amount
+	var x=size.x*.5;var y=size.y*.5;var z=size.z*.5;var c=minf(minf(x,y),z)*clampf(amount,.02,.85)
 	var ring=[Vector2(-x+c,-y),Vector2(x-c,-y),Vector2(x,-y+c),Vector2(x,y-c),Vector2(x-c,y),Vector2(-x+c,y),Vector2(-x,y-c),Vector2(-x,-y+c)]
+	var rings=[]
+	for layer in range(4):
+		var points=[];var inset=c*.55 if layer in [0,3] else 0.;var zz=[-z,-z+c,z-c,z][layer]
+		for v in ring:points.append(Vector3(v.x-sign(v.x)*inset,v.y-sign(v.y)*inset,zz))
+		rings.append(points)
 	var st=SurfaceTool.new();st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for layer in range(3):
+		for i in range(8):
+			var j=(i+1)%8;var points=[rings[layer][i],rings[layer+1][i],rings[layer][j],rings[layer][j],rings[layer+1][i],rings[layer+1][j]]
+			for tri in range(2):
+				var n=(points[tri*3+2]-points[tri*3]).cross(points[tri*3+1]-points[tri*3]).normalized()
+				for k in range(3):st.set_normal(n);st.add_vertex(points[tri*3+k])
 	for i in range(8):
-		var v=ring[i];var next=ring[(i+1)%8];var a=Vector3(v.x,v.y,-z);var b=Vector3(next.x,next.y,-z);var d=Vector3(v.x,v.y,z);var e=Vector3(next.x,next.y,z)
-		var normal=Vector3((v+next).x,(v+next).y,0).normalized()
-		# Godot uses clockwise triangle winding. Explicit normals preserve hard facets.
-		for point in [a,d,b,b,d,e]:st.set_normal(normal);st.add_vertex(point)
-		for point in [Vector3(0,0,-z),a,b]:st.set_normal(Vector3.FORWARD);st.add_vertex(point)
-		for point in [Vector3(0,0,z),e,d]:st.set_normal(Vector3.BACK);st.add_vertex(point)
+		var j=(i+1)%8
+		for point in [Vector3(0,0,-z),rings[0][i],rings[0][j]]:st.set_normal(Vector3.FORWARD);st.add_vertex(point)
+		for point in [Vector3(0,0,z),rings[3][j],rings[3][i]]:st.set_normal(Vector3.BACK);st.add_vertex(point)
 	return st.commit()
 static func merge_children(parent:Node3D):
 	var children=[]

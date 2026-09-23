@@ -14,8 +14,8 @@ var action_origin=Vector3.ZERO
 var hand_origin=Vector3.ZERO
 var length=.7
 var reload_style="rifle"
-var metal=Color("26343d")
-var edge=Color("536571")
+var metal=Color("303b43")
+var edge=Color("647580")
 var light=Color("9baeb6")
 var accent=Color("62bcb3")
 func block(parent:Node,pos:Vector3,size:Vector3,color:Color,tilt=0.) -> MeshInstance3D:return M.box(parent,pos,size,color,Vector3(tilt,0,0),.3)
@@ -139,12 +139,30 @@ func build(w:Dictionary,hands=true):
 	left_hand=piece("LeftHand",Vector3(-.045,-.074,-.34 if not pistol else -.047));hand_origin=left_hand.position
 	right_hand=piece("RightHand",Vector3(.024,-.155,-.16 if model in ["RAPID-9","KESTREL","FLUX"] else .035))
 	if hands:make_hand(left_hand,true,role);make_hand(right_hand,false,role)
+	add_surface_details(pistol,role)
 	M.merge_rig(self)
+	for part in [self,barrel_group,magazine,action_part]:
+		var geo=part.get_node_or_null("Geometry")
+		if geo:
+			var finish=MeshFactory.vertex_material.duplicate();finish.roughness=.48;finish.metallic=.32;geo.material_override=finish
 	if hands:
 		for mesh in find_children("*","MeshInstance3D",true,false):mesh.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	flash=Node3D.new();flash.name="MuzzleFlash";muzzle.add_child(flash)
 	M.cylinder(flash,Vector3(0,0,-.08),.058,.16,Color("ffeac0"),Vector3(PI/2,0,0),.012,5)
 	flash.visible=false
+func add_surface_details(pistol:bool,role:int):
+	var side=.046 if pistol else .073 if role==2 else .054
+	for sign_x in [-1,1]:
+		for z in [-.065,-.235]:
+			M.cylinder(self,Vector3(side*sign_x,.004,z),.009,.008,light,Vector3(0,0,PI/2),-1.,8)
+		# Dark inset, machined slide serrations and receiver panel seams.
+		block(self,Vector3(side*sign_x,.033,-.18),Vector3(.008,.029,.075),metal.darkened(.35))
+		for i in range(5):block(self,Vector3(side*sign_x,.025,-.04-i*.017),Vector3(.005,.045,.006),light.darkened(.1),.15)
+	if not pistol:
+		for i in range(5):tube(barrel_group,Vector3(0,.025,-length*.84-i*.015),.028,.005,light.darkened(.2))
+		block(self,Vector3(.016,-.1,-.078),Vector3(.012,.052,.021),light,.2)
+		block(self,Vector3(0,-.129,-.068),Vector3(.055,.012,.09),metal)
+		for i in range(4):block(self,Vector3(0,-.13+i*.022,.063),Vector3(.066,.009,.008),edge)
 func make_hand(parent:Node,left:bool,role:int):
 	var side=-1. if left else 1.;var glove=Color("354953");var sleeve=[Color("527b81"),Color("66755c"),Color("637587"),Color("b77b43"),Color("776f88"),Color("c0d4cc")][role]
 	M.box(parent,Vector3.ZERO,Vector3(.082,.082,.11),glove,Vector3(0,0,.1*side),.6)

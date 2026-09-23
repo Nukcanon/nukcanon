@@ -8,7 +8,7 @@ func expect(ok:bool,description:String):
 	else:print("PASS ",description)
 func _initialize():call_deferred("run")
 func arm(wid:String):
-	var p=g.players[1];p.primary=wid;p.slot=0;p.reload=0.;p.fire_ready=0.;p.burst_left=0;p.trigger_until=0.;p.fire_prev=false;p.trigger_seen=0;p.shield=0.;g.equip_ammo(p)
+	var p=g.players[1];p.primary=wid;p.protect=0.;p.slot=0;p.reload=0.;p.fire_ready=0.;p.burst_left=0;p.trigger_until=0.;p.fire_prev=false;p.trigger_seen=0;p.shield=0.;g.equip_ammo(p)
 	var a=g.actors[1];a.sprint_release=0.;a.last_sprint=false;a.input_state.fire=false;a.input_state.trigger_seq=0
 func click(seq:int):
 	g.actors[1].input_state.fire=true;g.actors[1].input_state.trigger_seq=seq;g.process_trigger(1)
@@ -64,7 +64,7 @@ func run():
 	expect(a.muzzle_world().z>a.position.z-.3,"muzzle is constrained before nearby wall")
 	wall.queue_free();await physics_frame;await physics_frame
 	for wid in Catalog.weapons:
-		p.primary=wid;p.slot=0;a.visual(.016,p,g.clock)
+		p.primary=wid;p.protect=0.;p.slot=0;a.visual(.016,p,g.clock)
 		expect(is_instance_valid(a.view_weapon.muzzle) and a.view_weapon.find_children("*","MeshInstance3D",true,false).size()>4,"complete procedural model "+wid)
 		for fraction in [.1,.5,.9]:a.view_weapon.animate_reload(fraction,0)
 	arm("r2");a.input_state.ads=true;a.visual(.5,p,g.clock)
