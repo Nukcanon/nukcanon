@@ -120,9 +120,22 @@ body {
 			<div id="status-notice"></div>
 		</div>
 
-		<script src="index.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":96550224,"index.wasm":43699190},"focusCanvas":true,"gdextensionLibs":[]};
+// A preference request, not a bypass: the browser/OS still chooses the adapter.
+const gameCanvas=document.getElementById('canvas');
+const canvasContext=gameCanvas.getContext.bind(gameCanvas);
+gameCanvas.getContext=function(type,attributes){
+  const context=canvasContext(type, type.startsWith('webgl') ? {...attributes,powerPreference:'high-performance',antialias:false} : attributes);
+  if(context && type.startsWith('webgl')) {
+    const info=context.getExtension('WEBGL_debug_renderer_info');
+    console.info('GPU_RENDERER', info ? context.getParameter(info.UNMASKED_RENDERER_WEBGL) : context.getParameter(context.RENDERER));
+  }
+  return context;
+};
+</script>
+<script src="index.js"></script>
+		<script>
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":41152064,"index.wasm":43699190},"focusCanvas":true,"gdextensionLibs":[]};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 // Embedded browsers can deny pointer lock even during a trusted click. Keep

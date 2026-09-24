@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
+  "version": "1.1.1",
   "threads": false,
   "transport": "WebRTC",
   "touch": "coarse-pointer/mobile detection; landscape",
@@ -21,8 +21,8 @@
     },
     {
       "path": "index.html",
-      "bytes": 8503,
-      "sha256": "0e3c359ebdcc468eac65465bd32f24ca6bb698df584d180cb764c66f64657cb5"
+      "bytes": 9178,
+      "sha256": "52cb8760935ffe70448861e12c6d4defffa90ab0517b4525bed41bb8ef816118"
     },
     {
       "path": "index.icon.png",
@@ -36,8 +36,8 @@
     },
     {
       "path": "index.pck",
-      "bytes": 96550224,
-      "sha256": "7e5586e49c63234fde41187d0d3a89f69051be318cb923f99ea9ccd612c88da7"
+      "bytes": 41152064,
+      "sha256": "1009bd5c7fa4d4ec99231ddc24f42f3b3a02760e7366a8913d8eb25339d93fc7"
     },
     {
       "path": "index.png",
@@ -83,6 +83,11 @@
       "path": "licenses/LICENSE.txt",
       "bytes": 1718,
       "sha256": "287d8beaa4b09c28426130615ce9138da08f0672bba42e1bb16bcbd075867334"
+    },
+    {
+      "path": "licenses/SOUND_CREDITS.md",
+      "bytes": 2554,
+      "sha256": "c858d81872625cf29608f542f4566766edf66bf890844328ee42a989880384da"
     },
     {
       "path": "licenses/dohyeon-OFL.txt",
