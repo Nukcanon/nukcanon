@@ -1,0 +1,98 @@
+{
+  "version": "1.1.0",
+  "threads": false,
+  "transport": "WebRTC",
+  "touch": "coarse-pointer/mobile detection; landscape",
+  "files": [
+    {
+      "path": "index.apple-touch-icon.png",
+      "bytes": 11952,
+      "sha256": "9b374ecbc8558f480421e646f38aaa8a69d5b1d65ff7b48d0735da214c46773a"
+    },
+    {
+      "path": "index.audio.position.worklet.js",
+      "bytes": 3149,
+      "sha256": "347b512529c5dca302093f7b9de6d184dd09d10e9a6fba62cbab098a891b2368"
+    },
+    {
+      "path": "index.audio.worklet.js",
+      "bytes": 7298,
+      "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
+    },
+    {
+      "path": "index.html",
+      "bytes": 8503,
+      "sha256": "0e3c359ebdcc468eac65465bd32f24ca6bb698df584d180cb764c66f64657cb5"
+    },
+    {
+      "path": "index.icon.png",
+      "bytes": 5702,
+      "sha256": "08808dd5397e9a502cb3624944151f87a9705b5b66b5c365c5ca4c6ab51525f5"
+    },
+    {
+      "path": "index.js",
+      "bytes": 317142,
+      "sha256": "19eb180d568bb8e17bcf4c72ca034ed3af44deeb90304deefee4e665562dfe31"
+    },
+    {
+      "path": "index.pck",
+      "bytes": 96550224,
+      "sha256": "7e5586e49c63234fde41187d0d3a89f69051be318cb923f99ea9ccd612c88da7"
+    },
+    {
+      "path": "index.png",
+      "bytes": 21443,
+      "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
+    },
+    {
+      "path": "index.wasm",
+      "bytes": 43699190,
+      "sha256": "e4a43dbae28662b2a68f6136857a94db6695430901515800b9883f6327cb7116"
+    },
+    {
+      "path": "licenses/AUDIO_KENNEY_LICENSE.txt",
+      "bytes": 586,
+      "sha256": "94283f9120e58e6a1cae5762053df42ee280d37fe34be22589c92b7dbc7b2d39"
+    },
+    {
+      "path": "licenses/AUDIO_Q009_LICENSE.txt",
+      "bytes": 19383,
+      "sha256": "bc9bd2fcbe25fbb45e6fb641a5008d4848d14bd205850ebf9a4cd83d86e02996"
+    },
+    {
+      "path": "licenses/CREDITS.md",
+      "bytes": 2358,
+      "sha256": "485dab47781a2369bb390f9f835dbefd45dea9b25a7cb114aa1fa2addd1f09de"
+    },
+    {
+      "path": "licenses/FONT_LICENSE.txt",
+      "bytes": 4301,
+      "sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2"
+    },
+    {
+      "path": "licenses/GODOT_LICENSE.txt",
+      "bytes": 1149,
+      "sha256": "b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80"
+    },
+    {
+      "path": "licenses/LICENSE.ASSETS.md",
+      "bytes": 6962,
+      "sha256": "f6089cba01cb570a24712b41ab8a586ccd3cc5ef53dc266ca50b95c288956d2c"
+    },
+    {
+      "path": "licenses/LICENSE.txt",
+      "bytes": 1718,
+      "sha256": "287d8beaa4b09c28426130615ce9138da08f0672bba42e1bb16bcbd075867334"
+    },
+    {
+      "path": "licenses/dohyeon-OFL.txt",
+      "bytes": 4347,
+      "sha256": "de5ff32211a4340b01477af39ee339d639438955e409f79b666d4b9207f3c92c"
+    },
+    {
+      "path": "licenses/rajdhani-OFL.txt",
+      "bytes": 4373,
+      "sha256": "f62ef357d3a1c3d27edd35a6e1ba350e8a8d13499797964eeadefbf0b3b15d1f"
+    }
+  ]
+}
