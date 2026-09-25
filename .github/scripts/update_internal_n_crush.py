@@ -102,7 +102,7 @@ def main():
     expected = json.loads((ROOT / '.github/internal-n-crush-release.json').read_text())
     if options.refresh_release:
         expected = json.loads(download('WEB_RELEASE_v1.1.6.json'))
-        assert expected.get('source_commit') == '5c3b5026bfbb9417a46350ca27d592ffaed7c363', 'New release descriptor is missing its source commit; build the game repository first'
+        assert expected.get('source_commit') == 'e41cfcac966a2dfb7533e4fb0ca739ee417f500d', 'New release descriptor is missing its source commit; build the game repository first'
     install(ROOT, download('InternalNCrush_Web_v1.1.6.zip'), expected)
 
 
