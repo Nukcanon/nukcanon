@@ -1,5 +1,5 @@
 {
-  "version": "1.1.3",
+  "version": "1.1.4",
   "threads": false,
   "transport": "WebRTC",
   "touch": "coarse-pointer/mobile detection; landscape",
@@ -22,7 +22,7 @@
     {
       "path": "index.html",
       "bytes": 9178,
-      "sha256": "81edf72fc89efb1aed1dba44402f7016a2f2451d9b55338a2198965a000d4cbc"
+      "sha256": "ffd07b151af263ceb07c40310697e5091bafe388b025125ace9fe525b872cb6e"
     },
     {
       "path": "index.icon.png",
@@ -36,8 +36,8 @@
     },
     {
       "path": "index.pck",
-      "bytes": 23278400,
-      "sha256": "e32749b2d6ed2933a6a18b68a79f1a3162ee1add037add9b023f1ac6cee6a6da"
+      "bytes": 23281088,
+      "sha256": "784628b5e55ae2d815c3ce0b4c8057d310bdeacf79bd61a3c2abb5ddab3ca758"
     },
     {
       "path": "index.png",
