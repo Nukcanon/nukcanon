@@ -17,7 +17,7 @@ COMMIT = 'a' * 40
 def fixture(extra=None, corrupt=False):
     name = 'game-' + COMMIT[:12]
     files = {'index.html': ('<script>const GODOT_CONFIG = ' + json.dumps({'executable': name}) + ';</script>').encode(), name + '.js': b'engine', name + '.wasm': b'\x00asmtest', name + '.pck': b'GDPCtest'}
-    manifest = {'version': '1.1.4', 'threads': False, 'source_commit': COMMIT, 'files': [{'path': p, 'bytes': len(c), 'sha256': hashlib.sha256(c).hexdigest()} for p, c in files.items()]}
+    manifest = {'version': '1.1.5', 'threads': False, 'source_commit': COMMIT, 'files': [{'path': p, 'bytes': len(c), 'sha256': hashlib.sha256(c).hexdigest()} for p, c in files.items()]}
     if corrupt:
         files[name + '.pck'] = b'GDPCbad!'
     files['build.json'] = json.dumps(manifest).encode()
@@ -27,7 +27,7 @@ def fixture(extra=None, corrupt=False):
         for p, c in files.items():
             z.writestr(p, c)
     data = buffer.getvalue()
-    return data, {'version': '1.1.4', 'sha256': hashlib.sha256(data).hexdigest(), 'source_commit': COMMIT}
+    return data, {'version': '1.1.5', 'sha256': hashlib.sha256(data).hexdigest(), 'source_commit': COMMIT}
 
 
 class InstallerTests(unittest.TestCase):
@@ -39,7 +39,7 @@ class InstallerTests(unittest.TestCase):
         (self.root / 'play').mkdir()
         (self.root / 'play/old.js').write_text('previous')
         (self.root / 'unrelated.txt').write_text('keep')
-        self.page = '<a href="play/">Play</a><a href="' + installer.RELEASE + 'InternalNCrush_Windows_v1.1.4.zip">Download</a>'
+        self.page = '<a href="play/">Play</a><a href="' + installer.RELEASE + 'InternalNCrush_Windows_v1.1.5.zip">Download</a>'
         (self.root / 'internal-n-crush.html').write_text(self.page)
 
     def assert_unchanged(self):
