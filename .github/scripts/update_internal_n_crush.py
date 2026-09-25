@@ -65,7 +65,7 @@ def install(root, data, expected):
     files = verified_files(data, expected)
     revision = expected['sha256'][:12]
     page = root / 'internal-n-crush.html'
-    html = page.read_text(encoding='utf-8')
+    html = page.read_text(encoding='utf-8').replace('InternalNCrush_NAS_Linux_v1.1.5.zip','InternalNCrush_NAS_Linux_v1.1.6.zip').replace('internal-n-crush-v1.1.5/InternalNCrush_NAS','internal-n-crush-v1.1.6/InternalNCrush_NAS')
     html = re.sub(r'<br>\s*<a[^>]*>소스 코드</a>\s*·\s*<a[^>]*>변경 내용</a>', '', html)
     html = re.sub(r'href="play/(?:\?[^"]*)?"', f'href="play/?build={revision}"', html)
     download_url = RELEASE + 'InternalNCrush_Windows_v1.1.6.zip'
@@ -102,7 +102,7 @@ def main():
     expected = json.loads((ROOT / '.github/internal-n-crush-release.json').read_text())
     if options.refresh_release:
         expected = json.loads(download('WEB_RELEASE_v1.1.6.json'))
-        assert expected.get('source_commit') == '57518e109278fbb2c9850f2096d204b3e899a3df', 'New release descriptor is missing its source commit; build the game repository first'
+        assert expected.get('source_commit') == '42d1c7949ba77defafdd83238630fc5cb873b340', 'New release descriptor is missing its source commit; build the game repository first'
     install(ROOT, download('InternalNCrush_Web_v1.1.6.zip'), expected)
 
 
