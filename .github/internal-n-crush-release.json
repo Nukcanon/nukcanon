@@ -1,5 +1,5 @@
 {
-  "version": "1.1.6",
-  "sha256": "3101ffc519305b070981dfa8765c4bf8f419ee31c4096c69cb2d626da6bce75b",
-  "source_commit": "e41cfcac966a2dfb7533e4fb0ca739ee417f500d"
+  "version": "1.1.7",
+  "source_commit": "3e21b05e82a54787d77386b1260d4b4364e1bc29",
+  "status": "awaiting validated release"
 }
