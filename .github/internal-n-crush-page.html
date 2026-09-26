@@ -33,6 +33,13 @@
     .game-page .controls{line-height:2}
     .game-page kbd{display:inline-block;padding:0 6px;border:1px solid var(--home-line);border-bottom-width:3px;border-radius:5px;background:var(--home-surface);font:600 .85em/1.6 system-ui,sans-serif;color:var(--home-ink);white-space:nowrap}
     @media(max-width:760px){.game-page .details{grid-template-columns:1fr}.game-page .detail{padding:20px}.game-page .download{justify-content:center;width:100%;font-size:.95rem;margin-left:0}}
+    .game-page .guide-image{cursor:zoom-in}
+    .image-viewer{position:fixed;inset:0;box-sizing:border-box;width:100vw;max-width:none;height:100vh;height:100dvh;max-height:none;margin:0;padding:76px 16px 20px;border:0;background:rgba(0,0,0,.94);color:#fff}
+    .image-viewer[open]{display:flex;align-items:center;justify-content:center}
+    .image-viewer::backdrop{background:rgba(0,0,0,.85)}
+    .image-viewer img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;cursor:zoom-out}
+    .image-viewer-close{position:absolute;top:max(16px,env(safe-area-inset-top));right:max(16px,env(safe-area-inset-right));min-width:88px;min-height:44px;padding:10px 16px;border:2px solid #fff;border-radius:8px;background:#222;color:#fff;font:700 16px system-ui,sans-serif;cursor:pointer}
+    .image-viewer-close:focus-visible{outline:3px solid #5ce1c3;outline-offset:4px}
   </style>
 </head>
 <body class="home-page game-page">
@@ -46,9 +53,9 @@
       <p class="eyebrow">TEAM TACTICAL FPS</p>
       <h1 id="game-title">Internal N Crush</h1>
       <p class="intro">내부망에서 자유롭게 하는 게임<br>5개 게임 모드 · 최대 32명 · 6개 병과 · 실내·실외 31개 전장. 연습장에서 장비를 익히고, 봇이나 다른 플레이어와 겨뤄 보세요.</p>
-      <a class="download" href="https://github.com/Nukcanon/InternalNCrush/releases/download/internal-n-crush-v1.1.6/InternalNCrush_Windows_v1.1.6.zip?build=3101ffc51930">Windows 다운로드 <span aria-hidden="true">↓</span></a>
-      <a class="download play-now" href="play/?build=3101ffc51930">바로 플레이 <span aria-hidden="true">▶</span></a>
-      <p class="download-note">v1.1.6 · Windows 64비트 / 웹 · 모바일 가로 화면</p>
+      <a class="download" href="https://github.com/Nukcanon/InternalNCrush/releases/download/internal-n-crush-v1.1.7/InternalNCrush_Windows_v1.1.7.zip?build=3d821e774435">Windows 다운로드 <span aria-hidden="true">↓</span></a>
+      <a class="download play-now" href="play/?build=game-d01c9c698a27&update=20260926">바로 플레이 <span aria-hidden="true">▶</span></a>
+      <p class="download-note">v1.1.7 · Windows 64비트 / 웹 · 모바일 가로 화면</p>
     </section>
     <section class="detail wide" aria-labelledby="controls-title">
       <h2 id="controls-title">조작방법</h2>
@@ -109,6 +116,40 @@
     </section>
   </main>
   <footer class="site-footer"><p><strong>Nukcanon</strong><span aria-hidden="true">·</span> Maker project archive</p></footer>
+  <dialog class="image-viewer" aria-label="확대 이미지">
+    <button class="image-viewer-close" type="button" autofocus aria-label="확대 이미지 닫기">닫기 ×</button>
+    <img alt="">
+  </dialog>
+  <script>
+    (() => {
+      const viewer = document.querySelector('.image-viewer');
+      if (typeof viewer.showModal !== 'function') return;
+      const image = viewer.querySelector('img');
+      let opener = null;
+      let previousOverflow = '';
+      document.querySelectorAll('.guide-image').forEach(link => {
+        link.setAttribute('aria-haspopup', 'dialog');
+        link.addEventListener('click', event => {
+          if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+          event.preventDefault();
+          opener = link;
+          image.src = link.href;
+          image.alt = link.querySelector('img').alt;
+          previousOverflow = document.documentElement.style.overflow;
+          document.documentElement.style.overflow = 'hidden';
+          viewer.showModal();
+        });
+      });
+      viewer.addEventListener('click', event => {
+        if (event.target === viewer || event.target === image || event.target.closest('.image-viewer-close')) viewer.close();
+      });
+      viewer.addEventListener('close', () => {
+        document.documentElement.style.overflow = previousOverflow;
+        image.removeAttribute('src');
+        if (opener) opener.focus({ preventScroll: true });
+      });
+    })();
+  </script>
   <script src="css/patch.js"></script>
 </body>
 </html>
