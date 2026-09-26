@@ -1,0 +1,67 @@
+name: Audit published Internal N Crush 1.1.8
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/audit-v118.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Inspect actual published Windows and Web packages
+        run: |
+          python3 - <<'PY'
+          import hashlib, io, json, struct, time, urllib.request, zipfile
+          SOURCE = "9656451ce87b6a3726604810af30be9b6841a21d"
+          BASE = "https://github.com/Nukcanon/InternalNCrush/releases/download/internal-n-crush-v1.1.8/"
+          PAGE = "https://nukcanon.github.io/nukcanon/"
+          def fetch(url):
+              for attempt in range(4):
+                  try:
+                      req=urllib.request.Request(url, headers={"User-Agent":"InternalNCrush-release-audit","Cache-Control":"no-cache"})
+                      return urllib.request.urlopen(req, timeout=120).read()
+                  except Exception:
+                      if attempt == 3: raise
+                      time.sleep(3)
+          def pack(data):
+              f=io.BytesIO(data)
+              assert f.read(4)==b"GDPC"
+              f.seek(24); base=struct.unpack("<Q",f.read(8))[0]
+              f.seek(96); count=struct.unpack("<I",f.read(4))[0]; entries={}
+              for _ in range(count):
+                  length=struct.unpack("<I",f.read(4))[0]
+                  name=f.read(length).rstrip(b"\0").decode()
+                  offset,size=struct.unpack("<QQ",f.read(16));f.read(20)
+                  entries[name]=(offset+base,size)
+              def read(name):
+                  offset,size=entries[name];f.seek(offset);return f.read(size)
+              w=json.loads(read("assets/weapons.json"))
+              assert w["m1"]["reach"]==15 and w["m1"]["heal_rate"]==25
+              assert w["m2"]["heal_per_pellet"]==5
+              assert w["m3"]["heal_per_pellet"]==6 and w["m3"]["heal_cap"]==30
+              assert w["h4"]["rocket"] and w["h4"]["mag"]==1
+              for name in ["medic_link","rocket_combat","held_grip","gadget_visual","skill_icon"]:
+                  assert "scripts/"+name+".gdc" in entries
+              assert b"1.1.8" in read("project.binary"), "packaged project version"
+          for name,digest in [
+              ("InternalNCrush_Windows_v1.1.8.zip","87d47af80f9cc502a53a0e67a75bcf1fd0d910e479462fbbe4c4734c3acc773e"),
+              ("InternalNCrush_Web_v1.1.8.zip","bc5ca4ea59ca7f3ca7576fb85a97a3039d9b4f9fec3f4c52cf78f224a2960134")]:
+              data=fetch(BASE+name);assert hashlib.sha256(data).hexdigest()==digest
+              with zipfile.ZipFile(io.BytesIO(data)) as z:
+                  assert z.testzip() is None
+                  pack(z.read(next(p for p in z.namelist() if p.endswith(".pck"))))
+              print("PASS public release",name,flush=True)
+          build=json.loads(fetch(PAGE+"play/build.json?audit="+str(time.time())))
+          assert build["version"]=="1.1.8" and build["source_commit"]==SOURCE
+          entry=next(f for f in build["files"] if f["path"].endswith(".pck"))
+          data=fetch(PAGE+"play/"+entry["path"])
+          assert hashlib.sha256(data).hexdigest()==entry["sha256"]
+          pack(data)
+          html=fetch(PAGE+"internal-n-crush.html?audit="+str(time.time())).decode()
+          assert "InternalNCrush_Windows_v1.1.8.zip" in html and "v1.1.8 · Windows" in html
+          print("PASS live Pages PCK, source pin and download link",flush=True)
+          
+          PY
