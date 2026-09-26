@@ -1,48 +1,48 @@
 {
-  "version": "1.1.8",
+  "version": "1.1.9",
   "threads": false,
-  "source_commit": "9656451ce87b6a3726604810af30be9b6841a21d",
-  "executable": "game-9656451ce87b",
+  "source_commit": "8bb020caa116bb4f6b66f540b49c411c9b689297",
+  "executable": "game-8bb020caa116",
   "transport": "WebRTC",
   "touch": "coarse-pointer/mobile detection; landscape",
   "files": [
     {
-      "path": "game-9656451ce87b.apple-touch-icon.png",
+      "path": "game-8bb020caa116.apple-touch-icon.png",
       "bytes": 11952,
       "sha256": "9b374ecbc8558f480421e646f38aaa8a69d5b1d65ff7b48d0735da214c46773a"
     },
     {
-      "path": "game-9656451ce87b.audio.position.worklet.js",
+      "path": "game-8bb020caa116.audio.position.worklet.js",
       "bytes": 3149,
       "sha256": "347b512529c5dca302093f7b9de6d184dd09d10e9a6fba62cbab098a891b2368"
     },
     {
-      "path": "game-9656451ce87b.audio.worklet.js",
+      "path": "game-8bb020caa116.audio.worklet.js",
       "bytes": 7298,
       "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
     },
     {
-      "path": "game-9656451ce87b.icon.png",
+      "path": "game-8bb020caa116.icon.png",
       "bytes": 5702,
       "sha256": "08808dd5397e9a502cb3624944151f87a9705b5b66b5c365c5ca4c6ab51525f5"
     },
     {
-      "path": "game-9656451ce87b.js",
+      "path": "game-8bb020caa116.js",
       "bytes": 317142,
       "sha256": "19eb180d568bb8e17bcf4c72ca034ed3af44deeb90304deefee4e665562dfe31"
     },
     {
-      "path": "game-9656451ce87b.pck",
-      "bytes": 72976768,
-      "sha256": "f4b17588a097a4d44e4fe223fd14a772703af29ce1ca92231c9991e86e36ce25"
+      "path": "game-8bb020caa116.pck",
+      "bytes": 72964688,
+      "sha256": "eaf6af25b721744045ecf8017fbbf6f3c0b39e430acf77a5bfa3e9d6ce2a441a"
     },
     {
-      "path": "game-9656451ce87b.png",
+      "path": "game-8bb020caa116.png",
       "bytes": 21443,
       "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
     },
     {
-      "path": "game-9656451ce87b.wasm",
+      "path": "game-8bb020caa116.wasm",
       "bytes": 43699190,
       "sha256": "e4a43dbae28662b2a68f6136857a94db6695430901515800b9883f6327cb7116"
     },
@@ -73,8 +73,8 @@
     },
     {
       "path": "index.html",
-      "bytes": 11249,
-      "sha256": "aaec58142fc670a7a4af3c32753a6222657129df462aace8a0f1ec9eb0358268"
+      "bytes": 12005,
+      "sha256": "0f763443977bbb059d8ac627c107e20b43078138ae7cd43151a99bebe4aba928"
     },
     {
       "path": "licenses/AUDIO_KENNEY_LICENSE.txt",

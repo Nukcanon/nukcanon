@@ -98,8 +98,8 @@ body {
 #portrait {display:none;position:fixed;inset:0;z-index:30;background:#112631;color:white;place-content:center;text-align:center;font:20px system-ui;padding:30px;}
 @media (orientation:portrait) and (pointer:coarse) {#portrait{display:grid}}
 </style>
-		<link id="-gd-engine-icon" rel="icon" type="image/png" href="game-9656451ce87b.icon.png" />
-<link rel="apple-touch-icon" href="game-9656451ce87b.apple-touch-icon.png"/>
+		<link id="-gd-engine-icon" rel="icon" type="image/png" href="game-8bb020caa116.icon.png" />
+<link rel="apple-touch-icon" href="game-8bb020caa116.apple-touch-icon.png"/>
 
 	</head>
 	<body>
@@ -115,7 +115,7 @@ body {
 		</noscript>
 
 		<div id="status">
-			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="game-9656451ce87b.png" alt="">
+			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="game-8bb020caa116.png" alt="">
 			<progress id="status-progress"></progress>
 			<div id="status-notice"></div>
 		</div>
@@ -133,9 +133,9 @@ gameCanvas.getContext=function(type,attributes){
   return context;
 };
 </script>
-<script src="game-9656451ce87b.js"></script>
+<script src="game-8bb020caa116.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"ensureCrossOriginIsolationHeaders":true,"executable":"game-9656451ce87b","experimentalVK":false,"fileSizes":{"game-9656451ce87b.pck":72976768,"game-9656451ce87b.wasm":43699190},"focusCanvas":true,"gdextensionLibs":[]};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"ensureCrossOriginIsolationHeaders":true,"executable":"game-8bb020caa116","experimentalVK":false,"fileSizes":{"game-8bb020caa116.pck":72964688,"game-8bb020caa116.wasm":43699190},"focusCanvas":true,"gdextensionLibs":[]};
 const GODOT_THREADS_ENABLED = false;
 // Web updates follow the deployed build, not the Windows release label.
 (() => {
@@ -179,6 +179,20 @@ const GODOT_THREADS_ENABLED = false;
   window.incUpdateReady = check();
   setInterval(() => { if (!document.hidden) check(); }, 60000);
   document.addEventListener('visibilitychange', () => { if (!document.hidden) check(); });
+})();
+
+// Do not let modified gameplay clicks trigger browser menus, drag or navigation.
+(() => {
+  const canvas = document.getElementById('canvas');
+  if (!canvas) return;
+  for (const type of ['mousedown', 'mouseup', 'click', 'dblclick', 'auxclick', 'contextmenu', 'dragstart']) {
+    canvas.addEventListener(type, event => event.preventDefault(), { passive: false });
+  }
+  canvas.addEventListener('wheel', event => event.preventDefault(), { passive: false });
+  document.addEventListener('keydown', event => {
+    if (document.pointerLockElement !== canvas && document.activeElement !== canvas) return;
+    if ((event.ctrlKey || event.metaKey) && ['w', 's', 'a', 'd'].includes(event.key.toLowerCase())) event.preventDefault();
+  }, { capture: true });
 })();
 
 const engine = new Engine(GODOT_CONFIG);
