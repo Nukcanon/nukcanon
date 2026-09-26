@@ -16,7 +16,7 @@ jobs:
         run: |
           python3 - <<'PY'
           import hashlib, io, json, re, struct, time, urllib.request, zipfile
-          SOURCE = "8a0145d93981d1a15d83a3eb8fd352e5777fe4e0"
+          SOURCE = "83d5efac30cd7276486d5a30b6e62b2ea3b8343e"
           BASE = "https://github.com/Nukcanon/InternalNCrush/releases/download/internal-n-crush-v1.2.1/"
           PAGE = "https://nukcanon.github.io/nukcanon/"
           def fetch(url):
