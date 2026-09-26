@@ -19,7 +19,7 @@ def fixture(extra=None, corrupt=False, guide=False):
     files = {'index.html': ('<script>const GODOT_CONFIG = ' + json.dumps({'executable': name}) + ';</script>').encode(), name + '.js': b'engine', name + '.wasm': b'\x00asmtest', name + '.pck': b'GDPCtest'}
     if guide:
         files.update({'guide/' + name + '.jpg': b'\xff\xd8mock-image' for name in ('controls', 'touch', 'settings', 'lan', 'internet')})
-    manifest = {'version': '1.1.8', 'threads': False, 'source_commit': COMMIT, 'files': [{'path': p, 'bytes': len(c), 'sha256': hashlib.sha256(c).hexdigest()} for p, c in files.items()]}
+    manifest = {'version': '1.1.9', 'threads': False, 'source_commit': COMMIT, 'files': [{'path': p, 'bytes': len(c), 'sha256': hashlib.sha256(c).hexdigest()} for p, c in files.items()]}
     if corrupt:
         files[name + '.pck'] = b'GDPCbad!'
     files['build.json'] = json.dumps(manifest).encode()
@@ -29,7 +29,7 @@ def fixture(extra=None, corrupt=False, guide=False):
         for p, c in files.items():
             z.writestr(p, c)
     data = buffer.getvalue()
-    return data, {'version': '1.1.8', 'sha256': hashlib.sha256(data).hexdigest(), 'source_commit': COMMIT}
+    return data, {'version': '1.1.9', 'sha256': hashlib.sha256(data).hexdigest(), 'source_commit': COMMIT}
 
 
 class InstallerTests(unittest.TestCase):
@@ -41,7 +41,7 @@ class InstallerTests(unittest.TestCase):
         (self.root / 'play').mkdir()
         (self.root / 'play/old.js').write_text('previous')
         (self.root / 'unrelated.txt').write_text('keep')
-        self.page = '<a href="play/">Play</a><a href="' + installer.RELEASE + 'InternalNCrush_Windows_v1.1.8.zip">Download</a>'
+        self.page = '<a href="play/">Play</a><a href="' + installer.RELEASE + 'InternalNCrush_Windows_v1.1.9.zip">Download</a>'
         (self.root / 'internal-n-crush.html').write_text(self.page)
 
     def assert_unchanged(self):
@@ -78,7 +78,7 @@ class InstallerTests(unittest.TestCase):
         template.write_text(self.page + '<h2>조작방법</h2>v1.1.6 · Windows')
         data, expected = fixture(guide=True)
         installer.install(self.root, data, expected)
-        self.assertIn('v1.1.8 · Windows', (self.root / 'internal-n-crush.html').read_text())
+        self.assertIn('v1.1.9 · Windows', (self.root / 'internal-n-crush.html').read_text())
         self.assertTrue((self.root / 'play/guide/touch.jpg').is_file())
 
     def test_guide_missing_screenshots_preserves_live_page(self):
