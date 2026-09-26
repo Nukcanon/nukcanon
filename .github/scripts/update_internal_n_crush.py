@@ -1,4 +1,4 @@
-"""Verify and install the owner's 1.1.7 Web release into Pages."""
+"""Verify and install the owner's 1.1.8 Web release into Pages."""
 from pathlib import Path, PurePosixPath
 import argparse
 import hashlib
@@ -10,7 +10,7 @@ import urllib.request
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[2]
-RELEASE = 'https://github.com/Nukcanon/InternalNCrush/releases/download/internal-n-crush-v1.1.7/'
+RELEASE = 'https://github.com/Nukcanon/InternalNCrush/releases/download/internal-n-crush-v1.1.8/'
 
 
 def download(name):
@@ -20,7 +20,7 @@ def download(name):
 
 
 def verified_files(data, expected):
-    assert expected['version'] == '1.1.7', 'Unexpected version'
+    assert expected['version'] == '1.1.8', 'Unexpected version'
     assert hashlib.sha256(data).hexdigest() == expected['sha256'], 'Web archive hash mismatch'
     files = {}
     with zipfile.ZipFile(io.BytesIO(data)) as archive:
@@ -38,7 +38,7 @@ def verified_files(data, expected):
             assert total < 512 * 1024 * 1024, 'Unexpected archive size'
             files[item.filename] = archive.read(item)
     manifest = json.loads(files['build.json'])
-    assert manifest['version'] == '1.1.7' and manifest['threads'] is False, 'Unexpected Web build'
+    assert manifest['version'] == '1.1.8' and manifest['threads'] is False, 'Unexpected Web build'
     if expected.get('source_commit'):
         assert manifest.get('source_commit') == expected['source_commit'], 'Source commit mismatch'
     listed = set()
@@ -72,10 +72,10 @@ def install(root, data, expected):
             assert files['guide/' + name + '.jpg'].startswith(b'\xff\xd8'), 'Missing guide screenshot: ' + name
     html = re.sub(r'<br>\s*<a[^>]*>소스 코드</a>\s*·\s*<a[^>]*>변경 내용</a>', '', html)
     html = re.sub(r'href="play/(?:\?[^"]*)?"', f'href="play/?build={revision}"', html)
-    download_url = RELEASE + 'InternalNCrush_Windows_v1.1.7.zip'
-    html = re.sub(r'href="https://github.com/Nukcanon/InternalNCrush/releases/download/internal-n-crush-v1\.1\.[34567]/InternalNCrush_Windows_v1\.1\.[34567]\.zip(?:\?[^"]*)?"', f'href="{download_url}?build={revision}"', html)
-    html = re.sub(r'v1\.1\.[34567] · Windows', 'v1.1.7 · Windows', html)
-    html = re.sub(r'releases/tag/internal-n-crush-v1\.1\.[34567]', 'releases/tag/internal-n-crush-v1.1.7', html)
+    download_url = RELEASE + 'InternalNCrush_Windows_v1.1.8.zip'
+    html = re.sub(r'href="https://github.com/Nukcanon/InternalNCrush/releases/download/internal-n-crush-v1\.1\.[345678]/InternalNCrush_Windows_v1\.1\.[345678]\.zip(?:\?[^"]*)?"', f'href="{download_url}?build={revision}"', html)
+    html = re.sub(r'v1\.1\.[345678] · Windows', 'v1.1.8 · Windows', html)
+    html = re.sub(r'releases/tag/internal-n-crush-v1\.1\.[345678]', 'releases/tag/internal-n-crush-v1.1.8', html)
     with tempfile.TemporaryDirectory(prefix='.web-release-', dir=root) as temporary:
         stage = Path(temporary) / 'new'
         stage.mkdir()
@@ -95,8 +95,8 @@ def install(root, data, expected):
             raise
     page.write_text(html, encoding='utf-8')
     (root / '.github/internal-n-crush-release.json').write_text(json.dumps(expected, indent=2) + '\n', encoding='utf-8')
-    (root / 'internal-n-crush-version.json').write_text(json.dumps({'version': '1.1.7', 'build': revision, 'source_commit': expected.get('source_commit', '')}) + '\n', encoding='utf-8')
-    print('Verified 1.1.7 installed:', revision)
+    (root / 'internal-n-crush-version.json').write_text(json.dumps({'version': '1.1.8', 'build': revision, 'source_commit': expected.get('source_commit', '')}) + '\n', encoding='utf-8')
+    print('Verified 1.1.8 installed:', revision)
 
 
 def main():
@@ -105,9 +105,9 @@ def main():
     options = parser.parse_args()
     expected = json.loads((ROOT / '.github/internal-n-crush-release.json').read_text())
     if options.refresh_release:
-        expected = json.loads(download('WEB_RELEASE_v1.1.7.json'))
-        assert expected.get('source_commit') == 'd01c9c698a2708a01ea8f839a34143e857667164', 'New release descriptor is missing its source commit; build the game repository first'
-    install(ROOT, download('InternalNCrush_Web_v1.1.7.zip'), expected)
+        expected = json.loads(download('WEB_RELEASE_v1.1.8.json'))
+        assert expected.get('source_commit') == '68e74f14fe2c9007f1e4f257d06bec5965d5b7f9', 'New release descriptor is missing its source commit; build the game repository first'
+    install(ROOT, download('InternalNCrush_Web_v1.1.8.zip'), expected)
 
 
 if __name__ == '__main__':
