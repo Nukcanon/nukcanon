@@ -1,5 +1,7 @@
 name: Audit published Internal N Crush 1.2.0
 on:
+  push:
+    paths: [".github/workflows/audit-v120.yml"]
   workflow_run:
     workflows: ["Install updated Internal N Crush 1.2.0"]
     types: [completed]
@@ -8,14 +10,14 @@ permissions:
   contents: read
 jobs:
   audit:
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - name: Inspect actual published Windows and Web packages
         run: |
           python3 - <<'PY'
-          import hashlib, io, json, struct, time, urllib.request, zipfile
+          import hashlib, io, json, re, struct, time, urllib.request, zipfile
           SOURCE = "f14711dc213f42b03ec9fd1c85e886693ca73e45"
           BASE = "https://github.com/Nukcanon/InternalNCrush/releases/download/internal-n-crush-v1.2.0/"
           PAGE = "https://nukcanon.github.io/nukcanon/"
@@ -48,7 +50,10 @@ jobs:
               for name in ["medic_link","rocket_combat","held_grip","gadget_visual","skill_icon","construction","medic_selection","turret_selection","ally_health_labels"]:
                   assert "scripts/"+name+".gdc" in entries
               for key in ["m3","h4"]+["gadget%d_8"%role for role in range(6)]:
-                  assert "assets/thumbnails/"+key+".png.remap" in entries or "assets/thumbnails/"+key+".png" in entries, "missing equipment thumbnail "+key
+                  imported="assets/thumbnails/"+key+".png.import"
+                  assert imported in entries, "missing equipment thumbnail import "+key
+                  paths=re.findall(r'path="res://([^"\n]+)"', read(imported).decode())
+                  assert paths and all(path in entries for path in paths), "missing imported texture "+key
               assert b"1.2.0" in read("project.binary"), "packaged project version"
           manifest=json.loads(fetch(BASE+"WEB_RELEASE_v1.2.0.json"))
           assert manifest["version"]=="1.2.0" and manifest["source_commit"]==SOURCE
