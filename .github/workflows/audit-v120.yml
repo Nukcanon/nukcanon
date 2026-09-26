@@ -1,0 +1,77 @@
+name: Audit published Internal N Crush 1.2.0
+on:
+  workflow_run:
+    workflows: ["Install updated Internal N Crush 1.2.0"]
+    types: [completed]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Inspect actual published Windows and Web packages
+        run: |
+          python3 - <<'PY'
+          import hashlib, io, json, struct, time, urllib.request, zipfile
+          SOURCE = "277bfc8bfd12833e5b4a2bbe8e5184370edbaf2c"
+          BASE = "https://github.com/Nukcanon/InternalNCrush/releases/download/internal-n-crush-v1.2.0/"
+          PAGE = "https://nukcanon.github.io/nukcanon/"
+          def fetch(url):
+              for attempt in range(4):
+                  try:
+                      req=urllib.request.Request(url, headers={"User-Agent":"InternalNCrush-release-audit","Cache-Control":"no-cache"})
+                      return urllib.request.urlopen(req, timeout=120).read()
+                  except Exception:
+                      if attempt == 3: raise
+                      time.sleep(3)
+          def pack(data):
+              f=io.BytesIO(data)
+              assert f.read(4)==b"GDPC"
+              f.seek(24); base=struct.unpack("<Q",f.read(8))[0]
+              f.seek(96); count=struct.unpack("<I",f.read(4))[0]; entries={}
+              for _ in range(count):
+                  length=struct.unpack("<I",f.read(4))[0]
+                  name=f.read(length).rstrip(b"\0").decode()
+                  offset,size=struct.unpack("<QQ",f.read(16));f.read(20)
+                  entries[name]=(offset+base,size)
+              def read(name):
+                  offset,size=entries[name];f.seek(offset);return f.read(size)
+              w=json.loads(read("assets/weapons.json"))
+              assert w["m1"]["reach"]==15 and w["m1"]["heal_rate"]==25
+              assert w["m2"]["heal_per_pellet"]==5
+              assert w["m3"]["heal_per_pellet"]==6 and w["m3"]["heal_cap"]==30
+              assert w["h4"]["rocket"] and w["h4"]["mag"]==1 and w["h4"]["damage"]==60
+              assert w["repair"]["heal_rate"]==30 and w["repair"]["reach"]==10
+              for name in ["medic_link","rocket_combat","held_grip","gadget_visual","skill_icon","construction","medic_selection","turret_selection","ally_health_labels"]:
+                  assert "scripts/"+name+".gdc" in entries
+              for key in ["m3","h4"]+["gadget%d_8"%role for role in range(6)]:
+                  assert "assets/thumbnails/"+key+".png.remap" in entries or "assets/thumbnails/"+key+".png" in entries, "missing equipment thumbnail "+key
+              assert b"1.2.0" in read("project.binary"), "packaged project version"
+          manifest=json.loads(fetch(BASE+"WEB_RELEASE_v1.2.0.json"))
+          assert manifest["version"]=="1.2.0" and manifest["source_commit"]==SOURCE
+          hashes={name:digest for digest,name in (line.split() for line in fetch(BASE+"SHA256SUMS.txt").decode().splitlines())}
+          assert hashes["InternalNCrush_Web_v1.2.0.zip"]==manifest["sha256"]
+          for name in ["InternalNCrush_Windows_v1.2.0.zip","InternalNCrush_Web_v1.2.0.zip"]:
+              digest=hashes[name]
+              data=fetch(BASE+name);assert hashlib.sha256(data).hexdigest()==digest
+              with zipfile.ZipFile(io.BytesIO(data)) as z:
+                  assert z.testzip() is None
+                  pack(z.read(next(p for p in z.namelist() if p.endswith(".pck"))))
+              print("PASS public release",name,flush=True)
+          for attempt in range(60):
+              build=json.loads(fetch(PAGE+"play/build.json?audit="+str(time.time())))
+              if build.get("version")=="1.2.0" and build.get("source_commit")==SOURCE: break
+              time.sleep(10)
+          assert build["version"]=="1.2.0" and build["source_commit"]==SOURCE
+          entry=next(f for f in build["files"] if f["path"].endswith(".pck"))
+          data=fetch(PAGE+"play/"+entry["path"])
+          assert hashlib.sha256(data).hexdigest()==entry["sha256"]
+          pack(data)
+          html=fetch(PAGE+"internal-n-crush.html?audit="+str(time.time())).decode()
+          assert "InternalNCrush_Windows_v1.2.0.zip" in html and "v1.2.0 · Windows" in html
+          print("PASS live Pages PCK, source pin and download link",flush=True)
+          
+          PY
