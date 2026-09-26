@@ -139,7 +139,9 @@ const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"ensureCrossOriginIsolati
 const GODOT_THREADS_ENABLED = false;
 // Web updates follow the deployed build, not the Windows release label.
 (() => {
-  GODOT_CONFIG.args = [...(GODOT_CONFIG.args || []), '--no-update-check'];
+  GODOT_CONFIG.args = [...(GODOT_CONFIG.args || [])];
+  if (!GODOT_CONFIG.args.includes('--')) GODOT_CONFIG.args.push('--');
+  GODOT_CONFIG.args.push('--no-update-check');
   const current = GODOT_CONFIG.executable;
   let checking = false;
   async function check(force = false) {
