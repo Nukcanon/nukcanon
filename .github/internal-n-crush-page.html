@@ -34,11 +34,11 @@
     .game-page kbd{display:inline-block;padding:0 6px;border:1px solid var(--home-line);border-bottom-width:3px;border-radius:5px;background:var(--home-surface);font:600 .85em/1.6 system-ui,sans-serif;color:var(--home-ink);white-space:nowrap}
     @media(max-width:760px){.game-page .details{grid-template-columns:1fr}.game-page .detail{padding:20px}.game-page .download{justify-content:center;width:100%;font-size:.95rem;margin-left:0}}
     .game-page .guide-image{cursor:zoom-in}
-    .image-viewer{position:fixed;inset:0;box-sizing:border-box;width:100vw;max-width:none;height:100vh;height:100dvh;max-height:none;margin:0;padding:76px 16px 20px;border:0;background:rgba(0,0,0,.94);color:#fff}
+    .image-viewer{position:fixed;inset:0;box-sizing:border-box;width:100vw;max-width:none;height:100vh;height:100dvh;max-height:none;margin:0;padding:16px;border:0;background:rgba(0,0,0,.94);color:#fff}
     .image-viewer[open]{display:flex;align-items:center;justify-content:center}
     .image-viewer::backdrop{background:rgba(0,0,0,.85)}
     .image-viewer img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;cursor:zoom-out}
-    .image-viewer-close{position:absolute;top:max(16px,env(safe-area-inset-top));right:max(16px,env(safe-area-inset-right));min-width:88px;min-height:44px;padding:10px 16px;border:2px solid #fff;border-radius:8px;background:#222;color:#fff;font:700 16px system-ui,sans-serif;cursor:pointer}
+    .image-viewer-close{position:absolute;top:max(16px,env(safe-area-inset-top));right:max(16px,env(safe-area-inset-right));min-width:88px;min-height:44px;padding:10px 16px;border:1px solid rgba(255,255,255,.25);border-radius:8px;background:rgba(0,0,0,.6);color:#fff;font:700 16px system-ui,sans-serif;cursor:pointer}
     .image-viewer-close:focus-visible{outline:3px solid #5ce1c3;outline-offset:4px}
   </style>
 </head>
@@ -125,6 +125,24 @@
       const viewer = document.querySelector('.image-viewer');
       if (typeof viewer.showModal !== 'function') return;
       const image = viewer.querySelector('img');
+      const closeButton = viewer.querySelector('.image-viewer-close');
+      function placeCloseButton() {
+        if (!viewer.open) return;
+        const bounds = image.getBoundingClientRect();
+        if (image.naturalWidth && bounds.width && bounds.height) {
+          closeButton.style.top = (bounds.top + 8) + 'px';
+          closeButton.style.left = Math.max(8, bounds.right - closeButton.offsetWidth - 8) + 'px';
+          closeButton.style.right = 'auto';
+        } else {
+          closeButton.style.top = '16px';
+          closeButton.style.left = 'auto';
+          closeButton.style.right = '16px';
+        }
+      }
+      image.addEventListener('load', placeCloseButton);
+      image.addEventListener('error', placeCloseButton);
+      window.addEventListener('resize', placeCloseButton);
+      window.visualViewport?.addEventListener('resize', placeCloseButton);
       let opener = null;
       let previousOverflow = '';
       document.querySelectorAll('.guide-image').forEach(link => {
@@ -138,6 +156,7 @@
           previousOverflow = document.documentElement.style.overflow;
           document.documentElement.style.overflow = 'hidden';
           viewer.showModal();
+          requestAnimationFrame(placeCloseButton);
         });
       });
       viewer.addEventListener('click', event => {
