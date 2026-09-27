@@ -65,6 +65,15 @@ class InstallerTests(unittest.TestCase):
             installer.install(self.root, data, expected)
         self.assert_unchanged()
 
+    def test_stale_nas_download_link_updates_with_windows_and_web(self):
+        page = self.root / 'internal-n-crush.html'
+        page.write_text(self.page + '<a href="https://github.com/Nukcanon/InternalNCrush/releases/download/internal-n-crush-v1.1.8/InternalNCrush_NAS_Linux_v1.1.8.zip">NAS</a>')
+        data, expected = fixture()
+        installer.install(self.root, data, expected)
+        html = page.read_text()
+        self.assertNotIn('v1.1.8', html)
+        self.assertIn(installer.RELEASE + 'InternalNCrush_NAS_Linux_v1.2.3.zip?build=' + expected['sha256'][:12], html)
+
     def test_bad_paths_unlisted_files_and_corrupt_payload_rejected(self):
         cases = [fixture(extra={'../outside.txt': b'bad'}), fixture(extra={'unlisted.txt': b'bad'}), fixture(corrupt=True)]
         for data, expected in cases:

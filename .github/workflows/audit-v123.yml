@@ -82,6 +82,7 @@ jobs:
           pack(data)
           html=fetch(PAGE+"internal-n-crush.html?audit="+str(time.time())).decode()
           assert "InternalNCrush_Windows_v1.2.3.zip" in html and "v1.2.3 · Windows" in html
+          assert "InternalNCrush_NAS_Linux_v1.2.3.zip" in html
           print("PASS live Pages PCK, source pin and download link",flush=True)
           
           PY

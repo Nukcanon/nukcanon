@@ -75,6 +75,8 @@ def install(root, data, expected):
     download_url = RELEASE + 'InternalNCrush_Windows_v1.2.3.zip'
     html = re.sub(r'href="https://github.com/Nukcanon/InternalNCrush/releases/download/internal-n-crush-v1\.\d+\.\d+/InternalNCrush_Windows_v1\.\d+\.\d+\.zip(?:\?[^"]*)?"', f'href="{download_url}?build={revision}"', html)
     html = re.sub(r'v1\.\d+\.\d+ · Windows', 'v1.2.3 · Windows', html)
+    nas_url = RELEASE + 'InternalNCrush_NAS_Linux_v1.2.3.zip'
+    html = re.sub(r'href="https://github.com/Nukcanon/InternalNCrush/releases/download/internal-n-crush-v1\.\d+\.\d+/InternalNCrush_NAS_Linux_v1\.\d+\.\d+\.zip(?:\?[^"]*)?"', f'href="{nas_url}?build={revision}"', html)
     html = re.sub(r'releases/tag/internal-n-crush-v1\.\d+\.\d+', 'releases/tag/internal-n-crush-v1.2.3', html)
     with tempfile.TemporaryDirectory(prefix='.web-release-', dir=root) as temporary:
         stage = Path(temporary) / 'new'
