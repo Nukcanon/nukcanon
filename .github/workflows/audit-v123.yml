@@ -80,7 +80,10 @@ jobs:
           data=fetch(PAGE+"play/"+entry["path"])
           assert hashlib.sha256(data).hexdigest()==entry["sha256"]
           pack(data)
-          html=fetch(PAGE+"internal-n-crush.html?audit="+str(time.time())).decode()
+          for attempt in range(60):
+              html=fetch(PAGE+"internal-n-crush.html?audit="+str(time.time())).decode()
+              if all(value in html for value in ["InternalNCrush_Windows_v1.2.3.zip", "InternalNCrush_NAS_Linux_v1.2.3.zip", "v1.2.3 · Windows"]): break
+              time.sleep(10)
           assert "InternalNCrush_Windows_v1.2.3.zip" in html and "v1.2.3 · Windows" in html
           assert "InternalNCrush_NAS_Linux_v1.2.3.zip" in html
           print("PASS live Pages PCK, source pin and download link",flush=True)
