@@ -16,10 +16,10 @@ COMMIT = 'a' * 40
 
 def fixture(extra=None, corrupt=False, guide=False):
     name = 'game-' + COMMIT[:12]
-    files = {'index.html': ('<script>const GODOT_CONFIG = ' + json.dumps({'executable': name}) + ';</script>').encode(), name + '.js': b'engine', name + '.wasm': b'\x00asmtest', name + '.pck': b'GDPCtest'}
+    files = {'index.html': ('<script>const GODOT_CONFIG = ' + json.dumps({'executable': name}) + ';</script>').encode(), name + '.js': b'engine /* INC_WEBGL_SPARSE_HANDLES_V1 */', name + '.wasm': b'\x00asmtest', name + '.pck': b'GDPCtest'}
     if guide:
         files.update({'guide/' + name + '.jpg': b'\xff\xd8mock-image' for name in ('controls', 'touch', 'settings', 'lan', 'internet')})
-    manifest = {'version': '1.2.3', 'threads': False, 'source_commit': COMMIT, 'files': [{'path': p, 'bytes': len(c), 'sha256': hashlib.sha256(c).hexdigest()} for p, c in files.items()]}
+    manifest = {'version': '1.2.4', 'threads': False, 'source_commit': COMMIT, 'files': [{'path': p, 'bytes': len(c), 'sha256': hashlib.sha256(c).hexdigest()} for p, c in files.items()]}
     if corrupt:
         files[name + '.pck'] = b'GDPCbad!'
     files['build.json'] = json.dumps(manifest).encode()
@@ -29,7 +29,7 @@ def fixture(extra=None, corrupt=False, guide=False):
         for p, c in files.items():
             z.writestr(p, c)
     data = buffer.getvalue()
-    return data, {'version': '1.2.3', 'sha256': hashlib.sha256(data).hexdigest(), 'source_commit': COMMIT}
+    return data, {'version': '1.2.4', 'sha256': hashlib.sha256(data).hexdigest(), 'source_commit': COMMIT}
 
 
 class InstallerTests(unittest.TestCase):
@@ -41,7 +41,7 @@ class InstallerTests(unittest.TestCase):
         (self.root / 'play').mkdir()
         (self.root / 'play/old.js').write_text('previous')
         (self.root / 'unrelated.txt').write_text('keep')
-        self.page = '<a href="play/">Play</a><a href="' + installer.RELEASE + 'InternalNCrush_Windows_v1.2.3.zip">Download</a>'
+        self.page = '<a href="play/">Play</a><a href="' + installer.RELEASE + 'InternalNCrush_Windows_v1.2.4.zip">Download</a>'
         (self.root / 'internal-n-crush.html').write_text(self.page)
 
     def assert_unchanged(self):
@@ -72,7 +72,7 @@ class InstallerTests(unittest.TestCase):
         installer.install(self.root, data, expected)
         html = page.read_text()
         self.assertNotIn('v1.1.8', html)
-        self.assertIn(installer.RELEASE + 'InternalNCrush_NAS_Linux_v1.2.3.zip?build=' + expected['sha256'][:12], html)
+        self.assertIn(installer.RELEASE + 'InternalNCrush_NAS_Linux_v1.2.4.zip?build=' + expected['sha256'][:12], html)
 
     def test_bad_paths_unlisted_files_and_corrupt_payload_rejected(self):
         cases = [fixture(extra={'../outside.txt': b'bad'}), fixture(extra={'unlisted.txt': b'bad'}), fixture(corrupt=True)]
@@ -87,7 +87,7 @@ class InstallerTests(unittest.TestCase):
         template.write_text(self.page + '<h2>조작방법</h2>v1.1.6 · Windows')
         data, expected = fixture(guide=True)
         installer.install(self.root, data, expected)
-        self.assertIn('v1.2.3 · Windows', (self.root / 'internal-n-crush.html').read_text())
+        self.assertIn('v1.2.4 · Windows', (self.root / 'internal-n-crush.html').read_text())
         self.assertTrue((self.root / 'play/guide/touch.jpg').is_file())
 
     def test_guide_missing_screenshots_preserves_live_page(self):
