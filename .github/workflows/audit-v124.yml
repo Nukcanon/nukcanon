@@ -82,7 +82,9 @@ jobs:
                   assert z.testzip() is None
                   pack(z.read(next(p for p in z.namelist() if p.endswith(".pck"))), web="_Web_" in name)
                   if "_Web_" in name:
-                      runtime=z.read(next(p for p in z.namelist() if p.endswith(".js") and "/" not in p))
+                      packaged_build=json.loads(z.read("build.json"))
+                      assert packaged_build["source_commit"]==SOURCE
+                      runtime=z.read(packaged_build["executable"]+".js")
                       assert b"INC_WEBGL_SPARSE_HANDLES_V1" in runtime
                       assert b"probeGLStats" not in runtime
               print("PASS public release",name,flush=True)
