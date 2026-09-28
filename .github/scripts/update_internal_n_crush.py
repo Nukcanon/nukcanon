@@ -10,7 +10,8 @@ import urllib.request
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[2]
-RELEASE = 'https://github.com/Nukcanon/InternalNCrush/releases/download/internal-n-crush-v1.2.8/'
+TAG = 'internal-n-crush-v1.2.8-hotfix.1'
+RELEASE = 'https://github.com/Nukcanon/InternalNCrush/releases/download/' + TAG + '/'
 
 
 def download(name):
@@ -74,11 +75,11 @@ def install(root, data, expected):
     html = re.sub(r'<br>\s*<a[^>]*>소스 코드</a>\s*·\s*<a[^>]*>변경 내용</a>', '', html)
     html = re.sub(r'href="play/(?:\?[^"]*)?"', f'href="play/?build={revision}"', html)
     download_url = RELEASE + 'InternalNCrush_Windows_v1.2.8.zip'
-    html = re.sub(r'href="https://github.com/Nukcanon/InternalNCrush/releases/download/internal-n-crush-v1\.\d+\.\d+/InternalNCrush_Windows_v1\.\d+\.\d+\.zip(?:\?[^"]*)?"', f'href="{download_url}?build={revision}"', html)
+    html = re.sub(r'href="https://github.com/Nukcanon/InternalNCrush/releases/download/internal-n-crush-v1\.\d+\.\d+(?:-hotfix\.\d+)?/InternalNCrush_Windows_v1\.\d+\.\d+\.zip(?:\?[^"]*)?"', f'href="{download_url}?build={revision}"', html)
     html = re.sub(r'v1\.\d+\.\d+ · Windows', 'v1.2.8 · Windows', html)
     nas_url = RELEASE + 'InternalNCrush_NAS_Linux_v1.2.8.zip'
-    html = re.sub(r'href="https://github.com/Nukcanon/InternalNCrush/releases/download/internal-n-crush-v1\.\d+\.\d+/InternalNCrush_NAS_Linux_v1\.\d+\.\d+\.zip(?:\?[^"]*)?"', f'href="{nas_url}?build={revision}"', html)
-    html = re.sub(r'releases/tag/internal-n-crush-v1\.\d+\.\d+', 'releases/tag/internal-n-crush-v1.2.8', html)
+    html = re.sub(r'href="https://github.com/Nukcanon/InternalNCrush/releases/download/internal-n-crush-v1\.\d+\.\d+(?:-hotfix\.\d+)?/InternalNCrush_NAS_Linux_v1\.\d+\.\d+\.zip(?:\?[^"]*)?"', f'href="{nas_url}?build={revision}"', html)
+    html = re.sub(r'releases/tag/internal-n-crush-v1\.\d+\.\d+(?:-hotfix\.\d+)?', 'releases/tag/' + TAG, html)
     with tempfile.TemporaryDirectory(prefix='.web-release-', dir=root) as temporary:
         stage = Path(temporary) / 'new'
         stage.mkdir()

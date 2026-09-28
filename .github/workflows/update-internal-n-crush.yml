@@ -26,7 +26,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           for attempt in $(seq 1 60); do
-            if gh release view internal-n-crush-v1.2.8 --repo Nukcanon/InternalNCrush --json isDraft --jq .isDraft 2>/dev/null | grep -qx false; then exit 0; fi
+            if gh release view internal-n-crush-v1.2.8-hotfix.1 --repo Nukcanon/InternalNCrush --json isDraft --jq .isDraft 2>/dev/null | grep -qx false; then exit 0; fi
             sleep 30
           done
           echo "Validated release was not published within 30 minutes"; exit 1
