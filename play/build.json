@@ -1,48 +1,48 @@
 {
-  "version": "1.2.7",
+  "version": "1.2.8",
   "threads": false,
-  "source_commit": "75ffb19e0a448d74303fdc4705f4bd2aa33b9d68",
-  "executable": "game-75ffb19",
+  "source_commit": "df28d655966a3fff1fb24b1d2e415a37125101c4",
+  "executable": "game-df28d655966a",
   "transport": "WebRTC",
   "touch": "coarse-pointer/mobile detection; landscape",
   "files": [
     {
-      "path": "game-75ffb19.apple-touch-icon.png",
+      "path": "game-df28d655966a.apple-touch-icon.png",
       "bytes": 11952,
       "sha256": "9b374ecbc8558f480421e646f38aaa8a69d5b1d65ff7b48d0735da214c46773a"
     },
     {
-      "path": "game-75ffb19.audio.position.worklet.js",
+      "path": "game-df28d655966a.audio.position.worklet.js",
       "bytes": 3149,
       "sha256": "347b512529c5dca302093f7b9de6d184dd09d10e9a6fba62cbab098a891b2368"
     },
     {
-      "path": "game-75ffb19.audio.worklet.js",
+      "path": "game-df28d655966a.audio.worklet.js",
       "bytes": 7298,
       "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
     },
     {
-      "path": "game-75ffb19.icon.png",
+      "path": "game-df28d655966a.icon.png",
       "bytes": 5702,
       "sha256": "08808dd5397e9a502cb3624944151f87a9705b5b66b5c365c5ca4c6ab51525f5"
     },
     {
-      "path": "game-75ffb19.js",
+      "path": "game-df28d655966a.js",
       "bytes": 317269,
       "sha256": "a10fc8a5f64086ff4c6f5ce3549efac8d9d9b1d25c03dd8b92f2575bbc26ef83"
     },
     {
-      "path": "game-75ffb19.pck",
-      "bytes": 95657376,
-      "sha256": "0c1e0b4cfa577ae960ee267e7f0a0fbece89a58468a9a5ac4fdb6d35589a4efa"
+      "path": "game-df28d655966a.pck",
+      "bytes": 81277872,
+      "sha256": "e59ff751ef08b876b46ec3050505f13a72237c65fcbe64b16841c28a0b11b73d"
     },
     {
-      "path": "game-75ffb19.png",
+      "path": "game-df28d655966a.png",
       "bytes": 21443,
       "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
     },
     {
-      "path": "game-75ffb19.wasm",
+      "path": "game-df28d655966a.wasm",
       "bytes": 43699190,
       "sha256": "e4a43dbae28662b2a68f6136857a94db6695430901515800b9883f6327cb7116"
     },
@@ -73,13 +73,13 @@
     },
     {
       "path": "index.html",
-      "bytes": 12290,
-      "sha256": "dad7bac991b43959324a12704ac8c84766368d3204b5ed07095aeb1db94a143f"
+      "bytes": 12325,
+      "sha256": "3b38990eae1138b059a90b26d08bbe058dfb607e560ac55e9cc93e7cf6c52b5c"
     },
     {
       "path": "licenses/ART_CREDITS.md",
-      "bytes": 1342,
-      "sha256": "338fcd01dc75b614a32558770d9917e89400ba495c26484d02ab1464270eaea6"
+      "bytes": 2364,
+      "sha256": "ad4ec25e0fd4957825ea3ef033c1101ec7ea81498502e8cc003992e0f4dfc78f"
     },
     {
       "path": "licenses/AUDIO_KENNEY_LICENSE.txt",
