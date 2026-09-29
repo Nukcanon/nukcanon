@@ -41,7 +41,7 @@ class InstallerTests(unittest.TestCase):
         (self.root / 'play').mkdir()
         (self.root / 'play/old.js').write_text('previous')
         (self.root / 'unrelated.txt').write_text('keep')
-        self.page = '<a href="play/">Play</a><a href="' + installer.RELEASE + 'InternalNCrush_Windows_v1.3.0.zip">Download</a>'
+        self.page = '<a href="play/">Play</a><a href="' + installer.release('1.3.0') + 'InternalNCrush_Windows_v1.3.0.zip">Download</a>'
         (self.root / 'internal-n-crush.html').write_text(self.page)
 
     def assert_unchanged(self):
@@ -72,7 +72,7 @@ class InstallerTests(unittest.TestCase):
         installer.install(self.root, data, expected)
         html = page.read_text()
         self.assertNotIn('v1.1.8', html)
-        self.assertIn(installer.RELEASE + 'InternalNCrush_NAS_Linux_v1.3.0.zip?build=' + expected['sha256'][:12], html)
+        self.assertIn(installer.release('1.3.0') + 'InternalNCrush_NAS_Linux_v1.3.0.zip?build=' + expected['sha256'][:12], html)
 
     def test_bad_paths_unlisted_files_and_corrupt_payload_rejected(self):
         cases = [fixture(extra={'../outside.txt': b'bad'}), fixture(extra={'unlisted.txt': b'bad'}), fixture(corrupt=True)]
