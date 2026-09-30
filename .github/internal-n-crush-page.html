@@ -230,6 +230,10 @@
       box.addEventListener('mouseleave', () => paused = false);
       box.addEventListener('focusin', () => paused = true);
       box.addEventListener('focusout', () => paused = false);
+      // Offscreen slides would load only when they slide in (a blank flash):
+      // fetch them once the page itself has loaded.
+      const eager = () => track.querySelectorAll('img').forEach(i => { i.loading = 'eager'; });
+      if (document.readyState === 'complete') eager(); else window.addEventListener('load', eager);
       setInterval(() => { if (!paused && !document.hidden) show(index + 1); }, 3000);
       show(0, false);
     })();
