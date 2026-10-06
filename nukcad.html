@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0066cc">
+  <title>NukCAD · Nukcanon</title>
+  <meta name="description" content="학생용 3D 물체·건설 모델링 프로그램 NukCAD 웹판 바로 사용과 Windows 다운로드 안내">
+  <link rel="icon" href="image/nukcad-icon.png">
+  <link rel="stylesheet" href="css/style.css?v=20260915-7">
+  <style>
+    .app-page .hero{max-width:800px}
+    .app-page .app-title{display:flex;align-items:center;gap:16px}
+    .app-page .app-title img{flex:none;width:64px;height:64px;border-radius:14px}
+    .app-page .hero .intro{max-width:680px;margin:14px 0 18px;color:var(--home-muted);line-height:1.8}
+    .app-page .cta-row{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-start}
+    .app-page .cta{display:flex;flex-direction:column;align-items:center;width:230px}
+    .app-page .download{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;width:100%;gap:12px;padding:15px 22px;border-radius:12px;color:#fff;background:var(--home-primary);font-weight:800;box-shadow:var(--home-shadow)}
+    .app-page .download:hover{background:var(--home-primary-dark);text-decoration:none}
+    .app-page .use-now{background:#237c71}.app-page .use-now:hover{background:#196358}
+    .app-page .download:focus-visible{outline:3px solid var(--home-accent);outline-offset:4px}
+    .app-page .download-note{margin:8px 0 0;color:var(--home-muted);font-size:.85rem;line-height:1.6;text-align:center}
+    .app-page .detail{display:block;padding:24px;border:1px solid var(--home-line);border-radius:18px;background:var(--home-surface);box-shadow:var(--home-shadow);min-width:0}
+    .app-page .detail h2{font-size:1.15rem;margin:0 0 14px;color:var(--home-ink)}
+    .app-page .detail p,.app-page .detail li{color:var(--home-muted);line-height:1.75;font-size:.94rem}
+    .app-page .wide{margin-top:18px}
+    .app-page .guide-row{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:24px;align-items:start}
+    .app-page .guide-image{display:block;border:1px solid var(--home-line);border-radius:12px;overflow:hidden;line-height:0;cursor:zoom-in}
+    .app-page .guide-image img{display:block;width:100%;height:auto}
+    .app-page .steps{margin:0;padding-left:22px}
+    .app-page .steps li{margin:0 0 8px;padding-left:2px}
+    .app-page .steps li:last-child{margin-bottom:0}
+    .app-page .steps strong{color:var(--home-ink)}
+    .app-page .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .app-page .two p{margin:0;padding:14px 16px;border-radius:12px;background:var(--home-surface-soft)}
+    .app-page kbd{display:inline-block;padding:0 6px;border:1px solid var(--home-line);border-bottom-width:3px;border-radius:5px;background:var(--home-surface);font:600 .85em/1.6 system-ui,sans-serif;color:var(--home-ink);white-space:nowrap}
+    .app-page code{padding:1px 5px;border-radius:5px;background:var(--home-surface-soft);color:var(--home-ink);font-size:.88em;white-space:nowrap}
+    @media(max-width:760px){.app-page .guide-row,.app-page .two{grid-template-columns:1fr;gap:16px}.app-page .detail{padding:20px}.app-page .cta{width:100%}}
+    .image-viewer{position:fixed;inset:0;box-sizing:border-box;width:100vw;max-width:none;height:100vh;height:100dvh;max-height:none;margin:0;padding:16px;border:0;background:rgba(0,0,0,.94);color:#fff}
+    .image-viewer[open]{display:flex;align-items:center;justify-content:center}
+    .image-viewer::backdrop{background:rgba(0,0,0,.85)}
+    .image-viewer img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;cursor:zoom-out}
+    .image-viewer-close{position:absolute;top:16px;right:16px;min-width:88px;min-height:44px;padding:10px 16px;border:1px solid rgba(255,255,255,.25);border-radius:8px;background:rgba(0,0,0,.6);color:#fff;font:700 16px system-ui,sans-serif;cursor:pointer}
+  </style>
+</head>
+<body class="home-page app-page">
+  <a class="skip-link" href="#main-content">본문으로 바로가기</a>
+  <header class="site-header"><div class="header-inner">
+    <a class="brand" href="./index.html" aria-label="Nukcanon 홈"><span class="brand-copy"><strong>Nukcanon</strong><small>Project Archive</small></span></a>
+    <nav aria-label="주요 메뉴"><a class="home-link" href="./index.html"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8v9a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-9Z"/></svg>Home</a></nav>
+  </div></header>
+  <main id="main-content" class="home-main">
+    <section class="hero" aria-labelledby="app-title">
+      <p class="eyebrow">STUDENT 3D CAD</p>
+      <div class="app-title">
+        <img src="image/nukcad-icon.png" width="64" height="64" alt="">
+        <h1 id="app-title">NukCAD</h1>
+      </div>
+      <p class="intro">학생용 3D 물체·건설 모델링 프로그램<br>3D 프린트할 작은 물건부터 지도 위 건물까지, 쉬운 메뉴로 만들어 보세요.</p>
+      <div class="cta-row">
+        <div class="cta">
+          <a class="download use-now" href="https://nukcanon.github.io/nukcad-web/">바로 사용 <span aria-hidden="true">▶</span></a>
+          <p class="download-note">설치 없이 브라우저에서</p>
+        </div>
+        <div class="cta">
+          <a class="download" href="https://github.com/Nukcanon/nukcad-web/releases/latest/download/NukCAD-setup.exe">다운로드 <span aria-hidden="true">↓</span></a>
+          <p class="download-note">Windows 10/11</p>
+        </div>
+      </div>
+    </section>
+    <section class="detail" aria-labelledby="howto-title">
+      <h2 id="howto-title">간단한 사용법</h2>
+      <div class="guide-row">
+        <a class="guide-image" href="image/nukcad-screen.jpg"><img src="image/nukcad-screen.jpg" width="800" height="514" alt="NukCAD 3D 물체 모델링 화면: 위 메뉴, 3D 화면의 상자와 원기둥, 아래 명령 창 위의 도우미 Cadoo" loading="lazy"></a>
+        <ol class="steps">
+          <li>처음 화면에서 <strong>3D 물체 모델링</strong>(작은 물건) 또는 <strong>3D 건설 모델링</strong>(지도 위 건물)을 골라요.</li>
+          <li>위 메뉴의 <strong>기본 도형</strong>·<strong>스케치</strong> 단추를 누르고 3D 화면을 클릭해 만들어요. 명령 창에 <code>box 30 20 10</code>처럼 쳐도 돼요.</li>
+          <li>마우스: 왼쪽 클릭 고르기 · 가운데 끌기 화면 이동 · 오른쪽 끌기 회전 · 휠 확대·축소</li>
+          <li><kbd>Ctrl</kbd>+<kbd>S</kbd> 저장, <kbd>Ctrl</kbd>+<kbd>Z</kbd> 되돌리기. 3D 프린트는 왼쪽 위 <strong>NukCAD</strong> 단추 → 3D 내보내기 → STL.</li>
+          <li>모르면 아래쪽 명령 창 위의 도우미 <strong>Cadoo</strong>를 두 번 클릭해 물어보세요.</li>
+        </ol>
+      </div>
+    </section>
+    <section class="detail wide" aria-labelledby="edition-title">
+      <h2 id="edition-title">웹판과 설치판</h2>
+      <div class="two">
+        <p><strong>웹판</strong> — 설치 없이 바로 써요. 학교 PC나 다른 컴퓨터에서 빠르게 시작할 때 좋아요.</p>
+        <p><strong>설치판</strong> — 더 큰 AI 도우미 모델과 교사에게 도움 요청 같은 교사 기능을 쓸 수 있어요.</p>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer"><p><strong>Nukcanon</strong><span aria-hidden="true">·</span> Maker project archive</p></footer>
+  <dialog class="image-viewer" aria-label="확대 이미지">
+    <button class="image-viewer-close" type="button" autofocus aria-label="확대 이미지 닫기">닫기 ×</button>
+    <img alt="">
+  </dialog>
+  <script>
+    (() => {
+      const viewer = document.querySelector('.image-viewer');
+      if (typeof viewer.showModal !== 'function') return;
+      const image = viewer.querySelector('img');
+      let opener = null;
+      document.querySelectorAll('.guide-image').forEach(link => {
+        link.setAttribute('aria-haspopup', 'dialog');
+        link.addEventListener('click', event => {
+          if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+          event.preventDefault();
+          opener = link;
+          image.src = link.href;
+          image.alt = link.querySelector('img').alt;
+          document.documentElement.style.overflow = 'hidden';
+          viewer.showModal();
+        });
+      });
+      viewer.addEventListener('click', event => {
+        if (event.target === viewer || event.target === image || event.target.closest('.image-viewer-close')) viewer.close();
+      });
+      viewer.addEventListener('close', () => {
+        document.documentElement.style.overflow = '';
+        image.removeAttribute('src');
+        if (opener) opener.focus({ preventScroll: true });
+      });
+    })();
+  </script>
+  <script src="css/patch.js"></script>
+</body>
+</html>
