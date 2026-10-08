@@ -70,3 +70,12 @@ machine-gun utterance. See `assets/vocal_audio_provenance.json` for hashes/cuts.
 These are provider-licensed samples, not CC0. Free-plan generation is subject
 to ElevenLabs attribution and noncommercial-use terms; this record does not
 grant commercial rights. The optional setting is off by default.
+
+## 2.0 skill sounds
+
+- `ke_call`: "Large Underwater Explosion" by daviddumaisaudio on Pixabay (id 190270), Pixabay Content License. Its first 6 s, faded out, played quieter and heard over the whole map when a heavy calls in a KE round.
+- `ke_pierce`: "Rock Destroy" by freesound_community (id 6409) mixed with "Boom" by dragon-studio (id 487662), both on Pixabay, Pixabay Content License. The first 1.4 s, a little quieter; played at every surface a KE round pierces.
+- `ke_blast`: "Bomb Explosion 1" by u_xg7ssi08yr on Pixabay (id 381972), Pixabay Content License. Only its opening 1.8 s (from 0.45 s), faded out, a little quieter.
+- `cloak_on` / `cloak_off`: "shimmer_synth_1" by freesound_community on Pixabay (https://pixabay.com/sound-effects/film-special-effects-shimmer-synth-1-47675/), Pixabay Content License. The first 1.6 s, reversed for `cloak_on`, played very quietly.
+- `drone_loop`: "Drone Fly" by klemenflerin on Pixabay (https://pixabay.com/sound-effects/ id 397287), Pixabay Content License. Its steady flight from 10 s (the take-off left out), cross-faded into a 6 s loop.
+Pixabay files are used inside the game only (not redistributed as standalone audio); prepared by `tools/prepare_skill_foley_v200.py`.
