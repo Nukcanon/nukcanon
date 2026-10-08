@@ -72,6 +72,7 @@ class InstallerTests(unittest.TestCase):
         installer.install(self.root, data, expected)
         html = page.read_text()
         self.assertNotIn('v1.1.8', html)
+        self.assertNotIn('github.com/Nukcanon/InternalNCrush/', html)
         self.assertIn(installer.release('1.3.0') + 'InternalNCrush_NAS_Linux_v1.3.0.zip?build=' + expected['sha256'][:12], html)
 
     def test_bad_paths_unlisted_files_and_corrupt_payload_rejected(self):

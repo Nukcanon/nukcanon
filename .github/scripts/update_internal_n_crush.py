@@ -19,7 +19,7 @@ def tag(version):
 
 
 def release(version):
-    return 'https://github.com/Nukcanon/InternalNCrush/releases/download/' + tag(version) + '/'
+    return 'https://github.com/Nukcanon/InternalNCrush-releases/releases/download/' + tag(version) + '/'
 
 
 def download(version, name):
@@ -85,10 +85,10 @@ def install(root, data, expected):
     html = re.sub(r'<br>\s*<a[^>]*>소스 코드</a>\s*·\s*<a[^>]*>변경 내용</a>', '', html)
     html = re.sub(r'href="play/(?:\?[^"]*)?"', f'href="play/?build={revision}"', html)
     download_url = release(version) + 'InternalNCrush_Windows_v' + version + '.zip'
-    html = re.sub(r'href="https://github.com/Nukcanon/InternalNCrush/releases/download/internal-n-crush-v\d+\.\d+\.\d+(?:-hotfix\.\d+)?/InternalNCrush_Windows_v\d+\.\d+\.\d+\.zip(?:\?[^"]*)?"', f'href="{download_url}?build={revision}"', html)
+    html = re.sub(r'href="https://github.com/Nukcanon/InternalNCrush(?:-releases)?/releases/download/internal-n-crush-v\d+\.\d+\.\d+(?:-hotfix\.\d+)?/InternalNCrush_Windows_v\d+\.\d+\.\d+\.zip(?:\?[^"]*)?"', f'href="{download_url}?build={revision}"', html)
     html = re.sub(r'v\d+\.\d+\.\d+ · Windows', 'v' + version + ' · Windows', html)
     nas_url = release(version) + 'InternalNCrush_NAS_Linux_v' + version + '.zip'
-    html = re.sub(r'href="https://github.com/Nukcanon/InternalNCrush/releases/download/internal-n-crush-v\d+\.\d+\.\d+(?:-hotfix\.\d+)?/InternalNCrush_NAS_Linux_v\d+\.\d+\.\d+\.zip(?:\?[^"]*)?"', f'href="{nas_url}?build={revision}"', html)
+    html = re.sub(r'href="https://github.com/Nukcanon/InternalNCrush(?:-releases)?/releases/download/internal-n-crush-v\d+\.\d+\.\d+(?:-hotfix\.\d+)?/InternalNCrush_NAS_Linux_v\d+\.\d+\.\d+\.zip(?:\?[^"]*)?"', f'href="{nas_url}?build={revision}"', html)
     html = re.sub(r'releases/tag/internal-n-crush-v\d+\.\d+\.\d+(?:-hotfix\.\d+)?', 'releases/tag/' + tag(version), html)
     with tempfile.TemporaryDirectory(prefix='.web-release-', dir=root) as temporary:
         stage = Path(temporary) / 'new'

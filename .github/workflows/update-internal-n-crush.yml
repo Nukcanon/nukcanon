@@ -31,7 +31,7 @@ jobs:
           version=$(python3 -c "import json;print(json.load(open('.github/internal-n-crush-release.json'))['version'])")
           echo "VERSION=$version" >> "$GITHUB_ENV"
           for attempt in $(seq 1 60); do
-            if gh release view "internal-n-crush-v$version" --repo Nukcanon/InternalNCrush --json isDraft --jq .isDraft 2>/dev/null | grep -qx false; then exit 0; fi
+            if gh release view "internal-n-crush-v$version" --repo Nukcanon/InternalNCrush-releases --json isDraft --jq .isDraft 2>/dev/null | grep -qx false; then exit 0; fi
             sleep 30
           done
           echo "Validated release $version was not published within 30 minutes"; exit 1
