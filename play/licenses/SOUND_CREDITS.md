@@ -79,3 +79,7 @@ grant commercial rights. The optional setting is off by default.
 - `cloak_on` / `cloak_off`: "shimmer_synth_1" by freesound_community on Pixabay (https://pixabay.com/sound-effects/film-special-effects-shimmer-synth-1-47675/), Pixabay Content License. The first 1.6 s, reversed for `cloak_on`, played very quietly.
 - `drone_loop`: "Drone Fly" by klemenflerin on Pixabay (https://pixabay.com/sound-effects/ id 397287), Pixabay Content License. Its steady flight from 10 s (the take-off left out), cross-faded into a 6 s loop.
 Pixabay files are used inside the game only (not redistributed as standalone audio); prepared by `tools/prepare_skill_foley_v200.py`.
+
+## 2.0.1 low-health heartbeat
+
+- `heartbeat`: original deterministic synthesis (CC0-1.0), two low sine thumps with a little filtered noise; see `tools/combat_audio_v201.py`.

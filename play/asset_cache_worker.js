@@ -4,7 +4,7 @@ self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', event => event.waitUntil(self.clients.claim()));
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
-  const match = url.pathname.match(/\/(game-[a-zA-Z0-9_-]+)\.(pck|wasm|js)$/);
+  const match = url.pathname.match(/\/(game-[a-zA-Z0-9_-]+)\.(pck|maps\.pck|wasm|js)$/);  // (2.0.1: maps.pck is the second pack of the same build)
   if (event.request.method !== 'GET' || url.origin !== self.location.origin || !match || event.request.headers.has('range')) return;
   event.respondWith((async () => {
     let cache;

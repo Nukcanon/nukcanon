@@ -104,8 +104,8 @@ body {
 #portrait {display:none;position:fixed;inset:0;z-index:30;background:#112631;color:white;place-content:center;text-align:center;font:20px system-ui;padding:30px;}
 @media (orientation:portrait) and (pointer:coarse) {body.started #portrait{display:grid}}
 </style>
-		<link id="-gd-engine-icon" rel="icon" type="image/png" href="game-241d63b82176.icon.png" />
-<link rel="apple-touch-icon" href="game-241d63b82176.apple-touch-icon.png"/>
+		<link id="-gd-engine-icon" rel="icon" type="image/png" href="game-0d65d899927d.icon.png" />
+<link rel="apple-touch-icon" href="game-0d65d899927d.apple-touch-icon.png"/>
 
 	</head>
 	<body>
@@ -121,7 +121,7 @@ body {
 		</noscript>
 
 		<div id="status">
-			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="game-241d63b82176.png" alt="">
+			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="game-0d65d899927d.png" alt="">
 			<progress id="status-progress"></progress>
 			<div id="status-notice"></div>
 		</div>
@@ -139,9 +139,9 @@ gameCanvas.getContext=function(type,attributes){
   return context;
 };
 </script>
-<script src="game-241d63b82176.js"></script>
+<script src="game-0d65d899927d.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"ensureCrossOriginIsolationHeaders":true,"executable":"game-241d63b82176","experimentalVK":false,"fileSizes":{"game-241d63b82176.pck":97928768,"game-241d63b82176.wasm":43699190},"focusCanvas":true,"gdextensionLibs":[]};
+const GODOT_CONFIG = {"args": [], "canvasResizePolicy": 2, "ensureCrossOriginIsolationHeaders": true, "executable": "game-0d65d899927d", "experimentalVK": false, "fileSizes": {"game-0d65d899927d.pck": 75199648, "game-0d65d899927d.wasm": 43699190, "game-0d65d899927d.maps.pck": 47644672}, "focusCanvas": true, "gdextensionLibs": []};
 const GODOT_THREADS_ENABLED = false;
 // Web updates follow the deployed build, not the Windows release label.
 (() => {
@@ -318,7 +318,24 @@ if(requestLock)canvasElement.requestPointerLock=function(...args){
 		// 1.4.6 (the user): on a phone or tablet the start button itself turns the
 		// game full screen and locks it to landscape - the browser allows that only
 		// inside this click (the later call from the game could come too late).
-		startButton.onclick=()=>{if(navigator.maxTouchPoints>0&&window.incEnterFullscreen)window.incEnterFullscreen();document.body.classList.add('started');document.getElementById('launch').remove();engine.startGame({
+		// 2.0.1: the odd-numbered baked maps come in a second pack (each file under GitHub's 100 MiB limit). It downloads
+		// with the main files (same progress bar) and the engine starts only once it is in place; game.gd
+		// loads it from /inc_maps.pck before any arena. package_web.py lists it in GODOT_CONFIG.fileSizes.
+		function preloadMaps() {
+			const mapsPack = GODOT_CONFIG.executable + '.maps.pck';
+			if (!(GODOT_CONFIG.fileSizes || {})[mapsPack]) {
+				return;
+			}
+			const maps = engine.preloadFile(mapsPack, '/inc_maps.pck').catch(() => {
+				throw new Error('지도 파일을 내려받지 못했습니다.\n인터넷 연결을 확인한 뒤 페이지를 새로 고쳐 주세요.');
+			});
+			maps.catch(() => {});
+			const start = engine.start;
+			engine.start = function (...args) {
+				return maps.then(() => start.apply(this, args));
+			};
+		}
+		startButton.onclick=()=>{if(navigator.maxTouchPoints>0&&window.incEnterFullscreen)window.incEnterFullscreen();document.body.classList.add('started');document.getElementById('launch').remove();preloadMaps();engine.startGame({
 			'onProgress': function (current, total) {
 				if (current > 0 && total > 0) {
 					statusProgress.value = current;
