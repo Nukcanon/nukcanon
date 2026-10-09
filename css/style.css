@@ -668,6 +668,11 @@ body.home-page {
 
 .site-footer p { display: flex; justify-content: center; gap: 7px; margin: 0; font-size: .76rem; }
 .site-footer strong { color: #42526a; }
+.site-footer p { flex-wrap: wrap; }
+.site-footer p + p { margin-top: 6px; }
+.site-footer .footer-links a { color: #42526a; text-decoration: underline; text-underline-offset: 3px; }
+.site-footer .footer-links a:hover { color: var(--home-primary); }
+.site-footer .footer-links a[aria-current="page"] { font-weight: 800; text-decoration: none; }
 
 @media (max-width: 720px) {
   .header-inner, .home-main { width: min(100% - 22px, 1040px); }

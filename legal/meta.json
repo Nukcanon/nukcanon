@@ -1,0 +1,37 @@
+{
+  "terms": {
+    "version": "1.0",
+    "effective": "2026년 10월 9일",
+    "closing": "## 부칙\n이 약관은 {시행일}부터 시행함.",
+    "sections": [
+      "01-purpose.md",
+      "02-operator.md",
+      "03-services.md",
+      "04-program-terms.md",
+      "05-downloads.md",
+      "06-prohibited.md",
+      "07-copyright.md",
+      "08-external.md",
+      "09-disclaimer.md",
+      "10-changes.md",
+      "11-law.md"
+    ]
+  },
+  "privacy": {
+    "version": "1.0",
+    "effective": "2026년 10월 9일",
+    "closing": "## 부칙\n이 방침은 {시행일}부터 시행함.",
+    "sections": [
+      "01-overview.md",
+      "02-site.md",
+      "03-device.md",
+      "04-game-lobby.md",
+      "05-nukcad.md",
+      "06-third-parties.md",
+      "07-children.md",
+      "08-rights.md",
+      "09-security.md",
+      "10-changes.md"
+    ]
+  }
+}
