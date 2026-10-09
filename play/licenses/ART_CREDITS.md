@@ -25,6 +25,38 @@ silhouettes; Web uses smaller world textures.
 Character anatomy provenance is in `assets/human/CREDITS.md`. No DEADSHOT game
 files or proprietary Counter-Strike map/texture files are included.
 
+## Third-party assets added since 1.3 (all CC0 1.0)
+
+CC0 asks for no attribution; these credits are given as thanks and as a record.
+
+- **Quaternius** (https://quaternius.com), CC0 1.0:
+  - "Ultimate Modular Men Pack" and "Ultimate Modular Women Pack" - the playable heroes (`assets/heroes`).
+  - "Universal Animation Library" 1 and 2 (Standard) and the clips shipped with the modular packs - hero animations,
+    retargeted by `tools/bake_heroes.gd` / `tools/clip_retarget.gd`.
+  - "Universal Base Characters" (Standard) - reference bodies for the hero rig.
+  - "Toon Shooter Game Kit" - weapons (`assets/weapons`) and environment props (`assets/props`).
+  - Horse, Fox and Stag statues, via poly.pizza (`assets/models/statues`, pages in `SOURCES.json`).
+  Licence notices: `assets/heroes/LICENSE.txt`, `assets/props/LICENSE.txt`, `assets/models/statues/LICENSE.txt`
+  (copied to `licenses/` in the release packages).
+- **ambientCG** (https://ambientcg.com, licence https://docs.ambientcg.com/license/), CC0 1.0: 24 relief textures
+  for walls, floors and roofs (Asphalt031, Concrete042A, Bricks075A/097/101/105, PavingStones070/146/151, Tiles107/141,
+  RoofingTiles012A, Metal022 and others), fetched by `tools/maps/fetch_textures.py`. IDs, URLs and edits are in
+  `assets/textures/detail/SOURCES.json`.
+- **Unity Labs Paris**, "Free VFX image sequences and flipbooks", Flame03 (16x4 flipbook), CC0 1.0
+  (https://unity.com/blog/engine-platform/free-vfx-image-sequences-flipbooks): `assets/fx/flame03.png`, see
+  `assets/fx/SOURCES.md`.
+
+## AI-generated texture
+
+`assets/textures/operator_materials_v11.png` (skin, ripstop, glove-leather and hair micro-detail atlas) was generated
+with OpenAI image generation on 2026-09-24 for this game; the prompt is recorded in
+`assets/textures/operator_materials_v11.provenance.json`. It contains no third-party image.
+
+## Original 2D work
+
+Kill-feed icons (`tools/build_kill_icons.gd`), scorch/crack/warning decals (`tools/make_cracks.py`,
+`tools/make_decals.py`), UI images, thumbnails and menu slides (captured from the game) are made for this game.
+
 ## Original 1.2.8 district props
 
 32 original Blender-authored objects (market displays, workshop machinery,

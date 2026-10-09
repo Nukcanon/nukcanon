@@ -1,0 +1,2059 @@
+{
+ "about": "Where every shipped sound comes from. build_audio.py takes each manifest licence from here. status: confirmed = the downloaded file name or page matches exactly; likely = best title match on Pixabay; not found = origin unknown. Checked 2026-10-09.",
+ "sources": {
+  "px_99749": {
+   "site": "Pixabay",
+   "title": "Rifle Gunshot",
+   "author": "freesound_community",
+   "pixabay_id": 99749,
+   "url": "https://pixabay.com/sound-effects/rifle-gunshot-99749/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_rifle_shot.wav",
+   "original_artist": "Mozfoo (Freesound)"
+  },
+  "px_79846": {
+   "site": "Pixabay",
+   "title": "Submachine Gun",
+   "author": "freesound_community",
+   "pixabay_id": 79846,
+   "url": "https://pixabay.com/sound-effects/submachine-gun-79846/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_smg_shot.wav",
+   "original_artist": "morganpurkis (Freesound)"
+  },
+  "px_512969": {
+   "site": "Pixabay",
+   "title": "Gun shoot",
+   "author": "u_2n07b18i8q",
+   "pixabay_id": 512969,
+   "url": "https://pixabay.com/sound-effects/gun-shoot-512969/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_mg_shot.wav"
+  },
+  "px_328431": {
+   "site": "Pixabay",
+   "title": "revovler sound",
+   "author": "diega1241251",
+   "pixabay_id": 328431,
+   "url": "https://pixabay.com/sound-effects/revovler-sound-328431/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_revolver_shot.wav"
+  },
+  "px_65734": {
+   "site": "Pixabay",
+   "title": "Punches",
+   "author": "freesound_community",
+   "pixabay_id": 65734,
+   "url": "https://pixabay.com/sound-effects/punches-65734/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_punches.wav",
+   "original_artist": "Themiwa100 (Freesound)"
+  },
+  "px_260274": {
+   "site": "Pixabay",
+   "title": "sword-sound",
+   "author": "MUSICHOLDER",
+   "pixabay_id": 260274,
+   "url": "https://pixabay.com/sound-effects/sword-sound-260274/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_sword.wav"
+  },
+  "px_199418": {
+   "site": "Pixabay",
+   "title": "Walking In Water",
+   "author": "Alex_Jauk",
+   "pixabay_id": 199418,
+   "url": "https://pixabay.com/sound-effects/walking-in-water-199418/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_water_walk.wav"
+  },
+  "px_378665": {
+   "site": "Pixabay",
+   "title": "Healing Magic (1)",
+   "author": "Yodguard",
+   "pixabay_id": 378665,
+   "url": "https://pixabay.com/sound-effects/healing-magic-1-378665/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_medkit_chime.wav",
+   "note": "Tagged \"AI generated\" on Pixabay."
+  },
+  "px_47821": {
+   "site": "Pixabay",
+   "title": "explosion",
+   "author": "freesound_community",
+   "pixabay_id": 47821,
+   "url": "https://pixabay.com/sound-effects/explosion-47821/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_explosion.wav",
+   "original_artist": "WhaTThes (Freesound)"
+  },
+  "px_103309": {
+   "site": "Pixabay",
+   "title": "laser weld",
+   "author": "freesound_community",
+   "pixabay_id": 103309,
+   "url": "https://pixabay.com/sound-effects/laser-weld-103309/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_laser_weld.wav",
+   "original_artist": "cognito perceptu (Freesound)"
+  },
+  "px_224089": {
+   "site": "Pixabay",
+   "title": "Fire Sound Effects",
+   "author": "Alice_soundz",
+   "pixabay_id": 224089,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-fire-sound-effects-224089/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_fire_ignite.wav",
+   "note": "Uploader also posts clips that look re-uploaded from other media; no original artist is credited."
+  },
+  "px_584730": {
+   "site": "Pixabay",
+   "title": "Crackling Fire",
+   "author": "DRAGON-STUDIO",
+   "pixabay_id": 584730,
+   "url": "https://pixabay.com/sound-effects/crackling-fire-584730/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_fire_crackle.wav"
+  },
+  "px_6014": {
+   "site": "Pixabay",
+   "title": "Pistol Cock",
+   "author": "freesound_community",
+   "pixabay_id": 6014,
+   "url": "https://pixabay.com/sound-effects/pistol-cock-6014/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_pistol_cock.wav",
+   "original_artist": "nebulasnails (Freesound)"
+  },
+  "px_81634": {
+   "site": "Pixabay",
+   "title": "Metal Clang sound",
+   "author": "freesound_community",
+   "pixabay_id": 81634,
+   "url": "https://pixabay.com/sound-effects/metal-clang-sound-81634/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_metal_clang.wav",
+   "original_artist": "kermite607 (Freesound)"
+  },
+  "px_37310": {
+   "site": "Pixabay",
+   "title": "snd_elevator_power_down",
+   "author": "freesound_community",
+   "pixabay_id": 37310,
+   "url": "https://pixabay.com/sound-effects/snd-elevator-power-down-37310/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_shield_ding.wav",
+   "original_artist": "gristi (Freesound)"
+  },
+  "px_384975": {
+   "site": "Pixabay",
+   "title": "Hero Skill Attack Reveal 1",
+   "author": "freesound_gamestudio",
+   "pixabay_id": 384975,
+   "url": "https://pixabay.com/sound-effects/hero-skill-attack-reveal-1-384975/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_skill_reveal.wav"
+  },
+  "px_27425": {
+   "site": "Pixabay",
+   "title": "Sci-Fi sliding door (height adjustable chair sounds)",
+   "author": "freesound_community",
+   "pixabay_id": 27425,
+   "url": "https://pixabay.com/sound-effects/sci-fi-sliding-door-height-adjustable-chair-sounds-27425/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_scifi_door.wav",
+   "original_artist": "Pablobd (Freesound)"
+  },
+  "px_44962": {
+   "site": "Pixabay",
+   "title": "Sweeping",
+   "author": "freesound_community",
+   "pixabay_id": 44962,
+   "url": "https://pixabay.com/sound-effects/sweeping-44962/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_sweeping.wav",
+   "original_artist": "cMilan (Freesound)"
+  },
+  "px_40202": {
+   "site": "Pixabay",
+   "title": "clothes drop 2",
+   "author": "freesound_community",
+   "pixabay_id": 40202,
+   "url": "https://pixabay.com/sound-effects/household-clothes-drop-2-40202/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_clothes_drop2.wav"
+  },
+  "px_70923": {
+   "site": "Pixabay",
+   "title": "029974_inside the robot",
+   "author": "freesound_community",
+   "pixabay_id": 70923,
+   "url": "https://pixabay.com/sound-effects/029974-inside-the-robot-70923/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_robot.wav"
+  },
+  "px_263638": {
+   "site": "Pixabay",
+   "title": "Metal crunch",
+   "author": "u_y3wk5ympz8",
+   "pixabay_id": 263638,
+   "url": "https://pixabay.com/sound-effects/metal-crunch-263638/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_metal_crunch.wav"
+  },
+  "px_190270": {
+   "site": "Pixabay",
+   "title": "Large Underwater Explosion",
+   "author": "DavidDumaisAudio",
+   "pixabay_id": 190270,
+   "url": "https://pixabay.com/sound-effects/large-underwater-explosion-190270/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_ke_call.wav"
+  },
+  "px_6409": {
+   "site": "Pixabay",
+   "title": "Rock Destroy",
+   "author": "freesound_community",
+   "pixabay_id": 6409,
+   "url": "https://pixabay.com/sound-effects/rock-destroy-6409/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_rock_destroy.wav"
+  },
+  "px_487662": {
+   "site": "Pixabay",
+   "title": "Boom",
+   "author": "DRAGON-STUDIO",
+   "pixabay_id": 487662,
+   "url": "https://pixabay.com/sound-effects/boom-copyright-free-487662/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_boom.wav"
+  },
+  "px_381972": {
+   "site": "Pixabay",
+   "title": "Bomb Explosion 1",
+   "author": "u_xg7ssi08yr",
+   "pixabay_id": 381972,
+   "url": "https://pixabay.com/sound-effects/bomb-explosion-1-381972/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_ke_blast.wav"
+  },
+  "px_47675": {
+   "site": "Pixabay",
+   "title": "shimmer_synth_1",
+   "author": "freesound_community",
+   "pixabay_id": 47675,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-shimmer-synth-1-47675/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_shimmer.wav"
+  },
+  "px_397287": {
+   "site": "Pixabay",
+   "title": "Drone Fly",
+   "author": "klemenflerin",
+   "pixabay_id": 397287,
+   "url": "https://pixabay.com/sound-effects/drone-fly-397287/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_drone.wav"
+  },
+  "px_95133": {
+   "site": "Pixabay",
+   "title": "80s-Style Power-up sound",
+   "author": "freesound_community",
+   "pixabay_id": 95133,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-80s-style-power-up-sound-95133/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "likely",
+   "local": "tools/foley/user_powerup.wav",
+   "note": "Recorded only as \"80s-style-power-up\"."
+  },
+  "px_6798": {
+   "site": "Pixabay",
+   "title": "Power Charge",
+   "author": "freesound_community",
+   "pixabay_id": 6798,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-power-charge-6798/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "likely",
+   "local": "tools/foley/user_charge.wav",
+   "note": "Recorded only as \"power-charge\"; another candidate is \"057967_Power Charge\" (88127)."
+  },
+  "px_332841": {
+   "site": "Pixabay",
+   "title": "Knife Killing Sound",
+   "author": "RandomAhhAccount",
+   "pixabay_id": 332841,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-knife-killing-sound-332841/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "likely",
+   "local": "tools/foley/user_knife_stab.wav",
+   "note": "Recorded only as \"knife-killing\"."
+  },
+  "px_110410": {
+   "site": "Pixabay",
+   "title": "Swing Whoosh",
+   "author": "Jofae",
+   "pixabay_id": 110410,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-swing-whoosh-110410/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "likely",
+   "local": "tools/foley/user_swing.wav",
+   "note": "Recorded as \"jofae-swing-whoosh\"; author and title match, id not recorded."
+  },
+  "px_230542": {
+   "site": "Pixabay",
+   "title": "hit by a wood",
+   "author": "RibhavAgrawal",
+   "pixabay_id": 230542,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-hit-by-a-wood-230542/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "likely",
+   "local": "tools/foley/user_wood_hit.wav",
+   "note": "Recorded as \"hit-by-a-wood\"; exact title, id not recorded."
+  },
+  "px_94301": {
+   "site": "Pixabay",
+   "title": "female-hurt-2",
+   "author": "freesound_community",
+   "pixabay_id": 94301,
+   "url": "https://pixabay.com/sound-effects/people-female-hurt-2-94301/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "likely",
+   "local": "tools/foley/user_female_hurt.wav",
+   "note": "Recorded as \"female-hurt-2\"; exact title, id not recorded."
+  },
+  "px_82141": {
+   "site": "Pixabay",
+   "title": "Air Impact Wrench",
+   "author": "freesound_community",
+   "pixabay_id": 82141,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-air-impact-wrench-82141/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "likely",
+   "local": "tools/foley/user_impact_wrench.wav",
+   "note": "Recorded as \"air-impact-wrench\" (burst 1.96-2.36 s)."
+  },
+  "px_37453": {
+   "site": "Pixabay",
+   "title": "Mech Power-up",
+   "author": "freesound_community",
+   "pixabay_id": 37453,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-mech-power-up-37453/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "likely",
+   "local": "tools/foley/user_mech_powerup.wav",
+   "note": "Recorded as \"mech-power-up\"."
+  },
+  "px_47741": {
+   "site": "Pixabay",
+   "title": "Metal pipe Swing-1",
+   "author": "freesound_community",
+   "pixabay_id": 47741,
+   "url": "https://pixabay.com/sound-effects/musical-metal-pipe-swing-1-47741/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "likely",
+   "local": "tools/foley/user_pipe_swing.wav",
+   "note": "Recorded as \"metal-pipe-swing\"."
+  },
+  "px_306438": {
+   "site": "Pixabay",
+   "title": "Pipe Bang",
+   "author": "unknown",
+   "pixabay_id": 306438,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-pipe-bang-306438/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "likely",
+   "local": "tools/foley/user_pipe_bang.wav",
+   "note": "Recorded as \"pipe-bang\"."
+  },
+  "px_clothes_drop": {
+   "site": "Pixabay",
+   "title": "clothes drop 2 (or another clothes-drop clip)",
+   "author": "freesound_community",
+   "pixabay_id": 40202,
+   "url": "https://pixabay.com/sound-effects/household-clothes-drop-2-40202/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "likely",
+   "local": "tools/foley/user_clothes_drop.wav",
+   "note": "Recorded only as \"clothes drop\" (1.5.3); not the same trim as user_clothes_drop2.wav."
+  },
+  "user_oof": {
+   "site": "Pixabay (assumed)",
+   "title": "oof",
+   "author": "unknown",
+   "license": "unknown",
+   "status": "not found",
+   "local": "tools/foley/user_oof_0..3.wav",
+   "note": "Several Pixabay pages are titled \"oof\" (97698, 64561 \"048101_oof\", 147492, 212224, 580732); the file was not identified. The four clips are different takes (cross-correlation 0.05-0.72), so it is probably not the single Roblox \"oof\" sample, but this is not verified."
+  },
+  "user_bullet_hit": {
+   "site": "Pixabay (assumed)",
+   "title": "bullet-hit",
+   "author": "unknown",
+   "license": "unknown",
+   "status": "not found",
+   "local": "tools/foley/user_bullet_hit.wav",
+   "note": "Candidates: freesound_community \"0808xx_Bullet Hit\" (39870-39873)."
+  },
+  "user_wav_untitled": {
+   "site": "user file",
+   "title": "Desktop/제목 없음 1.wav",
+   "author": "unknown",
+   "license": "unknown",
+   "status": "not found",
+   "local": "tools/foley/user_rocket_clack.wav",
+   "note": "Supplied by the user on 2026-10-05; the user says they mixed it themselves from free sounds (individual sources not recorded)."
+  },
+  "user_wav_mixdown": {
+   "site": "user file",
+   "title": "Desktop/제목 없는 세션 1_믹스다운.wav",
+   "author": "unknown",
+   "license": "unknown",
+   "status": "not found",
+   "local": "tools/foley/user_mark_bell.wav",
+   "note": "A DAW mixdown supplied by the user on 2026-10-05; the sounds inside it are not recorded."
+  },
+  "mp4_rocket_reload": {
+   "site": "video",
+   "title": "미사일 장전.mp4",
+   "author": "unknown",
+   "license": "unknown",
+   "status": "not found",
+   "local": "tools/foley/user_rocket_reload.wav"
+  },
+  "q009": {
+   "site": "OpenGameArt",
+   "title": "Q009's weapon sounds",
+   "author": "Q009 (uploaded by Calinou)",
+   "url": "https://opengameart.org/content/q009s-weapon-sounds",
+   "license": "CC-BY-SA-3.0",
+   "status": "confirmed",
+   "local": "tools/audio_source.zip (q_*)",
+   "note": "Attribution and ShareAlike: the adapted gun sounds stay CC BY-SA 3.0."
+  },
+  "kenney": {
+   "site": "kenney.nl",
+   "title": "Impact Sounds, Interface Sounds, RPG Audio",
+   "author": "Kenney",
+   "url": "https://kenney.nl/assets",
+   "license": "CC0-1.0",
+   "status": "confirmed",
+   "local": "tools/audio_source.zip, tools/foley/k_*.wav"
+  },
+  "rubberduck": {
+   "site": "OpenGameArt",
+   "title": "25 CC0 bang / firework SFX; 100 CC0 Metal and Wood SFX",
+   "author": "rubberduck",
+   "url": "https://opengameart.org/content/25-cc0-bang-firework-sfx",
+   "license": "CC0-1.0",
+   "status": "confirmed",
+   "local": "tools/audio_source.zip, tools/foley/rd_*.wav"
+  },
+  "zer0_sol": {
+   "site": "OpenGameArt",
+   "title": "Handgun Reload Sound Effect; Shotgun Reload Sound effects",
+   "author": "zer0_sol",
+   "url": "https://opengameart.org/content/handgun-reload-sound-effect",
+   "license": "CC0-1.0",
+   "status": "confirmed",
+   "local": "tools/foley/mag_*_z.wav, rack_dry.wav, shell_*.wav"
+  },
+  "bmaczero": {
+   "site": "OpenGameArt",
+   "title": "Gun Reload Sound Effects (clipload1)",
+   "author": "BMacZero (Brian MacIntosh)",
+   "url": "https://opengameart.org/content/gun-reload-sound-effects",
+   "license": "CC0-1.0",
+   "status": "confirmed",
+   "local": "tools/foley/clipload1_b.wav"
+  },
+  "hurt_cc0": {
+   "site": "OpenGameArt",
+   "title": "Hurt Sound Effects (EZduzziteh); Female Hurt Grunts & Groans (AuraVoice / Nocturnal_Vanguard)",
+   "author": "EZduzziteh; AuraVoice",
+   "url": "https://opengameart.org/content/hurt-sound-effects",
+   "license": "CC0-1.0",
+   "status": "confirmed",
+   "local": "tools/foley/hurt_male.wav, hurt_female.wav",
+   "note": "Only as the quiet layer under the armoured hurt cues."
+  },
+  "kokoro": {
+   "site": "huggingface.co",
+   "title": "Kokoro-82M v1.0, voice af_heart",
+   "author": "hexgrad",
+   "url": "https://huggingface.co/hexgrad/Kokoro-82M",
+   "license": "Apache-2.0 (model); generated speech",
+   "status": "confirmed",
+   "local": "tools/announcer/*.wav"
+  },
+  "synth": {
+   "site": "in-house",
+   "title": "Deterministic synthesis in the build scripts",
+   "author": "Internal N Crush",
+   "license": "CC0-1.0",
+   "status": "confirmed",
+   "local": "tools/*.py"
+  },
+  "px_267739": {
+   "site": "Pixabay",
+   "title": "rpg-7 sound effect",
+   "author": "sovetsky_rastov72",
+   "pixabay_id": 267739,
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_rocket.wav",
+   "note": "The user identified it 2026-10-09 (tools/foley/user_v205/px267739_rpg7.mp3); the old \"Rocket launcher sound and shell explosion\" video audio (user_rocket.wav) is this recording (cross-correlation 0.99)."
+  },
+  "px_87813": {
+   "site": "Pixabay",
+   "title": "shell load",
+   "author": "freesound_community",
+   "pixabay_id": 87813,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-shell-load-87813/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_v205/px87813_shell_load.mp3"
+  },
+  "px_38640": {
+   "site": "Pixabay",
+   "title": "Realistic Shotgun Cocking Sound!!",
+   "author": "freesound_community",
+   "pixabay_id": 38640,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-realistic-shotgun-cocking-sound-38640/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_v205/px38640_shotgun_cocking.mp3"
+  },
+  "px_518860": {
+   "site": "Pixabay",
+   "title": "revolver reload",
+   "pixabay_id": 518860,
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_v205/px518860_revolver_reload_01.wav",
+   "note": "The user's own cut of the download."
+  },
+  "px_106342": {
+   "site": "Pixabay",
+   "title": "grenade launcher",
+   "pixabay_id": 106342,
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_v205/px106342_grenade_launcher.mp3",
+   "note": "Launch half of the user's COMET mix (user_comet_fire_mix.wav)."
+  },
+  "px_258054": {
+   "site": "Pixabay",
+   "title": "impact",
+   "author": "liecio",
+   "pixabay_id": 258054,
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_v205/px258054_liecio_impact.mp3",
+   "note": "Flight half of the user's COMET mix (user_comet_fire_mix.wav)."
+  },
+  "px_42132": {
+   "site": "Pixabay",
+   "title": "Explosion",
+   "author": "freesound_community",
+   "pixabay_id": 42132,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-explosion-42132/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v205/pixabay_42132_film-special-effects-explosion.mp3"
+  },
+  "px_40472": {
+   "site": "Pixabay",
+   "title": "Medium Explosion",
+   "author": "freesound_community",
+   "pixabay_id": 40472,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-medium-explosion-40472/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v205/pixabay_40472_film-special-effects-medium-explosion.mp3"
+  },
+  "px_369633": {
+   "site": "Pixabay",
+   "title": "bomb explosion 2",
+   "pixabay_id": 369633,
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_v205/px369633_bomb_explosion_2_01.wav",
+   "note": "The user's own cut of the download."
+  },
+  "px_11509": {
+   "site": "Pixabay",
+   "title": "water drop pop",
+   "pixabay_id": 11509,
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_v205/px11509_water_drop_pop.mp3"
+  },
+  "px_312576": {
+   "site": "Pixabay",
+   "title": "pop",
+   "pixabay_id": 312576,
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_v205/px312576_pop.mp3"
+  },
+  "px_94319": {
+   "site": "Pixabay",
+   "title": "pop",
+   "pixabay_id": 94319,
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_v205/px94319_pop.mp3"
+  },
+  "px_406640": {
+   "site": "Pixabay",
+   "title": "bubble pop",
+   "pixabay_id": 406640,
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_v205/px406640_bubble_pop.mp3"
+  },
+  "px_423717": {
+   "site": "Pixabay",
+   "title": "pop",
+   "pixabay_id": 423717,
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_v205/px423717_pop.mp3"
+  },
+  "px_402324": {
+   "site": "Pixabay",
+   "title": "pop",
+   "pixabay_id": 402324,
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_v205/px402324_pop.mp3"
+  }
+ },
+ "sounds": {
+  "gun_a1": {
+   "license": "CC-BY-SA-3.0",
+   "sources": [
+    "q009",
+    "rubberduck",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v150.py",
+   "clip": "Q009 shots trimmed, pitched and layered with a CC0 thump and case click"
+  },
+  "gun_a2": {
+   "license": "CC-BY-SA-3.0",
+   "sources": [
+    "q009",
+    "rubberduck",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v150.py",
+   "clip": "Q009 shots trimmed, pitched and layered with a CC0 thump and case click"
+  },
+  "gun_a3": {
+   "license": "CC-BY-SA-3.0",
+   "sources": [
+    "q009",
+    "rubberduck",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v150.py",
+   "clip": "Q009 shots trimmed, pitched and layered with a CC0 thump and case click"
+  },
+  "gun_a4": {
+   "license": "CC-BY-SA-3.0",
+   "sources": [
+    "q009",
+    "rubberduck",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v150.py",
+   "clip": "Q009 shots trimmed, pitched and layered with a CC0 thump and case click"
+  },
+  "gun_r1": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_99749"
+   ],
+   "recipe": "tools/combat_audio_v156.py",
+   "clip": "from 0.085 s, 0.8-0.95 s, slight per-weapon pitch"
+  },
+  "gun_r2": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_99749"
+   ],
+   "recipe": "tools/combat_audio_v156.py",
+   "clip": "from 0.085 s, 0.8-0.95 s, slight per-weapon pitch"
+  },
+  "gun_r3": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_79846"
+   ],
+   "recipe": "tools/combat_audio_v156.py",
+   "clip": "from 0.035 s, 0.5-0.55 s"
+  },
+  "gun_r4": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_79846"
+   ],
+   "recipe": "tools/combat_audio_v156.py",
+   "clip": "from 0.035 s, 0.5-0.55 s"
+  },
+  "gun_r5": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_79846"
+   ],
+   "recipe": "tools/combat_audio_v156.py",
+   "clip": "from 0.035 s, 0.5-0.55 s"
+  },
+  "gun_h1": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_512969"
+   ],
+   "recipe": "tools/combat_audio_v156.py",
+   "clip": "one round of the burst at 0.598 s, 0.115 s"
+  },
+  "gun_h2": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_512969"
+   ],
+   "recipe": "tools/combat_audio_v156.py",
+   "clip": "one round of the burst at 0.598 s, 0.115 s"
+  },
+  "gun_e1": {
+   "license": "CC-BY-SA-3.0",
+   "sources": [
+    "q009",
+    "rubberduck",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v150.py",
+   "clip": "Q009 shots trimmed, pitched and layered with a CC0 thump and case click"
+  },
+  "gun_e2": {
+   "license": "CC-BY-SA-3.0",
+   "sources": [
+    "q009",
+    "rubberduck",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v150.py",
+   "clip": "Q009 shots trimmed, pitched and layered with a CC0 thump and case click"
+  },
+  "gun_e3": {
+   "license": "CC-BY-SA-3.0",
+   "sources": [
+    "q009",
+    "rubberduck",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v150.py",
+   "clip": "Q009 shots trimmed, pitched and layered with a CC0 thump and case click"
+  },
+  "gun_c1": {
+   "license": "CC-BY-SA-3.0",
+   "sources": [
+    "q009",
+    "rubberduck",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v150.py",
+   "clip": "Q009 shots trimmed, pitched and layered with a CC0 thump and case click"
+  },
+  "gun_c2": {
+   "license": "CC-BY-SA-3.0",
+   "sources": [
+    "q009",
+    "rubberduck",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v150.py",
+   "clip": "Q009 shots trimmed, pitched and layered with a CC0 thump and case click"
+  },
+  "gun_c3": {
+   "license": "CC-BY-SA-3.0",
+   "sources": [
+    "q009",
+    "rubberduck",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v150.py",
+   "clip": "Q009 shots trimmed, pitched and layered with a CC0 thump and case click"
+  },
+  "gun_c4": {
+   "license": "CC-BY-SA-3.0",
+   "sources": [
+    "q009",
+    "rubberduck",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v150.py",
+   "clip": "Q009 shots trimmed, pitched and layered with a CC0 thump and case click"
+  },
+  "gun_m2": {
+   "license": "CC-BY-SA-3.0",
+   "sources": [
+    "q009",
+    "rubberduck",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v150.py",
+   "clip": "Q009 shots trimmed, pitched and layered with a CC0 thump and case click"
+  },
+  "gun_pistol": {
+   "license": "CC-BY-SA-3.0",
+   "sources": [
+    "q009",
+    "rubberduck",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v150.py",
+   "clip": "Q009 shots trimmed, pitched and layered with a CC0 thump and case click"
+  },
+  "gun_heavy_pistol": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_328431"
+   ],
+   "recipe": "tools/combat_audio_v156.py",
+   "clip": "from 0.315 s, 0.5-0.6 s"
+  },
+  "gun_auto_pistol": {
+   "license": "CC-BY-SA-3.0",
+   "sources": [
+    "q009",
+    "rubberduck",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v150.py",
+   "clip": "Q009 shots trimmed, pitched and layered with a CC0 thump and case click"
+  },
+  "gun_eng_pistol": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_328431"
+   ],
+   "recipe": "tools/combat_audio_v156.py",
+   "clip": "from 0.315 s, 0.5-0.6 s"
+  },
+  "gun_burst_pistol": {
+   "license": "CC-BY-SA-3.0",
+   "sources": [
+    "q009",
+    "rubberduck",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v150.py",
+   "clip": "Q009 shots trimmed, pitched and layered with a CC0 thump and case click"
+  },
+  "gun_med_pistol": {
+   "license": "CC-BY-SA-3.0",
+   "sources": [
+    "q009",
+    "rubberduck",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v150.py",
+   "clip": "Q009 shots trimmed, pitched and layered with a CC0 thump and case click"
+  },
+  "gun_m3": {
+   "license": "CC-BY-SA-3.0",
+   "sources": [
+    "q009",
+    "rubberduck",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v150.py",
+   "clip": "Q009 shots trimmed, pitched and layered with a CC0 thump and case click"
+  },
+  "gun_h4": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_106342",
+    "px_258054"
+   ],
+   "recipe": "tools/combat_audio_v205.py",
+   "clip": "the user's mix (launch 106342 + flight 258054), trimmed to 1.3 s"
+  },
+  "gun_dual_pistols": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_328431"
+   ],
+   "recipe": "tools/combat_audio_v156.py",
+   "clip": "from 0.315 s, 0.5-0.6 s"
+  },
+  "gun_h5": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_267739"
+   ],
+   "recipe": "tools/combat_audio_v151.py",
+   "clip": "launch 0.02-1.1 s, pitched down (user_rocket.wav = Pixabay 267739)"
+  },
+  "gun_h6": {
+   "license": "CC0-1.0",
+   "sources": [
+    "synth",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_refresh.py",
+   "clip": "filtered noise / sweeps (link_start with a Kenney cloth layer)"
+  },
+  "gun_m4": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_99749"
+   ],
+   "recipe": "tools/combat_audio_v156.py",
+   "clip": "from 0.085 s, 0.8-0.95 s, slight per-weapon pitch"
+  },
+  "step_stone_0": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney"
+   ],
+   "recipe": "tools/build_audio.py",
+   "clip": "Kenney footsteps and plates"
+  },
+  "step_metal_0": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney"
+   ],
+   "recipe": "tools/build_audio.py",
+   "clip": "Kenney footsteps and plates"
+  },
+  "step_water_0": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_199418"
+   ],
+   "recipe": "tools/combat_audio_v154.py",
+   "clip": "one slosh per step at 0.51/1.33/2.58/3.84 s, 1.3x faster"
+  },
+  "step_stone_1": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney"
+   ],
+   "recipe": "tools/build_audio.py",
+   "clip": "Kenney footsteps and plates"
+  },
+  "step_metal_1": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney"
+   ],
+   "recipe": "tools/build_audio.py",
+   "clip": "Kenney footsteps and plates"
+  },
+  "step_water_1": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_199418"
+   ],
+   "recipe": "tools/combat_audio_v154.py",
+   "clip": "one slosh per step at 0.51/1.33/2.58/3.84 s, 1.3x faster"
+  },
+  "step_stone_2": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney"
+   ],
+   "recipe": "tools/build_audio.py",
+   "clip": "Kenney footsteps and plates"
+  },
+  "step_metal_2": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney"
+   ],
+   "recipe": "tools/build_audio.py",
+   "clip": "Kenney footsteps and plates"
+  },
+  "step_water_2": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_199418"
+   ],
+   "recipe": "tools/combat_audio_v154.py",
+   "clip": "one slosh per step at 0.51/1.33/2.58/3.84 s, 1.3x faster"
+  },
+  "step_stone_3": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney"
+   ],
+   "recipe": "tools/build_audio.py",
+   "clip": "Kenney footsteps and plates"
+  },
+  "step_metal_3": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney"
+   ],
+   "recipe": "tools/build_audio.py",
+   "clip": "Kenney footsteps and plates"
+  },
+  "step_water_3": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_199418"
+   ],
+   "recipe": "tools/combat_audio_v154.py",
+   "clip": "one slosh per step at 0.51/1.33/2.58/3.84 s, 1.3x faster"
+  },
+  "body_impact": {
+   "license": "unknown",
+   "sources": [
+    "user_bullet_hit"
+   ],
+   "recipe": "tools/combat_audio_v151.py"
+  },
+  "hurt": {
+   "license": "unknown",
+   "sources": [
+    "user_oof"
+   ],
+   "recipe": "tools/combat_audio_v151.py",
+   "clip": "four takes"
+  },
+  "armor_hurt": {
+   "license": "unknown",
+   "sources": [
+    "user_oof",
+    "hurt_cc0",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v151.py",
+   "clip": "oof takes over the old armoured grunt + plate"
+  },
+  "hurt_female": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_94301"
+   ],
+   "recipe": "tools/combat_audio_v151.py",
+   "clip": "pitches 1.0/0.95/1.06/1.12"
+  },
+  "armor_hurt_female": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_94301",
+    "hurt_cc0",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v151.py"
+  },
+  "hit": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_65734"
+   ],
+   "recipe": "tools/combat_audio_v157.py",
+   "clip": "punches at 0.405/1.805/3.215/4.595 s, 0.22 s, dulled (v157)"
+  },
+  "confirm": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney",
+    "synth"
+   ],
+   "recipe": "tools/combat_audio_refresh.py"
+  },
+  "ui": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney",
+    "synth"
+   ],
+   "recipe": "tools/combat_audio_refresh.py"
+  },
+  "switch": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney",
+    "zer0_sol"
+   ],
+   "recipe": "tools/combat_audio_v151.py",
+   "clip": "cloth + magazine-release click"
+  },
+  "reload": {
+   "license": "CC0-1.0",
+   "sources": [
+    "zer0_sol",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v150.py",
+   "clip": "magazine release + click"
+  },
+  "magazine": {
+   "license": "CC0-1.0",
+   "sources": [
+    "zer0_sol",
+    "bmaczero",
+    "rubberduck"
+   ],
+   "recipe": "tools/combat_audio_v150.py"
+  },
+  "bolt": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_6014"
+   ],
+   "recipe": "tools/combat_audio_v155.py",
+   "clip": "from the first sound, 0.62 s"
+  },
+  "action_close": {
+   "license": "CC0-1.0",
+   "sources": [
+    "zer0_sol"
+   ],
+   "recipe": "tools/combat_audio_v150.py",
+   "clip": "shotgun rack (shotgunsounds.zip)"
+  },
+  "shell_insert": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_87813"
+   ],
+   "recipe": "tools/combat_audio_v205.py",
+   "clip": "from the onset, 0.34 s"
+  },
+  "rocket_insert": {
+   "license": "unknown",
+   "sources": [
+    "mp4_rocket_reload",
+    "px_47741",
+    "px_306438"
+   ],
+   "recipe": "tools/combat_audio_v157.py",
+   "clip": "the user's own mix: pipe swing + pipe bang (Pixabay, likely) with a residual ~0.1 s of the 미사일 장전.mp4 reload slide (unknown source) and its room tail; first 0.30 s muted (v157). Kept as is (user decision 2026-10-09)."
+  },
+  "heal": {
+   "license": "CC0-1.0",
+   "sources": [
+    "synth",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_refresh.py",
+   "clip": "filtered noise / sweeps (link_start with a Kenney cloth layer)"
+  },
+  "deploy": {
+   "license": "CC0-1.0",
+   "sources": [
+    "synth"
+   ],
+   "recipe": "tools/build_audio.py",
+   "clip": "deterministic synthesis"
+  },
+  "bomb_beep": {
+   "license": "CC0-1.0",
+   "sources": [
+    "synth"
+   ],
+   "recipe": "tools/build_audio.py",
+   "clip": "deterministic synthesis"
+  },
+  "bomb_defuse": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney",
+    "synth"
+   ],
+   "recipe": "tools/combat_audio_refresh.py"
+  },
+  "bomb_planted": {
+   "license": "Kokoro-82M generated speech; Apache-2.0 model; see SOUND_CREDITS.md",
+   "sources": [
+    "kokoro"
+   ],
+   "recipe": "tools/build_announcer.py"
+  },
+  "bomb_dropped": {
+   "license": "Kokoro-82M generated speech; Apache-2.0 model; see SOUND_CREDITS.md",
+   "sources": [
+    "kokoro"
+   ],
+   "recipe": "tools/build_announcer.py"
+  },
+  "bomb_defused": {
+   "license": "Kokoro-82M generated speech; Apache-2.0 model; see SOUND_CREDITS.md",
+   "sources": [
+    "kokoro"
+   ],
+   "recipe": "tools/build_announcer.py"
+  },
+  "win_blue": {
+   "license": "Kokoro-82M generated speech; Apache-2.0 model; see SOUND_CREDITS.md",
+   "sources": [
+    "kokoro"
+   ],
+   "recipe": "tools/build_announcer.py"
+  },
+  "win_orange": {
+   "license": "Kokoro-82M generated speech; Apache-2.0 model; see SOUND_CREDITS.md",
+   "sources": [
+    "kokoro"
+   ],
+   "recipe": "tools/build_announcer.py"
+  },
+  "capture_blue_a": {
+   "license": "Kokoro-82M generated speech; Apache-2.0 model; see SOUND_CREDITS.md",
+   "sources": [
+    "kokoro"
+   ],
+   "recipe": "tools/build_announcer.py"
+  },
+  "capture_blue_b": {
+   "license": "Kokoro-82M generated speech; Apache-2.0 model; see SOUND_CREDITS.md",
+   "sources": [
+    "kokoro"
+   ],
+   "recipe": "tools/build_announcer.py"
+  },
+  "capture_blue_c": {
+   "license": "Kokoro-82M generated speech; Apache-2.0 model; see SOUND_CREDITS.md",
+   "sources": [
+    "kokoro"
+   ],
+   "recipe": "tools/build_announcer.py"
+  },
+  "capture_orange_a": {
+   "license": "Kokoro-82M generated speech; Apache-2.0 model; see SOUND_CREDITS.md",
+   "sources": [
+    "kokoro"
+   ],
+   "recipe": "tools/build_announcer.py"
+  },
+  "capture_orange_b": {
+   "license": "Kokoro-82M generated speech; Apache-2.0 model; see SOUND_CREDITS.md",
+   "sources": [
+    "kokoro"
+   ],
+   "recipe": "tools/build_announcer.py"
+  },
+  "capture_orange_c": {
+   "license": "Kokoro-82M generated speech; Apache-2.0 model; see SOUND_CREDITS.md",
+   "sources": [
+    "kokoro"
+   ],
+   "recipe": "tools/build_announcer.py"
+  },
+  "bomb_explosion": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_42132"
+   ],
+   "recipe": "tools/combat_audio_v205.py",
+   "clip": "random variant 1 of 3; 2.8 s, top eased and soft-limited (clipped source)"
+  },
+  "bomb_explosion_v1": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_40472"
+   ],
+   "recipe": "tools/combat_audio_v205.py",
+   "clip": "random variant 2 of 3; whole blast"
+  },
+  "bomb_explosion_v2": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_369633"
+   ],
+   "recipe": "tools/combat_audio_v205.py",
+   "clip": "random variant 3 of 3; first 3 s (one blast)"
+  },
+  "explosion": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_47821"
+   ],
+   "recipe": "tools/combat_audio_v154.py",
+   "clip": "about 2.3 s, soft-clipped, cut to 1.25 s"
+  },
+  "flash": {
+   "license": "CC0-1.0",
+   "sources": [
+    "rubberduck"
+   ],
+   "recipe": "tools/build_audio.py",
+   "clip": "bang_03 + cannon_01 layers"
+  },
+  "smoke": {
+   "license": "CC0-1.0",
+   "sources": [
+    "rubberduck"
+   ],
+   "recipe": "tools/build_audio.py",
+   "clip": "bang_03 + cannon_01 layers"
+  },
+  "skill": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_384975"
+   ],
+   "recipe": "tools/combat_audio_v154.py",
+   "clip": "0.08-1.25 s"
+  },
+  "kill_sting": {
+   "license": "CC0-1.0",
+   "sources": [
+    "synth"
+   ],
+   "recipe": "tools/build_audio.py",
+   "clip": "deterministic synthesis"
+  },
+  "turret_detect": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney",
+    "synth"
+   ],
+   "recipe": "tools/combat_audio_refresh.py"
+  },
+  "equip": {
+   "license": "CC0-1.0",
+   "sources": [
+    "synth"
+   ],
+   "recipe": "tools/build_audio.py",
+   "clip": "deterministic synthesis"
+  },
+  "melee_swing": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney",
+    "synth"
+   ],
+   "recipe": "tools/combat_audio_refresh.py"
+  },
+  "throw": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney",
+    "synth"
+   ],
+   "recipe": "tools/combat_audio_v150.py"
+  },
+  "bounce": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney",
+    "synth"
+   ],
+   "recipe": "tools/combat_audio_v150.py"
+  },
+  "melee_flesh": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney",
+    "synth"
+   ],
+   "recipe": "tools/combat_audio_refresh.py"
+  },
+  "rocket_launch": {
+   "license": "CC0-1.0",
+   "sources": [
+    "rubberduck"
+   ],
+   "recipe": "tools/build_audio.py",
+   "clip": "bang_03 + cannon_01 layers"
+  },
+  "flash_ring": {
+   "license": "CC0-1.0",
+   "sources": [
+    "synth"
+   ],
+   "recipe": "tools/build_audio.py",
+   "clip": "deterministic synthesis"
+  },
+  "knife_wall": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney",
+    "synth"
+   ],
+   "recipe": "tools/combat_audio_refresh.py"
+  },
+  "wrench_wall": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney",
+    "synth"
+   ],
+   "recipe": "tools/combat_audio_refresh.py"
+  },
+  "wrench_flesh": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_230542"
+   ],
+   "recipe": "tools/combat_audio_v151.py"
+  },
+  "knife_flesh": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_332841"
+   ],
+   "recipe": "tools/combat_audio_v151.py"
+  },
+  "wrench_repair": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_82141"
+   ],
+   "recipe": "tools/combat_audio_v151.py",
+   "clip": "burst 1.96-2.36 s, -4 dB"
+  },
+  "rocket_flight": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_267739"
+   ],
+   "recipe": "tools/combat_audio_v151.py",
+   "clip": "launch whoosh 0.18-0.7 s, pitched down (user_rocket.wav = Pixabay 267739)"
+  },
+  "laser_fire": {
+   "license": "CC0-1.0",
+   "sources": [
+    "synth",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_refresh.py",
+   "clip": "filtered noise / sweeps (link_start with a Kenney cloth layer)"
+  },
+  "laser_vent": {
+   "license": "CC0-1.0",
+   "sources": [
+    "synth",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_refresh.py",
+   "clip": "filtered noise / sweeps (link_start with a Kenney cloth layer)"
+  },
+  "link_fire": {
+   "license": "CC0-1.0",
+   "sources": [
+    "synth",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_refresh.py",
+   "clip": "filtered noise / sweeps (link_start with a Kenney cloth layer)"
+  },
+  "door": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_27425"
+   ],
+   "recipe": "tools/combat_audio_v154.py",
+   "clip": "three slides of the 50 s clip"
+  },
+  "knife_swing": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_260274"
+   ],
+   "recipe": "tools/combat_audio_v151.py",
+   "clip": "whole file, leading silence cut"
+  },
+  "wrench_swing": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_110410"
+   ],
+   "recipe": "tools/combat_audio_v151.py"
+  },
+  "slide": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_44962",
+    "px_40202"
+   ],
+   "recipe": "tools/combat_audio_v154.py",
+   "clip": "sweep at 5.95 s + clothes drop"
+  },
+  "link_loop": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_6798"
+   ],
+   "recipe": "tools/combat_audio_v151.py",
+   "clip": "filtered, seamless loop"
+  },
+  "repair_loop": {
+   "license": "CC0-1.0",
+   "sources": [
+    "synth"
+   ],
+   "recipe": "tools/combat_audio_v151.py",
+   "clip": "deterministic synthesis"
+  },
+  "link_start": {
+   "license": "CC0-1.0",
+   "sources": [
+    "synth",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_refresh.py",
+   "clip": "filtered noise / sweeps (link_start with a Kenney cloth layer)"
+  },
+  "link_stop": {
+   "license": "CC0-1.0",
+   "sources": [
+    "synth",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_refresh.py",
+   "clip": "filtered noise / sweeps (link_start with a Kenney cloth layer)"
+  },
+  "pin": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney",
+    "synth"
+   ],
+   "recipe": "tools/combat_audio_v150.py"
+  },
+  "rocket_explosion": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_47821"
+   ],
+   "recipe": "tools/combat_audio_v154.py",
+   "clip": "about 2.3 s, soft-clipped, cut to 1.25 s"
+  },
+  "pump": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_38640"
+   ],
+   "recipe": "tools/combat_audio_v205.py",
+   "clip": "from the onset, 0.53 s"
+  },
+  "laser_loop": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_103309",
+    "px_95133"
+   ],
+   "recipe": "tools/combat_audio_v151.py",
+   "clip": "weld + power-up, soft-clipped, seamless loop"
+  },
+  "hurt_v1": {
+   "license": "unknown",
+   "sources": [
+    "user_oof"
+   ],
+   "recipe": "tools/combat_audio_v151.py",
+   "clip": "four takes"
+  },
+  "hurt_v2": {
+   "license": "unknown",
+   "sources": [
+    "user_oof"
+   ],
+   "recipe": "tools/combat_audio_v151.py",
+   "clip": "four takes"
+  },
+  "hurt_v3": {
+   "license": "unknown",
+   "sources": [
+    "user_oof"
+   ],
+   "recipe": "tools/combat_audio_v151.py",
+   "clip": "four takes"
+  },
+  "armor_hurt_v1": {
+   "license": "unknown",
+   "sources": [
+    "user_oof",
+    "hurt_cc0",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v151.py",
+   "clip": "oof takes over the old armoured grunt + plate"
+  },
+  "armor_hurt_v2": {
+   "license": "unknown",
+   "sources": [
+    "user_oof",
+    "hurt_cc0",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v151.py",
+   "clip": "oof takes over the old armoured grunt + plate"
+  },
+  "armor_hurt_v3": {
+   "license": "unknown",
+   "sources": [
+    "user_oof",
+    "hurt_cc0",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v151.py",
+   "clip": "oof takes over the old armoured grunt + plate"
+  },
+  "hurt_female_v1": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_94301"
+   ],
+   "recipe": "tools/combat_audio_v151.py",
+   "clip": "pitches 1.0/0.95/1.06/1.12"
+  },
+  "hurt_female_v2": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_94301"
+   ],
+   "recipe": "tools/combat_audio_v151.py",
+   "clip": "pitches 1.0/0.95/1.06/1.12"
+  },
+  "hurt_female_v3": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_94301"
+   ],
+   "recipe": "tools/combat_audio_v151.py",
+   "clip": "pitches 1.0/0.95/1.06/1.12"
+  },
+  "armor_hurt_female_v1": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_94301",
+    "hurt_cc0",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v151.py"
+  },
+  "armor_hurt_female_v2": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_94301",
+    "hurt_cc0",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v151.py"
+  },
+  "armor_hurt_female_v3": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_94301",
+    "hurt_cc0",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v151.py"
+  },
+  "pistol_magazine": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_518860"
+   ],
+   "recipe": "tools/combat_audio_v205.py",
+   "clip": "cylinder double click 0.44-0.625 s"
+  },
+  "invulnerable_loop": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_37453"
+   ],
+   "recipe": "tools/combat_audio_v151.py",
+   "clip": "lowpassed, seamless loop"
+  },
+  "shield_loop": {
+   "license": "CC0-1.0",
+   "sources": [
+    "synth"
+   ],
+   "recipe": "tools/combat_audio_v151.py",
+   "clip": "deterministic synthesis"
+  },
+  "shield_block": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_37310"
+   ],
+   "recipe": "tools/combat_audio_v151.py",
+   "clip": "1.5x faster, -4 dB"
+  },
+  "plate_on": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_clothes_drop"
+   ],
+   "recipe": "tools/combat_audio_v151.py",
+   "clip": "fitted to 0.7 s"
+  },
+  "medkit": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_378665"
+   ],
+   "recipe": "tools/combat_audio_v154.py",
+   "clip": "0-1.25 s, 2.2 kHz steep lowpass"
+  },
+  "skill_end": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_384975"
+   ],
+   "recipe": "tools/combat_audio_v154.py",
+   "clip": "1.22-2.42 s"
+  },
+  "door_v1": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_27425"
+   ],
+   "recipe": "tools/combat_audio_v154.py",
+   "clip": "three slides of the 50 s clip"
+  },
+  "door_v2": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_27425"
+   ],
+   "recipe": "tools/combat_audio_v154.py",
+   "clip": "three slides of the 50 s clip"
+  },
+  "door_swing_open": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v154.py",
+   "clip": "Kenney RPG Audio door/creak"
+  },
+  "door_swing_open_v1": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v154.py",
+   "clip": "Kenney RPG Audio door/creak"
+  },
+  "door_swing_close": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v154.py",
+   "clip": "Kenney RPG Audio door/creak"
+  },
+  "door_swing_close_v1": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v154.py",
+   "clip": "Kenney RPG Audio door/creak"
+  },
+  "door_swing_close_v2": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v154.py",
+   "clip": "Kenney RPG Audio door/creak"
+  },
+  "door_swing_close_v3": {
+   "license": "CC0-1.0",
+   "sources": [
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v154.py",
+   "clip": "Kenney RPG Audio door/creak"
+  },
+  "engineer_deploy": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_70923"
+   ],
+   "recipe": "tools/combat_audio_v154.py",
+   "clip": "0.38-1.25 s, three pitches layered"
+  },
+  "mark": {
+   "license": "unknown",
+   "sources": [
+    "user_wav_mixdown"
+   ],
+   "recipe": "tools/combat_audio_v157.py",
+   "clip": "94% speed"
+  },
+  "bipod": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_263638"
+   ],
+   "recipe": "tools/combat_audio_v154.py",
+   "clip": "first clack, -12 dB"
+  },
+  "molotov": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_224089"
+   ],
+   "recipe": "tools/combat_audio_v155.py",
+   "clip": "first whoosh, 2.6 s"
+  },
+  "fire_loop": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_584730"
+   ],
+   "recipe": "tools/combat_audio_v155.py",
+   "clip": "9 s excerpt (2-8.3 s used), seamless loop"
+  },
+  "hit_v1": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_65734"
+   ],
+   "recipe": "tools/combat_audio_v157.py",
+   "clip": "punches at 0.405/1.805/3.215/4.595 s, 0.22 s, dulled (v157)"
+  },
+  "hit_v2": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_65734"
+   ],
+   "recipe": "tools/combat_audio_v157.py",
+   "clip": "punches at 0.405/1.805/3.215/4.595 s, 0.22 s, dulled (v157)"
+  },
+  "hit_v3": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_65734"
+   ],
+   "recipe": "tools/combat_audio_v157.py",
+   "clip": "punches at 0.405/1.805/3.215/4.595 s, 0.22 s, dulled (v157)"
+  },
+  "rocket_clank": {
+   "license": "unknown",
+   "sources": [
+    "px_81634",
+    "user_wav_untitled"
+   ],
+   "recipe": "tools/combat_audio_v157.py",
+   "clip": "the user's own mix of free sounds: 70% Pixabay metal clang + 30% the user's clack file. Kept as is (user decision 2026-10-09)."
+  },
+  "rocket_reload": {
+   "license": "CC0-1.0",
+   "sources": [
+    "zer0_sol",
+    "kenney"
+   ],
+   "recipe": "tools/combat_audio_v157.py",
+   "clip": "magazine release + click"
+  },
+  "cloak_off": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_47675"
+   ],
+   "recipe": "tools/combat_audio_v200.py",
+   "clip": "first 1.6 s (cloak_on reversed)"
+  },
+  "cloak_on": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_47675"
+   ],
+   "recipe": "tools/combat_audio_v200.py",
+   "clip": "first 1.6 s (cloak_on reversed)"
+  },
+  "drone_loop": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_397287"
+   ],
+   "recipe": "tools/combat_audio_v200.py",
+   "clip": "steady flight from 10 s, 6 s loop"
+  },
+  "ke_call": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_190270"
+   ],
+   "recipe": "tools/combat_audio_v200.py",
+   "clip": "first 6 s",
+   "note": "Mixed by the user from Pixabay sounds; kept as is (user decision 2026-10-09)."
+  },
+  "ke_pierce": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_6409",
+    "px_487662"
+   ],
+   "recipe": "tools/combat_audio_v200.py",
+   "clip": "first 1.4 s mixed",
+   "note": "Mixed by the user from Pixabay sounds; kept as is (user decision 2026-10-09)."
+  },
+  "ke_blast": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_381972"
+   ],
+   "recipe": "tools/combat_audio_v200.py",
+   "clip": "0.45-2.25 s",
+   "note": "Mixed by the user from Pixabay sounds; kept as is (user decision 2026-10-09)."
+  },
+  "heartbeat": {
+   "license": "CC0-1.0",
+   "sources": [
+    "synth"
+   ],
+   "recipe": "tools/combat_audio_v201.py",
+   "clip": "deterministic synthesis"
+  },
+  "vocal_pistol": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_402324"
+   ],
+   "recipe": "tools/combat_audio_v205.py",
+   "clip": "one pop, trimmed",
+   "not_in_manifest": true,
+   "note": "optional vocal gunfire, off by default"
+  },
+  "vocal_smg": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_423717"
+   ],
+   "recipe": "tools/combat_audio_v205.py",
+   "clip": "one pop, trimmed",
+   "not_in_manifest": true,
+   "note": "optional vocal gunfire, off by default"
+  },
+  "vocal_rifle": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_11509"
+   ],
+   "recipe": "tools/combat_audio_v205.py",
+   "clip": "one pop, trimmed",
+   "not_in_manifest": true,
+   "note": "optional vocal gunfire, off by default"
+  },
+  "vocal_machinegun": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_406640"
+   ],
+   "recipe": "tools/combat_audio_v205.py",
+   "clip": "one pop, trimmed",
+   "not_in_manifest": true,
+   "note": "optional vocal gunfire, off by default"
+  },
+  "vocal_sniper": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_312576"
+   ],
+   "recipe": "tools/combat_audio_v205.py",
+   "clip": "one pop, trimmed",
+   "not_in_manifest": true,
+   "note": "optional vocal gunfire, off by default"
+  },
+  "vocal_shotgun": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_94319"
+   ],
+   "recipe": "tools/combat_audio_v205.py",
+   "clip": "one pop, trimmed",
+   "not_in_manifest": true,
+   "note": "optional vocal gunfire, off by default"
+  }
+ }
+}

@@ -1,3 +1,6 @@
+Noto Sans KR: Copyright © 2014-2021 Adobe (http://www.adobe.com/), with Reserved Font Name 'Source'.
+(As recorded in the copyright field of assets/Korean.ttf and assets/fonts/Symbols.ttf.)
+
 This Font Software is licensed under the SIL Open Font License,
 Version 1.1.
 

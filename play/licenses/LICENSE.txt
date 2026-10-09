@@ -22,7 +22,9 @@ SOFTWARE.
 Godot Engine is distributed under the MIT license; see GODOT_LICENSE.txt.
 Noto Sans KR is distributed under SIL OFL 1.1; see assets/FONT_LICENSE.txt.
 
-Sound assets have separate CC0 / CC BY-SA 3.0 licenses. See SOUND_CREDITS.md
+Sound assets are not covered by this MIT license. They have their own licenses
+(Pixabay Content License, CC BY-SA 3.0, CC0 and others) listed per file in
+SOUND_CREDITS.md and assets/AUDIO_SOURCES.json. Art credits: ART_CREDITS.md.
 and the AUDIO_*_LICENSE.txt files. These third-party assets are excluded from
 the MIT license above. Gun sound adaptations retain CC BY-SA 3.0.
 
