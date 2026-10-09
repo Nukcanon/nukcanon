@@ -48,7 +48,7 @@ The MIT licence of the game code does not apply to any of these sounds.
 - ["Bomb Explosion 1"](https://pixabay.com/sound-effects/bomb-explosion-1-381972/) by u_xg7ssi08yr (Pixabay id 381972) - used in `ke_blast`.
 - ["shimmer_synth_1"](https://pixabay.com/sound-effects/film-special-effects-shimmer-synth-1-47675/) by freesound_community (Pixabay id 47675) - used in `cloak_off`, `cloak_on`.
 - ["Drone Fly"](https://pixabay.com/sound-effects/drone-fly-397287/) by klemenflerin (Pixabay id 397287) - used in `drone_loop`.
-- "rpg-7 sound effect" by sovetsky_rastov72 (Pixabay id 267739) - used in `gun_h5`, `rocket_flight`.
+- "rpg-7 sound effect" by sovetsky_rastov72 (Pixabay id 267739) - used in `gun_h5`.
 - ["shell load"](https://pixabay.com/sound-effects/film-special-effects-shell-load-87813/) by freesound_community (Pixabay id 87813) - used in `shell_insert`.
 - ["Realistic Shotgun Cocking Sound!!"](https://pixabay.com/sound-effects/film-special-effects-realistic-shotgun-cocking-sound-38640/) by freesound_community (Pixabay id 38640) - used in `pump`.
 - "revolver reload" (Pixabay id 518860) - used in `pistol_magazine`.
@@ -63,6 +63,7 @@ The MIT licence of the game code does not apply to any of these sounds.
 - "bubble pop" (Pixabay id 406640) - used in `vocal_machinegun`.
 - "pop" (Pixabay id 423717) - used in `vocal_smg`.
 - "pop" (Pixabay id 402324) - used in `vocal_pistol`.
+- ["Rocket Loop"](https://pixabay.com/sound-effects/film-special-effects-rocket-loop-99748/) by freesound_community (Pixabay id 99748) - used in `rocket_flight`.
 
 ## Pixabay sound effects (most likely source)
 
@@ -208,7 +209,7 @@ marked `unknown` in the manifest.
 | `wrench_flesh` | Pixabay Content License | Pixabay 230542 (likely) | `tools/combat_audio_v151.py` |
 | `knife_flesh` | Pixabay Content License | Pixabay 332841 (likely) | `tools/combat_audio_v151.py` |
 | `wrench_repair` | Pixabay Content License | Pixabay 82141 (likely) | burst 1.96-2.36 s, -4 dB; `tools/combat_audio_v151.py` |
-| `rocket_flight` | Pixabay Content License | Pixabay 267739 | launch whoosh 0.18-0.7 s, pitched down (user_rocket.wav = Pixabay 267739); `tools/combat_audio_v151.py` |
+| `rocket_flight` | Pixabay Content License | Pixabay 99748 | whole loop (0.5 s fades), restarted every 1.372 s so the fades overlap; `tools/combat_audio_v205.py` |
 | `laser_fire` | CC0-1.0 | Deterministic synthesis in the build scripts; Impact Sounds, Interface Sounds, RPG Audio | filtered noise / sweeps (link_start with a Kenney cloth layer); `tools/combat_audio_refresh.py` |
 | `laser_vent` | CC0-1.0 | Deterministic synthesis in the build scripts; Impact Sounds, Interface Sounds, RPG Audio | filtered noise / sweeps (link_start with a Kenney cloth layer); `tools/combat_audio_refresh.py` |
 | `link_fire` | CC0-1.0 | Deterministic synthesis in the build scripts; Impact Sounds, Interface Sounds, RPG Audio | filtered noise / sweeps (link_start with a Kenney cloth layer); `tools/combat_audio_refresh.py` |

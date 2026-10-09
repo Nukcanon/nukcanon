@@ -708,6 +708,18 @@
    "license_url": "https://pixabay.com/service/license-summary/",
    "status": "confirmed",
    "local": "tools/foley/user_v205/px402324_pop.mp3"
+  },
+  "px_99748": {
+   "site": "Pixabay",
+   "title": "Rocket Loop",
+   "author": "freesound_community",
+   "pixabay_id": 99748,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-rocket-loop-99748/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_v205/px99748_rocket_loop.mp3",
+   "note": "The user's download, 2026-10-09."
   }
  },
  "sounds": {
@@ -1497,10 +1509,10 @@
   "rocket_flight": {
    "license": "Pixabay Content License",
    "sources": [
-    "px_267739"
+    "px_99748"
    ],
-   "recipe": "tools/combat_audio_v151.py",
-   "clip": "launch whoosh 0.18-0.7 s, pitched down (user_rocket.wav = Pixabay 267739)"
+   "recipe": "tools/combat_audio_v205.py",
+   "clip": "whole loop (0.5 s fades), restarted every 1.372 s so the fades overlap"
   },
   "laser_fire": {
    "license": "CC0-1.0",
