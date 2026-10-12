@@ -58,6 +58,19 @@ class InstallerTests(unittest.TestCase):
         installer.install(self.root, data, expected)
         self.assertEqual((self.root / 'internal-n-crush.html').read_text().count('?build='), 2)
 
+    def test_windows_button_downloads_the_setup_program(self):
+        page = self.root / 'internal-n-crush.html'
+        setup = '<a class="download" href="' + installer.release('1.2.9') + 'InternalNCrush_Setup_v1.2.9.exe?build=000000000000">Windows</a>'
+        for before in (self.page, '<a href="play/">Play</a>' + setup):
+            with self.subTest(before=before):
+                page.write_text(before)
+                data, expected = fixture()
+                installer.install(self.root, data, expected)
+                html = page.read_text()
+                self.assertIn(installer.release('1.3.0') + 'InternalNCrush_Setup_v1.3.0.exe?build=' + expected['sha256'][:12], html)
+                self.assertNotIn('InternalNCrush_Windows_v', html)
+                self.assertNotIn('1.2.9', html)
+
     def test_archive_hash_rejected(self):
         data, expected = fixture()
         expected['sha256'] = '0' * 64

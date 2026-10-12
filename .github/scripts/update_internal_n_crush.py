@@ -84,8 +84,9 @@ def install(root, data, expected):
             assert files['guide/' + name + '.jpg'].startswith(b'\xff\xd8'), 'Missing guide screenshot: ' + name
     html = re.sub(r'<br>\s*<a[^>]*>소스 코드</a>\s*·\s*<a[^>]*>변경 내용</a>', '', html)
     html = re.sub(r'href="play/(?:\?[^"]*)?"', f'href="play/?build={revision}"', html)
-    download_url = release(version) + 'InternalNCrush_Windows_v' + version + '.zip'
-    html = re.sub(r'href="https://github.com/Nukcanon/InternalNCrush(?:-releases)?/releases/download/internal-n-crush-v\d+\.\d+\.\d+(?:-hotfix\.\d+)?/InternalNCrush_Windows_v\d+\.\d+\.\d+\.zip(?:\?[^"]*)?"', f'href="{download_url}?build={revision}"', html)
+    # 2.0.9: the Windows button downloads the setup program (the zip stays on the release page, not linked here)
+    download_url = release(version) + 'InternalNCrush_Setup_v' + version + '.exe'
+    html = re.sub(r'href="https://github.com/Nukcanon/InternalNCrush(?:-releases)?/releases/download/internal-n-crush-v\d+\.\d+\.\d+(?:-hotfix\.\d+)?/InternalNCrush_(?:Windows_v\d+\.\d+\.\d+\.zip|Setup_v\d+\.\d+\.\d+\.exe)(?:\?[^"]*)?"', f'href="{download_url}?build={revision}"', html)
     html = re.sub(r'v\d+\.\d+\.\d+ · Windows', 'v' + version + ' · Windows', html)
     nas_url = release(version) + 'InternalNCrush_NAS_Linux_v' + version + '.zip'
     html = re.sub(r'href="https://github.com/Nukcanon/InternalNCrush(?:-releases)?/releases/download/internal-n-crush-v\d+\.\d+\.\d+(?:-hotfix\.\d+)?/InternalNCrush_NAS_Linux_v\d+\.\d+\.\d+\.zip(?:\?[^"]*)?"', f'href="{nas_url}?build={revision}"', html)
