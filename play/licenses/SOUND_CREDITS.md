@@ -8,7 +8,7 @@ Recipes (cuts, pitch, filters, mixing) are in the build scripts named for each s
 
 - **Pixabay Content License** (https://pixabay.com/service/license-summary/): free to use in the game, no attribution
   required; the original recordings may not be redistributed or sold on their own. Pixabay-derived sounds are therefore
-  provided only as part of the game, not as a separate sound library, and are NOT relicensed under CC0 or MIT.
+  provided only as part of the game, not as a separate sound library, and are NOT relicensed under CC0 or any other licence.
 - **CC BY-SA 3.0** (https://creativecommons.org/licenses/by-sa/3.0/): the gun sounds adapted from Q009's weapon sounds
   stay under CC BY-SA 3.0 (attribution below, licence text in `AUDIO_Q009_LICENSE.txt`).
 - **CC0 1.0** (https://creativecommons.org/publicdomain/zero/1.0/): sounds made only from Kenney / OpenGameArt CC0
@@ -17,7 +17,8 @@ Recipes (cuts, pitch, filters, mixing) are in the build scripts named for each s
 - **unknown**: sounds whose source recording is not identified yet (listed under "Unidentified sources"). They are
   scheduled to be identified or replaced; no licence is claimed for them.
 
-The MIT licence of the game code does not apply to any of these sounds.
+The game's own terms of use (`LICENSE.txt`, from 2.0.9: free to use, no redistribution or sale) do not replace any of
+these licences: each sound keeps the licence listed here.
 
 ## Pixabay sound effects (source confirmed)
 
