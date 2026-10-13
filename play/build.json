@@ -1,8 +1,8 @@
 {
-  "version": "2.0.9",
+  "version": "2.1.0",
   "threads": false,
-  "source_commit": "97895a00d9218c64b20d555d2e78406129cba391",
-  "executable": "game-97895a00d921",
+  "source_commit": "87ad226524b8db6eb78fde85df134ca65c5e83b4",
+  "executable": "game-87ad226524b8",
   "transport": "WebRTC",
   "touch": "coarse-pointer/mobile detection; landscape",
   "files": [
@@ -12,47 +12,47 @@
       "sha256": "b6e2940e885a1ef2dd4d52eb4f2bc81d46cc4a0057dab06f912f7f73359a0394"
     },
     {
-      "path": "game-97895a00d921.apple-touch-icon.png",
+      "path": "game-87ad226524b8.apple-touch-icon.png",
       "bytes": 18314,
       "sha256": "44bbae0d3369f3cd32d55d90ac0ab79ad5d048c23d959b8a3483354de6653ae5"
     },
     {
-      "path": "game-97895a00d921.audio.position.worklet.js",
+      "path": "game-87ad226524b8.audio.position.worklet.js",
       "bytes": 3149,
       "sha256": "347b512529c5dca302093f7b9de6d184dd09d10e9a6fba62cbab098a891b2368"
     },
     {
-      "path": "game-97895a00d921.audio.worklet.js",
+      "path": "game-87ad226524b8.audio.worklet.js",
       "bytes": 7298,
       "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
     },
     {
-      "path": "game-97895a00d921.icon.png",
+      "path": "game-87ad226524b8.icon.png",
       "bytes": 27842,
       "sha256": "e1a297272c8e42f8b539f5aeb1698bee2def2bbe2e0dadd664b331e4c88f0315"
     },
     {
-      "path": "game-97895a00d921.js",
+      "path": "game-87ad226524b8.js",
       "bytes": 317269,
       "sha256": "a10fc8a5f64086ff4c6f5ce3549efac8d9d9b1d25c03dd8b92f2575bbc26ef83"
     },
     {
-      "path": "game-97895a00d921.maps.pck",
+      "path": "game-87ad226524b8.maps.pck",
       "bytes": 47644672,
       "sha256": "a92bb3d135faa9cb6409087b16781b71f7098b464bd4694fe94baf0e58b06b77"
     },
     {
-      "path": "game-97895a00d921.pck",
-      "bytes": 75433936,
-      "sha256": "cea3091e05b87d4d35421c46a767f1257c42af368bfbd92045f9a76796498e6e"
+      "path": "game-87ad226524b8.pck",
+      "bytes": 75449344,
+      "sha256": "bb414027fa9b8bc39976556bd77270784ac802608b66f114a047b9479d8b0ec7"
     },
     {
-      "path": "game-97895a00d921.png",
+      "path": "game-87ad226524b8.png",
       "bytes": 21443,
       "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
     },
     {
-      "path": "game-97895a00d921.wasm",
+      "path": "game-87ad226524b8.wasm",
       "bytes": 43699190,
       "sha256": "e4a43dbae28662b2a68f6136857a94db6695430901515800b9883f6327cb7116"
     },
@@ -63,18 +63,18 @@
     },
     {
       "path": "guide/internet.jpg",
-      "bytes": 369658,
-      "sha256": "66dac1c966a594c10b87cede654f9eeba4decd798841e51b4d8af11770c80737"
+      "bytes": 369581,
+      "sha256": "a1c0856efea7e40d8512786b8ca50c8c00bb5154830767d447c6ca7f3a93201e"
     },
     {
       "path": "guide/lan.jpg",
-      "bytes": 441971,
-      "sha256": "41dfbb360b018dbed62b901d1ba8b72031a365bf99626840536213d23635b4d3"
+      "bytes": 442621,
+      "sha256": "c05859f87789e1bf0bc28f31e7481659679711e197eb0fc423f7f011ce1e6d4b"
     },
     {
       "path": "guide/settings.jpg",
-      "bytes": 525867,
-      "sha256": "2ca695cb28ae323faafc02939d3297b231323e3ac963b4f69664afa852058416"
+      "bytes": 526185,
+      "sha256": "2393bcfb3470d99dad7928ec610c22a10e9df962efc30c1fb62db28bcac78ae0"
     },
     {
       "path": "guide/touch.jpg",
@@ -84,7 +84,7 @@
     {
       "path": "index.html",
       "bytes": 15767,
-      "sha256": "594a7e81b4fa8e20e8e7f31ecb92552a97d4625298ba0a803e7c575a95e08871"
+      "sha256": "28b8f09e4bbc3dd1fb03e0b83bb38e56dd3ab50773cad6c9c93a2660f47df7a7"
     },
     {
       "path": "licenses/ART_CREDITS.md",
@@ -108,8 +108,8 @@
     },
     {
       "path": "licenses/AUDIO_SOURCES.json",
-      "bytes": 59721,
-      "sha256": "29049845f26a618b7cc0ecacfc887a6841f0d543af3a252734b25eb4fc58ea69"
+      "bytes": 58751,
+      "sha256": "52d914da8f37b23a23ef3467eb78d31dcfad7f5bec6d55871d71dc1330dda092"
     },
     {
       "path": "licenses/CREDITS.md",
@@ -188,8 +188,8 @@
     },
     {
       "path": "licenses/SOUND_CREDITS.md",
-      "bytes": 39656,
-      "sha256": "e4f0bc2497faafeec55dc7b4bc65742bb0a60f1889b63dbca2c89feaa113dc6e"
+      "bytes": 40131,
+      "sha256": "002ba80e969ebce6b8c986acbba3aa4230124d9805aa9019456317f7de1bbc43"
     },
     {
       "path": "licenses/UNITY_LABS_flame_SOURCES.md",

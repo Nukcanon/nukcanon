@@ -14,8 +14,6 @@ Recipes (cuts, pitch, filters, mixing) are in the build scripts named for each s
 - **CC0 1.0** (https://creativecommons.org/publicdomain/zero/1.0/): sounds made only from Kenney / OpenGameArt CC0
   recordings and the game's own synthesis. These mixes are also offered under CC0.
 - **Kokoro-82M** (Apache-2.0 model, `AUDIO_KOKORO_LICENSE.txt`): the eleven English announcements are generated speech.
-- **unknown**: sounds whose source recording is not identified yet (listed under "Unidentified sources"). They are
-  scheduled to be identified or replaced; no licence is claimed for them.
 
 The game's own terms of use (`LICENSE.txt`, from 2.0.9: free to use, no redistribution or sale) do not replace any of
 these licences: each sound keeps the licence listed here.
@@ -101,16 +99,16 @@ Only a description of these files was kept when they were added; each is the clo
 - "Deterministic synthesis in the build scripts" by Internal N Crush - CC0-1.0.
   Used in `gun_h6`, `confirm`, `ui`, `heal`, `deploy`, `bomb_beep`, `bomb_defuse`, `kill_sting`, `turret_detect`, `equip`, `melee_swing`, `throw`, `bounce`, `melee_flesh`, `flash_ring`, `knife_wall`, `wrench_wall`, `laser_fire`, `laser_vent`, `link_fire`, `repair_loop`, `link_start`, `link_stop`, `pin`, `shield_loop`, `heartbeat`.
 
-## Unidentified sources
+## Pixabay sound effects (stated by the developer, page not identified)
 
-The following recordings were supplied without a recorded origin. Their licence is unknown; the sounds that use them are
-marked `unknown` in the manifest.
+The developer supplied these recordings and states that they were downloaded from Pixabay. The Pixabay page of each
+was not identified, so no author or id is listed.
 
-- "oof" (Pixabay (assumed)): Several Pixabay pages are titled "oof" (97698, 64561 "048101_oof", 147492, 212224, 580732); the file was not identified. The four clips are different takes (cross-correlation 0.05-0.72), so it is probably not the single Roblox "oof" sample, but this is not verified. Used in `hurt`, `armor_hurt`, `hurt_v1`, `hurt_v2`, `hurt_v3`, `armor_hurt_v1`, `armor_hurt_v2`, `armor_hurt_v3`.
-- "bullet-hit" (Pixabay (assumed)): Candidates: freesound_community "0808xx_Bullet Hit" (39870-39873). Used in `body_impact`.
-- "Desktop/제목 없음 1.wav" (user file): Supplied by the user on 2026-10-05; the user says they mixed it themselves from free sounds (individual sources not recorded). Used in `rocket_clank`.
-- "Desktop/제목 없는 세션 1_믹스다운.wav" (user file): A DAW mixdown supplied by the user on 2026-10-05; the sounds inside it are not recorded. Used in `mark`.
-- "미사일 장전.mp4" (video) Used in `rocket_insert`.
+- "oof": Several Pixabay pages are titled "oof" (97698, 64561 "048101_oof", 147492, 212224, 580732); the file was not identified. The four clips are different takes (cross-correlation 0.05-0.72), so it is probably not the single Roblox "oof" sample, but this is not verified. On 2026-10-13 the developer stated that this file came from Pixabay; the page was not identified. Used in `hurt`, `armor_hurt`, `hurt_v1`, `hurt_v2`, `hurt_v3`, `armor_hurt_v1`, `armor_hurt_v2`, `armor_hurt_v3`.
+- "bullet-hit": Candidates: freesound_community "0808xx_Bullet Hit" (39870-39873). On 2026-10-13 the developer stated that this file came from Pixabay; the page was not identified. Used in `body_impact`.
+- "Desktop/제목 없음 1.wav": Supplied by the user on 2026-10-05; the user says they mixed it themselves from free sounds (individual sources not recorded). On 2026-10-13 the developer stated that this file came from Pixabay; the page was not identified. Used in `rocket_clank`.
+- "Desktop/제목 없는 세션 1_믹스다운.wav": A DAW mixdown supplied by the user on 2026-10-05; the sounds inside it are not recorded. On 2026-10-13 the developer stated that this file came from Pixabay; the page was not identified. Used in `mark`.
+- "미사일 장전.mp4": On 2026-10-13 the developer stated that this file came from Pixabay; the page was not identified. Used in `rocket_insert`.
 
 ## Every shipped sound
 
@@ -159,9 +157,9 @@ marked `unknown` in the manifest.
 | `step_stone_3` | CC0-1.0 | Impact Sounds, Interface Sounds, RPG Audio | Kenney footsteps and plates; `tools/build_audio.py` |
 | `step_metal_3` | CC0-1.0 | Impact Sounds, Interface Sounds, RPG Audio | Kenney footsteps and plates; `tools/build_audio.py` |
 | `step_water_3` | Pixabay Content License | Pixabay 199418 | one slosh per step at 0.51/1.33/2.58/3.84 s, 1.3x faster; `tools/combat_audio_v154.py` |
-| `body_impact` | unknown | bullet-hit (not found) | `tools/combat_audio_v151.py` |
-| `hurt` | unknown | oof (not found) | four takes; `tools/combat_audio_v151.py` |
-| `armor_hurt` | unknown | oof (not found); Hurt Sound Effects (EZduzziteh); Female Hurt Grunts & Groans (AuraVoice / Nocturnal_Vanguard); Impact Sounds, Interface Sounds, RPG Audio | oof takes over the old armoured grunt + plate; `tools/combat_audio_v151.py` |
+| `body_impact` | Pixabay Content License | bullet-hit (stated) | `tools/combat_audio_v151.py` |
+| `hurt` | Pixabay Content License | oof (stated) | four takes; `tools/combat_audio_v151.py` |
+| `armor_hurt` | Pixabay Content License | oof (stated); Hurt Sound Effects (EZduzziteh); Female Hurt Grunts & Groans (AuraVoice / Nocturnal_Vanguard); Impact Sounds, Interface Sounds, RPG Audio | oof takes over the old armoured grunt + plate; `tools/combat_audio_v151.py` |
 | `hurt_female` | Pixabay Content License | Pixabay 94301 (likely) | pitches 1.0/0.95/1.06/1.12; `tools/combat_audio_v151.py` |
 | `armor_hurt_female` | Pixabay Content License | Pixabay 94301 (likely); Hurt Sound Effects (EZduzziteh); Female Hurt Grunts & Groans (AuraVoice / Nocturnal_Vanguard); Impact Sounds, Interface Sounds, RPG Audio | `tools/combat_audio_v151.py` |
 | `hit` | Pixabay Content License | Pixabay 65734 | punches at 0.405/1.805/3.215/4.595 s, 0.22 s, dulled (v157); `tools/combat_audio_v157.py` |
@@ -173,7 +171,7 @@ marked `unknown` in the manifest.
 | `bolt` | Pixabay Content License | Pixabay 6014 | from the first sound, 0.62 s; `tools/combat_audio_v155.py` |
 | `action_close` | CC0-1.0 | Handgun Reload Sound Effect; Shotgun Reload Sound effects | shotgun rack (shotgunsounds.zip); `tools/combat_audio_v150.py` |
 | `shell_insert` | Pixabay Content License | Pixabay 87813 | from the onset, 0.34 s; `tools/combat_audio_v205.py` |
-| `rocket_insert` | unknown | 미사일 장전.mp4 (not found); Pixabay 47741 (likely); Pixabay 306438 (likely) | the user's own mix: pipe swing + pipe bang (Pixabay, likely) with a residual ~0.1 s of the 미사일 장전.mp4 reload slide (unknown source) and its room tail; first 0.30 s muted (v157). Kept as is (user decision 2026-10-09).; `tools/combat_audio_v157.py` |
+| `rocket_insert` | Pixabay Content License | 미사일 장전.mp4 (stated); Pixabay 47741 (likely); Pixabay 306438 (likely) | the user's own mix: pipe swing + pipe bang (Pixabay, likely) with a residual ~0.1 s of the 미사일 장전.mp4 reload slide (Pixabay per the developer, page not identified) and its room tail; first 0.30 s muted (v157). Kept as is (user decision 2026-10-09).; `tools/combat_audio_v157.py` |
 | `heal` | CC0-1.0 | Deterministic synthesis in the build scripts; Impact Sounds, Interface Sounds, RPG Audio | filtered noise / sweeps (link_start with a Kenney cloth layer); `tools/combat_audio_refresh.py` |
 | `deploy` | CC0-1.0 | Deterministic synthesis in the build scripts | deterministic synthesis; `tools/build_audio.py` |
 | `bomb_beep` | CC0-1.0 | Deterministic synthesis in the build scripts | deterministic synthesis; `tools/build_audio.py` |
@@ -226,12 +224,12 @@ marked `unknown` in the manifest.
 | `rocket_explosion` | Pixabay Content License | Pixabay 47821 | about 2.3 s, soft-clipped, cut to 1.25 s; `tools/combat_audio_v154.py` |
 | `pump` | Pixabay Content License | Pixabay 38640 | from the onset, 0.53 s; `tools/combat_audio_v205.py` |
 | `laser_loop` | Pixabay Content License | Pixabay 103309; Pixabay 95133 (likely) | weld + power-up, soft-clipped, seamless loop; `tools/combat_audio_v151.py` |
-| `hurt_v1` | unknown | oof (not found) | four takes; `tools/combat_audio_v151.py` |
-| `hurt_v2` | unknown | oof (not found) | four takes; `tools/combat_audio_v151.py` |
-| `hurt_v3` | unknown | oof (not found) | four takes; `tools/combat_audio_v151.py` |
-| `armor_hurt_v1` | unknown | oof (not found); Hurt Sound Effects (EZduzziteh); Female Hurt Grunts & Groans (AuraVoice / Nocturnal_Vanguard); Impact Sounds, Interface Sounds, RPG Audio | oof takes over the old armoured grunt + plate; `tools/combat_audio_v151.py` |
-| `armor_hurt_v2` | unknown | oof (not found); Hurt Sound Effects (EZduzziteh); Female Hurt Grunts & Groans (AuraVoice / Nocturnal_Vanguard); Impact Sounds, Interface Sounds, RPG Audio | oof takes over the old armoured grunt + plate; `tools/combat_audio_v151.py` |
-| `armor_hurt_v3` | unknown | oof (not found); Hurt Sound Effects (EZduzziteh); Female Hurt Grunts & Groans (AuraVoice / Nocturnal_Vanguard); Impact Sounds, Interface Sounds, RPG Audio | oof takes over the old armoured grunt + plate; `tools/combat_audio_v151.py` |
+| `hurt_v1` | Pixabay Content License | oof (stated) | four takes; `tools/combat_audio_v151.py` |
+| `hurt_v2` | Pixabay Content License | oof (stated) | four takes; `tools/combat_audio_v151.py` |
+| `hurt_v3` | Pixabay Content License | oof (stated) | four takes; `tools/combat_audio_v151.py` |
+| `armor_hurt_v1` | Pixabay Content License | oof (stated); Hurt Sound Effects (EZduzziteh); Female Hurt Grunts & Groans (AuraVoice / Nocturnal_Vanguard); Impact Sounds, Interface Sounds, RPG Audio | oof takes over the old armoured grunt + plate; `tools/combat_audio_v151.py` |
+| `armor_hurt_v2` | Pixabay Content License | oof (stated); Hurt Sound Effects (EZduzziteh); Female Hurt Grunts & Groans (AuraVoice / Nocturnal_Vanguard); Impact Sounds, Interface Sounds, RPG Audio | oof takes over the old armoured grunt + plate; `tools/combat_audio_v151.py` |
+| `armor_hurt_v3` | Pixabay Content License | oof (stated); Hurt Sound Effects (EZduzziteh); Female Hurt Grunts & Groans (AuraVoice / Nocturnal_Vanguard); Impact Sounds, Interface Sounds, RPG Audio | oof takes over the old armoured grunt + plate; `tools/combat_audio_v151.py` |
 | `hurt_female_v1` | Pixabay Content License | Pixabay 94301 (likely) | pitches 1.0/0.95/1.06/1.12; `tools/combat_audio_v151.py` |
 | `hurt_female_v2` | Pixabay Content License | Pixabay 94301 (likely) | pitches 1.0/0.95/1.06/1.12; `tools/combat_audio_v151.py` |
 | `hurt_female_v3` | Pixabay Content License | Pixabay 94301 (likely) | pitches 1.0/0.95/1.06/1.12; `tools/combat_audio_v151.py` |
@@ -254,14 +252,14 @@ marked `unknown` in the manifest.
 | `door_swing_close_v2` | CC0-1.0 | Impact Sounds, Interface Sounds, RPG Audio | Kenney RPG Audio door/creak; `tools/combat_audio_v154.py` |
 | `door_swing_close_v3` | CC0-1.0 | Impact Sounds, Interface Sounds, RPG Audio | Kenney RPG Audio door/creak; `tools/combat_audio_v154.py` |
 | `engineer_deploy` | Pixabay Content License | Pixabay 70923 | 0.38-1.25 s, three pitches layered; `tools/combat_audio_v154.py` |
-| `mark` | unknown | Desktop/제목 없는 세션 1_믹스다운.wav (not found) | 94% speed; `tools/combat_audio_v157.py` |
+| `mark` | Pixabay Content License | Desktop/제목 없는 세션 1_믹스다운.wav (stated) | 94% speed; `tools/combat_audio_v157.py` |
 | `bipod` | Pixabay Content License | Pixabay 263638 | first clack, -12 dB; `tools/combat_audio_v154.py` |
 | `molotov` | Pixabay Content License | Pixabay 224089 | first whoosh, 2.6 s; `tools/combat_audio_v155.py` |
 | `fire_loop` | Pixabay Content License | Pixabay 584730 | 9 s excerpt (2-8.3 s used), seamless loop; `tools/combat_audio_v155.py` |
 | `hit_v1` | Pixabay Content License | Pixabay 65734 | punches at 0.405/1.805/3.215/4.595 s, 0.22 s, dulled (v157); `tools/combat_audio_v157.py` |
 | `hit_v2` | Pixabay Content License | Pixabay 65734 | punches at 0.405/1.805/3.215/4.595 s, 0.22 s, dulled (v157); `tools/combat_audio_v157.py` |
 | `hit_v3` | Pixabay Content License | Pixabay 65734 | punches at 0.405/1.805/3.215/4.595 s, 0.22 s, dulled (v157); `tools/combat_audio_v157.py` |
-| `rocket_clank` | unknown | Pixabay 81634; Desktop/제목 없음 1.wav (not found) | the user's own mix of free sounds: 70% Pixabay metal clang + 30% the user's clack file. Kept as is (user decision 2026-10-09).; `tools/combat_audio_v157.py` |
+| `rocket_clank` | Pixabay Content License | Pixabay 81634; Desktop/제목 없음 1.wav (stated) | the user's own mix of free sounds: 70% Pixabay metal clang + 30% the user's clack file. Kept as is (user decision 2026-10-09).; `tools/combat_audio_v157.py` |
 | `rocket_reload` | CC0-1.0 | Handgun Reload Sound Effect; Shotgun Reload Sound effects; Impact Sounds, Interface Sounds, RPG Audio | magazine release + click; `tools/combat_audio_v157.py` |
 | `cloak_off` | Pixabay Content License | Pixabay 47675 | first 1.6 s (cloak_on reversed); `tools/combat_audio_v200.py` |
 | `cloak_on` | Pixabay Content License | Pixabay 47675 | first 1.6 s (cloak_on reversed); `tools/combat_audio_v200.py` |

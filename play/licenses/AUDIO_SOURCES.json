@@ -443,47 +443,53 @@
    "note": "Recorded only as \"clothes drop\" (1.5.3); not the same trim as user_clothes_drop2.wav."
   },
   "user_oof": {
-   "site": "Pixabay (assumed)",
+   "site": "Pixabay",
    "title": "oof",
    "author": "unknown",
-   "license": "unknown",
-   "status": "not found",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "stated",
    "local": "tools/foley/user_oof_0..3.wav",
-   "note": "Several Pixabay pages are titled \"oof\" (97698, 64561 \"048101_oof\", 147492, 212224, 580732); the file was not identified. The four clips are different takes (cross-correlation 0.05-0.72), so it is probably not the single Roblox \"oof\" sample, but this is not verified."
+   "note": "Several Pixabay pages are titled \"oof\" (97698, 64561 \"048101_oof\", 147492, 212224, 580732); the file was not identified. The four clips are different takes (cross-correlation 0.05-0.72), so it is probably not the single Roblox \"oof\" sample, but this is not verified. On 2026-10-13 the developer stated that this file came from Pixabay; the page was not identified."
   },
   "user_bullet_hit": {
-   "site": "Pixabay (assumed)",
+   "site": "Pixabay",
    "title": "bullet-hit",
    "author": "unknown",
-   "license": "unknown",
-   "status": "not found",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "stated",
    "local": "tools/foley/user_bullet_hit.wav",
-   "note": "Candidates: freesound_community \"0808xx_Bullet Hit\" (39870-39873)."
+   "note": "Candidates: freesound_community \"0808xx_Bullet Hit\" (39870-39873). On 2026-10-13 the developer stated that this file came from Pixabay; the page was not identified."
   },
   "user_wav_untitled": {
-   "site": "user file",
+   "site": "Pixabay",
    "title": "Desktop/제목 없음 1.wav",
    "author": "unknown",
-   "license": "unknown",
-   "status": "not found",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "stated",
    "local": "tools/foley/user_rocket_clack.wav",
-   "note": "Supplied by the user on 2026-10-05; the user says they mixed it themselves from free sounds (individual sources not recorded)."
+   "note": "Supplied by the user on 2026-10-05; the user says they mixed it themselves from free sounds (individual sources not recorded). On 2026-10-13 the developer stated that this file came from Pixabay; the page was not identified."
   },
   "user_wav_mixdown": {
-   "site": "user file",
+   "site": "Pixabay",
    "title": "Desktop/제목 없는 세션 1_믹스다운.wav",
    "author": "unknown",
-   "license": "unknown",
-   "status": "not found",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "stated",
    "local": "tools/foley/user_mark_bell.wav",
-   "note": "A DAW mixdown supplied by the user on 2026-10-05; the sounds inside it are not recorded."
+   "note": "A DAW mixdown supplied by the user on 2026-10-05; the sounds inside it are not recorded. On 2026-10-13 the developer stated that this file came from Pixabay; the page was not identified."
   },
   "mp4_rocket_reload": {
-   "site": "video",
+   "site": "Pixabay",
    "title": "미사일 장전.mp4",
    "author": "unknown",
-   "license": "unknown",
-   "status": "not found",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "stated",
+   "note": "On 2026-10-13 the developer stated that this file came from Pixabay; the page was not identified.",
    "local": "tools/foley/user_rocket_reload.wav"
   },
   "q009": {
@@ -1104,14 +1110,14 @@
    "clip": "one slosh per step at 0.51/1.33/2.58/3.84 s, 1.3x faster"
   },
   "body_impact": {
-   "license": "unknown",
+   "license": "Pixabay Content License",
    "sources": [
     "user_bullet_hit"
    ],
    "recipe": "tools/combat_audio_v151.py"
   },
   "hurt": {
-   "license": "unknown",
+   "license": "Pixabay Content License",
    "sources": [
     "user_oof"
    ],
@@ -1119,7 +1125,7 @@
    "clip": "four takes"
   },
   "armor_hurt": {
-   "license": "unknown",
+   "license": "Pixabay Content License",
    "sources": [
     "user_oof",
     "hurt_cc0",
@@ -1221,14 +1227,14 @@
    "clip": "from the onset, 0.34 s"
   },
   "rocket_insert": {
-   "license": "unknown",
+   "license": "Pixabay Content License",
    "sources": [
     "mp4_rocket_reload",
     "px_47741",
     "px_306438"
    ],
    "recipe": "tools/combat_audio_v157.py",
-   "clip": "the user's own mix: pipe swing + pipe bang (Pixabay, likely) with a residual ~0.1 s of the 미사일 장전.mp4 reload slide (unknown source) and its room tail; first 0.30 s muted (v157). Kept as is (user decision 2026-10-09)."
+   "clip": "the user's own mix: pipe swing + pipe bang (Pixabay, likely) with a residual ~0.1 s of the 미사일 장전.mp4 reload slide (Pixabay per the developer, page not identified) and its room tail; first 0.30 s muted (v157). Kept as is (user decision 2026-10-09)."
   },
   "heal": {
    "license": "CC0-1.0",
@@ -1641,7 +1647,7 @@
    "clip": "weld + power-up, soft-clipped, seamless loop"
   },
   "hurt_v1": {
-   "license": "unknown",
+   "license": "Pixabay Content License",
    "sources": [
     "user_oof"
    ],
@@ -1649,7 +1655,7 @@
    "clip": "four takes"
   },
   "hurt_v2": {
-   "license": "unknown",
+   "license": "Pixabay Content License",
    "sources": [
     "user_oof"
    ],
@@ -1657,7 +1663,7 @@
    "clip": "four takes"
   },
   "hurt_v3": {
-   "license": "unknown",
+   "license": "Pixabay Content License",
    "sources": [
     "user_oof"
    ],
@@ -1665,7 +1671,7 @@
    "clip": "four takes"
   },
   "armor_hurt_v1": {
-   "license": "unknown",
+   "license": "Pixabay Content License",
    "sources": [
     "user_oof",
     "hurt_cc0",
@@ -1675,7 +1681,7 @@
    "clip": "oof takes over the old armoured grunt + plate"
   },
   "armor_hurt_v2": {
-   "license": "unknown",
+   "license": "Pixabay Content License",
    "sources": [
     "user_oof",
     "hurt_cc0",
@@ -1685,7 +1691,7 @@
    "clip": "oof takes over the old armoured grunt + plate"
   },
   "armor_hurt_v3": {
-   "license": "unknown",
+   "license": "Pixabay Content License",
    "sources": [
     "user_oof",
     "hurt_cc0",
@@ -1874,7 +1880,7 @@
    "clip": "0.38-1.25 s, three pitches layered"
   },
   "mark": {
-   "license": "unknown",
+   "license": "Pixabay Content License",
    "sources": [
     "user_wav_mixdown"
    ],
@@ -1930,7 +1936,7 @@
    "clip": "punches at 0.405/1.805/3.215/4.595 s, 0.22 s, dulled (v157)"
   },
   "rocket_clank": {
-   "license": "unknown",
+   "license": "Pixabay Content License",
    "sources": [
     "px_81634",
     "user_wav_untitled"
