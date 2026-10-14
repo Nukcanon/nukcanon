@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#0066cc">
   <title>과제 제출 프로그램 · Nukcanon</title>
-  <meta name="description" content="교내 과제 제출 프로그램: 학생용 접속 프로그램과 교사용 Windows 서버 설치 프로그램 다운로드, 간단한 사용법">
+  <meta name="description" content="교내 과제 제출 프로그램: 학생용 접속 프로그램, 교사용 Windows 서버 설치 프로그램, NAS·Linux용 서버 패키지 다운로드와 간단한 사용법">
   <link rel="stylesheet" href="css/style.css?v=20261009-1">
   <style>
     .app-page .hero{max-width:800px}
@@ -18,6 +18,7 @@
     .app-page .download{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;width:100%;gap:12px;padding:15px 22px;border-radius:12px;color:#fff;background:var(--home-primary);font-weight:800;box-shadow:var(--home-shadow)}
     .app-page .download:hover{background:var(--home-primary-dark);text-decoration:none}
     .app-page .teacher{background:#237c71}.app-page .teacher:hover{background:#196358}
+    .app-page .nas{background:#5b55c8}.app-page .nas:hover{background:#4a44b0}
     .app-page .pending,.app-page .pending:hover{background:#94a3b8;box-shadow:none;cursor:default}
     .app-page .download:focus-visible{outline:3px solid var(--home-accent);outline-offset:4px}
     .app-page .download-note{margin:8px 0 0;color:var(--home-muted);font-size:.85rem;line-height:1.6;text-align:center}
@@ -34,6 +35,7 @@
     .app-page .steps strong{color:var(--home-ink)}
     .app-page .notes{margin:0;padding-left:20px}
     .app-page .notes li{margin:0 0 6px}
+    .app-page .hashes{margin:6px 0 0;padding-left:18px}.app-page .hashes li{margin:0 0 4px;font-size:.88rem}
     .app-page code{padding:1px 5px;border-radius:5px;background:var(--home-surface-soft);color:var(--home-ink);font-size:.88em;word-break:break-all}
     @media(max-width:760px){.app-page .two{grid-template-columns:1fr}.app-page .detail{padding:20px}.app-page .cta{width:100%}}
   </style>
@@ -51,8 +53,9 @@
         <span class="app-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v4h4M9.5 14l2 2 3.5-4"/></svg></span>
         <h1 id="app-title">과제 제출 프로그램</h1>
       </div>
-      <p class="intro">학교 안 서버로 과제를 내고, 쓰고, 제출하는 프로그램입니다.<br>학생은 접속 프로그램을, 교사는 서버 PC에 서버 프로그램을 설치합니다.</p>
+      <p class="intro">학교 안 서버로 과제를 내고, 쓰고, 제출하는 프로그램입니다.<br>학생은 접속 프로그램을, 교사는 서버 PC(Windows) 또는 NAS·Linux 서버에 서버 프로그램을 설치합니다.</p>
       <div class="cta-row">
+        <!-- SAS:cta:begin -->
         <div class="cta">
           <a class="download" href="https://github.com/Nukcanon/nukcanon/releases/download/school-assignment-v1.0.82/SchoolAssignment_Setup_1.0.82.exe">학생용 설치 프로그램 <span aria-hidden="true">↓</span></a>
           <p class="download-note">Windows 10/11 64비트 · 0.4MB<br>학생·교사 PC 공용 접속 프로그램</p>
@@ -61,6 +64,11 @@
           <span class="download teacher pending" role="link" aria-disabled="true">교사용 설치 프로그램</span>
           <p class="download-note">Windows 10/11 64비트 · 서버 PC용<br>준비 중 · 곧 공개합니다</p>
         </div>
+        <div class="cta">
+          <span class="download nas pending" role="link" aria-disabled="true">NAS·Linux용 서버 패키지</span>
+          <p class="download-note">시놀로지 NAS(DS423+ 등)·일반 Linux<br>준비 중 · 곧 공개합니다</p>
+        </div>
+        <!-- SAS:cta:end -->
       </div>
     </section>
     <section class="detail" aria-labelledby="howto-title">
@@ -78,7 +86,7 @@
         <div>
           <h3>교사</h3>
           <ol class="steps">
-            <li>학교 안에서 늘 켜 둘 Windows PC에 <strong>교사용 설치 프로그램</strong>을 설치합니다.</li>
+            <li>Windows PC에는 <strong>교사용 설치 프로그램</strong>을, 시놀로지 NAS·Linux 서버에는 <strong>NAS·Linux용 서버 패키지</strong>를 설치합니다. 둘 다 학교 안에서 늘 켜 둘 기기여야 합니다.</li>
             <li>설정 화면에서 DB, 웹 관리자, 접속 방식(기본 HTTPS)을 정합니다.</li>
             <li>바탕화면의 <strong>교내 과제 제출 서버 관리</strong>로 서버를 켜고, 관리자 페이지에 로그인해 OTP를 등록합니다.</li>
             <li><strong>교사관리·학생관리</strong>에서 계정을 만들고, 서버 관리의 <strong>접속 프로그램 배포 묶음 만들기</strong>로 만든 ZIP을 학생에게 나눠 줍니다.</li>
@@ -86,12 +94,26 @@
         </div>
       </div>
     </section>
+    <section class="detail wide" aria-labelledby="nas-title">
+      <h2 id="nas-title">NAS·Linux 설치 순서</h2>
+      <ol class="steps">
+        <li><strong>NAS·Linux용 서버 패키지</strong>(ZIP)를 받아 모두 풀고, Windows PC에서 <code>01_설정.cmd</code>를 실행합니다. 브라우저 설정 화면이 열리며, NAS 종류(인텔·AMD 또는 ARM)를 고릅니다.</li>
+        <li>설정을 마치면 만들어지는 <code>ready_to_upload/SchoolAssignmentServer_deploy.zip</code>을 NAS의 <code>docker</code> 폴더에 올리고 그 자리에서 압축을 풉니다.</li>
+        <li>NAS의 <strong>Container Manager → 프로젝트 → 생성</strong>으로 프로젝트를 만듭니다. 프로그램 이미지는 이때 자동으로 내려받으며, 처음에는 시간이 걸릴 수 있습니다.</li>
+        <li>설정 화면 마지막의 <strong>순서표(PDF)</strong>대로 역방향 프록시와 관리자 OTP를 설정합니다.</li>
+      </ol>
+      <p>일반 Linux 서버는 압축을 푼 폴더에서 <code>sudo sh 02_start.sh --install-docker</code>를 실행합니다(Docker 설치 후 서버 시작).</p>
+    </section>
     <section class="detail wide" aria-labelledby="notes-title">
       <h2 id="notes-title">알아 두기</h2>
       <ul class="notes">
         <li>배포 묶음에는 학교 인증서와 서버 주소가 들어 있습니다. 웹에서 받은 설치 파일만으로 설치하면 인증서 오류로 접속이 막힐 수 있습니다.</li>
         <li>자세한 사용법은 로그인 후 위 메뉴의 <strong>사용방법</strong>과 서버 PC 시작 메뉴의 <strong>사용설명서</strong>에 있습니다.</li>
-        <li>버전 1.0.82 · <a href="https://github.com/Nukcanon/nukcanon/releases/tag/school-assignment-v1.0.82">파일 확인값(SHA-256)</a></li>
+        <li>NAS·Linux용 패키지에는 64비트 Intel·AMD(amd64)와 64비트 ARM(arm64)용 프로그램 이미지가 들어갈 예정입니다. 32비트 ARM 기기는 지원하지 않을 수 있으며 확인 중입니다. 설치 중에는 인터넷 연결이 필요합니다.</li>
+        <!-- SAS:notes:begin -->
+        <li>학생용 설치 프로그램 버전 1.0.82 · <a href="https://github.com/Nukcanon/nukcanon/releases/tag/school-assignment-v1.0.82">파일 확인값(SHA-256)</a></li>
+        <li>교사용 설치 프로그램과 NAS·Linux용 서버 패키지는 공개되면 버전과 파일 확인값(SHA-256)이 이곳에 함께 표시됩니다.</li>
+        <!-- SAS:notes:end -->
       </ul>
     </section>
   </main>
