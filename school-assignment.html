@@ -53,7 +53,7 @@
         <span class="app-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v4h4M9.5 14l2 2 3.5-4"/></svg></span>
         <h1 id="app-title">교내 과제 제출 시스템</h1>
       </div>
-      <p class="intro">학교 안 서버로 과제를 내고, 쓰고, 제출하는 프로그램입니다.<br>학생·교사 PC에는 접속 프로그램 <strong>교내 과제 제출</strong>을, 서버로 쓸 Windows PC에는 교사용 설치 프로그램을 설치합니다. NAS·Linux용은 준비 중입니다.</p>
+      <p class="intro">학교 안 서버로 과제를 내고, 쓰고, 제출하는 프로그램입니다.<br>학생·교사 PC에는 접속 프로그램 <strong>교내 과제 제출</strong>을, 서버로 쓸 Windows PC에는 교사용 설치 프로그램을, 시놀로지 NAS·Linux 서버에는 NAS·Linux용 서버 패키지를 설치합니다.</p>
       <div class="cta-row">
         <!-- SAS:cta:begin -->
         <div class="cta">
@@ -65,8 +65,8 @@
           <p class="download-note">Windows 10/11 64비트 · 약 60MB<br>서버 PC용, 다시 실행하면 업데이트</p>
         </div>
         <div class="cta">
-          <span class="download nas pending" role="link" aria-disabled="true">NAS·Linux용 서버 패키지</span>
-          <p class="download-note">시놀로지 NAS(DS423+ 등)·일반 Linux<br>준비 중 · 곧 공개합니다</p>
+          <a class="download nas" href="https://github.com/Nukcanon/nukcanon/releases/download/school-assignment-v1.0.145/SchoolAssignmentServer_NAS_Linux_1.0.145.zip">NAS·Linux용 서버 패키지 <span aria-hidden="true">↓</span></a>
+          <p class="download-note">시놀로지 NAS(DS423+ 등)·일반 Linux · 약 0.3MB<br>64비트 Intel·AMD, 64비트 ARM</p>
         </div>
         <!-- SAS:cta:end -->
       </div>
@@ -86,7 +86,7 @@
         <div>
           <h3>교사</h3>
           <ol class="steps">
-            <li>학교 안에서 늘 켜 둘 Windows PC(서버 PC)에 <strong>교사용 설치 프로그램</strong>을 설치합니다. NAS·Linux용 서버 패키지는 준비 중입니다.</li>
+            <li>학교 안에서 늘 켜 둘 Windows PC(서버 PC)에 <strong>교사용 설치 프로그램</strong>을 설치합니다. NAS·Linux 서버를 쓰려면 아래 「NAS·Linux 설치 순서」를 따릅니다.</li>
             <li>설정 화면에서 DB, 웹 관리자, 접속 방식(기본 HTTPS)을 정합니다.</li>
             <li>바탕화면의 <strong>교내 과제 제출 시스템</strong>으로 서버를 켜고, 관리자 페이지에 로그인해 OTP를 등록합니다.</li>
             <li><strong>교사관리·학생관리</strong>에서 계정을 만들고, 교내 과제 제출 시스템의 <strong>접속 프로그램 배포 묶음 만들기</strong>로 만든 ZIP을 학생에게 나눠 줍니다.</li>
@@ -95,8 +95,8 @@
       </div>
     </section>
     <section class="detail wide" aria-labelledby="nas-title">
-      <h2 id="nas-title">NAS·Linux 설치 순서 (준비 중)</h2>
-      <p>NAS·Linux용 서버 패키지는 아직 공개되지 않았습니다. 공개되면 아래 순서로 설치합니다.</p>
+      <h2 id="nas-title">NAS·Linux 설치 순서</h2>
+      <p>NAS·Linux용 서버 패키지는 아래 순서로 설치합니다.</p>
       <ol class="steps">
         <li><strong>NAS·Linux용 서버 패키지</strong>(ZIP)를 받아 모두 풀고, Windows PC에서 <code>01_설정.cmd</code>를 실행합니다. 브라우저 설정 화면이 열리며, NAS 종류(인텔·AMD 또는 ARM)를 고릅니다.</li>
         <li>설정을 마치면 만들어지는 <code>ready_to_upload/SchoolAssignmentServer_deploy.zip</code>을 NAS의 <code>docker</code> 폴더에 올리고 그 자리에서 압축을 풉니다.</li>
@@ -110,16 +110,16 @@
       <ul class="notes">
         <li>배포 묶음에는 학교 인증서와 서버 주소가 들어 있습니다. 웹에서 받은 설치 파일만으로 설치하면 인증서 오류로 접속이 막힐 수 있습니다.</li>
         <li>자세한 사용법은 로그인 후 위 메뉴의 <strong>사용방법</strong>과 서버 PC 시작 메뉴의 <strong>사용설명서</strong>에 있습니다.</li>
-        <li>NAS·Linux용 패키지에는 64비트 Intel·AMD(amd64)와 64비트 ARM(arm64)용 프로그램 이미지가 들어갈 예정입니다. 32비트 ARM 기기는 지원하지 않을 수 있으며 확인 중입니다. 설치 중에는 인터넷 연결이 필요합니다.</li>
+        <li>NAS·Linux용 패키지는 64비트 Intel·AMD(amd64)와 64비트 ARM(arm64)용 프로그램 이미지를 씁니다. 32비트 ARM 기기는 지원하지 않습니다. 설치 중에는 인터넷 연결이 필요합니다.</li>
         <!-- SAS:notes:begin -->
         <li>버전 1.0.145 · <a href="https://github.com/Nukcanon/nukcanon/releases/download/school-assignment-v1.0.145/SHA256SUMS.txt">파일 확인값(SHA-256) 목록</a> · <a href="https://github.com/Nukcanon/nukcanon/releases/download/school-assignment-v1.0.145/SchoolAssignmentServer_Terms_1.0.145.txt">이용 약관(텍스트 파일)</a></li>
         <li>내려받은 파일이 맞는지 확인하려면 PowerShell에서 <code>Get-FileHash 파일이름</code>을 실행해 아래 값과 비교하세요.
           <ul class="hashes">
             <li>학생용 설치 프로그램 <code>efa301ee49b8d4ec2e1b5f78eaaca10bdc392d3d247b050abf21cf22906535d3</code></li>
             <li>교사용 설치 프로그램 <code>0e34d0fc8527fd1785685292e21465e3ad9a8e9104c81a09ab88b10d31bdb037</code></li>
+            <li>NAS·Linux용 서버 패키지 <code>356a794297d6bdd1bf37206f552635043adc302b2c1721a2dcf57bc5147fccbc</code></li>
           </ul>
         </li>
-        <li>NAS·Linux용 서버 패키지는 준비 중입니다. 공개되면 버전과 파일 확인값(SHA-256)이 이곳에 함께 표시됩니다.</li>
         <!-- SAS:notes:end -->
       </ul>
     </section>
