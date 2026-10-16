@@ -1,8 +1,8 @@
 {
-  "version": "2.1.4",
+  "version": "2.1.5",
   "threads": false,
-  "source_commit": "66e39f89528266e4f5008cab7f1d31cc53fcfb05",
-  "executable": "game-66e39f895282",
+  "source_commit": "ecd878e712adfa876a1eabe559fdab7419cee9f1",
+  "executable": "game-ecd878e712ad",
   "transport": "WebRTC",
   "touch": "coarse-pointer/mobile detection; landscape",
   "files": [
@@ -12,79 +12,79 @@
       "sha256": "b6e2940e885a1ef2dd4d52eb4f2bc81d46cc4a0057dab06f912f7f73359a0394"
     },
     {
-      "path": "game-66e39f895282.apple-touch-icon.png",
+      "path": "game-ecd878e712ad.apple-touch-icon.png",
       "bytes": 18314,
       "sha256": "44bbae0d3369f3cd32d55d90ac0ab79ad5d048c23d959b8a3483354de6653ae5"
     },
     {
-      "path": "game-66e39f895282.audio.position.worklet.js",
-      "bytes": 3149,
-      "sha256": "347b512529c5dca302093f7b9de6d184dd09d10e9a6fba62cbab098a891b2368"
+      "path": "game-ecd878e712ad.audio.position.worklet.js",
+      "bytes": 2973,
+      "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
     },
     {
-      "path": "game-66e39f895282.audio.worklet.js",
+      "path": "game-ecd878e712ad.audio.worklet.js",
       "bytes": 7298,
       "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
     },
     {
-      "path": "game-66e39f895282.icon.png",
+      "path": "game-ecd878e712ad.icon.png",
       "bytes": 27842,
       "sha256": "e1a297272c8e42f8b539f5aeb1698bee2def2bbe2e0dadd664b331e4c88f0315"
     },
     {
-      "path": "game-66e39f895282.js",
-      "bytes": 317390,
-      "sha256": "b2c6b9f4ac1fdcad1c7237e2e4bf341af35650aa23c07c1fcd9650f5b63d972a"
+      "path": "game-ecd878e712ad.js",
+      "bytes": 280063,
+      "sha256": "d3e2ccc4078f30ad8ac59b14884945cb59ba87f8e25a948d1f23d45956814a41"
     },
     {
-      "path": "game-66e39f895282.maps.pck",
-      "bytes": 47644672,
-      "sha256": "a92bb3d135faa9cb6409087b16781b71f7098b464bd4694fe94baf0e58b06b77"
+      "path": "game-ecd878e712ad.maps.pck",
+      "bytes": 52082516,
+      "sha256": "54b9e271b259e7a2a823de08dd74b2e9d8ca881272fc859c91fb2dd228f44a75"
     },
     {
-      "path": "game-66e39f895282.pck",
-      "bytes": 75505696,
-      "sha256": "abe104074fdb5afb21d29beb41c7326b102601190dfb704027e1b288cf15e45c"
+      "path": "game-ecd878e712ad.pck",
+      "bytes": 76658748,
+      "sha256": "1532eb53cdfed0b06f19cfdea941ff1a4a488b84e379bc5e02acc853d299846b"
     },
     {
-      "path": "game-66e39f895282.png",
+      "path": "game-ecd878e712ad.png",
       "bytes": 21443,
       "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
     },
     {
-      "path": "game-66e39f895282.wasm",
-      "bytes": 43699190,
-      "sha256": "e4a43dbae28662b2a68f6136857a94db6695430901515800b9883f6327cb7116"
+      "path": "game-ecd878e712ad.wasm",
+      "bytes": 39514754,
+      "sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0"
     },
     {
       "path": "guide/controls.jpg",
-      "bytes": 64715,
-      "sha256": "64986760bd24e66d615634ea7a233230048880a58691bc81855b3bbf13c73cd1"
+      "bytes": 65288,
+      "sha256": "0f27524d34b78bf228625c0cf6cf18e86e892436e08ddf7e7611af2d741e1cb2"
     },
     {
       "path": "guide/internet.jpg",
-      "bytes": 369289,
-      "sha256": "6ad6c8cfb1aebc14d53c9c635d4746e7492cde7ce4aa477d7e461b2d94b6889a"
+      "bytes": 361469,
+      "sha256": "9e303c343a4d4db20062576642b10d04cba50dacdd08eefdb7c9e87fff260552"
     },
     {
       "path": "guide/lan.jpg",
-      "bytes": 441952,
-      "sha256": "f33125e393e2f207e9b96a1bc92dfd220275b871bb0b4655d6d99af40e8a2213"
+      "bytes": 429873,
+      "sha256": "4f8c7561117dbd11410ffeea9f9d7612266bc4d3b5aae418b157ed9830477063"
     },
     {
       "path": "guide/settings.jpg",
-      "bytes": 526489,
-      "sha256": "e060a8ef9b37019983baa74d8f427c678a7567cf2cc33344598240c23621156b"
+      "bytes": 520875,
+      "sha256": "72f74ab8d91e00a5d43139b6730dd7b9ac95d5a370c18a84aab5a31904f99e27"
     },
     {
       "path": "guide/touch.jpg",
-      "bytes": 64715,
-      "sha256": "64986760bd24e66d615634ea7a233230048880a58691bc81855b3bbf13c73cd1"
+      "bytes": 65288,
+      "sha256": "0f27524d34b78bf228625c0cf6cf18e86e892436e08ddf7e7611af2d741e1cb2"
     },
     {
       "path": "index.html",
-      "bytes": 15767,
-      "sha256": "1ae0e983545af5e6949d10fcda0eca460bb874f0b54a2da28632cea1b893bf44"
+      "bytes": 15812,
+      "sha256": "4ec840382ec20a416c70dbb78a86fb2961541ef640d010623b42ff118d6868d5"
     },
     {
       "path": "licenses/ART_CREDITS.md",
@@ -98,8 +98,8 @@
     },
     {
       "path": "licenses/AUDIO_KOKORO_LICENSE.txt",
-      "bytes": 11357,
-      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+      "bytes": 11558,
+      "sha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6"
     },
     {
       "path": "licenses/AUDIO_Q009_LICENSE.txt",
@@ -168,8 +168,8 @@
     },
     {
       "path": "licenses/QUATERNIUS_heroes_weapons_LICENSE.txt",
-      "bytes": 497,
-      "sha256": "eb7d8da8857b2a19238b996b16389a8675ee96ec8b6599456cd0b5827e67213b"
+      "bytes": 501,
+      "sha256": "8656b634a2103e4901043cfcb66fbfb29fbb02678d339ce6c83404c5a1cfabb2"
     },
     {
       "path": "licenses/QUATERNIUS_props_LICENSE.txt",
@@ -178,8 +178,8 @@
     },
     {
       "path": "licenses/QUATERNIUS_statues_LICENSE.txt",
-      "bytes": 127,
-      "sha256": "82035f9cdd44f709015e470865791bcb02ad1c25f09d6fa1affdd6e697552704"
+      "bytes": 128,
+      "sha256": "616c54d60d3a720bd4c185c1e1fba3c9053b55a1f549577c964b665054ca0496"
     },
     {
       "path": "licenses/rajdhani-OFL.txt",
@@ -193,8 +193,8 @@
     },
     {
       "path": "licenses/UNITY_LABS_flame_SOURCES.md",
-      "bytes": 300,
-      "sha256": "ea3e540a068db46b2e04c25ab854e9d9853d8b587e255277052051816cdb2535"
+      "bytes": 302,
+      "sha256": "c80e7f720dc44ecc6370cbf5fc149f1e872edb9a0b98abe232fac832f21295be"
     }
   ]
 }
