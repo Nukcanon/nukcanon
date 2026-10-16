@@ -22,6 +22,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install Pillow (blank guide screenshot check)
+        run: python3 -m pip install --quiet Pillow
       - name: Check installer integrity regressions
         run: python3 .github/scripts/test_update_internal_n_crush.py
       - name: Wait for the validated publication

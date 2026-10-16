@@ -14,11 +14,21 @@ spec.loader.exec_module(installer)
 COMMIT = 'a' * 40
 
 
-def fixture(extra=None, corrupt=False, guide=False):
+def jpeg(blank=False):
+    from PIL import Image
+    image = Image.new('L', (64, 36), 32)
+    if not blank:
+        image.putdata([(x * 37 + y * 91) % 256 for y in range(36) for x in range(64)])
+    buffer = io.BytesIO()
+    image.save(buffer, 'JPEG')
+    return buffer.getvalue()
+
+
+def fixture(extra=None, corrupt=False, guide=False, blank=()):
     name = 'game-' + COMMIT[:12]
     files = {'index.html': ('<script>const GODOT_CONFIG = ' + json.dumps({'executable': name}) + ';</script>').encode(), name + '.js': b'engine /* INC_WEBGL_SPARSE_HANDLES_V1 */', name + '.wasm': b'\x00asmtest', name + '.pck': b'GDPCtest'}
     if guide:
-        files.update({'guide/' + name + '.jpg': b'\xff\xd8mock-image' for name in ('controls', 'touch', 'settings', 'lan', 'internet')})
+        files.update({'guide/' + name + '.jpg': jpeg(name in blank) for name in ('controls', 'touch', 'settings', 'lan', 'internet')})
     manifest = {'version': '1.3.0', 'threads': False, 'source_commit': COMMIT, 'files': [{'path': p, 'bytes': len(c), 'sha256': hashlib.sha256(c).hexdigest()} for p, c in files.items()]}
     if corrupt:
         files[name + '.pck'] = b'GDPCbad!'
@@ -103,6 +113,23 @@ class InstallerTests(unittest.TestCase):
         installer.install(self.root, data, expected)
         self.assertIn('v1.3.0 · Windows', (self.root / 'internal-n-crush.html').read_text())
         self.assertTrue((self.root / 'play/guide/touch.jpg').is_file())
+
+    def test_blank_guide_keeps_live_screenshot(self):
+        (self.root / '.github/internal-n-crush-page.html').write_text(self.page)
+        (self.root / 'play/guide').mkdir()
+        live = jpeg()
+        (self.root / 'play/guide/controls.jpg').write_bytes(live)
+        data, expected = fixture(guide=True, blank=('controls',))
+        installer.install(self.root, data, expected)
+        self.assertEqual((self.root / 'play/guide/controls.jpg').read_bytes(), live)
+        self.assertFalse(installer.blank_screen((self.root / 'play/guide/touch.jpg').read_bytes()))
+
+    def test_blank_guide_without_live_screenshot_rejected(self):
+        (self.root / '.github/internal-n-crush-page.html').write_text(self.page)
+        data, expected = fixture(guide=True, blank=('touch',))
+        with self.assertRaises(AssertionError):
+            installer.install(self.root, data, expected)
+        self.assert_unchanged()
 
     def test_guide_missing_screenshots_preserves_live_page(self):
         (self.root / '.github/internal-n-crush-page.html').write_text('new guide')

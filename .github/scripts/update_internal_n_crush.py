@@ -72,6 +72,30 @@ def verified_files(data, expected):
     return files
 
 
+GUIDE = ('controls', 'touch', 'settings', 'lan', 'internet')
+
+
+def blank_screen(content):
+    # 2.1.6: from 2.0.9 to 2.1.5 the build captured the "전투 준비 중" cover as the
+    # controls and touch guides. A screen almost all one shade is such a cover.
+    from PIL import Image
+    histogram = Image.open(io.BytesIO(content)).convert('L').resize((320, 180)).histogram()
+    peak = histogram.index(max(histogram))
+    return sum(histogram[max(0, peak - 6):peak + 7]) > 0.9 * sum(histogram)
+
+
+def keep_good_guides(root, files):
+    # A blank guide screen keeps the live one; with no good live one the install stops.
+    for name in GUIDE:
+        path = 'guide/' + name + '.jpg'
+        if path not in files or not blank_screen(files[path]):
+            continue
+        live = root / 'play' / path
+        assert live.is_file() and not blank_screen(live.read_bytes()), 'Blank guide screenshot: ' + name
+        files[path] = live.read_bytes()
+        print('Blank guide screenshot kept from the live page:', name)
+
+
 def install(root, data, expected):
     files = verified_files(data, expected)
     revision = expected['sha256'][:12]
@@ -80,8 +104,9 @@ def install(root, data, expected):
     template = root / '.github/internal-n-crush-page.html'
     html = (template if template.is_file() else page).read_text(encoding='utf-8')
     if template.is_file():
-        for name in ('controls', 'touch', 'settings', 'lan', 'internet'):
+        for name in GUIDE:
             assert files['guide/' + name + '.jpg'].startswith(b'\xff\xd8'), 'Missing guide screenshot: ' + name
+    keep_good_guides(root, files)
     html = re.sub(r'<br>\s*<a[^>]*>소스 코드</a>\s*·\s*<a[^>]*>변경 내용</a>', '', html)
     html = re.sub(r'href="play/(?:\?[^"]*)?"', f'href="play/?build={revision}"', html)
     # 2.0.9: the Windows button downloads the setup program (the zip stays on the release page, not linked here)
