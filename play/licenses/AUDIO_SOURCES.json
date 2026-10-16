@@ -726,6 +726,17 @@
    "status": "confirmed",
    "local": "tools/foley/user_v205/px99748_rocket_loop.mp3",
    "note": "The user's download, 2026-10-09."
+  },
+  "px_414572": {
+   "site": "Pixabay",
+   "title": "Cinematic Boom 01",
+   "author": "DRAGON-STUDIO",
+   "pixabay_id": 414572,
+   "url": "https://pixabay.com/sound-effects/cinematic-boom-01-414572/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/user_cinematic_boom.wav"
   }
  },
  "sounds": {
@@ -1403,12 +1414,12 @@
    "clip": "0.08-1.25 s"
   },
   "kill_sting": {
-   "license": "CC0-1.0",
+   "license": "Pixabay Content License",
    "sources": [
-    "synth"
+    "px_414572"
    ],
    "recipe": "tools/build_audio.py",
-   "clip": "deterministic synthesis"
+   "clip": "0.585 s-end"
   },
   "turret_detect": {
    "license": "CC0-1.0",

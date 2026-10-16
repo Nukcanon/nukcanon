@@ -63,6 +63,7 @@ these licences: each sound keeps the licence listed here.
 - "pop" (Pixabay id 423717) - used in `vocal_smg`.
 - "pop" (Pixabay id 402324) - used in `vocal_pistol`.
 - ["Rocket Loop"](https://pixabay.com/sound-effects/film-special-effects-rocket-loop-99748/) by freesound_community (Pixabay id 99748) - used in `rocket_flight`.
+- ["Cinematic Boom 01"](https://pixabay.com/sound-effects/cinematic-boom-01-414572/) by DRAGON-STUDIO (Pixabay id 414572) - used in `kill_sting`.
 
 ## Pixabay sound effects (most likely source)
 
@@ -97,7 +98,7 @@ Only a description of these files was kept when they were added; each is the clo
 - ["Kokoro-82M v1.0, voice af_heart"](https://huggingface.co/hexgrad/Kokoro-82M) by hexgrad - Apache-2.0 (model); generated speech.
   Used in `bomb_planted`, `bomb_dropped`, `bomb_defused`, `win_blue`, `win_orange`, `capture_blue_a`, `capture_blue_b`, `capture_blue_c`, `capture_orange_a`, `capture_orange_b`, `capture_orange_c`.
 - "Deterministic synthesis in the build scripts" by Internal N Crush - CC0-1.0.
-  Used in `gun_h6`, `confirm`, `ui`, `heal`, `deploy`, `bomb_beep`, `bomb_defuse`, `kill_sting`, `turret_detect`, `equip`, `melee_swing`, `throw`, `bounce`, `melee_flesh`, `flash_ring`, `knife_wall`, `wrench_wall`, `laser_fire`, `laser_vent`, `link_fire`, `repair_loop`, `link_start`, `link_stop`, `pin`, `shield_loop`, `heartbeat`.
+  Used in `gun_h6`, `confirm`, `ui`, `heal`, `deploy`, `bomb_beep`, `bomb_defuse`, `turret_detect`, `equip`, `melee_swing`, `throw`, `bounce`, `melee_flesh`, `flash_ring`, `knife_wall`, `wrench_wall`, `laser_fire`, `laser_vent`, `link_fire`, `repair_loop`, `link_start`, `link_stop`, `pin`, `shield_loop`, `heartbeat`.
 
 ## Pixabay sound effects (stated by the developer, page not identified)
 
@@ -194,7 +195,7 @@ was not identified, so no author or id is listed.
 | `flash` | CC0-1.0 | 25 CC0 bang / firework SFX; 100 CC0 Metal and Wood SFX | bang_03 + cannon_01 layers; `tools/build_audio.py` |
 | `smoke` | CC0-1.0 | 25 CC0 bang / firework SFX; 100 CC0 Metal and Wood SFX | bang_03 + cannon_01 layers; `tools/build_audio.py` |
 | `skill` | Pixabay Content License | Pixabay 384975 | 0.08-1.25 s; `tools/combat_audio_v154.py` |
-| `kill_sting` | CC0-1.0 | Deterministic synthesis in the build scripts | deterministic synthesis; `tools/build_audio.py` |
+| `kill_sting` | Pixabay Content License | Pixabay 414572 | 0.585 s-end; `tools/build_audio.py` |
 | `turret_detect` | CC0-1.0 | Impact Sounds, Interface Sounds, RPG Audio; Deterministic synthesis in the build scripts | `tools/combat_audio_refresh.py` |
 | `equip` | CC0-1.0 | Deterministic synthesis in the build scripts | deterministic synthesis; `tools/build_audio.py` |
 | `melee_swing` | CC0-1.0 | Impact Sounds, Interface Sounds, RPG Audio; Deterministic synthesis in the build scripts | `tools/combat_audio_refresh.py` |
