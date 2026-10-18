@@ -13,16 +13,16 @@
     .app-page .app-icon{display:grid;flex:none;place-items:center;width:64px;height:64px;border-radius:14px;color:#fff;background:var(--home-primary)}
     .app-page .app-icon svg{width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
     .app-page .hero .intro{max-width:680px;margin:14px 0 18px;color:var(--home-muted);line-height:1.8}
-    .app-page .cta-row{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-start;max-width:474px}
-    .app-page .cta{display:flex;flex-direction:column;align-items:center;width:230px}
-    .app-page .download{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;width:100%;gap:10px;padding:15px 16px;border-radius:12px;color:#fff;background:var(--home-primary);font-weight:800;font-size:.94rem;white-space:nowrap;box-shadow:var(--home-shadow)}
+    .app-page .cta-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px 12px;align-items:start}
+    .app-page .cta{display:flex;flex-direction:column;align-items:center;min-width:0}
+    .app-page .download{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;width:100%;gap:6px;padding:15px 10px;border-radius:12px;color:#fff;background:var(--home-primary);font-weight:800;font-size:.88rem;white-space:nowrap;box-shadow:var(--home-shadow)}
     .app-page .download:hover{background:var(--home-primary-dark);text-decoration:none}
     .app-page .teacher{background:#237c71}.app-page .teacher:hover{background:#196358}
     .app-page .nas{background:#5b55c8}.app-page .nas:hover{background:#4a44b0}
     .app-page .site{background:#c2410c}.app-page .site:hover{background:#9a3412}
     .app-page .pending,.app-page .pending:hover{background:#94a3b8;box-shadow:none;cursor:default}
     .app-page .download:focus-visible{outline:3px solid var(--home-accent);outline-offset:4px}
-    .app-page .download-note{margin:8px 0 0;color:var(--home-muted);font-size:.85rem;line-height:1.6;text-align:center}
+    .app-page .download-note{margin:8px 0 0;color:var(--home-muted);font-size:.8rem;line-height:1.6;text-align:center;word-break:keep-all;text-wrap:balance}
     .app-page .detail{display:block;padding:24px;border:1px solid var(--home-line);border-radius:18px;background:var(--home-surface);box-shadow:var(--home-shadow);min-width:0}
     .app-page .detail h2{font-size:1.15rem;margin:0 0 14px;color:var(--home-ink)}
     .app-page .detail h3{font-size:1rem;margin:0 0 10px;color:var(--home-ink)}
@@ -38,7 +38,7 @@
     .app-page .notes li{margin:0 0 6px}
     .app-page .hashes{margin:6px 0 0;padding-left:18px}.app-page .hashes li{margin:0 0 4px;font-size:.88rem}
     .app-page code{padding:1px 5px;border-radius:5px;background:var(--home-surface-soft);color:var(--home-ink);font-size:.88em;word-break:break-all}
-    @media(max-width:760px){.app-page .cta-row{max-width:none}.app-page .two{grid-template-columns:1fr}.app-page .detail{padding:20px}.app-page .cta{width:100%}}
+    @media(max-width:900px){.app-page .cta-row{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:520px){.app-page .cta-row{grid-template-columns:1fr}}@media(max-width:760px){.app-page .two{grid-template-columns:1fr}.app-page .detail{padding:20px}}
   </style>
 </head>
 <body class="home-page app-page">
