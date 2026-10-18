@@ -13,12 +13,13 @@
     .app-page .app-icon{display:grid;flex:none;place-items:center;width:64px;height:64px;border-radius:14px;color:#fff;background:var(--home-primary)}
     .app-page .app-icon svg{width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
     .app-page .hero .intro{max-width:680px;margin:14px 0 18px;color:var(--home-muted);line-height:1.8}
-    .app-page .cta-row{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-start}
+    .app-page .cta-row{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-start;max-width:474px}
     .app-page .cta{display:flex;flex-direction:column;align-items:center;width:230px}
     .app-page .download{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;width:100%;gap:10px;padding:15px 16px;border-radius:12px;color:#fff;background:var(--home-primary);font-weight:800;font-size:.94rem;white-space:nowrap;box-shadow:var(--home-shadow)}
     .app-page .download:hover{background:var(--home-primary-dark);text-decoration:none}
     .app-page .teacher{background:#237c71}.app-page .teacher:hover{background:#196358}
     .app-page .nas{background:#5b55c8}.app-page .nas:hover{background:#4a44b0}
+    .app-page .site{background:#c2410c}.app-page .site:hover{background:#9a3412}
     .app-page .pending,.app-page .pending:hover{background:#94a3b8;box-shadow:none;cursor:default}
     .app-page .download:focus-visible{outline:3px solid var(--home-accent);outline-offset:4px}
     .app-page .download-note{margin:8px 0 0;color:var(--home-muted);font-size:.85rem;line-height:1.6;text-align:center}
@@ -37,7 +38,7 @@
     .app-page .notes li{margin:0 0 6px}
     .app-page .hashes{margin:6px 0 0;padding-left:18px}.app-page .hashes li{margin:0 0 4px;font-size:.88rem}
     .app-page code{padding:1px 5px;border-radius:5px;background:var(--home-surface-soft);color:var(--home-ink);font-size:.88em;word-break:break-all}
-    @media(max-width:760px){.app-page .two{grid-template-columns:1fr}.app-page .detail{padding:20px}.app-page .cta{width:100%}}
+    @media(max-width:760px){.app-page .cta-row{max-width:none}.app-page .two{grid-template-columns:1fr}.app-page .detail{padding:20px}.app-page .cta{width:100%}}
   </style>
 </head>
 <body class="home-page app-page">
@@ -69,6 +70,10 @@
           <p class="download-note">시놀로지 NAS(DS423+ 등)·일반 Linux · 약 0.3MB<br>64비트 Intel·AMD, 64비트 ARM</p>
         </div>
         <!-- SAS:cta:end -->
+        <div class="cta">
+          <a class="download site" href="https://hwg119.synology.me/" target="_blank" rel="noopener">산북중 과제 제출 서버 <span aria-hidden="true">↗</span></a>
+          <p class="download-note">산북중학교 전용 · 웹 접속<br>새 탭에서 열림</p>
+        </div>
       </div>
     </section>
     <section class="detail" aria-labelledby="howto-title">
