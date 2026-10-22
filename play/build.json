@@ -1,8 +1,8 @@
 {
-  "version": "2.1.7",
+  "version": "2.1.8",
   "threads": false,
-  "source_commit": "2998fecd6a8d1a4afd16a6f71d0e7468a9fe212f",
-  "executable": "game-2998fecd6a8d",
+  "source_commit": "295c33cecc41a76234ca4a10cbf46e1706b47683",
+  "executable": "game-295c33cecc41",
   "transport": "WebRTC",
   "touch": "coarse-pointer/mobile detection; landscape",
   "files": [
@@ -12,47 +12,47 @@
       "sha256": "b6e2940e885a1ef2dd4d52eb4f2bc81d46cc4a0057dab06f912f7f73359a0394"
     },
     {
-      "path": "game-2998fecd6a8d.apple-touch-icon.png",
+      "path": "game-295c33cecc41.apple-touch-icon.png",
       "bytes": 18314,
       "sha256": "44bbae0d3369f3cd32d55d90ac0ab79ad5d048c23d959b8a3483354de6653ae5"
     },
     {
-      "path": "game-2998fecd6a8d.audio.position.worklet.js",
+      "path": "game-295c33cecc41.audio.position.worklet.js",
       "bytes": 2973,
       "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
     },
     {
-      "path": "game-2998fecd6a8d.audio.worklet.js",
+      "path": "game-295c33cecc41.audio.worklet.js",
       "bytes": 7298,
       "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
     },
     {
-      "path": "game-2998fecd6a8d.icon.png",
+      "path": "game-295c33cecc41.icon.png",
       "bytes": 27842,
       "sha256": "e1a297272c8e42f8b539f5aeb1698bee2def2bbe2e0dadd664b331e4c88f0315"
     },
     {
-      "path": "game-2998fecd6a8d.js",
+      "path": "game-295c33cecc41.js",
       "bytes": 280063,
       "sha256": "d3e2ccc4078f30ad8ac59b14884945cb59ba87f8e25a948d1f23d45956814a41"
     },
     {
-      "path": "game-2998fecd6a8d.maps.pck",
-      "bytes": 52082516,
-      "sha256": "24357a97cd7465f07921bee48ce0259027e765d130602a22066f505cfee380c7"
+      "path": "game-295c33cecc41.maps.pck",
+      "bytes": 47738580,
+      "sha256": "4acdb8f7e3d1c57427b790472270a7ae275d189b0aab7db70542813ea6690bcd"
     },
     {
-      "path": "game-2998fecd6a8d.pck",
-      "bytes": 76682320,
-      "sha256": "697a4376f9fcfc3e180f5ffe1a144bf321e87bf1dc43822300620a52d69c3c94"
+      "path": "game-295c33cecc41.pck",
+      "bytes": 75426432,
+      "sha256": "4faeca996698463d8a02fb18bf53ff26b10d2199b89713b18225abb1a834805c"
     },
     {
-      "path": "game-2998fecd6a8d.png",
+      "path": "game-295c33cecc41.png",
       "bytes": 21443,
       "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
     },
     {
-      "path": "game-2998fecd6a8d.wasm",
+      "path": "game-295c33cecc41.wasm",
       "bytes": 39514754,
       "sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0"
     },
@@ -63,18 +63,18 @@
     },
     {
       "path": "guide/internet.jpg",
-      "bytes": 361397,
-      "sha256": "754fb7c030f25cabd7125b7e01877f93d858fb9a00ca7978f3d5c095b7f39f64"
+      "bytes": 362961,
+      "sha256": "0028f1e6b6a1d81d7f232fb8045e85e9d6eeef069894435879cace77d29a5a41"
     },
     {
       "path": "guide/lan.jpg",
-      "bytes": 429598,
-      "sha256": "94260d474da2f422ee51132378bd74f1fcd19c50d6b10995d1336caaf8ef9a68"
+      "bytes": 430800,
+      "sha256": "afdac25ea7b741a6e11a9ce4e2b7576f4bde80c7a8953967a56142a4c9bae014"
     },
     {
       "path": "guide/settings.jpg",
-      "bytes": 520545,
-      "sha256": "2de10005d19d1362d9a1490dc28f4751f8284f5d631e28b54c5f204e4308ef7d"
+      "bytes": 521988,
+      "sha256": "ce69b68e452bedd13b2502df6bf81f6783bce576e486e41041bc4d96ed6edf30"
     },
     {
       "path": "guide/touch.jpg",
@@ -84,7 +84,7 @@
     {
       "path": "index.html",
       "bytes": 15812,
-      "sha256": "7d9a9bb663b86e1e8a316c1a4bc963fe64258b33175e337f6def44cebb62d664"
+      "sha256": "b187af36f675d89228857d1c85e79aa6a9756f0334ef79a7d316316bfe8ccc23"
     },
     {
       "path": "licenses/ART_CREDITS.md",
@@ -163,8 +163,8 @@
     },
     {
       "path": "licenses/LICENSE.txt",
-      "bytes": 7647,
-      "sha256": "f1b1ed96aac640228fd920e121247766604b11b2517b82fd9c40ce6b707cba1b"
+      "bytes": 7655,
+      "sha256": "b7136b0b5a1c7298c6ae95afd878ee354830bc2c72b2780870747b9eb638ce0d"
     },
     {
       "path": "licenses/QUATERNIUS_heroes_weapons_LICENSE.txt",
