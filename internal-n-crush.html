@@ -15,6 +15,7 @@
     .game-page .download:hover{background:var(--home-primary-dark);text-decoration:none}
     .game-page .download:focus-visible{outline:3px solid var(--home-accent);outline-offset:4px}
     .game-page .download-note{color:var(--home-muted);font-size:.85rem;line-height:1.7}
+    .game-page .download-note a{text-decoration:underline;text-underline-offset:2px}
     .game-page .details{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
     .game-page .detail{display:block;padding:24px;border:1px solid var(--home-line);border-radius:18px;background:var(--home-surface);box-shadow:var(--home-shadow);min-width:0}
     .game-page .detail h2{font-size:1.15rem;margin:0 0 12px;color:var(--home-ink)}
@@ -52,10 +53,10 @@
     .game-page .ih-figs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:14px 0 4px}
     .game-page .ih-fig{margin:0;min-width:0}
     .game-page .ih-fig figcaption{margin-top:8px;font-size:.85rem;color:var(--home-muted);line-height:1.6}
-    .game-page .ih-win{position:relative;box-sizing:border-box;padding:16px 16px 14px;color:#fff;background:#0b63c4;border:1px solid rgba(0,0,0,.18);box-shadow:var(--home-shadow);font:400 .78rem/1.55 "Segoe UI","Malgun Gothic",system-ui,sans-serif;min-height:190px}
+    .game-page .ih-win{position:relative;box-sizing:border-box;padding:16px 16px 14px;color:#fff;background:#0b63c4;border:1px solid rgba(0,0,0,.18);box-shadow:var(--home-shadow);font:400 .78rem/1.55 "Segoe UI","Malgun Gothic",system-ui,sans-serif;min-height:190px;padding-bottom:52px}
     .game-page .ih-win b{display:block;margin:0 0 8px;font-size:1.15rem;font-weight:600;line-height:1.3}
     .game-page .ih-win p{margin:0 0 6px;color:#fff;line-height:1.55;font-size:.78rem}
-    .game-page .ih-win .ih-link{text-decoration:underline;text-underline-offset:2px}
+    .game-page .ih-win .ih-link{position:relative;text-decoration:underline;text-underline-offset:2px}
     .game-page .ih-win .ih-meta{margin:0;font-size:.76rem}
     .game-page .ih-btns{position:absolute;right:14px;bottom:12px;display:flex;gap:8px}
     .game-page .ih-btn{padding:4px 14px;border:1px solid #fff;color:#fff;font-size:.76rem}
@@ -113,8 +114,7 @@
           <div class="ih-win" role="img" aria-label="Windows의 PC 보호 창. 추가 정보 링크가 표시됨">
             <b>Windows의 PC 보호</b>
             <p>Microsoft Defender SmartScreen에서 인식할 수 없는 앱의 시작을 차단했습니다. 이 앱을 실행하면 PC가 위험에 노출될 수 있습니다.</p>
-            <p><span class="ih-link">추가 정보</span></p>
-            <span class="ih-mark" style="left:96px;top:92px">1</span>
+            <p><span class="ih-link">추가 정보<span class="ih-mark" style="left:calc(100% + 8px);top:-2px">1</span></span></p>
             <div class="ih-btns"><span class="ih-btn">실행 안 함</span></div>
           </div>
           <figcaption><strong>1.</strong> 창 안의 <strong>추가 정보</strong>를 누릅니다.</figcaption>
@@ -124,8 +124,7 @@
             <b>Windows의 PC 보호</b>
             <p>Microsoft Defender SmartScreen에서 인식할 수 없는 앱의 시작을 차단했습니다. 이 앱을 실행하면 PC가 위험에 노출될 수 있습니다.</p>
             <p class="ih-meta">앱: InternalNCrush_Setup.exe<br>게시자: 알 수 없는 게시자</p>
-            <span class="ih-mark" style="right:104px;bottom:44px">2</span>
-            <div class="ih-btns"><span class="ih-btn on">실행</span><span class="ih-btn">실행 안 함</span></div>
+            <div class="ih-btns"><span class="ih-btn on" style="position:relative">실행<span class="ih-mark" style="right:-11px;top:-15px">2</span></span><span class="ih-btn">실행 안 함</span></div>
           </div>
           <figcaption><strong>2.</strong> 나타난 <strong>실행</strong> 버튼을 누릅니다.</figcaption>
         </figure>
