@@ -20,10 +20,9 @@ these licences: each sound keeps the licence listed here.
 
 ## Pixabay sound effects (source confirmed)
 
-- ["Rifle Gunshot"](https://pixabay.com/sound-effects/rifle-gunshot-99749/) by freesound_community, originally by Mozfoo (Freesound) (Pixabay id 99749) - used in `gun_r1`, `gun_r2`, `gun_m4`.
-- ["Submachine Gun"](https://pixabay.com/sound-effects/submachine-gun-79846/) by freesound_community, originally by morganpurkis (Freesound) (Pixabay id 79846) - used in `gun_r3`, `gun_r4`, `gun_r5`.
-- ["Gun shoot"](https://pixabay.com/sound-effects/gun-shoot-512969/) by u_2n07b18i8q (Pixabay id 512969) - used in `gun_h1`, `gun_h2`.
-- ["revovler sound"](https://pixabay.com/sound-effects/revovler-sound-328431/) by diega1241251 (Pixabay id 328431) - used in `gun_heavy_pistol`, `gun_eng_pistol`, `gun_dual_pistols`.
+- ["Rifle Gunshot"](https://pixabay.com/sound-effects/rifle-gunshot-99749/) by freesound_community, originally by Mozfoo (Freesound) (Pixabay id 99749) - used in `gun_r1`, `gun_m4`.
+- ["Submachine Gun"](https://pixabay.com/sound-effects/submachine-gun-79846/) by freesound_community, originally by morganpurkis (Freesound) (Pixabay id 79846) - used in `gun_r3`, `gun_r4`, `gun_r5`, `gun_h1`, `gun_h2`.
+- ["revovler sound"](https://pixabay.com/sound-effects/revovler-sound-328431/) by diega1241251 (Pixabay id 328431) - used in `gun_r2`, `gun_heavy_pistol`, `gun_eng_pistol`, `gun_dual_pistols`.
 - ["Punches"](https://pixabay.com/sound-effects/punches-65734/) by freesound_community, originally by Themiwa100 (Freesound) (Pixabay id 65734) - used in `hit`, `hit_v1`, `hit_v2`, `hit_v3`.
 - ["sword-sound"](https://pixabay.com/sound-effects/sword-sound-260274/) by MUSICHOLDER (Pixabay id 260274) - used in `knife_swing`.
 - ["Walking In Water"](https://pixabay.com/sound-effects/walking-in-water-199418/) by Alex_Jauk (Pixabay id 199418) - used in `step_water_0`, `step_water_1`, `step_water_2`, `step_water_3`.
@@ -120,12 +119,12 @@ was not identified, so no author or id is listed.
 | `gun_a3` | CC-BY-SA-3.0 | Q009's weapon sounds; 25 CC0 bang / firework SFX; 100 CC0 Metal and Wood SFX; Impact Sounds, Interface Sounds, RPG Audio | Q009 shots trimmed, pitched and layered with a CC0 thump and case click; `tools/combat_audio_v150.py` |
 | `gun_a4` | CC-BY-SA-3.0 | Q009's weapon sounds; 25 CC0 bang / firework SFX; 100 CC0 Metal and Wood SFX; Impact Sounds, Interface Sounds, RPG Audio | Q009 shots trimmed, pitched and layered with a CC0 thump and case click; `tools/combat_audio_v150.py` |
 | `gun_r1` | Pixabay Content License | Pixabay 99749 | from 0.085 s, 0.8-0.95 s, slight per-weapon pitch; `tools/combat_audio_v156.py` |
-| `gun_r2` | Pixabay Content License | Pixabay 99749 | from 0.085 s, 0.8-0.95 s, slight per-weapon pitch; `tools/combat_audio_v156.py` |
+| `gun_r2` | Pixabay Content License | Pixabay 328431 | the whole clip, uncut; `tools/combat_audio_v219.py` |
 | `gun_r3` | Pixabay Content License | Pixabay 79846 | from 0.035 s, 0.5-0.55 s; `tools/combat_audio_v156.py` |
 | `gun_r4` | Pixabay Content License | Pixabay 79846 | from 0.035 s, 0.5-0.55 s; `tools/combat_audio_v156.py` |
 | `gun_r5` | Pixabay Content License | Pixabay 79846 | from 0.035 s, 0.5-0.55 s; `tools/combat_audio_v156.py` |
-| `gun_h1` | Pixabay Content License | Pixabay 512969 | one round of the burst at 0.598 s, 0.115 s; `tools/combat_audio_v156.py` |
-| `gun_h2` | Pixabay Content License | Pixabay 512969 | one round of the burst at 0.598 s, 0.115 s; `tools/combat_audio_v156.py` |
+| `gun_h1` | Pixabay Content License | Pixabay 79846 | the whole shot, uncut, quieter; slight per-weapon pitch; `tools/combat_audio_v219.py` |
+| `gun_h2` | Pixabay Content License | Pixabay 79846 | the whole shot, uncut, quieter; slight per-weapon pitch; `tools/combat_audio_v219.py` |
 | `gun_e1` | CC-BY-SA-3.0 | Q009's weapon sounds; 25 CC0 bang / firework SFX; 100 CC0 Metal and Wood SFX; Impact Sounds, Interface Sounds, RPG Audio | Q009 shots trimmed, pitched and layered with a CC0 thump and case click; `tools/combat_audio_v150.py` |
 | `gun_e2` | CC-BY-SA-3.0 | Q009's weapon sounds; 25 CC0 bang / firework SFX; 100 CC0 Metal and Wood SFX; Impact Sounds, Interface Sounds, RPG Audio | Q009 shots trimmed, pitched and layered with a CC0 thump and case click; `tools/combat_audio_v150.py` |
 | `gun_e3` | CC-BY-SA-3.0 | Q009's weapon sounds; 25 CC0 bang / firework SFX; 100 CC0 Metal and Wood SFX; Impact Sounds, Interface Sounds, RPG Audio | Q009 shots trimmed, pitched and layered with a CC0 thump and case click; `tools/combat_audio_v150.py` |

@@ -98,19 +98,20 @@ body {
 #launch .lobby-guide p {margin:8px 0;max-width:none;}
 .lobby-guide strong {color:#6cdfc3;}
 #launch button {background:#6cdfc3;color:#10212c;border:0;border-radius:8px;padding:18px 42px;font-size:20px;font-weight:700;cursor:pointer;}
+#launch button:disabled {opacity:.55;cursor:progress;}
 #launch h1 {letter-spacing:.1em;font-size:clamp(24px,5vw,44px);}
 #launch p {color:#bdd0d7;line-height:1.6;max-width:550px;}
 #fullscreen {position:fixed;top:max(6px,env(safe-area-inset-top,0));left:max(8px,env(safe-area-inset-left,0));z-index:5;padding:5px 12px;border:1px solid #78989c77;border-radius:0 0 6px 6px;background:#13293699;color:#d9eeee;font-size:12px;cursor:pointer;}
 #portrait {display:none;position:fixed;inset:0;z-index:30;background:#112631;color:white;place-content:center;text-align:center;font:20px system-ui;padding:30px;}
 @media (orientation:portrait) and (pointer:coarse) {body.started #portrait{display:grid}}
 </style>
-		<link id="-gd-engine-icon" rel="icon" type="image/png" href="game-295c33cecc41.icon.png" />
-<link rel="apple-touch-icon" href="game-295c33cecc41.apple-touch-icon.png"/>
+		<link id="-gd-engine-icon" rel="icon" type="image/png" href="game-c9ebaa804dfa.icon.png" />
+<link rel="apple-touch-icon" href="game-c9ebaa804dfa.apple-touch-icon.png"/>
 
 	</head>
 	<body>
 <div id="portrait">화면을 가로로 돌려 주세요.<br><small>두 손 터치 조작에 맞춘 가로 화면 게임입니다.</small></div>
-<div id="launch"><div class="launch-card"><h1>INTERNAL N CRUSH</h1><p>첫 실행에는 게임 파일을 내려받습니다.<br>모바일은 가로 화면 · PC는 키보드와 마우스로 플레이하세요.</p><button id="start">게임 시작</button><p id="start-error" role="status"></p><section class="lobby-guide" aria-label="함께 플레이하는 방법"><strong>별도 서버 프로그램 없이 함께 플레이</strong><p>게임 시작 → <b>온라인 로비</b>에서 공용 로비에 자동 연결됩니다.<br>한 사람이 방을 만들고, 다른 사람들은 같은 목록에서 참가하세요.<br>Windows 버전은 <b>인터넷 로비</b>를 이용하면 웹과 함께 플레이할 수 있습니다.</p><p>인터넷 연결이 필요합니다. 학교·DMZ·VPN에서도 같은 온라인 방 목록에서 참가할 수 있습니다. 망 설정에 따라 기기 간 직접 연결이 제한될 수 있습니다.</p></section></div></div>
+<div id="launch"><div class="launch-card"><h1>INTERNAL N CRUSH</h1><p>첫 실행에는 게임 파일을 내려받습니다.<br>모바일은 가로 화면 · PC는 키보드와 마우스로 플레이하세요.</p><button id="start" disabled>준비 중…</button><p id="start-error" role="status"></p><section class="lobby-guide" aria-label="함께 플레이하는 방법"><strong>별도 서버 프로그램 없이 함께 플레이</strong><p>게임 시작 → <b>온라인 로비</b>에서 공용 로비에 자동 연결됩니다.<br>한 사람이 방을 만들고, 다른 사람들은 같은 목록에서 참가하세요.<br>Windows 버전은 <b>인터넷 로비</b>를 이용하면 웹과 함께 플레이할 수 있습니다.</p><p>인터넷 연결이 필요합니다. 학교·DMZ·VPN에서도 같은 온라인 방 목록에서 참가할 수 있습니다. 망 설정에 따라 기기 간 직접 연결이 제한될 수 있습니다.</p></section></div></div>
 <button id="fullscreen" aria-label="전체 화면 전환">전체 화면</button>
 		<canvas id="canvas">
 			Your browser does not support the canvas tag.
@@ -121,7 +122,7 @@ body {
 		</noscript>
 
 		<div id="status">
-			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="game-295c33cecc41.png" alt="">
+			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="game-c9ebaa804dfa.png" alt="">
 			<progress id="status-progress"></progress>
 			<div id="status-notice"></div>
 		</div>
@@ -139,10 +140,85 @@ gameCanvas.getContext=function(type,attributes){
   return context;
 };
 </script>
-<script src="game-295c33cecc41.js"></script>
+<script>
+// 2.1.9 (the user: the first match took very long to start on the Web): on a first visit the engine compiles
+// about 150 WebGL programs at the start of the first match, one at a time - each link waits for its own result
+// (15-20 s on X20, Chrome on Direct3D 11). The same programs issued together with KHR_parallel_shader_compile
+// are ready in 2-3 s. This compiles the recorded set (<executable>.shaders.json, made by web/pack_shaders.py)
+// on the game's own canvas context while the files download; the engine's glCompileShader / glLinkProgram
+// (patched by patch_shader_prewarm.py) take a ready shader / program of the same source instead of making their
+// own. Anything not in the set - another GPU, another setting - compiles exactly as before.
+(() => {
+  const P = window.WebGL2RenderingContext && WebGL2RenderingContext.prototype;
+  if (!P || window.incShaderTake) return;
+  const types = new WeakMap(), sources = new WeakMap(), attached = new WeakMap();
+  const shaders = new Map(), programs = new Map();
+  let context = null;
+  const wrap = (name, after) => { const f = P[name]; P[name] = function (...a) { const r = f.apply(this, a); after(r, a); return r; }; };
+  wrap('createShader', (s, [type]) => { if (s) types.set(s, type); });
+  wrap('shaderSource', (_, [s, text]) => sources.set(s, text));
+  wrap('attachShader', (_, [p, s]) => { if (p && s) (attached.get(p) || attached.set(p, []).get(p)).push(s); });
+  const feedback = new WeakMap();
+  wrap('transformFeedbackVaryings', (_, [p, names, mode]) => feedback.set(p, JSON.stringify([Array.from(names), mode])));
+  // cyrb53: a 53-bit hash of a shader's type and source, or of a program's shaders in attach order
+  const hash = text => { let h1 = 0xdeadbeef, h2 = 0x41c6ce57; for (let i = 0; i < text.length; i++) { const c = text.charCodeAt(i); h1 = Math.imul(h1 ^ c, 2654435761); h2 = Math.imul(h2 ^ c, 1597334677); }
+    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909); h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+    return 4294967296 * (2097151 & h2) + (h1 >>> 0) + ':' + text.length; };
+  const shaderKey = s => hash(types.get(s) + '|' + sources.get(s));
+  const programKey = p => (attached.get(p) || []).map(shaderKey).join(',') + '|' + (feedback.get(p) || '');
+  const take = (map, key) => { const list = map.get(key); if (!list) return null; const r = list.pop(); if (!list.length) map.delete(key); return r; };
+  // the engine's compile/link: a ready object of the same key, used once (null: compile as before)
+  window.incShaderTake = (gl, object, program) => gl === context ? take(program ? programs : shaders, program ? programKey(object) : shaderKey(object)) : null;
+  // 2.1.9 (measured on X20: the first frame of the first fight waited ~0.6 s on programs still compiling) how many
+  // issued programs are not ready yet - asked without waiting (COMPLETION_STATUS_KHR); the game holds its start cover
+  // for them (VisualWarmup.warm_shaders)
+  let parallel = null;
+  window.incShaderBusy = () => {
+    if (!context || !parallel) return 0;
+    let busy = 0;
+    for (const list of programs.values()) for (const p of list) if (!context.getProgramParameter(p, parallel.COMPLETION_STATUS_KHR)) busy++;
+    return busy;
+  };
+  window.incShaderPrewarm = async url => {
+    try {
+      if (matchMedia('(any-pointer: coarse)').matches) return; // (phones and tablets: other GPUs, other sources)
+      const canvas = document.getElementById('canvas');
+      // the attributes Godot 4.7.2 asks for: its own getContext call then returns this same context
+      const gl = canvas && canvas.getContext('webgl2', { alpha: false, depth: true, stencil: false, antialias: false, premultipliedAlpha: true,
+        preserveDrawingBuffer: true, powerPreference: 'high-performance', failIfMajorPerformanceCaveat: false });
+      parallel = gl && gl.getExtension('KHR_parallel_shader_compile');
+      if (!parallel) return; // (without it the compiles would stop the page)
+      const response = await fetch(url);
+      if (!response.ok) return;
+      const data = await response.json();
+      if (data.v !== 1) return;
+      const t0 = performance.now();
+      context = gl;
+      const put = (map, key, object) => (map.get(key) || map.set(key, []).get(key)).push(object);
+      // issued in slices of about 8 ms (one long call stopped the page for 1.2 s on X20); a program is handed out as
+      // soon as it is issued, the shaders once all programs hold theirs
+      const made = [], slice = () => new Promise(r => setTimeout(r, 0));
+      let next = performance.now() + 8;
+      for (const [type, lines] of data.shaders) {
+        const s = gl.createShader(type); gl.shaderSource(s, lines.map(i => data.lines[i]).join('\n')); gl.compileShader(s); made.push(s);
+        if (performance.now() > next) { await slice(); next = performance.now() + 8; }
+      }
+      for (const [ids, varyings] of data.programs) {
+        const p = gl.createProgram(); for (const i of ids) gl.attachShader(p, made[i]); if (varyings) gl.transformFeedbackVaryings(p, varyings[0], varyings[1]); gl.linkProgram(p); put(programs, programKey(p), p);
+        if (performance.now() > next) { await slice(); next = performance.now() + 8; }
+      }
+      // a shader is handed out once; one in several programs stays attached to the others
+      made.forEach(s => put(shaders, shaderKey(s), s));
+      console.log('SHADER_PREWARM programs=' + data.programs.length + ' shaders=' + made.length + ' issued_ms=' + Math.round(performance.now() - t0));
+    } catch (error) { console.warn('Shader prewarm skipped:', error.message); }
+  };
+})();
+</script>
+<script src="game-c9ebaa804dfa.js"></script>
 		<script>
-const GODOT_CONFIG = {"args": [], "canvasResizePolicy": 2, "emscriptenPoolSize": 8, "ensureCrossOriginIsolationHeaders": true, "executable": "game-295c33cecc41", "experimentalVK": false, "fileSizes": {"game-295c33cecc41.pck": 75426432, "game-295c33cecc41.wasm": 39514754, "game-295c33cecc41.maps.pck": 47738580}, "focusCanvas": true, "gdextensionLibs": [], "godotPoolSize": 4};
+const GODOT_CONFIG = {"args": [], "canvasResizePolicy": 2, "emscriptenPoolSize": 8, "ensureCrossOriginIsolationHeaders": true, "executable": "game-c9ebaa804dfa", "experimentalVK": false, "fileSizes": {"game-c9ebaa804dfa.pck": 75960124, "game-c9ebaa804dfa.wasm": 39514754, "game-c9ebaa804dfa.maps.pck": 47738580}, "focusCanvas": true, "gdextensionLibs": [], "godotPoolSize": 4};
 const GODOT_THREADS_ENABLED = false;
+window.incShaderPrewarm(GODOT_CONFIG.executable+'.shaders.json');
 // Web updates follow the deployed build, not the Windows release label.
 (() => {
   GODOT_CONFIG.args = [...(GODOT_CONFIG.args || [])];
@@ -226,6 +302,19 @@ if(requestLock)canvasElement.requestPointerLock=function(...args){
 	};
 	try{const pending=requestLock(...args);if(pending?.catch)return pending.catch(denied);return pending;}catch(error){denied();}
 };
+
+// 2.1.9: the GPU driver or browser can drop the WebGL context; the engine cannot draw again after it, so say so
+// and offer a reload instead of leaving a blank page.
+canvasElement.addEventListener('webglcontextlost',()=>{
+	if(document.getElementById('context-lost'))return;
+	const box=document.createElement('div');box.id='context-lost';
+	box.style.cssText='position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#10232f;color:#eef8f9;font:17px system-ui;z-index:40;text-align:center;padding:24px';
+	const line=document.createElement('div');line.textContent='그래픽 연결이 끊겼습니다. 새로 고침하면 다시 시작합니다.';
+	const again=document.createElement('button');again.textContent='새로 고침';again.style.cssText='background:#6cdfc3;color:#10212c;border:0;border-radius:8px;padding:14px 34px;font:700 18px system-ui;cursor:pointer';
+	again.onclick=()=>location.reload();
+	box.append(line,again);document.body.appendChild(box);
+	if(document.pointerLockElement)document.exitPointerLock();
+},false);
 
 (async function () {
  await window.incUpdateReady;
@@ -348,6 +437,8 @@ if(requestLock)canvasElement.requestPointerLock=function(...args){
 		}).then(() => {
 			setStatusMode('hidden');
 		}, displayFailureNotice);};
+		// 2.1.9: the button waits for the update check and service worker (up to 1.6 s on a first visit) - a click before did nothing
+		startButton.disabled=false;startButton.textContent='게임 시작';
 	}
 	// 1.4.5: the game calls this when play begins (after the start click, within
 	// the browser's user-activation window); the button below stays as before.

@@ -25,17 +25,6 @@
    "local": "tools/foley/user_smg_shot.wav",
    "original_artist": "morganpurkis (Freesound)"
   },
-  "px_512969": {
-   "site": "Pixabay",
-   "title": "Gun shoot",
-   "author": "u_2n07b18i8q",
-   "pixabay_id": 512969,
-   "url": "https://pixabay.com/sound-effects/gun-shoot-512969/",
-   "license": "Pixabay Content License",
-   "license_url": "https://pixabay.com/service/license-summary/",
-   "status": "confirmed",
-   "local": "tools/foley/user_mg_shot.wav"
-  },
   "px_328431": {
    "site": "Pixabay",
    "title": "revovler sound",
@@ -791,10 +780,10 @@
   "gun_r2": {
    "license": "Pixabay Content License",
    "sources": [
-    "px_99749"
+    "px_328431"
    ],
-   "recipe": "tools/combat_audio_v156.py",
-   "clip": "from 0.085 s, 0.8-0.95 s, slight per-weapon pitch"
+   "recipe": "tools/combat_audio_v219.py",
+   "clip": "the whole clip, uncut"
   },
   "gun_r3": {
    "license": "Pixabay Content License",
@@ -823,18 +812,18 @@
   "gun_h1": {
    "license": "Pixabay Content License",
    "sources": [
-    "px_512969"
+    "px_79846"
    ],
-   "recipe": "tools/combat_audio_v156.py",
-   "clip": "one round of the burst at 0.598 s, 0.115 s"
+   "recipe": "tools/combat_audio_v219.py",
+   "clip": "the whole shot, uncut, quieter; slight per-weapon pitch"
   },
   "gun_h2": {
    "license": "Pixabay Content License",
    "sources": [
-    "px_512969"
+    "px_79846"
    ],
-   "recipe": "tools/combat_audio_v156.py",
-   "clip": "one round of the burst at 0.598 s, 0.115 s"
+   "recipe": "tools/combat_audio_v219.py",
+   "clip": "the whole shot, uncut, quieter; slight per-weapon pitch"
   },
   "gun_e1": {
    "license": "CC-BY-SA-3.0",
