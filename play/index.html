@@ -94,6 +94,7 @@ body {
 .launch-card {width:min(100%,680px);margin:auto;}
 #launch .launch-card>p {margin:16px auto;}
 #launch #start {width:100%;}
+#launch #start-note {margin:10px auto 0;font-size:14px;min-height:1.6em;color:#8fb3bd;}
 .lobby-guide {margin-top:22px;padding:16px 20px;border:1px solid #34505e;border-radius:8px;background:#172d39;text-align:left;font-size:14px;line-height:1.65;}
 #launch .lobby-guide p {margin:8px 0;max-width:none;}
 .lobby-guide strong {color:#6cdfc3;}
@@ -105,13 +106,13 @@ body {
 #portrait {display:none;position:fixed;inset:0;z-index:30;background:#112631;color:white;place-content:center;text-align:center;font:20px system-ui;padding:30px;}
 @media (orientation:portrait) and (pointer:coarse) {body.started #portrait{display:grid}}
 </style>
-		<link id="-gd-engine-icon" rel="icon" type="image/png" href="game-c9ebaa804dfa.icon.png" />
-<link rel="apple-touch-icon" href="game-c9ebaa804dfa.apple-touch-icon.png"/>
+		<link id="-gd-engine-icon" rel="icon" type="image/png" href="game-6df538706903.icon.png" />
+<link rel="apple-touch-icon" href="game-6df538706903.apple-touch-icon.png"/>
 
 	</head>
 	<body>
 <div id="portrait">화면을 가로로 돌려 주세요.<br><small>두 손 터치 조작에 맞춘 가로 화면 게임입니다.</small></div>
-<div id="launch"><div class="launch-card"><h1>INTERNAL N CRUSH</h1><p>첫 실행에는 게임 파일을 내려받습니다.<br>모바일은 가로 화면 · PC는 키보드와 마우스로 플레이하세요.</p><button id="start" disabled>준비 중…</button><p id="start-error" role="status"></p><section class="lobby-guide" aria-label="함께 플레이하는 방법"><strong>별도 서버 프로그램 없이 함께 플레이</strong><p>게임 시작 → <b>온라인 로비</b>에서 공용 로비에 자동 연결됩니다.<br>한 사람이 방을 만들고, 다른 사람들은 같은 목록에서 참가하세요.<br>Windows 버전은 <b>인터넷 로비</b>를 이용하면 웹과 함께 플레이할 수 있습니다.</p><p>인터넷 연결이 필요합니다. 학교·DMZ·VPN에서도 같은 온라인 방 목록에서 참가할 수 있습니다. 망 설정에 따라 기기 간 직접 연결이 제한될 수 있습니다.</p></section></div></div>
+<div id="launch"><div class="launch-card"><h1>INTERNAL N CRUSH</h1><p>첫 실행에는 게임 파일을 내려받습니다.<br>모바일은 가로 화면 · PC는 키보드와 마우스로 플레이하세요.</p><button id="start" disabled>준비 중…</button><p id="start-note" aria-live="polite"></p><p id="start-error" role="status"></p><section class="lobby-guide" aria-label="함께 플레이하는 방법"><strong>별도 서버 프로그램 없이 함께 플레이</strong><p>게임 시작 → <b>온라인 로비</b>에서 공용 로비에 자동 연결됩니다.<br>한 사람이 방을 만들고, 다른 사람들은 같은 목록에서 참가하세요.<br>Windows 버전은 <b>인터넷 로비</b>를 이용하면 웹과 함께 플레이할 수 있습니다.</p><p>인터넷 연결이 필요합니다. 학교·DMZ·VPN에서도 같은 온라인 방 목록에서 참가할 수 있습니다. 망 설정에 따라 기기 간 직접 연결이 제한될 수 있습니다.</p></section></div></div>
 <button id="fullscreen" aria-label="전체 화면 전환">전체 화면</button>
 		<canvas id="canvas">
 			Your browser does not support the canvas tag.
@@ -122,7 +123,7 @@ body {
 		</noscript>
 
 		<div id="status">
-			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="game-c9ebaa804dfa.png" alt="">
+			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="game-6df538706903.png" alt="">
 			<progress id="status-progress"></progress>
 			<div id="status-notice"></div>
 		</div>
@@ -167,17 +168,23 @@ gameCanvas.getContext=function(type,attributes){
   const shaderKey = s => hash(types.get(s) + '|' + sources.get(s));
   const programKey = p => (attached.get(p) || []).map(shaderKey).join(',') + '|' + (feedback.get(p) || '');
   const take = (map, key) => { const list = map.get(key); if (!list) return null; const r = list.pop(); if (!list.length) map.delete(key); return r; };
+  const given = []; // programs handed to the engine and maybe still compiling (incShaderBusy)
   // the engine's compile/link: a ready object of the same key, used once (null: compile as before)
-  window.incShaderTake = (gl, object, program) => gl === context ? take(program ? programs : shaders, program ? programKey(object) : shaderKey(object)) : null;
+  window.incShaderTake = (gl, object, program) => {
+    if (gl !== context) return null;
+    const r = take(program ? programs : shaders, program ? programKey(object) : shaderKey(object));
+    if (r && program) given.push(r);
+    return r;
+  };
   // 2.1.9 (measured on X20: the first frame of the first fight waited ~0.6 s on programs still compiling) how many
-  // issued programs are not ready yet - asked without waiting (COMPLETION_STATUS_KHR); the game holds its start cover
-  // for them (VisualWarmup.warm_shaders)
+  // programs the engine has taken are not ready yet - asked without waiting (COMPLETION_STATUS_KHR); the game holds
+  // its start cover for them (VisualWarmup.warm_shaders). 2.1.10 (measured: the cover always waited its full 3 s)
+  // only those the match draws with: the set's others (other maps, other effects) are not waited for.
   let parallel = null;
   window.incShaderBusy = () => {
     if (!context || !parallel) return 0;
-    let busy = 0;
-    for (const list of programs.values()) for (const p of list) if (!context.getProgramParameter(p, parallel.COMPLETION_STATUS_KHR)) busy++;
-    return busy;
+    for (let i = given.length - 1; i >= 0; i--) if (!context.isProgram(given[i]) || context.getProgramParameter(given[i], parallel.COMPLETION_STATUS_KHR)) given.splice(i, 1); // (deleted meanwhile: none to wait for)
+    return given.length;
   };
   window.incShaderPrewarm = async url => {
     try {
@@ -214,9 +221,9 @@ gameCanvas.getContext=function(type,attributes){
   };
 })();
 </script>
-<script src="game-c9ebaa804dfa.js"></script>
+<script src="game-6df538706903.js"></script>
 		<script>
-const GODOT_CONFIG = {"args": [], "canvasResizePolicy": 2, "emscriptenPoolSize": 8, "ensureCrossOriginIsolationHeaders": true, "executable": "game-c9ebaa804dfa", "experimentalVK": false, "fileSizes": {"game-c9ebaa804dfa.pck": 75960124, "game-c9ebaa804dfa.wasm": 39514754, "game-c9ebaa804dfa.maps.pck": 47738580}, "focusCanvas": true, "gdextensionLibs": [], "godotPoolSize": 4};
+const GODOT_CONFIG = {"args": [], "canvasResizePolicy": 2, "emscriptenPoolSize": 8, "ensureCrossOriginIsolationHeaders": true, "executable": "game-6df538706903", "experimentalVK": false, "fileSizes": {"game-6df538706903.pck": 76609364, "game-6df538706903.wasm": 39514754, "game-6df538706903.maps.pck": 47765044}, "focusCanvas": true, "gdextensionLibs": [], "godotPoolSize": 4};
 const GODOT_THREADS_ENABLED = false;
 window.incShaderPrewarm(GODOT_CONFIG.executable+'.shaders.json');
 // Web updates follow the deployed build, not the Windows release label.
@@ -410,6 +417,34 @@ canvasElement.addEventListener('webglcontextlost',()=>{
 		// 2.0.1: the odd-numbered baked maps come in a second pack (each file under GitHub's 100 MiB limit). It downloads
 		// with the main files (same progress bar) and the engine starts only once it is in place; game.gd
 		// loads it from /inc_maps.pck before any arena. package_web.py lists it in GODOT_CONFIG.fileSizes.
+		// 2.1.10 (the user: the Web's first match takes far too long): the game files (about 130 MB on a first visit)
+		// download from the moment the page is ready, not from the start click - the engine is fetched and set up and
+		// both packs are fetched while the player reads this page; the click starts the game on what has arrived (the
+		// same calls startGame makes, in its order). On a connection that asks to save data, at the click as before.
+		const executable = GODOT_CONFIG.executable;
+		const mainPack = GODOT_CONFIG.mainPack || `${executable}.pck`;
+		const startNote = document.getElementById('start-note');
+		let prefetched = null;
+		let launched = false;
+		function showProgress(current, total) {
+			if (current > 0 && total > 0) {
+				statusProgress.value = current;
+				statusProgress.max = total;
+				if (!launched && startNote) startNote.textContent = '게임 파일 미리 받는 중 ' + Math.min(99, Math.floor(current * 100 / total)) + '%';
+			} else {
+				statusProgress.removeAttribute('value');
+				statusProgress.removeAttribute('max');
+			}
+		}
+		function prefetch() {
+			if (!prefetched) {
+				engine.config.update({ 'onProgress': showProgress });
+				preloadMaps();
+				prefetched = Promise.all([engine.init(executable), engine.preloadFile(mainPack, mainPack)]);
+				prefetched.then(() => { if (!launched && startNote) startNote.textContent = '준비 완료 · 바로 시작합니다'; }, () => { if (!launched && startNote) startNote.textContent = '게임 파일을 받지 못했습니다. 페이지를 새로 고쳐 주세요.'; });
+			}
+			return prefetched;
+		}
 		function preloadMaps() {
 			const mapsPack = GODOT_CONFIG.executable + '.maps.pck';
 			if (!(GODOT_CONFIG.fileSizes || {})[mapsPack]) {
@@ -424,21 +459,14 @@ canvasElement.addEventListener('webglcontextlost',()=>{
 				return maps.then(() => start.apply(this, args));
 			};
 		}
-		startButton.onclick=()=>{if(navigator.maxTouchPoints>0&&window.incEnterFullscreen)window.incEnterFullscreen();document.body.classList.add('started');document.getElementById('launch').remove();preloadMaps();engine.startGame({
-			'onProgress': function (current, total) {
-				if (current > 0 && total > 0) {
-					statusProgress.value = current;
-					statusProgress.max = total;
-				} else {
-					statusProgress.removeAttribute('value');
-					statusProgress.removeAttribute('max');
-				}
-			},
-		}).then(() => {
+		startButton.onclick=()=>{if(launched)return;launched=true;if(navigator.maxTouchPoints>0&&window.incEnterFullscreen)window.incEnterFullscreen();document.body.classList.add('started');document.getElementById('launch').remove();prefetch().then(() => engine.start({
+			'args': ['--main-pack', mainPack].concat(engine.config.args || []),
+		})).then(() => {
 			setStatusMode('hidden');
 		}, displayFailureNotice);};
 		// 2.1.9: the button waits for the update check and service worker (up to 1.6 s on a first visit) - a click before did nothing
 		startButton.disabled=false;startButton.textContent='게임 시작';
+		if (!(navigator.connection && navigator.connection.saveData)) prefetch();
 	}
 	// 1.4.5: the game calls this when play begins (after the start click, within
 	// the browser's user-activation window); the button below stays as before.
