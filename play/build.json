@@ -1,8 +1,8 @@
 {
   "version": "2.2.0",
   "threads": false,
-  "source_commit": "060f9de37c82249e6a376f9b86955d7fc7d592a1",
-  "executable": "game-060f9de37c82",
+  "source_commit": "118b9dd057a18d0b2809b35aa16c9da2c3c577c2",
+  "executable": "game-118b9dd057a1",
   "transport": "WebRTC",
   "touch": "coarse-pointer/mobile detection; landscape",
   "files": [
@@ -12,52 +12,52 @@
       "sha256": "c71d9da0edae1d66d8d24d86d338a235f07db40bf88521d2b89a383398ee1aae"
     },
     {
-      "path": "game-060f9de37c82.apple-touch-icon.png",
+      "path": "game-118b9dd057a1.apple-touch-icon.png",
       "bytes": 18314,
       "sha256": "44bbae0d3369f3cd32d55d90ac0ab79ad5d048c23d959b8a3483354de6653ae5"
     },
     {
-      "path": "game-060f9de37c82.audio.position.worklet.js",
+      "path": "game-118b9dd057a1.audio.position.worklet.js",
       "bytes": 2973,
       "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
     },
     {
-      "path": "game-060f9de37c82.audio.worklet.js",
+      "path": "game-118b9dd057a1.audio.worklet.js",
       "bytes": 7298,
       "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
     },
     {
-      "path": "game-060f9de37c82.icon.png",
+      "path": "game-118b9dd057a1.icon.png",
       "bytes": 27842,
       "sha256": "e1a297272c8e42f8b539f5aeb1698bee2def2bbe2e0dadd664b331e4c88f0315"
     },
     {
-      "path": "game-060f9de37c82.js",
+      "path": "game-118b9dd057a1.js",
       "bytes": 280496,
       "sha256": "78a2578200c6da66c885a5a2b8e645107ed5c3c1417fc4e17771792f9353def5"
     },
     {
-      "path": "game-060f9de37c82.maps.pck",
+      "path": "game-118b9dd057a1.maps.pck",
       "bytes": 47765044,
-      "sha256": "454f40c1222842059a5be91eb27b4cea0de33422584bc68d38ae8ec618f08e9d"
+      "sha256": "f96fc2729b7cceb2c157a4047f36c5aa71485cb16cf0fea17b5d59455fa7a5f7"
     },
     {
-      "path": "game-060f9de37c82.pck",
-      "bytes": 76609652,
-      "sha256": "b893e5b22f3551d5874674057001acb4b17a83e178fdbe88cf8c848a69cc49b0"
+      "path": "game-118b9dd057a1.pck",
+      "bytes": 76891168,
+      "sha256": "75796a7e58fc836c48f773facae004c65f1b9092e0048b35bc330df659672ab7"
     },
     {
-      "path": "game-060f9de37c82.png",
+      "path": "game-118b9dd057a1.png",
       "bytes": 21443,
       "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
     },
     {
-      "path": "game-060f9de37c82.shaders.json",
-      "bytes": 5254514,
-      "sha256": "b323f15ef3e806a2de85b9c9bea61fbc6ac4e7b513c02d8104c4defbf41ec855"
+      "path": "game-118b9dd057a1.shaders.json",
+      "bytes": 5934079,
+      "sha256": "434934f4e10689bab7b74eda318eb151062bc2f7433721dfc96841cfa7307004"
     },
     {
-      "path": "game-060f9de37c82.wasm",
+      "path": "game-118b9dd057a1.wasm",
       "bytes": 39514754,
       "sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0"
     },
@@ -68,18 +68,18 @@
     },
     {
       "path": "guide/internet.jpg",
-      "bytes": 349478,
-      "sha256": "73fc8c600256b06c7ec05f57e1fe7dd1a2e8740f03a04f097c2cfb1786143742"
+      "bytes": 349486,
+      "sha256": "33381ad44e578b417b9d9be4cfb8608f368cd32e1b61b27c31a0aa0b933c7097"
     },
     {
       "path": "guide/lan.jpg",
-      "bytes": 429091,
-      "sha256": "b3b3a03b2e2198a8490170400394c7024686de8a66cb349f2d3ad4d14d10f04f"
+      "bytes": 428866,
+      "sha256": "53a22dc933acdf96b032ec9b61f2a545db88d1031a01b4f7919b082cbae1c757"
     },
     {
       "path": "guide/settings.jpg",
-      "bytes": 499126,
-      "sha256": "3b35879e3a3ba07315627043464c3f06bb4a07a0270c709826257e7bbc0d0f4c"
+      "bytes": 499422,
+      "sha256": "ae997f0b59054bd634d42a2eca3e88e34c2783a09caddf9e7d692de4c472b1cb"
     },
     {
       "path": "guide/touch.jpg",
@@ -88,8 +88,8 @@
     },
     {
       "path": "index.html",
-      "bytes": 25095,
-      "sha256": "f654eec91f01e58342de4d7521dbd6e6ba77ac90c0cc4a3cf268299d167fe724"
+      "bytes": 25839,
+      "sha256": "63ab29f47d847404e9d94c5bfde0a79a342b4a425b5a811cae740391a8706790"
     },
     {
       "path": "licenses/ART_CREDITS.md",

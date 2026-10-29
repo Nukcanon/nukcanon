@@ -106,8 +106,8 @@ body {
 #portrait {display:none;position:fixed;inset:0;z-index:30;background:#112631;color:white;place-content:center;text-align:center;font:20px system-ui;padding:30px;}
 @media (orientation:portrait) and (pointer:coarse) {body.started #portrait{display:grid}}
 </style>
-		<link id="-gd-engine-icon" rel="icon" type="image/png" href="game-060f9de37c82.icon.png" />
-<link rel="apple-touch-icon" href="game-060f9de37c82.apple-touch-icon.png"/>
+		<link id="-gd-engine-icon" rel="icon" type="image/png" href="game-118b9dd057a1.icon.png" />
+<link rel="apple-touch-icon" href="game-118b9dd057a1.apple-touch-icon.png"/>
 
 	</head>
 	<body>
@@ -123,7 +123,7 @@ body {
 		</noscript>
 
 		<div id="status">
-			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="game-060f9de37c82.png" alt="">
+			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="game-118b9dd057a1.png" alt="">
 			<progress id="status-progress"></progress>
 			<div id="status-notice"></div>
 		</div>
@@ -169,9 +169,12 @@ gameCanvas.getContext=function(type,attributes){
   const programKey = p => (attached.get(p) || []).map(shaderKey).join(',') + '|' + (feedback.get(p) || '');
   const take = (map, key) => { const list = map.get(key); if (!list) return null; const r = list.pop(); if (!list.length) map.delete(key); return r; };
   const given = []; // programs handed to the engine and maybe still compiling (incShaderBusy)
+  const stats = { gl: 0, wait: 0, slices: 0 };
+  let started = 0; // (when the engine first asked: the SHADER_PREWARM line)
   // the engine's compile/link: a ready object of the same key, used once (null: compile as before)
   window.incShaderTake = (gl, object, program) => {
     if (gl !== context) return null;
+    if (!started) started = performance.now();
     const r = take(program ? programs : shaders, program ? programKey(object) : shaderKey(object));
     if (r && program) given.push(r);
     return r;
@@ -203,27 +206,29 @@ gameCanvas.getContext=function(type,attributes){
       context = gl;
       const put = (map, key, object) => (map.get(key) || map.set(key, []).get(key)).push(object);
       // issued in slices of about 8 ms (one long call stopped the page for 1.2 s on X20); a program is handed out as
-      // soon as it is issued, the shaders once all programs hold theirs
-      const made = [], slice = () => new Promise(r => setTimeout(r, 0));
+      // soon as it is issued, the shaders once all programs hold theirs. 2.2.0 (measured on X20: on a second visit
+      // the first match waited 12-14 s, issued_ms 26 s): each program is linked right after its own shaders are
+      // compiled, not all shaders first - the engine's first programs are then ready in order (wait 0.6 s)
+      const made = new Array(data.shaders.length), slice = () => new Promise(r => setTimeout(r, 0));
+      const make = i => { if (!made[i]) { const s = gl.createShader(data.shaders[i][0]); gl.shaderSource(s, data.shaders[i][1].map(j => data.lines[j]).join('\n')); gl.compileShader(s); made[i] = s; } return made[i]; };
       let next = performance.now() + 8;
-      for (const [type, lines] of data.shaders) {
-        const s = gl.createShader(type); gl.shaderSource(s, lines.map(i => data.lines[i]).join('\n')); gl.compileShader(s); made.push(s);
-        if (performance.now() > next) { await slice(); next = performance.now() + 8; }
-      }
       for (const [ids, varyings] of data.programs) {
-        const p = gl.createProgram(); for (const i of ids) gl.attachShader(p, made[i]); if (varyings) gl.transformFeedbackVaryings(p, varyings[0], varyings[1]); gl.linkProgram(p); put(programs, programKey(p), p);
-        if (performance.now() > next) { await slice(); next = performance.now() + 8; }
+        const t = performance.now();
+        const p = gl.createProgram(); for (const i of ids) gl.attachShader(p, make(i)); if (varyings) gl.transformFeedbackVaryings(p, varyings[0], varyings[1]); gl.linkProgram(p); put(programs, programKey(p), p);
+        stats.gl += performance.now() - t;
+        if (performance.now() > next) { const w = performance.now(); await slice(); stats.wait += performance.now() - w; stats.slices++; next = performance.now() + 8; }
       }
       // a shader is handed out once; one in several programs stays attached to the others
-      made.forEach(s => put(shaders, shaderKey(s), s));
-      console.log('SHADER_PREWARM programs=' + data.programs.length + ' shaders=' + made.length + ' issued_ms=' + Math.round(performance.now() - t0));
+      made.forEach(s => s && put(shaders, shaderKey(s), s));
+      console.log('SHADER_PREWARM programs=' + data.programs.length + ' shaders=' + made.length + ' issued_ms=' + Math.round(performance.now() - t0) +
+        ' gl_ms=' + Math.round(stats.gl) + ' wait_ms=' + Math.round(stats.wait) + ' slices=' + stats.slices + ' engine_at_ms=' + (started ? Math.round(started - t0) : -1));
     } catch (error) { console.warn('Shader prewarm skipped:', error.message); }
   };
 })();
 </script>
-<script src="game-060f9de37c82.js"></script>
+<script src="game-118b9dd057a1.js"></script>
 		<script>
-const GODOT_CONFIG = {"args": [], "canvasResizePolicy": 2, "emscriptenPoolSize": 8, "ensureCrossOriginIsolationHeaders": true, "executable": "game-060f9de37c82", "experimentalVK": false, "fileSizes": {"game-060f9de37c82.pck": 76609652, "game-060f9de37c82.wasm": 39514754, "game-060f9de37c82.maps.pck": 47765044}, "focusCanvas": true, "gdextensionLibs": [], "godotPoolSize": 4};
+const GODOT_CONFIG = {"args": [], "canvasResizePolicy": 2, "emscriptenPoolSize": 8, "ensureCrossOriginIsolationHeaders": true, "executable": "game-118b9dd057a1", "experimentalVK": false, "fileSizes": {"game-118b9dd057a1.pck": 76891168, "game-118b9dd057a1.wasm": 39514754, "game-118b9dd057a1.maps.pck": 47765044}, "focusCanvas": true, "gdextensionLibs": [], "godotPoolSize": 4};
 const GODOT_THREADS_ENABLED = false;
 window.incShaderPrewarm(GODOT_CONFIG.executable+'.shaders.json');
 // Web updates follow the deployed build, not the Windows release label.
