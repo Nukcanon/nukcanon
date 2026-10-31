@@ -1,8 +1,8 @@
 {
   "version": "2.2.1",
   "threads": false,
-  "source_commit": "eaf7ec7dbded36e60ec681bfbbab9705848fc026",
-  "executable": "game-eaf7ec7dbded",
+  "source_commit": "a80d94e49b73702d1ef30abbb6ba8b330072f4c2",
+  "executable": "game-a80d94e49b73",
   "transport": "WebRTC",
   "touch": "coarse-pointer/mobile detection; landscape",
   "files": [
@@ -12,84 +12,84 @@
       "sha256": "c71d9da0edae1d66d8d24d86d338a235f07db40bf88521d2b89a383398ee1aae"
     },
     {
-      "path": "game-eaf7ec7dbded.apple-touch-icon.png",
+      "path": "game-a80d94e49b73.apple-touch-icon.png",
       "bytes": 18314,
       "sha256": "44bbae0d3369f3cd32d55d90ac0ab79ad5d048c23d959b8a3483354de6653ae5"
     },
     {
-      "path": "game-eaf7ec7dbded.audio.position.worklet.js",
+      "path": "game-a80d94e49b73.audio.position.worklet.js",
       "bytes": 2973,
       "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
     },
     {
-      "path": "game-eaf7ec7dbded.audio.worklet.js",
+      "path": "game-a80d94e49b73.audio.worklet.js",
       "bytes": 7298,
       "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
     },
     {
-      "path": "game-eaf7ec7dbded.icon.png",
+      "path": "game-a80d94e49b73.icon.png",
       "bytes": 27842,
       "sha256": "e1a297272c8e42f8b539f5aeb1698bee2def2bbe2e0dadd664b331e4c88f0315"
     },
     {
-      "path": "game-eaf7ec7dbded.js",
+      "path": "game-a80d94e49b73.js",
       "bytes": 280496,
       "sha256": "78a2578200c6da66c885a5a2b8e645107ed5c3c1417fc4e17771792f9353def5"
     },
     {
-      "path": "game-eaf7ec7dbded.maps.pck",
-      "bytes": 47765012,
-      "sha256": "d79970724b6a72546c01861c575c657dd556c92c6a7fb0764e60096ccd6e21fa"
+      "path": "game-a80d94e49b73.maps.pck",
+      "bytes": 47859540,
+      "sha256": "61915879c5da4220607b892e9f72d53ba2c0d296694ab3013ad50a5438d92bc8"
     },
     {
-      "path": "game-eaf7ec7dbded.pck",
-      "bytes": 76891840,
-      "sha256": "0efd0b7e56a8a45c1a48cf6ae98675d8087f48795236d5da75238af6f076252a"
+      "path": "game-a80d94e49b73.pck",
+      "bytes": 77045568,
+      "sha256": "9ac1fb3fde68732dbab61a4b4ff8f4475de19d54bd5194a22f494beed47ce230"
     },
     {
-      "path": "game-eaf7ec7dbded.png",
+      "path": "game-a80d94e49b73.png",
       "bytes": 21443,
       "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
     },
     {
-      "path": "game-eaf7ec7dbded.shaders.json",
+      "path": "game-a80d94e49b73.shaders.json",
       "bytes": 5934079,
       "sha256": "434934f4e10689bab7b74eda318eb151062bc2f7433721dfc96841cfa7307004"
     },
     {
-      "path": "game-eaf7ec7dbded.wasm",
+      "path": "game-a80d94e49b73.wasm",
       "bytes": 39514754,
       "sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0"
     },
     {
       "path": "guide/controls.jpg",
-      "bytes": 69986,
-      "sha256": "e62f0b201a55192b9b2d9d0249cd9790a641c5e2c05d5ddac176ccbbe2b0587b"
+      "bytes": 69977,
+      "sha256": "1d807d00ff781ce5cbe1d127f6e90a4873f339a73bca96cf2cca01a4125aff9b"
     },
     {
       "path": "guide/internet.jpg",
-      "bytes": 349486,
-      "sha256": "a10cd0270274915523d1c742f993366cee4ef8c91c47fe8ce4915c076331569c"
+      "bytes": 357559,
+      "sha256": "82b517294035c58b88a917bfab4e54d59e67a9dd85fa02337f36e5e5cb91ce56"
     },
     {
       "path": "guide/lan.jpg",
-      "bytes": 429055,
-      "sha256": "049bc90bd667260cdb988fc11af6349ebcfc80fa0eb5ae75c9980e258eb3d226"
+      "bytes": 437005,
+      "sha256": "31868a9ef4e560ccd40aa8410dba2e275f29846e5825d56b5d191962bf669d6a"
     },
     {
       "path": "guide/settings.jpg",
-      "bytes": 499272,
-      "sha256": "5433113bf2c342b0ba8dd91e662701635b3441f18ec96cfcee02f50b5eeadee2"
+      "bytes": 488797,
+      "sha256": "f49bac35614878153e4dd2c6feff364d54fb9ec22687d114b7f3541107722a8b"
     },
     {
       "path": "guide/touch.jpg",
-      "bytes": 69978,
-      "sha256": "4580ed4cf354c5fae880513f29aab250cb2fb0279dbd34e0e415fb7ff90d8eb6"
+      "bytes": 70000,
+      "sha256": "bde0cdd8937e34459ec184d6350ccf134660c5649bcdf9fef1159f5fba9a8633"
     },
     {
       "path": "index.html",
       "bytes": 25839,
-      "sha256": "69dc0b2d2943dcd71af9eccdb6db5ac4cbd07ce55de18a6b19dc2d3eeea47b6e"
+      "sha256": "85b4d203278951a16f9a0e19359aa820fa65d083450a25a3ac9510b37bea2ca2"
     },
     {
       "path": "licenses/ART_CREDITS.md",
