@@ -39,7 +39,10 @@
     .app-page .detail .small-note{font-size:.85rem}
     .app-page #install-help{scroll-margin-top:80px}
     .app-page .ih-figs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:14px 0 4px}
-    .app-page .ih-fig{margin:0;min-width:0}
+    .app-page #install-help{max-width:680px;box-sizing:border-box}
+    .app-page .detail h3{font-size:1rem;margin:24px 0 12px;color:var(--home-ink)}
+    .app-page .ih-fig{display:flex;flex-direction:column;margin:0;min-width:0}
+    .app-page .ih-figs .ih-win{flex:1}
     .app-page .ih-fig figcaption{margin-top:8px;font-size:.85rem;color:var(--home-muted);line-height:1.6}
     .app-page .ih-win{position:relative;box-sizing:border-box;padding:16px 16px 14px;color:#fff;background:#0b63c4;border:1px solid rgba(0,0,0,.18);box-shadow:var(--home-shadow);font:400 .78rem/1.55 "Segoe UI","Malgun Gothic",system-ui,sans-serif;min-height:190px;padding-bottom:52px}
     .app-page .ih-win b{display:block;margin:0 0 8px;font-size:1.15rem;font-weight:600;line-height:1.3}
@@ -91,6 +94,49 @@
           <p class="download-note">Windows 10/11<br>설치 때 일반/멘토용/학생용 선택<br>Windows가 막으면 <a href="#install-help">설치 차단 안내</a></p>
         </div>
       </div>
+      <section class="detail wide" id="install-help" aria-labelledby="install-help-title">
+        <h2 id="install-help-title">설치가 차단될 때</h2>
+        <p>설치 파일에 코드 서명이 없어 Windows가 경고합니다. 악성 코드가 발견된 것은 아니며, 서명 없는 새 파일에 나타나는 기본 보호 기능입니다.</p>
+        <h3>파란 창 "Windows의 PC 보호"</h3>
+        <p><strong>추가 정보</strong>를 누른 뒤 <strong>실행</strong>을 누르세요.</p>
+        <div class="ih-figs" aria-label="SmartScreen 창 예시 (실제 화면을 본뜬 그림)">
+          <figure class="ih-fig">
+            <div class="ih-win" role="img" aria-label="Windows의 PC 보호 창. 추가 정보 링크가 표시됨">
+              <b>Windows의 PC 보호</b>
+              <p>Microsoft Defender SmartScreen에서 인식할 수 없는 앱의 시작을 차단했습니다. 이 앱을 실행하면 PC가 위험에 노출될 수 있습니다.</p>
+              <p><span class="ih-link">추가 정보<span class="ih-mark" style="left:calc(100% + 8px);top:-2px">1</span></span></p>
+              <div class="ih-btns"><span class="ih-btn">실행 안 함</span></div>
+            </div>
+            <figcaption><strong>1.</strong> 창 안의 <strong>추가 정보</strong>를 누릅니다.</figcaption>
+          </figure>
+          <figure class="ih-fig">
+            <div class="ih-win" role="img" aria-label="앱 정보 확장 후 실행 버튼이 표시된 창">
+              <b>Windows의 PC 보호</b>
+              <p>Microsoft Defender SmartScreen에서 인식할 수 없는 앱의 시작을 차단했습니다. 이 앱을 실행하면 PC가 위험에 노출될 수 있습니다.</p>
+              <p class="ih-meta">앱: NukCAD-setup.exe<br>게시자: 알 수 없는 게시자</p>
+              <div class="ih-btns"><span class="ih-btn on" style="position:relative">실행<span class="ih-mark" style="right:-11px;top:-15px">2</span></span><span class="ih-btn">실행 안 함</span></div>
+            </div>
+            <figcaption><strong>2.</strong> 나타난 <strong>실행</strong> 버튼을 누릅니다.</figcaption>
+          </figure>
+        </div>
+        <h3>"스마트 앱 컨트롤이 이 앱을 차단했습니다"</h3>
+        <p>파일마다 허용할 수 없습니다. 설치하려면 기능을 꺼야 합니다.</p>
+        <figure class="ih-fig" style="max-width:420px">
+          <div class="ih-sac" role="img" aria-label="스마트 앱 컨트롤 설정 화면. 끔이 선택됨">
+            <b>스마트 앱 컨트롤</b>
+            <div class="ih-opt"><i></i><span>켬</span></div>
+            <div class="ih-opt"><i></i><span>평가</span></div>
+            <div class="ih-opt sel"><i></i><span><strong>끔</strong></span></div>
+          </div>
+          <figcaption>아래 순서로 열어 <strong>끔</strong>을 고릅니다. 실제 화면을 본뜬 그림입니다.</figcaption>
+        </figure>
+        <ol class="steps">
+          <li><strong>설정 → 개인 정보 및 보안 → Windows 보안</strong>을 엽니다.</li>
+          <li><strong>앱 및 브라우저 컨트롤 → 스마트 앱 컨트롤 설정</strong>에서 <strong>끔</strong>을 고릅니다.</li>
+          <li>설치 파일을 다시 실행합니다.</li>
+        </ol>
+        <p class="small-note">참고: 최신 Windows 11에서는 나중에 같은 곳에서 다시 켤 수 있지만, 다시 켜면 NukCAD도 실행이 막힙니다. 끄고 싶지 않으면 위 <strong>바로 사용</strong>으로 설치 없이 웹판을 쓰세요.</p>
+      </section>
     </section>
     <section class="detail" aria-labelledby="howto-title">
       <h2 id="howto-title">간단한 사용법</h2>
@@ -111,49 +157,6 @@
         <p><strong>웹판</strong> — 설치 없이 바로 써요. 학교 PC나 다른 컴퓨터에서 빠르게 시작할 때 좋아요.</p>
         <p><strong>설치판</strong> — 더 큰 AI 도우미 모델과 멘토에게 도움 요청 같은 수업 기능을 쓸 수 있어요.</p>
       </div>
-    </section>
-    <section class="detail wide" id="install-help" aria-labelledby="install-help-title">
-      <h2 id="install-help-title">설치가 차단될 때</h2>
-      <p>설치 파일에 코드 서명이 없어 Windows가 경고합니다. 악성 코드가 발견된 것은 아니며, 서명 없는 새 파일에 나타나는 기본 보호 기능입니다.</p>
-      <h3>파란 창 "Windows의 PC 보호"</h3>
-      <p><strong>추가 정보</strong>를 누른 뒤 <strong>실행</strong>을 누르세요.</p>
-      <div class="ih-figs" aria-label="SmartScreen 창 예시 (실제 화면을 본뜬 그림)">
-        <figure class="ih-fig">
-          <div class="ih-win" role="img" aria-label="Windows의 PC 보호 창. 추가 정보 링크가 표시됨">
-            <b>Windows의 PC 보호</b>
-            <p>Microsoft Defender SmartScreen에서 인식할 수 없는 앱의 시작을 차단했습니다. 이 앱을 실행하면 PC가 위험에 노출될 수 있습니다.</p>
-            <p><span class="ih-link">추가 정보<span class="ih-mark" style="left:calc(100% + 8px);top:-2px">1</span></span></p>
-            <div class="ih-btns"><span class="ih-btn">실행 안 함</span></div>
-          </div>
-          <figcaption><strong>1.</strong> 창 안의 <strong>추가 정보</strong>를 누릅니다.</figcaption>
-        </figure>
-        <figure class="ih-fig">
-          <div class="ih-win" role="img" aria-label="앱 정보 확장 후 실행 버튼이 표시된 창">
-            <b>Windows의 PC 보호</b>
-            <p>Microsoft Defender SmartScreen에서 인식할 수 없는 앱의 시작을 차단했습니다. 이 앱을 실행하면 PC가 위험에 노출될 수 있습니다.</p>
-            <p class="ih-meta">앱: NukCAD-setup.exe<br>게시자: 알 수 없는 게시자</p>
-            <div class="ih-btns"><span class="ih-btn on" style="position:relative">실행<span class="ih-mark" style="right:-11px;top:-15px">2</span></span><span class="ih-btn">실행 안 함</span></div>
-          </div>
-          <figcaption><strong>2.</strong> 나타난 <strong>실행</strong> 버튼을 누릅니다.</figcaption>
-        </figure>
-      </div>
-      <h3>"스마트 앱 컨트롤이 이 앱을 차단했습니다"</h3>
-      <p>파일마다 허용할 수 없습니다. 설치하려면 기능을 꺼야 합니다.</p>
-      <figure class="ih-fig" style="max-width:420px">
-        <div class="ih-sac" role="img" aria-label="스마트 앱 컨트롤 설정 화면. 끔이 선택됨">
-          <b>스마트 앱 컨트롤</b>
-          <div class="ih-opt"><i></i><span>켬</span></div>
-          <div class="ih-opt"><i></i><span>평가</span></div>
-          <div class="ih-opt sel"><i></i><span><strong>끔</strong></span></div>
-        </div>
-        <figcaption>아래 순서로 열어 <strong>끔</strong>을 고릅니다. 실제 화면을 본뜬 그림입니다.</figcaption>
-      </figure>
-      <ol class="steps">
-        <li><strong>설정 → 개인 정보 및 보안 → Windows 보안</strong>을 엽니다.</li>
-        <li><strong>앱 및 브라우저 컨트롤 → 스마트 앱 컨트롤 설정</strong>에서 <strong>끔</strong>을 고릅니다.</li>
-        <li>설치 파일을 다시 실행합니다.</li>
-      </ol>
-      <p class="small-note">참고: 최신 Windows 11에서는 나중에 같은 곳에서 다시 켤 수 있지만, 다시 켜면 NukCAD도 실행이 막힙니다. 끄고 싶지 않으면 위 <strong>바로 사용</strong>으로 설치 없이 웹판을 쓰세요.</p>
     </section>
   </main>
   <footer class="site-footer"><p><strong>Nukcanon</strong><span aria-hidden="true">·</span> Maker project archive</p><p class="footer-links"><a href="terms.html">이용약관</a><span aria-hidden="true">·</span><a href="privacy.html">개인정보 처리방침</a></p><p>NukCAD 프로그램 이용약관은 프로그램 안에서 볼 수 있습니다.</p></footer>
