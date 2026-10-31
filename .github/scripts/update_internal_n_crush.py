@@ -113,6 +113,7 @@ def install(root, data, expected):
     download_url = release(version) + 'InternalNCrush_Setup_v' + version + '.exe'
     html = re.sub(r'href="https://github.com/Nukcanon/InternalNCrush(?:-releases)?/releases/download/internal-n-crush-v\d+\.\d+\.\d+(?:-hotfix\.\d+)?/InternalNCrush_(?:Windows_v\d+\.\d+\.\d+\.zip|Setup_v\d+\.\d+\.\d+\.exe)(?:\?[^"]*)?"', f'href="{download_url}?build={revision}"', html)
     html = re.sub(r'v\d+\.\d+\.\d+ · Windows', 'v' + version + ' · Windows', html)
+    html = re.sub(r'앱: InternalNCrush_Setup_v\d+\.\d+\.\d+\.exe', '앱: InternalNCrush_Setup_v' + version + '.exe', html)
     nas_url = release(version) + 'InternalNCrush_NAS_Linux_v' + version + '.zip'
     html = re.sub(r'href="https://github.com/Nukcanon/InternalNCrush(?:-releases)?/releases/download/internal-n-crush-v\d+\.\d+\.\d+(?:-hotfix\.\d+)?/InternalNCrush_NAS_Linux_v\d+\.\d+\.\d+\.zip(?:\?[^"]*)?"', f'href="{nas_url}?build={revision}"', html)
     html = re.sub(r'releases/tag/internal-n-crush-v\d+\.\d+\.\d+(?:-hotfix\.\d+)?', 'releases/tag/' + tag(version), html)

@@ -70,7 +70,7 @@ class InstallerTests(unittest.TestCase):
 
     def test_windows_button_downloads_the_setup_program(self):
         page = self.root / 'internal-n-crush.html'
-        setup = '<a class="download" href="' + installer.release('1.2.9') + 'InternalNCrush_Setup_v1.2.9.exe?build=000000000000">Windows</a>'
+        setup = '<a class="download" href="' + installer.release('1.2.9') + 'InternalNCrush_Setup_v1.2.9.exe?build=000000000000">Windows</a><p>앱: InternalNCrush_Setup_v1.2.9.exe</p>'
         for before in (self.page, '<a href="play/">Play</a>' + setup):
             with self.subTest(before=before):
                 page.write_text(before)
