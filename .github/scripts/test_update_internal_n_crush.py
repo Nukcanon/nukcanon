@@ -49,34 +49,34 @@ class InstallerTests(unittest.TestCase):
         self.root = Path(self.temporary.name)
         (self.root / '.github').mkdir()
         (self.root / 'play').mkdir()
-        (self.root / 'play/old.js').write_text('previous')
-        (self.root / 'unrelated.txt').write_text('keep')
+        (self.root / 'play/old.js').write_text('previous', encoding='utf-8')
+        (self.root / 'unrelated.txt').write_text('keep', encoding='utf-8')
         self.page = '<a href="play/">Play</a><a href="' + installer.release('1.3.0') + 'InternalNCrush_Windows_v1.3.0.zip">Download</a>'
-        (self.root / 'internal-n-crush.html').write_text(self.page)
+        (self.root / 'internal-n-crush.html').write_text(self.page, encoding='utf-8')
 
     def assert_unchanged(self):
-        self.assertEqual((self.root / 'play/old.js').read_text(), 'previous')
-        self.assertEqual((self.root / 'internal-n-crush.html').read_text(), self.page)
+        self.assertEqual((self.root / 'play/old.js').read_text(encoding='utf-8'), 'previous')
+        self.assertEqual((self.root / 'internal-n-crush.html').read_text(encoding='utf-8'), self.page)
 
     def test_replacement_and_cache_links(self):
         data, expected = fixture()
         installer.install(self.root, data, expected)
         self.assertFalse((self.root / 'play/old.js').exists())
         self.assertTrue((self.root / ('play/game-' + COMMIT[:12] + '.wasm')).exists())
-        self.assertEqual((self.root / 'unrelated.txt').read_text(), 'keep')
-        self.assertEqual((self.root / 'internal-n-crush.html').read_text().count('?build=' + expected['sha256'][:12]), 2)
+        self.assertEqual((self.root / 'unrelated.txt').read_text(encoding='utf-8'), 'keep')
+        self.assertEqual((self.root / 'internal-n-crush.html').read_text(encoding='utf-8').count('?build=' + expected['sha256'][:12]), 2)
         installer.install(self.root, data, expected)
-        self.assertEqual((self.root / 'internal-n-crush.html').read_text().count('?build='), 2)
+        self.assertEqual((self.root / 'internal-n-crush.html').read_text(encoding='utf-8').count('?build='), 2)
 
     def test_windows_button_downloads_the_setup_program(self):
         page = self.root / 'internal-n-crush.html'
         setup = '<a class="download" href="' + installer.release('1.2.9') + 'InternalNCrush_Setup_v1.2.9.exe?build=000000000000">Windows</a><p>앱: InternalNCrush_Setup_v1.2.9.exe</p>'
         for before in (self.page, '<a href="play/">Play</a>' + setup):
             with self.subTest(before=before):
-                page.write_text(before)
+                page.write_text(before, encoding='utf-8')
                 data, expected = fixture()
                 installer.install(self.root, data, expected)
-                html = page.read_text()
+                html = page.read_text(encoding='utf-8')
                 self.assertIn(installer.release('1.3.0') + 'InternalNCrush_Setup_v1.3.0.exe?build=' + expected['sha256'][:12], html)
                 self.assertNotIn('InternalNCrush_Windows_v', html)
                 self.assertNotIn('1.2.9', html)
@@ -90,10 +90,10 @@ class InstallerTests(unittest.TestCase):
 
     def test_stale_nas_download_link_updates_with_windows_and_web(self):
         page = self.root / 'internal-n-crush.html'
-        page.write_text(self.page + '<a href="https://github.com/Nukcanon/InternalNCrush/releases/download/internal-n-crush-v1.1.8/InternalNCrush_NAS_Linux_v1.1.8.zip">NAS</a>')
+        page.write_text(self.page + '<a href="https://github.com/Nukcanon/InternalNCrush/releases/download/internal-n-crush-v1.1.8/InternalNCrush_NAS_Linux_v1.1.8.zip">NAS</a>', encoding='utf-8')
         data, expected = fixture()
         installer.install(self.root, data, expected)
-        html = page.read_text()
+        html = page.read_text(encoding='utf-8')
         self.assertNotIn('v1.1.8', html)
         self.assertNotIn('github.com/Nukcanon/InternalNCrush/', html)
         self.assertIn(installer.release('1.3.0') + 'InternalNCrush_NAS_Linux_v1.3.0.zip?build=' + expected['sha256'][:12], html)
@@ -108,14 +108,14 @@ class InstallerTests(unittest.TestCase):
 
     def test_guide_installs_with_verified_screenshots(self):
         template = self.root / '.github/internal-n-crush-page.html'
-        template.write_text(self.page + '<h2>조작방법</h2>v1.1.6 · Windows')
+        template.write_text(self.page + '<h2>조작방법</h2>v1.1.6 · Windows', encoding='utf-8')
         data, expected = fixture(guide=True)
         installer.install(self.root, data, expected)
-        self.assertIn('v1.3.0 · Windows', (self.root / 'internal-n-crush.html').read_text())
+        self.assertIn('v1.3.0 · Windows', (self.root / 'internal-n-crush.html').read_text(encoding='utf-8'))
         self.assertTrue((self.root / 'play/guide/touch.jpg').is_file())
 
     def test_blank_guide_keeps_live_screenshot(self):
-        (self.root / '.github/internal-n-crush-page.html').write_text(self.page)
+        (self.root / '.github/internal-n-crush-page.html').write_text(self.page, encoding='utf-8')
         (self.root / 'play/guide').mkdir()
         live = jpeg()
         (self.root / 'play/guide/controls.jpg').write_bytes(live)
@@ -125,14 +125,14 @@ class InstallerTests(unittest.TestCase):
         self.assertFalse(installer.blank_screen((self.root / 'play/guide/touch.jpg').read_bytes()))
 
     def test_blank_guide_without_live_screenshot_rejected(self):
-        (self.root / '.github/internal-n-crush-page.html').write_text(self.page)
+        (self.root / '.github/internal-n-crush-page.html').write_text(self.page, encoding='utf-8')
         data, expected = fixture(guide=True, blank=('touch',))
         with self.assertRaises(AssertionError):
             installer.install(self.root, data, expected)
         self.assert_unchanged()
 
     def test_guide_missing_screenshots_preserves_live_page(self):
-        (self.root / '.github/internal-n-crush-page.html').write_text('new guide')
+        (self.root / '.github/internal-n-crush-page.html').write_text('new guide', encoding='utf-8')
         data, expected = fixture()
         with self.assertRaises((AssertionError, KeyError)):
             installer.install(self.root, data, expected)
