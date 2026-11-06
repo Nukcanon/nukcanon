@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0066cc">
+  <title>SmartFolder · Nukcanon</title>
+  <meta name="description" content="SmartFolder: 복잡한 폴더를 종류별로 정리하고 되돌릴 수 있는 Windows 프로그램. 설치 프로그램 다운로드와 간단한 사용법">
+  <link rel="stylesheet" href="css/style.css?v=20261009-1">
+  <style>
+    .app-page .hero{max-width:800px}
+    .app-page .app-title{display:flex;align-items:center;gap:16px}
+    .app-page .app-icon{display:grid;flex:none;place-items:center;width:64px;height:64px;border-radius:14px;color:#fff;background:var(--home-primary)}
+    .app-page .app-icon svg{width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+    .app-page .hero .intro{max-width:680px;margin:14px 0 18px;color:var(--home-muted);line-height:1.8}
+    .app-page .cta-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px 12px;align-items:start}
+    .app-page .cta{display:flex;flex-direction:column;align-items:center;min-width:0}
+    .app-page .download{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;width:100%;gap:6px;padding:15px 10px;border-radius:12px;color:#fff;background:var(--home-primary);font-weight:800;font-size:.88rem;white-space:nowrap;box-shadow:var(--home-shadow)}
+    .app-page .download:hover{background:var(--home-primary-dark);text-decoration:none}
+    .app-page .download:focus-visible{outline:3px solid var(--home-accent);outline-offset:4px}
+    .app-page .download-note{margin:8px 0 0;color:var(--home-muted);font-size:.8rem;line-height:1.6;text-align:center;word-break:keep-all;text-wrap:balance}
+    .app-page .detail{display:block;padding:24px;border:1px solid var(--home-line);border-radius:18px;background:var(--home-surface);box-shadow:var(--home-shadow);min-width:0}
+    .app-page .detail h2{font-size:1.15rem;margin:0 0 14px;color:var(--home-ink)}
+    .app-page .detail h3{font-size:1rem;margin:0 0 10px;color:var(--home-ink)}
+    .app-page .detail p,.app-page .detail li{color:var(--home-muted);line-height:1.75;font-size:.94rem}
+    .app-page .wide{margin-top:18px}
+    .app-page .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .app-page .two > div{padding:16px 18px;border-radius:12px;background:var(--home-surface-soft)}
+    .app-page .steps{margin:0;padding-left:22px}
+    .app-page .steps li{margin:0 0 8px;padding-left:2px}
+    .app-page .steps li:last-child{margin-bottom:0}
+    .app-page .steps strong{color:var(--home-ink)}
+    .app-page .notes{margin:0;padding-left:20px}
+    .app-page .notes li{margin:0 0 6px}
+    .app-page .hashes{margin:6px 0 0;padding-left:18px}.app-page .hashes li{margin:0 0 4px;font-size:.88rem}
+    .app-page code{padding:1px 5px;border-radius:5px;background:var(--home-surface-soft);color:var(--home-ink);font-size:.88em;word-break:break-all}
+    .app-page .detail .small-note{font-size:.85rem}
+    .app-page #install-help{scroll-margin-top:80px}
+    .app-page #install-help h3{margin-top:20px}
+    .app-page .ih-figs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:14px 0 4px}
+    .app-page .ih-fig{margin:0;min-width:0}
+    .app-page .ih-fig figcaption{margin-top:8px;font-size:.85rem;color:var(--home-muted);line-height:1.6}
+    .app-page .ih-win{position:relative;box-sizing:border-box;padding:16px 16px 52px;color:#fff;background:#0b63c4;border:1px solid rgba(0,0,0,.18);box-shadow:var(--home-shadow);font:400 .78rem/1.55 "Segoe UI","Malgun Gothic",system-ui,sans-serif;min-height:190px}
+    .app-page .ih-win b{display:block;margin:0 0 8px;font-size:1.15rem;font-weight:600;line-height:1.3}
+    .app-page .ih-win p{margin:0 0 6px;color:#fff;line-height:1.55;font-size:.78rem}
+    .app-page .ih-win .ih-link{position:relative;text-decoration:underline;text-underline-offset:2px}
+    .app-page .ih-win .ih-meta{margin:0;font-size:.76rem}
+    .app-page .ih-btns{position:absolute;right:14px;bottom:12px;display:flex;gap:8px}
+    .app-page .ih-btn{padding:4px 14px;border:1px solid #fff;color:#fff;font-size:.76rem}
+    .app-page .ih-btn.on{position:relative;background:#fff;color:#0b63c4;font-weight:600}
+    .app-page .ih-mark{position:absolute;display:flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#e5383b;color:#fff;font:700 .78rem/1 system-ui,sans-serif;box-shadow:0 0 0 2px #fff}
+    .app-page .ih-sac{box-sizing:border-box;padding:16px;border:1px solid var(--home-line);border-radius:12px;background:#fff;color:#1b1f24;font:400 .78rem/1.55 "Segoe UI","Malgun Gothic",system-ui,sans-serif}
+    .app-page .ih-sac b{display:block;margin-bottom:8px;font-size:1.05rem;font-weight:600}
+    .app-page .ih-opt{display:flex;gap:9px;align-items:flex-start;padding:6px 8px;border-radius:8px;color:#8b929a}
+    .app-page .ih-opt i{flex:none;width:14px;height:14px;margin-top:3px;border:1.5px solid currentColor;border-radius:50%}
+    .app-page .ih-opt span{display:block;line-height:1.45}
+    .app-page .ih-opt.sel{position:relative;color:#1b1f24;border:2px solid #e5383b;background:#fff7f7}
+    .app-page .ih-opt.sel i{border-color:#0b63c4;box-shadow:inset 0 0 0 3px #fff,inset 0 0 0 8px #0b63c4}
+    .app-page .ih-opt.sel strong{display:block;font-weight:600}
+    @media(max-width:760px){.app-page .ih-figs{grid-template-columns:1fr}}
+    @media(max-width:900px){.app-page .cta-row{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:520px){.app-page .cta-row{grid-template-columns:1fr}}@media(max-width:760px){.app-page .two{grid-template-columns:1fr}.app-page .detail{padding:20px}}
+  </style>
+</head>
+<body class="home-page app-page">
+  <a class="skip-link" href="#main-content">본문으로 바로가기</a>
+  <header class="site-header"><div class="header-inner">
+    <a class="brand" href="./index.html" aria-label="Nukcanon 홈"><span class="brand-copy"><strong>Nukcanon</strong><small>Project Archive</small></span></a>
+    <nav aria-label="주요 메뉴"><a class="home-link" href="./index.html"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8v9a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-9Z"/></svg>Home</a></nav>
+  </div></header>
+  <main id="main-content" class="home-main">
+    <section class="hero" aria-labelledby="app-title">
+      <p class="eyebrow">SMART FOLDER</p>
+      <div class="app-title">
+        <span class="app-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7Z"/><path d="M8 13h8M8 16h5"/></svg></span>
+        <h1 id="app-title">SmartFolder</h1>
+      </div>
+      <p class="intro">복잡하게 쌓인 폴더를 분석해 게임·프로그램·문서·사진·영상 등 종류별로 정리하는 Windows 프로그램입니다.<br>옮기기 전에 정리 계획을 먼저 보여 주고, 확인한 뒤에만 옮기며, 끝난 정리는 언제든 되돌릴 수 있습니다.</p>
+      <div class="cta-row">
+        <!-- SF:cta:begin -->
+        <div class="cta">
+          <a class="download" href="https://github.com/Nukcanon/nukcanon/releases/download/smartfolder-v0.1.0/SmartFolder_0.1.0_x64-setup.exe">설치 프로그램 <span aria-hidden="true">↓</span></a>
+          <p class="download-note">Windows 10/11 64비트 · 약 8MB<br>AI는 첫 실행 때 따로 받습니다</p>
+        </div>
+        <!-- SF:cta:end -->
+      </div>
+    </section>
+    <section class="detail" aria-labelledby="howto-title">
+      <h2 id="howto-title">간단한 사용법</h2>
+      <div class="two">
+        <div>
+          <h3>처음 시작</h3>
+          <ol class="steps">
+            <li><strong>설치 프로그램</strong>을 실행합니다. 모든 사용자용 또는 이 사용자용 설치를 고를 수 있습니다.</li>
+            <li>처음 열면 <strong>앱 암호</strong>를 정합니다. 정리 기록·색인·태그는 이 암호로 잠가 PC 안에만 저장합니다.</li>
+            <li><strong>폴더 추가</strong>로 정리할 폴더를 등록합니다. 여러 폴더를 함께 관리할 수 있습니다.</li>
+            <li>처음 잠금을 풀면 로컬 AI(번역·요약·이름 제안·애매한 파일 판정)를 자동으로 받습니다. 설정에서 끌 수 있습니다.</li>
+          </ol>
+        </div>
+        <div>
+          <h3>정리하기</h3>
+          <ol class="steps">
+            <li>폴더를 고르고 <strong>정리</strong>를 누르면 정리 계획이 만들어집니다.</li>
+            <li>계획에서 어디로 옮겨지는지 확인합니다. 판단이 애매한 것은 <strong>확인 필요</strong>로 따로 표시됩니다.</li>
+            <li>확인하고 실행하면 기록을 남기며 옮깁니다. 도중에 PC가 꺼져도 다음 실행 때 이어서 마무리합니다.</li>
+            <li>결과가 마음에 들지 않으면 <strong>작업 기록</strong>에서 <strong>되돌리기</strong>를 누릅니다.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+    <section class="detail wide" aria-labelledby="privacy-title">
+      <h2 id="privacy-title">개인 정보 보호</h2>
+      <ul class="notes">
+        <li>파일 이름·경로·내용을 외부로 보내지 않습니다. AI는 PC 안에서만 실행됩니다.</li>
+        <li>인터넷을 쓰는 것은 AI 엔진·모델을 받을 때와, 사용자가 켠 <strong>온라인 찾기</strong>뿐입니다. 온라인 찾기는 기본으로 꺼져 있고, 보내기 전에 보낼 내용을 매번 보여 줍니다.</li>
+        <li>게임 폴더는 안쪽을 나누지 않고 한 묶음으로 옮깁니다. 확인 없이 옮기거나 지우는 일은 없습니다.</li>
+      </ul>
+    </section>
+    <section class="detail wide" aria-labelledby="notes-title">
+      <h2 id="notes-title">알아 두기</h2>
+      <ul class="notes">
+        <li>설치 파일에 코드 서명이 없어 Windows가 실행을 막을 수 있습니다. 아래 <a href="#install-help">설치가 차단될 때</a>를 따르세요.</li>
+        <li>로컬 AI는 PC 사양에 맞춰 약 3GB(4B) 또는 약 6GB(9B)를 받습니다. 그래픽 카드가 없거나 맞지 않으면 CPU로 실행합니다.</li>
+        <li>앱 암호를 잊으면 저장된 기록을 열 수 없습니다. 파일 자체는 그대로 남습니다.</li>
+        <!-- SF:notes:begin -->
+        <li>버전 0.1.0 · <a href="https://github.com/Nukcanon/nukcanon/releases/download/smartfolder-v0.1.0/SHA256SUMS.txt">파일 확인값(SHA-256) 목록</a> · <a href="https://github.com/Nukcanon/nukcanon/releases/download/smartfolder-v0.1.0/SmartFolder_Terms_0.1.0.txt">이용 약관(텍스트 파일)</a></li>
+        <li>내려받은 파일이 맞는지 확인하려면 PowerShell에서 <code>Get-FileHash 파일이름</code>을 실행해 아래 값과 비교하세요.
+          <ul class="hashes">
+            <li>설치 프로그램 <code>da69b95f99c12099519b9cc1457307fabdae37366e50e2263e3c7e0e72c681a2</code></li>
+          </ul>
+        </li>
+        <!-- SF:notes:end -->
+        <li>문의: <a href="mailto:contact@nukcanon.com">contact@nukcanon.com</a></li>
+      </ul>
+    </section>
+    <section class="detail wide" id="install-help" aria-labelledby="install-help-title">
+      <h2 id="install-help-title">설치가 차단될 때</h2>
+      <p>설치 파일에 코드 서명이 없어 Windows가 경고합니다. 악성 코드가 발견된 것은 아니며, 서명 없는 새 파일에 나타나는 기본 보호 기능입니다.</p>
+      <h3>파란 창 "Windows의 PC 보호"</h3>
+      <p><strong>추가 정보</strong>를 누른 뒤 <strong>실행</strong>을 누르세요.</p>
+      <div class="ih-figs" aria-label="SmartScreen 창 예시 (실제 화면을 본뜬 그림)">
+        <figure class="ih-fig">
+          <div class="ih-win" role="img" aria-label="Windows의 PC 보호 창. 추가 정보 링크가 표시됨">
+            <b>Windows의 PC 보호</b>
+            <p>Microsoft Defender SmartScreen에서 인식할 수 없는 앱의 시작을 차단했습니다. 이 앱을 실행하면 PC가 위험에 노출될 수 있습니다.</p>
+            <p><span class="ih-link">추가 정보<span class="ih-mark" style="left:calc(100% + 8px);top:-2px">1</span></span></p>
+            <div class="ih-btns"><span class="ih-btn">실행 안 함</span></div>
+          </div>
+          <figcaption><strong>1.</strong> 창 안의 <strong>추가 정보</strong>를 누릅니다.</figcaption>
+        </figure>
+        <figure class="ih-fig">
+          <div class="ih-win" role="img" aria-label="앱 정보 확장 후 실행 버튼이 표시된 창">
+            <b>Windows의 PC 보호</b>
+            <p>Microsoft Defender SmartScreen에서 인식할 수 없는 앱의 시작을 차단했습니다. 이 앱을 실행하면 PC가 위험에 노출될 수 있습니다.</p>
+            <p class="ih-meta">앱: SmartFolder_0.1.0_x64-setup.exe<br>게시자: 알 수 없는 게시자</p>
+            <div class="ih-btns"><span class="ih-btn on">실행<span class="ih-mark" style="right:-11px;top:-15px">2</span></span><span class="ih-btn">실행 안 함</span></div>
+          </div>
+          <figcaption><strong>2.</strong> 나타난 <strong>실행</strong> 버튼을 누릅니다.</figcaption>
+        </figure>
+      </div>
+      <h3>"스마트 앱 컨트롤이 이 앱을 차단했습니다"</h3>
+      <p>파일마다 허용할 수 없습니다. 설치하려면 기능을 꺼야 합니다.</p>
+      <figure class="ih-fig" style="max-width:420px">
+        <div class="ih-sac" role="img" aria-label="스마트 앱 컨트롤 설정 화면. 끔이 선택됨">
+          <b>스마트 앱 컨트롤</b>
+          <div class="ih-opt"><i></i><span>켬</span></div>
+          <div class="ih-opt"><i></i><span>평가</span></div>
+          <div class="ih-opt sel"><i></i><span><strong>끔</strong></span></div>
+        </div>
+        <figcaption>아래 순서로 열어 <strong>끔</strong>을 고릅니다. 실제 화면을 본뜬 그림입니다.</figcaption>
+      </figure>
+      <ol class="steps">
+        <li><strong>설정 → 개인 정보 및 보안 → Windows 보안</strong>을 엽니다.</li>
+        <li><strong>앱 및 브라우저 컨트롤 → 스마트 앱 컨트롤 설정</strong>에서 <strong>끔</strong>을 고릅니다.</li>
+        <li>설치 파일을 다시 실행합니다.</li>
+      </ol>
+      <p class="small-note">참고: 최신 Windows 11에서는 나중에 같은 곳에서 다시 켤 수 있지만, 다시 켜면 이 프로그램도 실행이 막힙니다.</p>
+    </section>
+  </main>
+  <footer class="site-footer"><p><strong>Nukcanon</strong><span aria-hidden="true">·</span> Maker project archive</p><p class="footer-links"><a href="terms.html">이용약관</a><span aria-hidden="true">·</span><a href="privacy.html">개인정보 처리방침</a></p></footer>
+  <script src="css/patch.js"></script>
+</body>
+</html>
