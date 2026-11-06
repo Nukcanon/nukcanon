@@ -1,0 +1,26 @@
+All audio under public/sfx and public/music is CC0 1.0 (public domain): https://creativecommons.org/publicdomain/zero/1.0/
+Files are unmodified copies, renamed. Source = OpenGameArt.org (license shown as CC0 on each page, checked 2026-11-07).
+
+[Sound effects, Kenney (www.kenney.nl)]
+click, talk, chat, tick, pick, vote, error, switch, door, lock, trap, step0-3 : Kenney "Interface Sounds" 1.0
+doorOpen, search_* : Kenney "RPG Audio"
+doll.ogg   = jingles_PIZZA07.ogg \ Kenney "Music Jingles" (85 short music jingles)
+win.ogg    = jingles_PIZZA10.ogg  > https://opengameart.org/content/85-short-music-jingles
+lose.ogg   = jingles_STEEL01.ogg /
+radio.ogg  = computerNoise_001.ogg, Kenney "Sci-fi Sounds", https://opengameart.org/content/sci-fi-sounds
+
+[Sound effects, other authors]
+bell.ogg    = doorbell.ogg, by frosty ham, https://opengameart.org/content/doorbell
+warp.ogg    = 172206_2437358-lq.ogg ("teleport"), by fins, https://opengameart.org/content/teleport
+whisper.mp3 = montageAudio-20120408@142754.mp3 ("ghost breath"), by qubodup, https://opengameart.org/content/ghost-breath
+muffled0-2.wav = Greeting05/06/07.wav, by EmoPreben ("Greeting sounds"), https://opengameart.org/content/greeting-sounds-by-emopreben (played low-pass filtered)
+
+[Music, public/music]
+title_lullaby.mp3 = song17.mp3 ("Happy Lullaby"), by cynicmusic, https://opengameart.org/content/happy-lullaby-song17
+explore_detective.mp3 = detective_cucumber.mp3, by ARoachIFoundOnMyPillow, https://opengameart.org/content/detective-cucumber
+explore_piano.mp3 = untitled.mp3 ("Emotional piano loop"), by extenz, https://opengameart.org/content/emotional-piano-loop
+explore_cello.mp3 = Lust (Cello & Vibraphone).mp3, by Pro Sensory, https://opengameart.org/content/lust-cello-vibraphone
+explore_jazz.mp3 = Jazz Chromatic.mp3, by Pro Sensory, https://opengameart.org/content/jazz-chromatic
+explore_apparitions_piano.mp3 = apparitions_ball_-_piano.mp3, by Bobjt, https://opengameart.org/content/apparitions-ball
+meeting_apparitions.mp3 = apparitions_ball.mp3, by Bobjt, https://opengameart.org/content/apparitions-ball
+meeting_investigation.ogg = investigation.ogg, by wipics, https://opengameart.org/content/investigation
