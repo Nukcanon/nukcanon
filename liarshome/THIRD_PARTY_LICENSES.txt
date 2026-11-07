@@ -82,11 +82,13 @@ others) under their own licenses. The LAN host program package contains the
 full Node.js LICENSE text in NODE_LICENSE.txt.
 
 ======================================================================
-Sound effects by Kenney (www.kenney.nl) and other audio — CC0 1.0
+Audio — CC0 1.0 (Kenney and OpenGameArt authors) and Pixabay Content License
 https://creativecommons.org/publicdomain/zero/1.0/
 ======================================================================
-Sound effects from Kenney's "Interface Sounds", "RPG Audio", "Music Jingles"
-and "Sci-fi Sounds" packs are dedicated to the public domain under CC0 1.0.
+Sound effects from Kenney's "Interface Sounds", "RPG Audio" and "Music Jingles"
+packs and the background music are dedicated to the public domain under CC0 1.0.
+Some sound effects are from pixabay.com under the Pixabay Content License
+(https://pixabay.com/service/license-summary/).
 Kenney (www.kenney.nl) is credited although attribution is not required.
-The per-file source list for all audio (including other CC0 authors) is in
+The per-file source and license list for all audio is in
 sfx/LICENSE.txt.

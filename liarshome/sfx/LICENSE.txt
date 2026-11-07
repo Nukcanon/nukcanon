@@ -1,19 +1,16 @@
-All audio under public/sfx and public/music is CC0 1.0 (public domain): https://creativecommons.org/publicdomain/zero/1.0/
-Files are unmodified copies, renamed. Source = OpenGameArt.org (license shown as CC0 on each page, checked 2026-11-07).
+Audio licenses for public/sfx and public/music. Files are unmodified copies, renamed.
+
+=== CC0 1.0 (public domain): https://creativecommons.org/publicdomain/zero/1.0/
+Source = OpenGameArt.org (license shown as CC0 on each page, checked 2026-11-07).
 
 [Sound effects, Kenney (www.kenney.nl)]
-click, talk, chat, tick, pick, vote, error, switch, door, lock, trap, step0-3 : Kenney "Interface Sounds" 1.0
-doorOpen, search_* : Kenney "RPG Audio"
+talk.ogg   = bong_001.ogg   \
+chat.ogg   = pluck_001.ogg   > Kenney "Interface Sounds" 1.0, https://opengameart.org/content/interface-sounds
+pick, vote, error, step0-3  /
+door.ogg, search_* : Kenney "RPG Audio", https://opengameart.org/content/50-rpg-sound-effects
 doll.ogg   = jingles_PIZZA07.ogg \ Kenney "Music Jingles" (85 short music jingles)
 win.ogg    = jingles_PIZZA10.ogg  > https://opengameart.org/content/85-short-music-jingles
 lose.ogg   = jingles_STEEL01.ogg /
-radio.ogg  = computerNoise_001.ogg, Kenney "Sci-fi Sounds", https://opengameart.org/content/sci-fi-sounds
-
-[Sound effects, other authors]
-bell.ogg    = doorbell.ogg, by frosty ham, https://opengameart.org/content/doorbell
-warp.ogg    = 172206_2437358-lq.ogg ("teleport"), by fins, https://opengameart.org/content/teleport
-whisper.mp3 = montageAudio-20120408@142754.mp3 ("ghost breath"), by qubodup, https://opengameart.org/content/ghost-breath
-muffled0-2.wav = Greeting05/06/07.wav, by EmoPreben ("Greeting sounds"), https://opengameart.org/content/greeting-sounds-by-emopreben (played low-pass filtered)
 
 [Music, public/music]
 title_lullaby.mp3 = song17.mp3 ("Happy Lullaby"), by cynicmusic, https://opengameart.org/content/happy-lullaby-song17
@@ -24,3 +21,20 @@ explore_jazz.mp3 = Jazz Chromatic.mp3, by Pro Sensory, https://opengameart.org/c
 explore_apparitions_piano.mp3 = apparitions_ball_-_piano.mp3, by Bobjt, https://opengameart.org/content/apparitions-ball
 meeting_apparitions.mp3 = apparitions_ball.mp3, by Bobjt, https://opengameart.org/content/apparitions-ball
 meeting_investigation.ogg = investigation.ogg, by wipics, https://opengameart.org/content/investigation
+
+=== Pixabay Content License: https://pixabay.com/service/license-summary/
+Free to use in this game without attribution. Not offered for download as standalone files.
+Source = pixabay.com (chosen and provided by the project owner, 2026-11-07). Original file names:
+lock.mp3     = daviddumaisaudio-steampunk-gadget-lock-and-unlock-188053.mp3
+doorOpen.mp3 = soundreality-opening-door-411632.mp3
+warp.mp3     = gargamel10-teleport-game-sound-effect-379236.mp3
+click.mp3    = universfield-computer-mouse-click-352734.mp3
+trap.mp3     = freesound_community-bear-trap-103800.mp3
+radio.mp3    = backroomsaudiouoloads-radio-beep-2-487087.mp3
+timeup.mp3   = alexis_gaming_cam-timer-terminer-342934.mp3
+whisper.mp3  = misfit_melomaniac-hello-whisper-533246.mp3
+switch.mp3   = freesound_community-power-down-7103.mp3
+tickdown.mp3 = dragon-studio-clock-ticking-down-376897.mp3
+muffled0.mp3 = u_xg7ssi08yr-cartoon-phone-babble-404405.mp3 (played as short low-pass filtered pieces)
+muffled1.mp3 = freesound_community-mamie_gibberish_1-38387.mp3 (played as short low-pass filtered pieces)
+bell.mp3     = universfield-single-church-bell-2-352062.mp3
