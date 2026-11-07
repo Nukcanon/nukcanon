@@ -106,8 +106,8 @@ body {
 #portrait {display:none;position:fixed;inset:0;z-index:30;background:#112631;color:white;place-content:center;text-align:center;font:20px system-ui;padding:30px;}
 @media (orientation:portrait) and (pointer:coarse) {body.started #portrait{display:grid}}
 </style>
-		<link id="-gd-engine-icon" rel="icon" type="image/png" href="game-c9e235f2c12a.icon.png" />
-<link rel="apple-touch-icon" href="game-c9e235f2c12a.apple-touch-icon.png"/>
+		<link id="-gd-engine-icon" rel="icon" type="image/png" href="game-ae0105af6b69.icon.png" />
+<link rel="apple-touch-icon" href="game-ae0105af6b69.apple-touch-icon.png"/>
 
 	</head>
 	<body>
@@ -123,7 +123,7 @@ body {
 		</noscript>
 
 		<div id="status">
-			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="game-c9e235f2c12a.png" alt="">
+			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="game-ae0105af6b69.png" alt="">
 			<progress id="status-progress"></progress>
 			<div id="status-notice"></div>
 		</div>
@@ -226,9 +226,9 @@ gameCanvas.getContext=function(type,attributes){
   };
 })();
 </script>
-<script src="game-c9e235f2c12a.js"></script>
+<script src="game-ae0105af6b69.js"></script>
 		<script>
-const GODOT_CONFIG = {"args": [], "canvasResizePolicy": 2, "emscriptenPoolSize": 8, "ensureCrossOriginIsolationHeaders": true, "executable": "game-c9e235f2c12a", "experimentalVK": false, "fileSizes": {"game-c9e235f2c12a.pck": 77046284, "game-c9e235f2c12a.wasm": 39514754, "game-c9e235f2c12a.maps.pck": 47859508}, "focusCanvas": true, "gdextensionLibs": [], "godotPoolSize": 4};
+const GODOT_CONFIG = {"args": [], "canvasResizePolicy": 2, "emscriptenPoolSize": 8, "ensureCrossOriginIsolationHeaders": true, "executable": "game-ae0105af6b69", "experimentalVK": false, "fileSizes": {"game-ae0105af6b69.pck": 77115044, "game-ae0105af6b69.wasm": 39514754, "game-ae0105af6b69.maps.pck": 47859476}, "focusCanvas": true, "gdextensionLibs": [], "godotPoolSize": 4};
 const GODOT_THREADS_ENABLED = false;
 window.incShaderPrewarm(GODOT_CONFIG.executable+'.shaders.json');
 // Web updates follow the deployed build, not the Windows release label.
@@ -476,6 +476,16 @@ canvasElement.addEventListener('webglcontextlost',()=>{
 	// 1.4.5: the game calls this when play begins (after the start click, within
 	// the browser's user-activation window); the button below stays as before.
 	window.incEnterFullscreen=async()=>{try{if(!document.fullscreenElement){await document.documentElement.requestFullscreen();}if(navigator.maxTouchPoints>0&&screen.orientation?.lock)await screen.orientation.lock('landscape').catch(()=>{});}catch(error){console.warn('Fullscreen unavailable:',error.message);}};
+	// 2.2.6 (the user: Esc once = game menu, Esc held = leave full screen): while full screen, Esc is locked to the page
+	// (Keyboard Lock API) - a short press reaches the game, a held one leaves (the browser shows how). Without the API
+	// (Firefox, Safari, http) any Esc leaves at once and the game never hears it: incFullscreenLeft(false) lets the game
+	// open its menu and say why (game/scripts/escape_hold.gd).
+	const incKeyLock=()=>!!(window.isSecureContext&&navigator.keyboard&&navigator.keyboard.lock);
+	document.addEventListener('fullscreenchange',()=>{
+		if(document.fullscreenElement){if(incKeyLock())navigator.keyboard.lock(['Escape']).catch(error=>console.warn('Keyboard lock unavailable:',error.message));return;}
+		try{if(incKeyLock())navigator.keyboard.unlock();}catch(error){}
+		if(window.incFullscreenLeft)window.incFullscreenLeft(incKeyLock());
+	});
 	document.getElementById('fullscreen').onclick=async()=>{try{if(document.fullscreenElement){await document.exitFullscreen();}else{await document.documentElement.requestFullscreen();if(navigator.maxTouchPoints>0&&screen.orientation?.lock)await screen.orientation.lock('landscape').catch(()=>{});}}catch(error){console.warn('Fullscreen unavailable:',error.message);}};
 }());
 		</script>
