@@ -1,0 +1,104 @@
+Furtress - 제3자 자료 고지 / Third-party notices
+
+그림: 지형·건물·나무·장식·효과 일부는 Tiny Swords (Free Pack) by Pixel Frog (https://pixelfrog-assets.itch.io/tiny-swords)를 쓰며,
+개인·상업 사용·수정이 허용된 무료 자원이다(이 파일에는 게임용으로 잘라 합친 그림만 들어 있고 원본 묶음은 재배포하지 않음). 동물 캐릭터·아이콘·화면 틀 등은 이 프로젝트에서 코드로 직접 그린 원본이다.
+소리·음악: OpenGameArt.org의 CC0 1.0 Universal (저작권 포기) 자료와 Pixabay의 Pixabay Content License 자료를 씁니다.
+Sounds and music: CC0 1.0 assets from OpenGameArt.org and sound effects from Pixabay under the Pixabay Content License.
+https://creativecommons.org/publicdomain/zero/1.0/
+https://pixabay.com/service/license-summary/
+
+- Pixabay sound effects (pxb_*) - https://pixabay.com/sound-effects/
+- Fantasy Weapons and Apparel SFX Library - Vehicle (OpenGameArt 게시자) - https://opengameart.org/content/fantasy-weapons-and-apparel-sfx-library
+- Kenney - Interface Sounds - Kenney (kenney.nl) - https://opengameart.org/content/interface-sounds
+- Kenney - 50 RPG sound effects - Kenney (kenney.nl) - https://opengameart.org/content/50-rpg-sound-effects
+- 80 CC0 RPG SFX - NoirPhantom89 - https://opengameart.org/content/80-cc0-rpg-sfx
+- 100 CC0 SFX - aijikl - https://opengameart.org/content/100-cc0-sfx
+- Horse Trotting - EZduzziteh - https://opengameart.org/content/horse-trotting
+- 100 CC0 metal and wood SFX - Barina - https://opengameart.org/content/100-cc0-metal-and-wood-sfx
+- Blacksmith's Hammer - VishwaJai - https://opengameart.org/content/blacksmiths-hammer
+- Hammer on Anvil - Snabisch - https://opengameart.org/content/hammer-on-anvil
+- Cheers / Crowd shouting / Heartbeat (OpenGameArt: cheers-0, crowd-shoutingspeaking-ambience, heartbeat-single-sound) - OpenGameArt 게시자(각 페이지 참조) - https://opengameart.org/content/cheers-0
+- Medieval: Market Day (Loop) - Bobjt - https://opengameart.org/content/medieval-market-day
+- Medieval: Exploration - -Ryu- - https://opengameart.org/content/medieval-exploration
+- Battle Theme A - JaidynReiman / cynicmusic - https://opengameart.org/content/battle-theme-a
+- Medieval: King's Feast - Snabisch - https://opengameart.org/content/medieval-kings-feast
+- Medieval: Victory Theme - RandomMind - https://opengameart.org/content/medieval-victory-theme
+- Medieval: Defeat Theme - RandomMind - https://opengameart.org/content/medieval-defeat-theme
+
+== 프로그램 구성 요소 / Software components ==
+
+--- Phaser 3.90.0 (웹 게임 / web game) ---
+The MIT License (MIT)
+
+Copyright (c) 2024 Richard Davey, Phaser Studio Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+--- TweetNaCl.js 1.0.3 (웹 게임·설치 서버 / web game, LAN server) ---
+This is free and unencumbered software released into the public domain.
+
+Anyone is free to copy, modify, publish, use, compile, sell, or
+distribute this software, either in source code form or as a compiled
+binary, for any purpose, commercial or non-commercial, and by any
+means.
+
+In jurisdictions that recognize copyright laws, the author or authors
+of this software dedicate any and all copyright interest in the
+software to the public domain. We make this dedication for the benefit
+of the public at large and to the detriment of our heirs and
+successors. We intend this dedication to be an overt act of
+relinquishment in perpetuity of all present and future rights to this
+software under copyright law.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+For more information, please refer to <http://unlicense.org>
+
+--- ws 8.18.3 (설치 서버 / LAN server) ---
+Copyright (c) 2011 Einar Otto Stangvik <einaros@gmail.com>
+Copyright (c) 2013 Arnout Kazemier and contributors
+Copyright (c) 2016 Luigi Pinca and contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+--- 글꼴 Galmuri11 (Lee Minseo, SIL Open Font License 1.1) ---
+전문: fonts/OFL.txt / Full text: fonts/OFL.txt
+
+설치판에는 Node.js(MIT)가 들어 있으며 전체 라이선스는 설치 폴더 licenses\NODE_LICENSE.txt에 있습니다.
+The installer bundles Node.js (MIT); see licenses\NODE_LICENSE.txt in the install folder.

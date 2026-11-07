@@ -1,0 +1,734 @@
+{
+ "music": {
+  "lobby": "lobby.mp3",
+  "peace": "peace.mp3",
+  "tense": "tense.mp3",
+  "result": "result.mp3",
+  "victory": "victory.mp3",
+  "defeat": "defeat.mp3"
+ },
+ "sounds": {
+  "tap.home": {
+   "files": [
+    "pxb_home.mp3"
+   ],
+   "vol": 0.5,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "tap.town": {
+   "files": [
+    "pxb_ding.mp3",
+    "pxb_bell.mp3"
+   ],
+   "vol": 0.5,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "tap.mine": {
+   "files": [
+    "pxb_coin1.mp3",
+    "pxb_coin2.mp3"
+   ],
+   "vol": 0.5,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "tap.tower": {
+   "files": [
+    "weap_quiver-leather-squeeze-05.mp3",
+    "weap_quiver-leather-squeeze-07.mp3",
+    "weap_quiver-leather-squeeze-08.mp3"
+   ],
+   "vol": 0.7,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "tap.enemy": {
+   "files": [
+    "pxb_armorHit.mp3"
+   ],
+   "vol": 0.4,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "ui.click": {
+   "files": [
+    "k-ui_click_001.mp3",
+    "k-ui_click_002.mp3",
+    "k-ui_click_003.mp3"
+   ],
+   "vol": 0.6,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "ui.open": {
+   "files": [
+    "k-rpg_bookOpen.mp3",
+    "k-rpg_bookFlip1.mp3",
+    "k-rpg_bookFlip2.mp3"
+   ],
+   "vol": 0.7,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "ui.close": {
+   "files": [
+    "k-rpg_bookClose.mp3",
+    "k-rpg_bookFlip3.mp3",
+    "k-rpg_bookPlace1.mp3"
+   ],
+   "vol": 0.7,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "ui.slider": {
+   "files": [
+    "k-ui_tick_001.mp3",
+    "k-ui_tick_002.mp3",
+    "k-ui_tick_004.mp3"
+   ],
+   "vol": 0.4,
+   "max": 2,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "ui.rally": {
+   "files": [
+    "k-rpg_clothBelt.mp3",
+    "k-rpg_clothBelt2.mp3",
+    "rpg80_item_wood_02.mp3"
+   ],
+   "vol": 0.7,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "ui.deny": {
+   "files": [
+    "cc100_plop_01.mp3",
+    "cc100_plop_02.mp3"
+   ],
+   "vol": 0.6,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "send.small": {
+   "files": [
+    "pxb_feetS.mp3"
+   ],
+   "vol": 0.3,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "send.mid": {
+   "files": [
+    "pxb_feetM.mp3"
+   ],
+   "vol": 0.5,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "send.big": {
+   "files": [
+    "pxb_feetL.mp3"
+   ],
+   "vol": 0.7,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "send.arrive": {
+   "files": [
+    "pxb_hey1.mp3",
+    "pxb_hey2.mp3"
+   ],
+   "vol": 0.35,
+   "max": 2,
+   "pri": 50,
+   "bus": "sfx"
+  },
+  "vox.cheer": {
+   "files": [
+    "pxb_cheer1.mp3",
+    "pxb_cheer2.mp3"
+   ],
+   "vol": 0.4,
+   "max": 1,
+   "pri": 50,
+   "bus": "sfx"
+  },
+  "vox.crowd": {
+   "files": [
+    "pxb_cry1.mp3",
+    "pxb_cry2.mp3",
+    "pxb_cry3.mp3"
+   ],
+   "vol": 0.4,
+   "max": 1,
+   "pri": 50,
+   "bus": "sfx"
+  },
+  "march.step": {
+   "files": [
+    "pxb_march1.mp3",
+    "pxb_march2.mp3"
+   ],
+   "vol": 0.2,
+   "max": 4,
+   "pri": 30,
+   "bus": "sfx"
+  },
+  "march.hoof": {
+   "files": [
+    "horse_Trot.mp3"
+   ],
+   "vol": 0.25,
+   "max": 1,
+   "pri": 30,
+   "bus": "sfx"
+  },
+  "fight.sword": {
+   "files": [
+    "pxb_fight1.mp3",
+    "pxb_fight2.mp3",
+    "pxb_fight3.mp3",
+    "pxb_fight4.mp3"
+   ],
+   "vol": 0.4,
+   "max": 3,
+   "pri": 60,
+   "bus": "sfx"
+  },
+  "fight.shield": {
+   "files": [
+    "pxb_armorHit.mp3",
+    "rpg80_metal_01.mp3",
+    "rpg80_metal_03.mp3"
+   ],
+   "vol": 0.4,
+   "max": 4,
+   "pri": 60,
+   "bus": "sfx"
+  },
+  "fight.arrow": {
+   "files": [
+    "pxb_arrow1.mp3",
+    "pxb_bow.mp3"
+   ],
+   "vol": 0.45,
+   "max": 4,
+   "pri": 60,
+   "bus": "sfx"
+  },
+  "fight.arrowhit": {
+   "files": [
+    "metalwood_wood_hit_01.mp3",
+    "metalwood_wood_hit_05.mp3",
+    "metalwood_wood_hit_06.mp3"
+   ],
+   "vol": 0.45,
+   "max": 4,
+   "pri": 60,
+   "bus": "sfx"
+  },
+  "fight.gate": {
+   "files": [
+    "pxb_box1.mp3",
+    "pxb_crash1.mp3"
+   ],
+   "vol": 0.45,
+   "max": 4,
+   "pri": 60,
+   "bus": "sfx"
+  },
+  "fight.tower": {
+   "files": [
+    "pxb_bow.mp3",
+    "pxb_arrow1.mp3"
+   ],
+   "vol": 0.45,
+   "max": 4,
+   "pri": 60,
+   "bus": "sfx"
+  },
+  "fight.fall": {
+   "files": [
+    "pxb_fall1.mp3",
+    "pxb_fall2.mp3"
+   ],
+   "vol": 0.45,
+   "max": 4,
+   "pri": 50,
+   "bus": "sfx"
+  },
+  "cap.neutral": {
+   "files": [
+    "pxb_tadaA.mp3"
+   ],
+   "vol": 0.5,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "cap.enemy": {
+   "files": [
+    "pxb_tada1.mp3",
+    "pxb_tada2.mp3"
+   ],
+   "vol": 0.55,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "cap.lost": {
+   "files": [
+    "pxb_lost.mp3"
+   ],
+   "vol": 0.55,
+   "max": 4,
+   "pri": 100,
+   "bus": "sfx"
+  },
+  "alarm.home": {
+   "files": [
+    "pxb_alarm.mp3"
+   ],
+   "vol": 0.6,
+   "max": 4,
+   "pri": 100,
+   "bus": "sfx"
+  },
+  "upg.prod": {
+   "files": [
+    "pxb_hammer.mp3",
+    "metalwood_wood_hammer_01.mp3",
+    "metalwood_wood_hammer_02.mp3"
+   ],
+   "vol": 0.55,
+   "max": 4,
+   "pri": 70,
+   "bus": "sfx"
+  },
+  "upg.wall": {
+   "files": [
+    "rpg80_stones_01.mp3",
+    "rpg80_stones_02.mp3",
+    "rpg80_stones_03.mp3",
+    "rpg80_item_stone_02.mp3"
+   ],
+   "vol": 0.6,
+   "max": 4,
+   "pri": 70,
+   "bus": "sfx"
+  },
+  "upg.store": {
+   "files": [
+    "pxb_chest.mp3",
+    "cc100_wooded_box_open.mp3"
+   ],
+   "vol": 0.55,
+   "max": 4,
+   "pri": 70,
+   "bus": "sfx"
+  },
+  "upg.knights": {
+   "files": [
+    "pxb_draw3.mp3",
+    "pxb_armorHit.mp3"
+   ],
+   "vol": 0.55,
+   "max": 4,
+   "pri": 70,
+   "bus": "sfx"
+  },
+  "upg.archers": {
+   "files": [
+    "pxb_bow.mp3"
+   ],
+   "vol": 0.55,
+   "max": 4,
+   "pri": 70,
+   "bus": "sfx"
+  },
+  "hq.weapon": {
+   "files": [
+    "smith_blacksmithhammer.mp3",
+    "anvil_forger.mp3",
+    "metalwood_hammer_01.mp3"
+   ],
+   "vol": 0.6,
+   "max": 4,
+   "pri": 70,
+   "bus": "sfx"
+  },
+  "hq.armor": {
+   "files": [
+    "pxb_armor1.mp3",
+    "pxb_armor2.mp3"
+   ],
+   "vol": 0.6,
+   "max": 4,
+   "pri": 70,
+   "bus": "sfx"
+  },
+  "hq.march": {
+   "files": [
+    "pxb_drum2.mp3"
+   ],
+   "vol": 0.55,
+   "max": 4,
+   "pri": 70,
+   "bus": "sfx"
+  },
+  "hq.royal": {
+   "files": [
+    "pxb_medFanfare.mp3"
+   ],
+   "vol": 0.55,
+   "max": 4,
+   "pri": 70,
+   "bus": "sfx"
+  },
+  "hq.draft": {
+   "files": [
+    "pxb_draft1.mp3",
+    "pxb_draft2.mp3"
+   ],
+   "vol": 0.55,
+   "max": 4,
+   "pri": 70,
+   "bus": "sfx"
+  },
+  "upg.work": {
+   "files": [
+    "metalwood_tools_04.mp3",
+    "metalwood_tools_05.mp3",
+    "metalwood_tools_06.mp3"
+   ],
+   "vol": 0.35,
+   "max": 4,
+   "pri": 60,
+   "bus": "sfx"
+  },
+  "upg.done": {
+   "files": [
+    "k-ui_confirmation_001.mp3",
+    "k-ui_confirmation_002.mp3",
+    "k-ui_confirmation_003.mp3"
+   ],
+   "vol": 0.6,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "hero.in.knight": {
+   "files": [
+    "pxb_unsheathLong.mp3"
+   ],
+   "vol": 0.6,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "hero.in.archer": {
+   "files": [
+    "pxb_arrowHit.mp3"
+   ],
+   "vol": 0.6,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "hero.in.mage": {
+   "files": [
+    "pxb_mage1.mp3",
+    "pxb_mage2.mp3"
+   ],
+   "vol": 0.55,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "hero.in.priest": {
+   "files": [
+    "pxb_priest.mp3"
+   ],
+   "vol": 0.55,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "skill.charge": {
+   "files": [
+    "pxb_neigh.mp3"
+   ],
+   "vol": 0.5,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx",
+   "with": [
+    "march.hoof"
+   ]
+  },
+  "skill.bulwark": {
+   "files": [
+    "metalwood_metal_slam_01.mp3",
+    "cc100_metal_03.mp3"
+   ],
+   "vol": 0.6,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "skill.volley": {
+   "files": [
+    "pxb_arrow1.mp3",
+    "pxb_bow.mp3"
+   ],
+   "vol": 0.6,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "skill.hawkeye": {
+   "files": [
+    "pxb_eagle.mp3"
+   ],
+   "vol": 0.45,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "skill.fireball": {
+   "files": [
+    "pxb_fire1.mp3",
+    "pxb_fire2.mp3"
+   ],
+   "vol": 0.6,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "skill.frost": {
+   "files": [
+    "pxb_spellImpact.mp3",
+    "pxb_frost2.mp3"
+   ],
+   "vol": 0.55,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "skill.bless": {
+   "files": [
+    "pxb_bless.mp3"
+   ],
+   "vol": 0.55,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "skill.revive": {
+   "files": [
+    "pxb_revive.mp3"
+   ],
+   "vol": 0.55,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "hero.levelup": {
+   "files": [
+    "pxb_levelUp.mp3"
+   ],
+   "vol": 0.55,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "hero.hpwarn": {
+   "files": [
+    "vox_heartbeat.mp3"
+   ],
+   "vol": 0.6,
+   "max": 1,
+   "pri": 100,
+   "bus": "sfx"
+  },
+  "hero.down": {
+   "files": [
+    "pxb_fallBig.mp3"
+   ],
+   "vol": 0.6,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "hero.respawn": {
+   "files": [
+    "pxb_respawn.mp3"
+   ],
+   "vol": 0.5,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "chat.recv": {
+   "files": [
+    "pxb_chatRecv.mp3"
+   ],
+   "vol": 0.45,
+   "max": 2,
+   "pri": 60,
+   "bus": "sfx"
+  },
+  "chat.whisper": {
+   "files": [
+    "pxb_whisper.mp3"
+   ],
+   "vol": 0.5,
+   "max": 2,
+   "pri": 60,
+   "bus": "sfx"
+  },
+  "ally.ask": {
+   "files": [
+    "pxb_chime.mp3"
+   ],
+   "vol": 0.5,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "ally.ok": {
+   "files": [
+    "pxb_success1.mp3"
+   ],
+   "vol": 0.5,
+   "max": 4,
+   "pri": 80,
+   "bus": "sfx"
+  },
+  "ally.break": {
+   "files": [
+    "pxb_clash1.mp3",
+    "pxb_clash2.mp3"
+   ],
+   "vol": 0.75,
+   "max": 4,
+   "pri": 100,
+   "bus": "sfx",
+   "with": [
+    "flow.drum"
+   ]
+  },
+  "flow.count": {
+   "files": [
+    "pxb_tick.mp3"
+   ],
+   "vol": 0.55,
+   "max": 4,
+   "pri": 100,
+   "bus": "sfx"
+  },
+  "flow.start": {
+   "files": [
+    "pxb_tada3.mp3"
+   ],
+   "vol": 0.6,
+   "max": 4,
+   "pri": 100,
+   "bus": "sfx",
+   "with": [
+    "vox.crowd"
+   ]
+  },
+  "flow.protectEnd": {
+   "files": [
+    "pxb_protectEnd.mp3"
+   ],
+   "vol": 0.6,
+   "max": 4,
+   "pri": 100,
+   "bus": "sfx"
+  },
+  "flow.drum": {
+   "files": [
+    "pxb_drumHit.mp3"
+   ],
+   "vol": 0.45,
+   "max": 4,
+   "pri": 90,
+   "bus": "sfx"
+  },
+  "flow.min1": {
+   "files": [
+    "pxb_bell2.mp3"
+   ],
+   "vol": 0.55,
+   "max": 4,
+   "pri": 100,
+   "bus": "sfx"
+  },
+  "flow.scoreWarn": {
+   "files": [
+    "pxb_scoreWarn.mp3"
+   ],
+   "vol": 0.6,
+   "max": 4,
+   "pri": 100,
+   "bus": "sfx"
+  },
+  "flow.out": {
+   "files": [
+    "pxb_collapse.mp3"
+   ],
+   "vol": 0.55,
+   "max": 4,
+   "pri": 100,
+   "bus": "sfx"
+  },
+  "flow.cheer": {
+   "files": [
+    "pxb_cheer1.mp3",
+    "pxb_cheer2.mp3"
+   ],
+   "vol": 0.35,
+   "max": 1,
+   "pri": 40,
+   "bus": "sfx"
+  },
+  "amb.grass": {
+   "files": [
+    "pxb_wind.mp3"
+   ],
+   "vol": 0.25,
+   "max": 1,
+   "pri": 10,
+   "bus": "env",
+   "loop": true
+  },
+  "amb.forest": {
+   "files": [
+    "pxb_ambForest.mp3"
+   ],
+   "vol": 0.25,
+   "max": 1,
+   "pri": 10,
+   "bus": "env",
+   "loop": true
+  }
+ }
+}

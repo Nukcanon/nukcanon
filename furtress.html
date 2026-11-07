@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0066cc">
+  <title>Furtress · Nukcanon</title>
+  <meta name="description" content="Furtress(퍼트리스): 동물 왕국끼리 길을 따라 병력을 보내 거점을 차지하는 실시간 전략 웹게임. 2~40명, AI와 혼자도. 웹에서 바로 하거나 Windows 설치판으로 같은 와이파이 방을 열 수 있습니다.">
+  <link rel="stylesheet" href="css/style.css?v=20261009-1">
+  <style>
+    .app-page .hero{max-width:800px}
+    .app-page .app-title{display:flex;align-items:center;gap:16px}
+    .app-page .app-icon{display:grid;flex:none;place-items:center;width:64px;height:64px;border-radius:14px;color:#fff;background:var(--home-primary)}
+    .app-page .app-icon svg{width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+    .app-page .hero .intro{max-width:680px;margin:14px 0 18px;color:var(--home-muted);line-height:1.8}
+    .app-page .cta-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px 12px;align-items:start}
+    .app-page .cta{display:flex;flex-direction:column;align-items:center;min-width:0}
+    .app-page .download{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;width:100%;gap:6px;padding:15px 10px;border-radius:12px;color:#fff;background:var(--home-primary);font-weight:800;font-size:.88rem;white-space:nowrap;box-shadow:var(--home-shadow)}
+    .app-page .download:hover{background:var(--home-primary-dark);text-decoration:none}
+    .app-page .download:focus-visible{outline:3px solid var(--home-accent);outline-offset:4px}
+    .app-page .download-note{margin:8px 0 0;color:var(--home-muted);font-size:.8rem;line-height:1.6;text-align:center;word-break:keep-all;text-wrap:balance}
+    .app-page .detail{display:block;padding:24px;border:1px solid var(--home-line);border-radius:18px;background:var(--home-surface);box-shadow:var(--home-shadow);min-width:0}
+    .app-page .detail h2{font-size:1.15rem;margin:0 0 14px;color:var(--home-ink)}
+    .app-page .detail h3{font-size:1rem;margin:0 0 10px;color:var(--home-ink)}
+    .app-page .detail p,.app-page .detail li{color:var(--home-muted);line-height:1.75;font-size:.94rem}
+    .app-page .wide{margin-top:18px}
+    .app-page .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .app-page .two > div{padding:16px 18px;border-radius:12px;background:var(--home-surface-soft)}
+    .app-page .steps{margin:0;padding-left:22px}
+    .app-page .steps li{margin:0 0 8px;padding-left:2px}
+    .app-page .steps li:last-child{margin-bottom:0}
+    .app-page .steps strong{color:var(--home-ink)}
+    .app-page .notes{margin:0;padding-left:20px}
+    .app-page .notes li{margin:0 0 6px}
+    .app-page .hashes{margin:6px 0 0;padding-left:18px}.app-page .hashes li{margin:0 0 4px;font-size:.88rem}
+    .app-page code{padding:1px 5px;border-radius:5px;background:var(--home-surface-soft);color:var(--home-ink);font-size:.88em;word-break:break-all}
+    .app-page .detail .small-note{font-size:.85rem}
+    @media(max-width:900px){.app-page .cta-row{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:520px){.app-page .cta-row{grid-template-columns:1fr}}@media(max-width:760px){.app-page .two{grid-template-columns:1fr}.app-page .detail{padding:20px}}
+    .app-page .play-now{background:#237c71}.app-page .play-now:hover{background:#196358}
+    .app-page #install-help{scroll-margin-top:80px}
+    .app-page .install-help p,.app-page .install-help li{font-size:.94rem;line-height:1.75}
+    .app-page .install-help .small-note{font-size:.85rem}
+    .app-page .install-help .steps{margin:0 0 14px;padding-left:22px}
+    .app-page .install-help .steps li{margin:0 0 8px;padding-left:2px}
+    .app-page .install-help .steps strong{color:var(--home-ink)}
+    .app-page .ih-figs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:14px 0 4px}
+    .app-page .install-help{max-width:680px;box-sizing:border-box}
+    .app-page .ih-fig{display:flex;flex-direction:column;margin:0;min-width:0}
+    .app-page .ih-figs .ih-win{flex:1}
+    .app-page .ih-fig figcaption{margin-top:8px;font-size:.85rem;color:var(--home-muted);line-height:1.6}
+    .app-page .ih-win{position:relative;box-sizing:border-box;padding:16px 16px 52px;color:#fff;background:#0b63c4;border:1px solid rgba(0,0,0,.18);box-shadow:var(--home-shadow);font:400 .78rem/1.55 "Segoe UI","Malgun Gothic",system-ui,sans-serif;min-height:190px}
+    .app-page .ih-win b{display:block;margin:0 0 8px;font-size:1.15rem;font-weight:600;line-height:1.3}
+    .app-page .ih-win p{margin:0 0 6px;color:#fff;line-height:1.55;font-size:.78rem}
+    .app-page .ih-win .ih-link{position:relative;text-decoration:underline;text-underline-offset:2px}
+    .app-page .ih-win .ih-meta{margin:0;font-size:.76rem}
+    .app-page .ih-btns{position:absolute;right:14px;bottom:12px;display:flex;gap:8px}
+    .app-page .ih-btn{padding:4px 14px;border:1px solid #fff;color:#fff;font-size:.76rem}
+    .app-page .ih-btn.on{background:#fff;color:#0b63c4;font-weight:600}
+    .app-page .ih-mark{position:absolute;display:flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#e5383b;color:#fff;font:700 .78rem/1 system-ui,sans-serif;box-shadow:0 0 0 2px #fff}
+    .app-page .ih-sac{box-sizing:border-box;padding:16px;border:1px solid var(--home-line);border-radius:12px;background:#fff;color:#1b1f24;font:400 .78rem/1.55 "Segoe UI","Malgun Gothic",system-ui,sans-serif}
+    .app-page .ih-sac b{display:block;margin-bottom:8px;font-size:1.05rem;font-weight:600}
+    .app-page .ih-opt{display:flex;gap:9px;align-items:flex-start;padding:6px 8px;border-radius:8px;color:#8b929a}
+    .app-page .ih-opt i{flex:none;width:14px;height:14px;margin-top:3px;border:1.5px solid currentColor;border-radius:50%}
+    .app-page .ih-opt span{display:block;line-height:1.45}
+    .app-page .ih-opt.sel{position:relative;color:#1b1f24;border:2px solid #e5383b;background:#fff7f7}
+    .app-page .ih-opt.sel i{border-color:#0b63c4;box-shadow:inset 0 0 0 3px #fff,inset 0 0 0 8px #0b63c4}
+    .app-page .ih-opt.sel strong{display:block;font-weight:600}
+    @media(max-width:760px){.app-page .ih-figs{grid-template-columns:1fr;gap:16px}}
+  </style>
+</head>
+<body class="home-page app-page">
+  <a class="skip-link" href="#main-content">본문으로 바로가기</a>
+  <header class="site-header"><div class="header-inner">
+    <a class="brand" href="./index.html" aria-label="Nukcanon 홈"><span class="brand-copy"><strong>Nukcanon</strong><small>Project Archive</small></span></a>
+    <nav aria-label="주요 메뉴"><a class="home-link" href="./index.html"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8v9a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-9Z"/></svg>Home</a></nav>
+  </div></header>
+  <main id="main-content" class="home-main">
+    <section class="hero" aria-labelledby="app-title">
+      <p class="eyebrow">FURTRESS</p>
+      <div class="app-title">
+        <span class="app-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 21V9l3 2V6l5 3 5-3v5l3-2v12H4Z"/><path d="M10 21v-5h4v5"/></svg></span>
+        <h1 id="app-title">Furtress <small style="font-size:.55em;color:var(--home-muted)">퍼트리스 · 꼬마 왕국</small></h1>
+      </div>
+      <p class="intro">동물 왕국의 왕이 되어 길을 따라 병력을 보내 마을과 성을 차지하는 실시간 전략 게임입니다.<br>2~40명이 2~8개 나라로 나뉘어 함께하고, 빈자리는 AI가 채웁니다. 혼자서 AI와도 할 수 있습니다.</p>
+      <div class="cta-row">
+        <!-- FT:cta:begin -->
+        <div class="cta">
+          <a class="download" href="https://github.com/Nukcanon/nukcanon/releases/download/furtress-v0.1.0/Furtress_Setup_v0.1.0.exe">Windows 설치판 <span aria-hidden="true">↓</span></a>
+          <p class="download-note">Windows 10/11 64비트 · 같은 와이파이(내부망) 방 서버<br>Windows가 막으면 <a href="#install-help">설치 차단 안내</a></p>
+        </div>
+        <div class="cta">
+          <a class="download play-now" href="furtress/">웹에서 바로 하기 <span aria-hidden="true">▶</span></a>
+          <p class="download-note">PC·휴대폰 브라우저 · 혼자 하기 + 인터넷 방<br>설치 없이 바로 시작</p>
+        </div>
+        <!-- FT:cta:end -->
+      </div>
+    </section>
+    <section class="detail wide install-help" id="install-help" aria-labelledby="install-help-title">
+        <h2 id="install-help-title">설치가 차단될 때</h2>
+        <p>설치 파일에 코드 서명이 없어 Windows가 경고합니다. 악성 코드가 발견된 것은 아니며, 서명 없는 새 파일에 나타나는 기본 보호 기능입니다.</p>
+        <h3>파란 창 "Windows의 PC 보호"</h3>
+        <p><strong>추가 정보</strong>를 누른 뒤 <strong>실행</strong>을 누르세요.</p>
+        <div class="ih-figs" aria-label="SmartScreen 창 예시 (실제 화면을 본뜬 그림)">
+          <figure class="ih-fig">
+            <div class="ih-win" role="img" aria-label="Windows의 PC 보호 창. 추가 정보 링크가 표시됨">
+              <b>Windows의 PC 보호</b>
+              <p>Microsoft Defender SmartScreen에서 인식할 수 없는 앱의 시작을 차단했습니다. 이 앱을 실행하면 PC가 위험에 노출될 수 있습니다.</p>
+              <p><span class="ih-link">추가 정보<span class="ih-mark" style="left:calc(100% + 8px);top:-2px">1</span></span></p>
+              <div class="ih-btns"><span class="ih-btn">실행 안 함</span></div>
+            </div>
+            <figcaption><strong>1.</strong> 창 안의 <strong>추가 정보</strong>를 누릅니다.</figcaption>
+          </figure>
+          <figure class="ih-fig">
+            <div class="ih-win" role="img" aria-label="앱 정보 확장 후 실행 버튼이 표시된 창">
+              <b>Windows의 PC 보호</b>
+              <p>Microsoft Defender SmartScreen에서 인식할 수 없는 앱의 시작을 차단했습니다. 이 앱을 실행하면 PC가 위험에 노출될 수 있습니다.</p>
+              <p class="ih-meta">앱: Furtress_Setup_v0.1.0.exe<br>게시자: 알 수 없는 게시자</p>
+              <div class="ih-btns"><span class="ih-btn on" style="position:relative">실행<span class="ih-mark" style="right:-11px;top:-15px">2</span></span><span class="ih-btn">실행 안 함</span></div>
+            </div>
+            <figcaption><strong>2.</strong> 나타난 <strong>실행</strong> 버튼을 누릅니다.</figcaption>
+          </figure>
+        </div>
+        <h3>"스마트 앱 컨트롤이 이 앱을 차단했습니다"</h3>
+        <p>파일마다 허용할 수 없습니다. 설치하려면 기능을 꺼야 합니다.</p>
+        <figure class="ih-fig" style="max-width:420px">
+          <div class="ih-sac" role="img" aria-label="스마트 앱 컨트롤 설정 화면. 끔이 선택됨">
+            <b>스마트 앱 컨트롤</b>
+            <div class="ih-opt"><i></i><span>켬</span></div>
+            <div class="ih-opt"><i></i><span>평가</span></div>
+            <div class="ih-opt sel"><i></i><span><strong>끔</strong></span></div>
+          </div>
+          <figcaption>아래 순서로 열어 <strong>끔</strong>을 고릅니다. 실제 화면을 본뜬 그림입니다.</figcaption>
+        </figure>
+        <ol class="steps">
+          <li><strong>설정 → 개인 정보 및 보안 → Windows 보안</strong>을 엽니다.</li>
+          <li><strong>앱 및 브라우저 컨트롤 → 스마트 앱 컨트롤 설정</strong>에서 <strong>끔</strong>을 고릅니다.</li>
+          <li>설치 파일을 다시 실행합니다.</li>
+        </ol>
+        <p class="small-note">참고: 최신 Windows 11에서는 나중에 같은 곳에서 다시 켤 수 있지만, 다시 켜면 Furtress 설치판도 실행이 막힙니다. 끄고 싶지 않으면 위 <strong>웹에서 바로 하기</strong>로 설치 없이 하세요(인터넷 방과 혼자 하기).</p>
+      </section>
+    <section class="detail" aria-labelledby="howto-title">
+      <h2 id="howto-title">어떻게 하나요</h2>
+      <div class="two">
+        <div>
+          <h3>방 만들기</h3>
+          <ol class="steps">
+            <li><strong>혼자 하기</strong>: 나라 수와 AI 난이도를 고르고 바로 시작합니다.</li>
+            <li><strong>방 만들기</strong>: 방 번호가 나오면 친구들에게 알려 줍니다. 친구들은 <strong>방 들어가기</strong>에 번호를 넣습니다.</li>
+            <li>대기실 위쪽의 <strong>확인 글자</strong>가 방장 화면과 같은지 확인한 뒤, 방장이 <strong>시작</strong>을 누릅니다.</li>
+          </ol>
+        </div>
+        <div>
+          <h3>게임 진행</h3>
+          <ol class="steps">
+            <li>내 거점을 눌러 고르고 보낼 곳을 누르면 병력이 출발합니다. 아래 25·50·100%로 보낼 양을 정합니다.</li>
+            <li>마을·성·탑을 차지해 점수를 모으고, 동맹을 맺거나 깨며 목표 점수를 먼저 지킨 나라가 이깁니다.</li>
+            <li>영웅을 움직이고 기술을 써서 전투를 돕습니다. <strong>기술 자동</strong>을 켜면 알아서 씁니다.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+    <section class="detail wide" aria-labelledby="mode-title">
+      <h2 id="mode-title">인터넷 방 · 같은 와이파이 방</h2>
+      <ul class="notes">
+        <li><strong>인터넷 방</strong>: 웹판에서 만들고 들어갑니다. 같은 망의 기기끼리는 서로 직접 연결하고, 안 되면 인터넷 중계로 이어 줍니다.</li>
+        <li><strong>같은 와이파이 방</strong>: 방장만 설치판을 설치합니다. 설치판을 실행한 PC가 방 서버가 되어 인터넷이 막힌 곳에서도 할 수 있고, 같은 망의 방 목록이 게임 창에 자동으로 뜹니다. 친구들은 검은 창에 나오는 「다른 기기」 주소로 브라우저에서 들어옵니다. Windows 방화벽 창이 뜨면 「개인 네트워크」를 허용하세요.</li>
+        <li>모든 통신은 게임 안에서 종단 암호화됩니다. 방장이 나가면 다른 사람이 이어받아 경기가 계속됩니다.</li>
+        <li>회원 가입이나 개인 정보 입력이 없습니다. 별명은 게임 안에서만 쓰입니다.</li>
+      </ul>
+    </section>
+    <section class="detail wide" aria-labelledby="notes-title">
+      <h2 id="notes-title">알아 두기</h2>
+      <ul class="notes">
+        <li>설치판에 코드 서명이 없어 Windows가 경고할 수 있습니다. <a href="#install-help">설치 차단 안내</a>를 보세요. 무료로 쓸 수 있고, 재배포와 판매는 할 수 없습니다. <a href="furtress/LICENSE.txt">이용 조건 전문</a></li>
+        <li>그림 일부는 Tiny Swords(Pixel Frog), 배경음·효과음은 CC0(퍼블릭 도메인)와 Pixabay 라이선스 음원입니다. 출처와 오픈소스 고지는 <a href="furtress/THIRD_PARTY_LICENSES.txt">THIRD_PARTY_LICENSES.txt</a>에 있습니다.</li>
+        <!-- FT:notes:begin -->
+        <li>버전 0.1.0 · <a href="https://github.com/Nukcanon/nukcanon/releases/download/furtress-v0.1.0/SHA256SUMS.txt">파일 확인값(SHA-256)</a> · 설치판 <code>09efa5896244986682c83526cda291d07deb1c35b071bc94d8cc026951ddd96d</code></li>
+        <!-- FT:notes:end -->
+        <li>문의: <a href="mailto:contact@nukcanon.com">contact@nukcanon.com</a></li>
+      </ul>
+    </section>
+  </main>
+  <footer class="site-footer"><p><strong>Nukcanon</strong><span aria-hidden="true">·</span> Maker project archive</p><p class="footer-links"><a href="terms.html">이용약관</a><span aria-hidden="true">·</span><a href="privacy.html">개인정보 처리방침</a></p></footer>
+  <script src="css/patch.js"></script>
+</body>
+</html>
