@@ -31,7 +31,6 @@ warp.mp3     = gargamel10-teleport-game-sound-effect-379236.mp3
 click.mp3    = universfield-computer-mouse-click-352734.mp3
 trap.mp3     = freesound_community-bear-trap-103800.mp3
 radio.mp3    = backroomsaudiouoloads-radio-beep-2-487087.mp3
-timeup.mp3   = alexis_gaming_cam-timer-terminer-342934.mp3
 whisper.mp3  = misfit_melomaniac-hello-whisper-533246.mp3
 switch.mp3   = freesound_community-power-down-7103.mp3
 tickdown.mp3 = dragon-studio-clock-ticking-down-376897.mp3
