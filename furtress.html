@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#0066cc">
   <title>Furtress · Nukcanon</title>
-  <meta name="description" content="Furtress(퍼트리스): 동물 왕국끼리 길을 따라 병력을 보내 거점을 차지하는 실시간 전략 웹게임. 2~40명, AI와 혼자도. 웹에서 바로 하거나 Windows 설치판으로 같은 와이파이 방을 열 수 있습니다.">
+  <meta name="description" content="Furtress(퍼트리스): 동물 왕국끼리 길을 따라 병력을 보내 거점을 차지하는 실시간 전략 웹게임. 2~40명, AI와 혼자도. 웹에서 바로 하거나 Windows 설치판으로 내부망(LAN) 방을 열 수 있습니다.">
   <link rel="stylesheet" href="css/style.css?v=20261009-1">
   <style>
     .app-page .hero{max-width:800px}
@@ -85,12 +85,12 @@
       <div class="cta-row">
         <!-- FT:cta:begin -->
         <div class="cta">
-          <a class="download" href="https://github.com/Nukcanon/nukcanon/releases/download/furtress-v0.1.1/Furtress_Setup_v0.1.1.exe">Windows 설치판 <span aria-hidden="true">↓</span></a>
-          <p class="download-note">Windows 10/11 64비트 · 같은 와이파이(내부망) 방 서버<br>Windows가 막으면 <a href="#install-help">설치 차단 안내</a></p>
+          <a class="download" href="https://github.com/Nukcanon/nukcanon/releases/download/furtress-v0.1.2/Furtress_Setup_v0.1.2.exe">Windows 설치판 <span aria-hidden="true">↓</span></a>
+          <p class="download-note">Windows 10/11 64비트 · 내부망(LAN) 방 서버<br>Windows가 막으면 <a href="#install-help">설치 차단 안내</a></p>
         </div>
         <div class="cta">
           <a class="download play-now" href="furtress/">웹에서 바로 하기 <span aria-hidden="true">▶</span></a>
-          <p class="download-note">PC·휴대폰 브라우저 · 혼자 하기 + 인터넷 방<br>설치 없이 바로 시작</p>
+          <p class="download-note">PC·휴대폰 브라우저 · 혼자 하기 + 인터넷(WAN) 방<br>설치 없이 바로 시작</p>
         </div>
         <!-- FT:cta:end -->
       </div>
@@ -114,7 +114,7 @@
             <div class="ih-win" role="img" aria-label="앱 정보 확장 후 실행 버튼이 표시된 창">
               <b>Windows의 PC 보호</b>
               <p>Microsoft Defender SmartScreen에서 인식할 수 없는 앱의 시작을 차단했습니다. 이 앱을 실행하면 PC가 위험에 노출될 수 있습니다.</p>
-              <p class="ih-meta">앱: Furtress_Setup_v0.1.1.exe<br>게시자: 알 수 없는 게시자</p>
+              <p class="ih-meta">앱: Furtress_Setup_v0.1.2.exe<br>게시자: 알 수 없는 게시자</p>
               <div class="ih-btns"><span class="ih-btn on" style="position:relative">실행<span class="ih-mark" style="right:-11px;top:-15px">2</span></span><span class="ih-btn">실행 안 함</span></div>
             </div>
             <figcaption><strong>2.</strong> 나타난 <strong>실행</strong> 버튼을 누릅니다.</figcaption>
@@ -136,7 +136,7 @@
           <li><strong>앱 및 브라우저 컨트롤 → 스마트 앱 컨트롤 설정</strong>에서 <strong>끔</strong>을 고릅니다.</li>
           <li>설치 파일을 다시 실행합니다.</li>
         </ol>
-        <p class="small-note">참고: 최신 Windows 11에서는 나중에 같은 곳에서 다시 켤 수 있지만, 다시 켜면 Furtress 설치판도 실행이 막힙니다. 끄고 싶지 않으면 위 <strong>웹에서 바로 하기</strong>로 설치 없이 하세요(인터넷 방과 혼자 하기).</p>
+        <p class="small-note">참고: 최신 Windows 11에서는 나중에 같은 곳에서 다시 켤 수 있지만, 다시 켜면 Furtress 설치판도 실행이 막힙니다. 끄고 싶지 않으면 위 <strong>웹에서 바로 하기</strong>로 설치 없이 하세요(인터넷(WAN) 방과 혼자 하기).</p>
       </section>
     <section class="detail" aria-labelledby="howto-title">
       <h2 id="howto-title">어떻게 하나요</h2>
@@ -160,10 +160,10 @@
       </div>
     </section>
     <section class="detail wide" aria-labelledby="mode-title">
-      <h2 id="mode-title">인터넷 방 · 같은 와이파이 방</h2>
+      <h2 id="mode-title">인터넷(WAN) 방 · 내부망(LAN) 방</h2>
       <ul class="notes">
-        <li><strong>인터넷 방</strong>: 웹판에서 만들고 들어갑니다. 같은 망의 기기끼리는 서로 직접 연결하고, 안 되면 인터넷 중계로 이어 줍니다.</li>
-        <li><strong>같은 와이파이 방</strong>: 방장만 설치판을 설치합니다. 설치판을 실행한 PC가 방 서버가 되어 인터넷이 막힌 곳에서도 할 수 있고, 같은 망의 방 목록이 게임 창에 자동으로 뜹니다. 친구들은 검은 창에 나오는 「다른 기기」 주소로 브라우저에서 들어옵니다. Windows 방화벽 창이 뜨면 「개인 네트워크」를 허용하세요.</li>
+        <li><strong>인터넷(WAN) 방</strong>: 웹판과 설치판 모두에서 들어갈 수 있고, 웹판에서 만듭니다. 같은 망의 기기끼리는 서로 직접 연결하고, 안 되면 인터넷 중계로 이어 줍니다.</li>
+        <li><strong>내부망(LAN) 방</strong>: 설치판에서만 됩니다(웹판은 인터넷(WAN) 방만). 방장만 설치판을 설치합니다. 설치판을 실행한 PC가 방 서버가 되어 인터넷이 막힌 곳에서도 할 수 있고, 내부망(LAN) 방 목록이 게임 창에 자동으로 뜹니다. 친구들은 검은 창에 나오는 「다른 기기」 주소로 브라우저에서 들어옵니다. Windows 방화벽 창이 뜨면 「개인 네트워크」를 허용하세요.</li>
         <li>모든 통신은 게임 안에서 종단 암호화됩니다. 방장이 나가면 다른 사람이 이어받아 경기가 계속됩니다.</li>
         <li>회원 가입이나 개인 정보 입력이 없습니다. 별명은 게임 안에서만 쓰입니다.</li>
       </ul>
@@ -174,7 +174,7 @@
         <li>설치판에 코드 서명이 없어 Windows가 경고할 수 있습니다. <a href="#install-help">설치 차단 안내</a>를 보세요. 무료로 쓸 수 있고, 재배포와 판매는 할 수 없습니다. <a href="furtress/LICENSE.txt">이용 조건 전문</a></li>
         <li>그림 일부는 Tiny Swords(Pixel Frog), 배경음·효과음은 CC0(퍼블릭 도메인)와 Pixabay 라이선스 음원입니다. 출처와 오픈소스 고지는 <a href="furtress/THIRD_PARTY_LICENSES.txt">THIRD_PARTY_LICENSES.txt</a>에 있습니다.</li>
         <!-- FT:notes:begin -->
-        <li>버전 0.1.1 · <a href="https://github.com/Nukcanon/nukcanon/releases/download/furtress-v0.1.1/SHA256SUMS.txt">파일 확인값(SHA-256)</a> · 설치판 <code>e2e7c62318d6c1be74df6751c995271e0d338c1a4561771c8d13b4ca9a44d36d</code></li>
+        <li>버전 0.1.2 · <a href="https://github.com/Nukcanon/nukcanon/releases/download/furtress-v0.1.2/SHA256SUMS.txt">파일 확인값(SHA-256)</a> · 설치판 <code>bdf1e9d9f9ab4946f95a4bb9fd3490ddd966e85fb9cb035cfe6c2f1e221f7026</code></li>
         <!-- FT:notes:end -->
         <li>문의: <a href="mailto:contact@nukcanon.com">contact@nukcanon.com</a></li>
       </ul>
