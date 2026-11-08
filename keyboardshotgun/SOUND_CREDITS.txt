@@ -1,0 +1,100 @@
+키보드 샷건 — 소리 출처
+
+모든 소리는 아래 출처에서 받아 자르기·앞 무음 제거·페이드·음량 맞춤·mp3 변환만 했습니다.
+- Kenney (www.kenney.nl): CC0 1.0 (https://creativecommons.org/publicdomain/zero/1.0/)
+- Pixabay (pixabay.com): Pixabay Content License (https://pixabay.com/service/license-summary/) — 게임 안에서 사용, 원본 단독 재배포·판매 금지
+
+[효과음]
+sfx/ui_click.mp3 — Kenney Interface Sounds / click_001.ogg
+sfx/ui_toggle.mp3 — Kenney Interface Sounds / toggle_001.ogg
+sfx/menu_open.mp3 — Kenney Interface Sounds / open_002.ogg
+sfx/menu_close.mp3 — Kenney Interface Sounds / close_002.ogg
+sfx/count_tick.mp3 — Pixabay #125033 "Beep" by emircanalp
+sfx/count_go.mp3 — Pixabay #6104 "Game Start" by freesound_community
+sfx/round_end.mp3 — Pixabay #6320 "Referee whistle blow, gymnasium" by freesound_community
+sfx/rank_top.mp3 — Pixabay #199576 "Level Up 03" by Universfield
+sfx/rank_mid.mp3 — Pixabay #143022 "Level Complete" by Universfield
+sfx/rank_low.mp3 — Pixabay #88784 "Fail Jingle (stereo mix)" by freesound_community
+sfx/final_win.mp3 — Pixabay #6185 "Success Fanfare Trumpets" by freesound_community
+sfx/final_end.mp3 — Pixabay #326133 "Level Up 05" by Universfield
+sfx/good.mp3 — Pixabay #6033 "Correct" by freesound_community
+sfx/great.mp3 — Pixabay #6346 "Short Success Sound Glockenspiel Treasure Video Game" by freesound_community
+sfx/bad.mp3 — Pixabay #20582 "BUZZER OR WRONG ANSWER" by eritnhut1992
+sfx/miss.mp3 — Pixabay #234710 "fail" by u_8g40a9z0la
+sfx/coin.mp3 — Pixabay #190037 "Collect Points" by Liecio
+sfx/star.mp3 — Pixabay #6896 "cartoon_wink_magic_sparkle" by freesound_community
+sfx/tap.mp3 — Kenney UI Audio / click3.ogg
+sfx/pop_1.mp3 — Kenney Interface Sounds / pluck_001.ogg
+sfx/pop_2.mp3 — Kenney Interface Sounds / pluck_002.ogg
+sfx/swoosh_1.mp3 — Pixabay #382724 "Simple Whoosh" by DRAGON-STUDIO
+sfx/swoosh_2.mp3 — Pixabay #14678 "Whoosh Blow Flutter Short.wav" by freesound_community
+sfx/jump.mp3 — Pixabay #6462 "Cartoon jump" by freesound_community
+sfx/land.mp3 — Kenney Impact Sounds / impactGeneric_light_000.ogg
+sfx/step_1.mp3 — Kenney Impact Sounds / footstep_grass_000.ogg
+sfx/step_2.mp3 — Kenney Impact Sounds / footstep_grass_001.ogg
+sfx/step_3.mp3 — Kenney Impact Sounds / footstep_grass_002.ogg
+sfx/hit_1.mp3 — Kenney Impact Sounds / impactPunch_medium_000.ogg
+sfx/hit_2.mp3 — Kenney Impact Sounds / impactPunch_medium_001.ogg
+sfx/thud.mp3 — Kenney Impact Sounds / impactSoft_heavy_000.ogg
+sfx/bonk.mp3 — Pixabay #36055 "Bonk Sound effect" by freesound_community
+sfx/boing.mp3 — Pixabay #140378 "Cartoon Spring Boing" by Universfield
+sfx/splash.mp3 — Pixabay #6261 "SPLASH (by blaukreuz)" by freesound_community
+sfx/drip.mp3 — Pixabay #45622 "Water Drip" by freesound_community
+sfx/pour.mp3 — Pixabay #191999 "Pouring Water" by Universfield
+sfx/bubble_1.mp3 — Pixabay #351337 "Bubble Pop 06" by Universfield
+sfx/bubble_2.mp3 — Pixabay #169074 "Big Bubble 2" by floraphonic
+sfx/sizzle.mp3 — Pixabay #104894 "Sizzle" by freesound_community
+sfx/crunch_1.mp3 — Pixabay #39234 "cartoon bite" by freesound_community
+sfx/crunch_2.mp3 — Pixabay #36186 "Eating sound effect" by freesound_community
+sfx/chop_1.mp3 — Kenney RPG Audio / chop.ogg
+sfx/chop_2.mp3 — Kenney RPG Audio / knifeSlice.ogg
+sfx/clink.mp3 — Kenney Impact Sounds / impactGlass_light_000.ogg
+sfx/plate.mp3 — Kenney Impact Sounds / impactPlate_light_000.ogg
+sfx/bell.mp3 — Kenney Impact Sounds / impactBell_heavy_000.ogg
+sfx/ding.mp3 — Pixabay #101492 "ding" by freesound_community
+sfx/drum.mp3 — Pixabay #447488 "Simple Snare" by DRAGON-STUDIO
+sfx/drum_big.mp3 — Pixabay #367656 "Taiko Drum" by SoundReality
+sfx/whistle.mp3 — Pixabay #41861 "Calling whistle" by freesound_community
+sfx/horn.mp3 — Pixabay #153260 "Car Horn 02" by Universfield
+sfx/bike_bell.mp3 — Pixabay #155622 "Bicycle Bell" by SoundReality
+sfx/beep.mp3 — Kenney Digital Audio / tone1.ogg
+sfx/blip.mp3 — Kenney Digital Audio / pepSound1.ogg
+sfx/switch.mp3 — Kenney Interface Sounds / switch_002.ogg
+sfx/click.mp3 — Kenney UI Audio / click1.ogg
+sfx/tick.mp3 — Pixabay #101150 "Clock Tick" by freesound_community
+sfx/alarm.mp3 — Pixabay #6402 "alarm clock short" by freesound_community
+sfx/zap.mp3 — Kenney Digital Audio / zap1.ogg
+sfx/stamp.mp3 — Pixabay #44189 "traditional stamp" by freesound_community
+sfx/paper.mp3 — Kenney RPG Audio / bookFlip1.ogg
+sfx/snow.mp3 — Kenney Impact Sounds / footstep_snow_000.ogg
+sfx/wind.mp3 — Pixabay #511325 "Gust of Wind" by DRAGON-STUDIO
+sfx/rope.mp3 — Pixabay #186577 "Movement Swipe Whoosh 3" by floraphonic
+sfx/kick.mp3 — Pixabay #37625 "Soccer Ball Kick" by freesound_community
+sfx/catch.mp3 — Kenney Impact Sounds / impactSoft_medium_001.ogg
+sfx/brush.mp3 — Pixabay #94711 "Brushing Teeth" by freesound_community
+sfx/hammer.mp3 — Pixabay #312212 "Cartoon Hammer" by 49053354
+sfx/inflate.mp3 — Pixabay #184053 "Balloon Inflate 2" by floraphonic
+sfx/balloon_pop.mp3 — Pixabay #48030 "Balloon Pop" by freesound_community
+sfx/spin.mp3 — Pixabay #186596 "Spin Whoosh 1" by floraphonic
+sfx/flip.mp3 — Pixabay #91468 "flipCard" by freesound_community
+sfx/reel.mp3 — Pixabay #297884 "Old fishing reel fast rewinding fishing line" by AudioPapkin
+sfx/engine.mp3 — Pixabay #43705 "Car Engine Starting" by freesound_community
+sfx/card_1.mp3 — Kenney Casino Audio / card-place-1.ogg
+sfx/card_2.mp3 — Kenney Casino Audio / card-place-2.ogg
+sfx/dice.mp3 — Kenney Casino Audio / dice-throw-1.ogg
+sfx/glass_break.mp3 — Kenney Impact Sounds / impactGlass_heavy_000.ogg
+sfx/water_drop.mp3 — Pixabay #85731 "water drop" by freesound_community
+sfx/quack.mp3 — Pixabay #112941 "Duck Quack" by iedurodrigues
+sfx/chirp_1.mp3 — Pixabay #171389 "Short Chick Sound" by Nikin
+sfx/chirp_2.mp3 — Pixabay #192422 "Baby Chicks Chirping" by Alex_Jauk
+sfx/meow.mp3 — Pixabay #6226 "cat meow" by freesound_community
+sfx/purr.mp3 — Pixabay #482870 "Cat Purr SFX" by DRAGON-STUDIO
+sfx/baa.mp3 — Pixabay #122256 "Sheep Bleat" by Universfield
+sfx/cheer.mp3 — Pixabay #101509 "Group_Yay_Cheer" by freesound_community
+sfx/gasp.mp3 — Pixabay #320975 "Funny Dramatic Gasp" by Universfield
+sfx/laugh.mp3 — Pixabay #113723 "Chipmunks Hehehei" by u_1s41v2luip
+
+[음악]
+music/title.mp3 — Pixabay #57026 "Fun Kids Playful Comic Carefree Game Happy Positive Music" by REDproductions
+music/play.mp3 — Pixabay #256055 "Friendly Town – Fun Video Game Music Loop" by Cyberwave-Orchestra
+music/final.mp3 — Pixabay #251992 "Triumph Celebration - Upbeat and Fast Music" by Cyberwave-Orchestra
