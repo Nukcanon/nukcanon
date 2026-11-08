@@ -93,6 +93,51 @@ sfx/baa.mp3 — Pixabay #122256 "Sheep Bleat" by Universfield
 sfx/cheer.mp3 — Pixabay #101509 "Group_Yay_Cheer" by freesound_community
 sfx/gasp.mp3 — Pixabay #320975 "Funny Dramatic Gasp" by Universfield
 sfx/laugh.mp3 — Pixabay #113723 "Chipmunks Hehehei" by u_1s41v2luip
+sfx/wood_hit_1.mp3 — Kenney Impact Sounds / impactWood_medium_000.ogg
+sfx/wood_hit_2.mp3 — Kenney Impact Sounds / impactWood_medium_001.ogg
+sfx/plank.mp3 — Kenney Impact Sounds / impactPlank_medium_000.ogg
+sfx/metal_clang.mp3 — Pixabay #193281 "Metal Hit 10" by floraphonic
+sfx/can_drop.mp3 — Pixabay #238694 "Empty Beer Can Table Foley Drop 5" by floraphonic
+sfx/mine.mp3 — Kenney Impact Sounds / impactMining_000.ogg
+sfx/creak_1.mp3 — Pixabay #499651 "Floorboard Creak 03" by dragon-studio
+sfx/creak_2.mp3 — Kenney RPG Audio / creak2.ogg
+sfx/gate_open.mp3 — Pixabay #102380 "Door Open and Close With a Creak" by freesound_community
+sfx/gate_close.mp3 — Kenney RPG Audio / doorClose_1.ogg
+sfx/cloth_1.mp3 — Pixabay #106346 "heavy cloth rustle" by freesound_community
+sfx/cloth_2.mp3 — Kenney RPG Audio / cloth3.ogg
+sfx/pan.mp3 — Pixabay #104894 "Sizzle" by freesound_community
+sfx/leather.mp3 — Kenney RPG Audio / handleSmallLeather.ogg
+sfx/coins.mp3 — Pixabay #229314 "Coin Drop" by universfield
+sfx/stack_1.mp3 — Kenney Casino Audio / chips-stack-1.ogg
+sfx/stack_2.mp3 — Kenney Casino Audio / chips-stack-3.ogg
+sfx/chip_lay.mp3 — Kenney Casino Audio / chip-lay-1.ogg
+sfx/slide_1.mp3 — Kenney Casino Audio / card-slide-1.ogg
+sfx/slide_2.mp3 — Kenney Casino Audio / card-slide-4.ogg
+sfx/shake.mp3 — Kenney Casino Audio / dice-shake-1.ogg
+sfx/slime_1.mp3 — Pixabay #352473 "Slime Impact" by universfield
+sfx/slime_2.mp3 — Kenney Sci-Fi Sounds / slime_001.ogg
+sfx/scratch_1.mp3 — Kenney Interface Sounds / scratch_001.ogg
+sfx/scratch_2.mp3 — Kenney Interface Sounds / scratch_003.ogg
+sfx/step_wood_1.mp3 — Kenney Impact Sounds / footstep_wood_000.ogg
+sfx/step_wood_2.mp3 — Kenney Impact Sounds / footstep_wood_001.ogg
+sfx/step_wood_3.mp3 — Kenney Impact Sounds / footstep_wood_002.ogg
+sfx/glass_ping.mp3 — Pixabay #57538 "Glass Clink" by freesound_community
+sfx/bong.mp3 — Pixabay #308757 "Gong - Sound Effect" by alban_gogh
+sfx/shield.mp3 — Kenney Sci-Fi Sounds / forceField_000.ogg
+sfx/computer.mp3 — Kenney Sci-Fi Sounds / computerNoise_000.ogg
+sfx/slice.mp3 — Pixabay #41231 "Knife slice" by freesound_community
+sfx/latch.mp3 — Pixabay #382712 "Light Switch" by dragon-studio
+sfx/belt.mp3 — Kenney RPG Audio / beltHandle1.ogg
+sfx/book.mp3 — Pixabay #102978 "PageTurn" by freesound_community
+sfx/book_place.mp3 — Kenney RPG Audio / bookPlace1.ogg
+sfx/parrot.mp3 — Pixabay #382721 "Macaw Sound" by dragon-studio
+sfx/penguin.mp3 — Pixabay #220042 "Pinguin" by sondangsirait419
+sfx/rain.mp3 — Pixabay #118970 "Rain Waterdrop Sound." by bhupendra_shrestha
+sfx/snore.mp3 — Pixabay #250959 "Funny Snore" by universfield
+sfx/squeak.mp3 — Pixabay #6059 "Squeaky Toy #1" by freesound_community
+sfx/buzz.mp3 — Pixabay #47157 "Flies buzzing" by freesound_community
+sfx/stopwatch.mp3 — Pixabay #103837 "Ticking Stopwatch (dry)" by freesound_community
+sfx/confirm.mp3 — Kenney Interface Sounds / confirmation_002.ogg
 
 [음악]
 music/title.mp3 — Pixabay #57026 "Fun Kids Playful Comic Carefree Game Happy Positive Music" by REDproductions

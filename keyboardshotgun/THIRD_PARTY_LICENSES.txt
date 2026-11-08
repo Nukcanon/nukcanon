@@ -81,16 +81,50 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ======================================================================
-그림 — Kenney 게임 그림 묶음(Art: Kenney asset packs) — CC0 1.0
-https://www.kenney.nl , https://creativecommons.org/publicdomain/zero/1.0/
+그림 — 3D 모델(CC0 1.0): Kenney · Quaternius · KayKit 등
+https://www.kenney.nl , https://quaternius.com , https://www.kaylousberg.com , https://poly.pizza , https://creativecommons.org/publicdomain/zero/1.0/
 ======================================================================
-게임 그림(sprites/atlas-0.png)은 Kenney(www.kenney.nl)의 CC0 묶음에서 골라 크기를 맞추고 색을 바꾼 것입니다.
-쓴 묶음: New Platformer Pack, Background Elements (Remastered), Animal Pack (Remastered), Emotes Pack, Fish Pack,
-Platformer Art Candy, Platformer Art Winter, Shooting Gallery, Game Icons, Racing Pack, Board Game Icons, Jumper Pack, Sports Pack.
-CC0이라 고지 의무는 없지만 감사의 뜻으로 적습니다. 묶음에 없는 물건은 이 게임에서 직접 그렸습니다.
+게임 그림(sprites/atlas-*.webp, sprites/g/*.webp, sprites/bot-*.webp)은 받은 3D 모델을 고정 시점·만화 음영·외곽선으로 그려 만든 것입니다
+(크기·색·자세를 바꾸고 모서리를 둥글게 다듬음). CC0 모델은 고지 의무가 없지만 감사의 뜻으로 적습니다.
+- Kenney: Nature Kit, Food Kit, Holiday Kit, Survival Kit, Minigolf Kit, Car Kit, Furniture Kit, Starter Kit 3D Platformer(캐릭터 로봇 character.glb —
+  얼굴판 모양(네모·세모·동그라미)·표정·몸 색을 바꿈), 그리고 2D 묶음(Game Icons·Board Game Icons 등, 키 표지·작은 아이콘)
+- Quaternius(Poly Pizza): 동물·탈것·사람·소품
+- KayKit(Kay Lousberg): Restaurant Bits, Furniture Bits
+- Poly Pizza의 그 밖의 CC0 모델: CreativeTrio, isa, scaranto, reelpersen, Polygonal Mind, reyshapes 등
+땅·벽·하늘 면, 길, 카드 판, 음표 같은 일부 단순한 모양은 이 게임에서 직접 만들었습니다.
+
+======================================================================
+그림 — 3D 모델(CC-BY 3.0, Poly Pizza)
+https://creativecommons.org/licenses/by/3.0/
+======================================================================
+아래 모델은 Creative Commons Attribution 3.0으로 배포됩니다. 고정 시점으로 그리면서 크기·색·자세를 바꾸고 모서리를 둥글게 다듬었습니다.
+- "Bicycle" by Poly by Google — https://poly.pizza/m/5pBoRkAPQk6
+- "Balloon" by Poly by Google — https://poly.pizza/m/d1gDDhM7pTf
+- "Soccer ball" by Poly by Google — https://poly.pizza/m/fnDmeCySRhV
+- "Drum" by Poly by Google — https://poly.pizza/m/c3RNKJflc4O
+- "Drum stick" by Poly by Google — https://poly.pizza/m/8llOkQCNie_
+- "Umbrella" by Poly by Google — https://poly.pizza/m/2ezzoFQ14rV
+- "Teeth" by Poly by Google — https://poly.pizza/m/eNR_DPPP1Hp
+- "Goat" by Poly by Google — https://poly.pizza/m/d7dImmjtF8E
+- "Duck" by Poly by Google — https://poly.pizza/m/c1fo7hQgC6J
+- "Rubber Stamp" by Poly by Google — https://poly.pizza/m/3RdawRyAWKx
+- "Nail" by Poly by Google — https://poly.pizza/m/8a0p2zrUFBs
+- "Seesaw" by Poly by Google — https://poly.pizza/m/8Ha-8ms-TJb
+- "Clock" by jeremy — https://poly.pizza/m/31XZ7p2-c1q
+- "Duck" by jeremy — https://poly.pizza/m/2KHEgw1ztVI
+- "Blackboard" by jeremy — https://poly.pizza/m/duhtFXbJCfc
+- "Light Switch" by Jarlan Perez — https://poly.pizza/m/1xBl-8de6b0
+- "Toy Mouse" by sirkitree — https://poly.pizza/m/49PYgABKfFo
+
+======================================================================
+그림 — Twemoji 14.0.2 (가위바위보 손 그림) — CC-BY 4.0
+Copyright 2020 Twitter, Inc and other contributors — https://github.com/twitter/twemoji
+https://creativecommons.org/licenses/by/4.0/
+======================================================================
+가위바위보 게임의 손 그림(✊ 270a, ✌ 270c, ✋ 270b)은 Twemoji 그림을 크기만 바꿔 쓴 것입니다.
 
 ======================================================================
 소리 — Kenney(CC0 1.0)·Pixabay(Pixabay Content License)
-https://www.kenney.nl , https://pixabay.com/service/license-summary/
+https://www.kenney.nl , https://pixabay.com/service/license-summary/ , https://commons.wikimedia.org
 ======================================================================
 효과음과 음악의 파일별 출처는 SOUND_CREDITS.txt에 있습니다.
