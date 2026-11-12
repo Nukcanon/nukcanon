@@ -35,6 +35,12 @@ CC0 asks for no attribution; these credits are given as thanks and as a record.
     retargeted by `tools/bake_heroes.gd` / `tools/clip_retarget.gd`.
   - "Universal Base Characters" (Standard) - reference bodies for the hero rig.
   - "Toon Shooter Game Kit" - weapons (`assets/weapons`) and environment props (`assets/props`).
+  - "Zombie Apocalypse Kit" (2.2.6, https://quaternius.com/packs/zombieapocalypsekit.html, glTF from the pack's
+    public Google Drive folder) - map props `assets/props/z_*.res` (road barriers, tyre stacks, traffic drum,
+    containers, bin bags, fire hydrant, roadworks barrier, traffic light, wheel, breeze blocks, pallet), baked to
+    vertex colours from the pack's swatch atlas by `tools/bake_props.gd` ("-- extra"). Note: the pack's own
+    License.txt names "Ultimate Platformer Pack" in its first line (a copied header); the pack page and the
+    licence text below it state CC0 1.0. Source kept in `.tools/map-assets/quaternius-zombie/`.
   - Horse, Fox and Stag statues, via poly.pizza (`assets/models/statues`, pages in `SOURCES.json`).
   Licence notices: `assets/heroes/LICENSE.txt`, `assets/props/LICENSE.txt`, `assets/models/statues/LICENSE.txt`
   (copied to `licenses/` in the release packages).
@@ -42,9 +48,20 @@ CC0 asks for no attribution; these credits are given as thanks and as a record.
   for walls, floors and roofs (Asphalt031, Concrete042A, Bricks075A/097/101/105, PavingStones070/146/151, Tiles107/141,
   RoofingTiles012A, Metal022 and others), fetched by `tools/maps/fetch_textures.py`. IDs, URLs and edits are in
   `assets/textures/detail/SOURCES.json`.
+- **para** (OpenGameArt.org), "fps arms (rigged only)", CC0 1.0 (a MakeHuman-based mesh and skin texture): the
+  first-person arms (`assets/heroes/fp_rig.scn`, `assets/heroes/fp_arms_tex.res`), baked at their own proportions by
+  `tools/bake_fp_rig.gd`; sleeves and gloves are painted in each outfit's own colours.
 - **Unity Labs Paris**, "Free VFX image sequences and flipbooks", Flame03 (16x4 flipbook), CC0 1.0
   (https://unity.com/blog/engine-platform/free-vfx-image-sequences-flipbooks): `assets/fx/flame03.png`, see
   `assets/fx/SOURCES.md`.
+- **Kenney** (https://kenney.nl) "Pirate Kit" and "Watercraft Kit", and **Kay Lousberg** (https://kaylousberg.com)
+  "KayKit City Builder Bits", CC0 1.0 (2.2.6 landmarks): towers recoloured as bell towers, stone towers and a
+  lighthouse (tower-complete-large/-small), cargo ship, ocean liner, tug, sailing, fishing, house and row boats,
+  sailing ship, shipwreck and a water tower; with the Quaternius Zombie Apocalypse Kit's water tower (above). Baked
+  to vertex colours into `assets/arenas/landmarks/landmarks.res` by `tools/bake_landmarks.gd` (list and colour
+  changes: `tools/landmarks_bake.json`); placed outside the playable area by `scripts/district_landmarks.gd`
+  (LANDMARKS). Sources kept in `.tools/map-assets/`. Licence notices: `assets/arenas/landmarks/LICENSE.txt`
+  (copied to `licenses/` in the release packages).
 
 ## AI-generated texture
 

@@ -1,3 +1,4 @@
 ﻿Props (assets/props): "Toon Shooter Game Kit" environment pieces by Quaternius (quaternius.com), CC0 1.0,
 rebaked to vertex-colour meshes by tools/bake_props.gd.
+z_*.res: "Zombie Apocalypse Kit" by Quaternius (quaternius.com), CC0 1.0, rebaked the same way.
 CC0 1.0: https://creativecommons.org/publicdomain/zero/1.0/

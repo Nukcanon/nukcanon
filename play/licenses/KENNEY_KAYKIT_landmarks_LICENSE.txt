@@ -1,0 +1,111 @@
+Landmark and boat models in landmarks.res (baked by tools/bake_landmarks.gd from tools/landmarks_bake.json).
+All four packs are CC0 1.0. Their licence notices follow, unchanged.
+
+==== Kenney Pirate Kit (tower-complete-large: bell towers, lighthouse; ship-large) ====
+	
+
+	Pirate Kit (2.1)
+
+	Created/distributed by Kenney (www.kenney.nl)
+	Creation date: 17-02-2026 13:57
+	
+			------------------------------
+
+	License: (Creative Commons Zero, CC0)
+	http://creativecommons.org/publicdomain/zero/1.0/
+
+	You can use this content for personal, educational, and commercial purposes.
+
+	Support by crediting 'Kenney' or 'www.kenney.nl' (this is not a requirement)
+
+			------------------------------
+
+	• Website : www.kenney.nl
+	• Donate  : www.kenney.nl/donate
+
+	• Patreon : patreon.com/kenney
+	
+	Follow on social media for updates:
+
+	• Twitter:	 twitter.com/KenneyNL
+	• BlueSky:	 kenney.bsky.social
+	• Instagram: instagram.com/kenney_nl
+
+==== Kenney Watercraft Kit (ship-cargo-a, ship-ocean-liner-small, boat-tug-a, boat-sail-a/b, boat-fishing-small, boat-house-a/d, boat-row-large) ====
+	
+
+	Watercraft Kit (2.1)
+
+	Created/distributed by Kenney (www.kenney.nl)
+	Creation date: 19-04-2024 11:37
+	
+			------------------------------
+
+	License: (Creative Commons Zero, CC0)
+	http://creativecommons.org/publicdomain/zero/1.0/
+
+	You can use this content for personal, educational, and commercial purposes.
+
+	Support by crediting 'Kenney' or 'www.kenney.nl' (this is not a requirement)
+
+			------------------------------
+
+	• Website : www.kenney.nl
+	• Donate  : www.kenney.nl/donate
+
+	• Patreon : patreon.com/kenney
+	
+	Follow on social media for updates:
+
+	• Twitter:   twitter.com/KenneyNL
+	• Instagram: instagram.com/kenney_nl
+	• Mastodon:  mastodon.gamedev.place/@kenney
+
+==== KayKit City Builder Bits (watertower) ====
+
+	KayKit : City Builder Bits (1.0)
+
+	Created/distributed by Kay Lousberg (www.kaylousberg.com)
+	Creation date: 25/08/2023 12:00
+
+			------------------------------
+
+	License: (Creative Commons Zero, CC0)
+	http://creativecommons.org/publicdomain/zero/1.0/
+
+	This content is free to use in personal, educational and commercial projects.
+
+	Support me by crediting Kay Lousberg, www.kaylousberg.com (this is not mandatory)
+
+			------------------------------
+
+	This asset pack is here thanks to all the wonderful people who support KayKit on Patreon and those who buy our EXTRA or SOURCE packs on itch.io.
+
+	And a big, special thank you to my Super Supporters:
+
+	- Brian McBarron
+	- Silva
+
+
+
+			------------------------------
+
+
+	Patreon:  http://patreon.com/kaylousberg
+
+	Follow on Twitter for updates:
+	http://twitter.com/KayLousberg
+
+==== Quaternius Zombie Apocalypse Kit (WaterTower) - the pack page and the licence text state CC0 1.0 (its first line names another pack, a copied header) ====
+------------------------------------------------------
+Ultimate Platformer Pack by @Quaternius
+Consider supporting me on Patreon, even $1 helps me a lot!
+
+https://www.patreon.com/quaternius
+-------------------------------------------------------
+
+License:
+CC0 1.0 Universal (CC0 1.0) 
+Public Domain Dedication
+https://creativecommons.org/publicdomain/zero/1.0/
+
