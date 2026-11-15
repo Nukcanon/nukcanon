@@ -27,7 +27,7 @@ these licences: each sound keeps the licence listed here.
 - ["sword-sound"](https://pixabay.com/sound-effects/sword-sound-260274/) by MUSICHOLDER (Pixabay id 260274) - used in `knife_swing`.
 - ["Walking In Water"](https://pixabay.com/sound-effects/walking-in-water-199418/) by Alex_Jauk (Pixabay id 199418) - used in `step_water_0`, `step_water_1`, `step_water_2`, `step_water_3`.
 - ["Healing Magic (1)"](https://pixabay.com/sound-effects/healing-magic-1-378665/) by Yodguard (Pixabay id 378665) - used in `medkit`.
-- ["explosion"](https://pixabay.com/sound-effects/explosion-47821/) by freesound_community, originally by WhaTThes (Freesound) (Pixabay id 47821) - used in `explosion`, `rocket_explosion`.
+- ["explosion"](https://pixabay.com/sound-effects/explosion-47821/) by freesound_community, originally by WhaTThes (Freesound) (Pixabay id 47821) - used in `explosion`, `rocket_explosion`, `device_break`.
 - ["laser weld"](https://pixabay.com/sound-effects/laser-weld-103309/) by freesound_community, originally by cognito perceptu (Freesound) (Pixabay id 103309) - used in `laser_loop`.
 - ["Fire Sound Effects"](https://pixabay.com/sound-effects/film-special-effects-fire-sound-effects-224089/) by Alice_soundz (Pixabay id 224089) - used in `molotov`.
 - ["Crackling Fire"](https://pixabay.com/sound-effects/crackling-fire-584730/) by DRAGON-STUDIO (Pixabay id 584730) - used in `fire_loop`.
@@ -63,13 +63,13 @@ these licences: each sound keeps the licence listed here.
 - "pop" (Pixabay id 402324) - used in `vocal_pistol`.
 - ["Rocket Loop"](https://pixabay.com/sound-effects/film-special-effects-rocket-loop-99748/) by freesound_community (Pixabay id 99748) - used in `rocket_flight`.
 - ["Cinematic Boom 01"](https://pixabay.com/sound-effects/cinematic-boom-01-414572/) by DRAGON-STUDIO (Pixabay id 414572) - used in `kill_sting`.
-- ["Whoosh Cinematic"](https://pixabay.com/sound-effects/film-special-effects-whoosh-cinematic-376875/) by DRAGON-STUDIO (Pixabay id 376875) - used in `skill_0_0`.
+- ["Charge Up Sound Effect"](https://pixabay.com/sound-effects/charge-up-sound-effect-447383/) by spacey_novanox (Pixabay id 447383) - used in `skill_0_0`.
 - ["Inhale_10115b"](https://pixabay.com/sound-effects/film-special-effects-inhale-10115b-93891/) by freesound_community (Pixabay id 93891) - used in `skill_0_2`.
 - ["Heartbeat - Cinematic Trailer SFX"](https://pixabay.com/sound-effects/film-special-effects-heartbeat-cinematic-trailer-sfx-181154/) by kontraa (Pixabay id 181154) - used in `skill_0_2`.
 - ["Force Field"](https://pixabay.com/sound-effects/film-special-effects-force-field-335797/) by CreatorsHome (Pixabay id 335797) - used in `skill_2_1`.
 - ["Slowdown FX"](https://pixabay.com/sound-effects/film-special-effects-slowdown-fx-343685/) by SoundReality (Pixabay id 343685) - used in `skill_4_0`.
 - ["Glitch Noise"](https://pixabay.com/sound-effects/glitch-noise-454247/) by DRAGON-STUDIO (Pixabay id 454247) - used in `skill_4_2`.
-- ["Shield recharging"](https://pixabay.com/sound-effects/film-special-effects-shield-recharging-107016/) by freesound_community (Pixabay id 107016) - used in `skill_5_2`.
+- ["Spell Aura Magical Sound Effect"](https://pixabay.com/sound-effects/spell-aura-magical-sound-effect-451421/) by humordome (Pixabay id 451421) - used in `skill_5_2`.
 - ["bullet-shells"](https://pixabay.com/sound-effects/film-special-effects-bullet-shells-41684/) by freesound_community (Pixabay id 41684) - used in `revolver_eject`.
 - ["Energy Charge 4"](https://pixabay.com/sound-effects/film-special-effects-energy-charge-4-482504/) by Yodguard (Pixabay id 482504) - used in `skill_0_1`.
 - ["Hitting strike something sound sonor echo fx"](https://pixabay.com/sound-effects/film-special-effects-hitting-strike-something-sound-sonor-echo-fx-230964/) by nta88 (Pixabay id 230964) - used in `skill_1_0`.
@@ -84,6 +84,9 @@ these licences: each sound keeps the licence listed here.
 - ["Fantasy Healing Spell Soft Magic Chime 2"](https://pixabay.com/sound-effects/film-special-effects-fantasy-healing-spell-soft-magic-chime-2-546564/) by Vadim_Makes_Sound (Pixabay id 546564) - used in `skill_5_1`.
 - ["30-shell-bouncing"](https://pixabay.com/sound-effects/film-special-effects-30-shell-bouncing-87453/) by freesound_community (Pixabay id 87453) - used in `revolver_eject`.
 - ["Mechanical SFX 018"](https://pixabay.com/sound-effects/film-special-effects-mechanical-sfx-018-314780/) by AudioPapkin (Pixabay id 314780) - used in `skill_3_0`.
+- ["Electric"](https://pixabay.com/sound-effects/electric-155027/) by olenchic (Pixabay id 155027) - used in `sensor_pop`, `device_break`, `cover_break`.
+- ["Time Swoosh"](https://pixabay.com/sound-effects/time-swoosh-77575/) by freesound_community (Pixabay id 77575) - used in `dash_swoosh`.
+- ["Falling Tree"](https://pixabay.com/sound-effects/falling-tree-356127/) by dragon-studio (Pixabay id 356127) - used in `cover_break`.
 
 ## Pixabay sound effects (most likely source)
 
@@ -295,23 +298,27 @@ was not identified, so no author or id is listed.
 | `vocal_machinegun` | Pixabay Content License | Pixabay 406640 | one pop, trimmed; `tools/combat_audio_v205.py` |
 | `vocal_sniper` | Pixabay Content License | Pixabay 312576 | one pop, trimmed; `tools/combat_audio_v205.py` |
 | `vocal_shotgun` | Pixabay Content License | Pixabay 94319 | one pop, trimmed; `tools/combat_audio_v205.py` |
-| `skill_0_0` | Pixabay Content License | Pixabay 376875 | s00_a 0.42-1.40 s, fade, level matched to skill; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
+| `skill_0_0` | Pixabay Content License | Pixabay 447383 | s00_u 0.02-1.07 s, fade, level matched to skill; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
 | `skill_0_1` | Pixabay Content License | Pixabay 482504 | s01_u 0.10-2.90 s, fade, level matched to skill; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
 | `skill_0_2` | Pixabay Content License | Pixabay 93891; Pixabay 181154 | s02_a 0.03-1.34 s, s02_b 0.30-1.60 s, fade, level matched to skill; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
 | `skill_1_0` | Pixabay Content License | Pixabay 230964 | s10_u 0.04-3.80 s (first strike and its echo), 1.2 s fade out, level matched to skill; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
-| `skill_1_2` | Pixabay Content License | Pixabay 69477 | s12_u 0.04-2.34 s (the first two beeps), level matched to skill; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
+| `skill_1_2` | Pixabay Content License | Pixabay 69477 | s12_u 0.04-2.76 s (the first two beeps with the second one's tail, 0.4 s fade), level matched to skill; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
+| `sensor_pop` | Pixabay Content License | Pixabay 155027 | sp_u 0.02-0.90 s (the audible spark), 0.4 s fade, level matched to skill -4 dB; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
 | `skill_2_0` | Pixabay Content License | Pixabay 37395 | s20_u 0.00-1.25 s, level matched to skill; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
-| `skill_2_1` | Pixabay Content License | Pixabay 335797 | s21_a 0.00-1.60 s, fade, level matched to skill; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
+| `skill_2_1` | Pixabay Content License | Pixabay 335797 | s21_a 0.00-4.60 s (nearly all, covering the 4 s dome), 0.8 s fade, level matched to skill; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
 | `skill_3_0` | Pixabay Content License | Pixabay 95253; Pixabay 314780 | s30_e 0.08-1.20 s + s30_u 0.00-1.90 s faded out (started together), level matched to skill; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
 | `skill_3_1` | Pixabay Content License | Pixabay 98304; Pixabay 95253 | s31_c 0.00-1.80 s + s30_e 0.08-1.20 s (started together), fade, level matched to skill; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
 | `skill_3_2` | Pixabay Content License | Pixabay 95253; Pixabay 291096 | s30_e 0.08-1.20 s + s32_c 0.05-1.00 s (started together), fade, level matched to skill; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
 | `skill_4_0` | Pixabay Content License | Pixabay 343685 | s40_a 0.10-2.25 s, fade, level matched to skill; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
-| `skill_4_1` | Pixabay Content License | Pixabay 382372; Pixabay 47607 | s41_d 0.00-3.08 s + s41_e 0.00-2.00 s faded out (started together), level matched to skill; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
+| `skill_4_1` | Pixabay Content License | Pixabay 382372; Pixabay 47607 | s41_d 0.00-3.08 s + s41_e 0.00-2.00 s faded out (started together), level matched to skill +9 dB; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
 | `skill_4_2` | Pixabay Content License | Pixabay 454247 | s42_b 0.00-1.40 s, fade, level matched to skill -3 dB; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
 | `skill_5_0` | Pixabay Content License | Pixabay 614163 | s50_d 0.00-1.80 s, fade, level matched to skill; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
 | `skill_5_1` | Pixabay Content License | Pixabay 546564; Pixabay 6798 (likely) | s51_u 0.00-2.60 s + the LINK beam hum (link_loop, 2.6 s) underneath, fade, level matched to skill; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
-| `skill_5_2` | Pixabay Content License | Pixabay 107016 | s50_a 0.00-1.80 s, fade, level matched to skill; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
+| `skill_5_2` | Pixabay Content License | Pixabay 451421 | s52_u 0.02-2.90 s, 1 s fade, level matched to skill; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
 | `revolver_eject` | Pixabay Content License | Pixabay 41684; Pixabay 87453 | rv_a 0.85-1.70 s + rv_c 0.45-1.25 s (0.12 s later), fade, level matched to shell_insert -3 dB; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
+| `dash_swoosh` | Pixabay Content License | Pixabay 77575 | ds_u 0.00-5.00 s, 1.2 s fade, level matched to skill -2 dB; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
+| `device_break` | Pixabay Content License | Pixabay 155027; Pixabay 47821 | sp_u 0.02-0.90 s spark first, the explosion clip (1.25 s, x0.75) from 0.25 s, level matched to explosion; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
+| `cover_break` | Pixabay Content License | Pixabay 356127; Pixabay 155027 | sp_u 0.02-0.90 s spark first, cb_u 0.58-2.60 s (the fall, x0.75) from 0.25 s, 1 s fade, level matched to explosion -4 dB; `tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)` |
 
 No audio from Metal Slug, Call of Duty, Counter-Strike, VALORANT or other games is knowingly included. The authors of the
 sources above do not endorse this game.

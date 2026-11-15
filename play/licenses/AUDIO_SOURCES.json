@@ -727,16 +727,17 @@
    "status": "confirmed",
    "local": "tools/foley/user_cinematic_boom.wav"
   },
-  "px_376875": {
+  "px_447383": {
    "site": "Pixabay",
-   "title": "Whoosh Cinematic",
-   "author": "DRAGON-STUDIO",
-   "pixabay_id": 376875,
-   "url": "https://pixabay.com/sound-effects/film-special-effects-whoosh-cinematic-376875/",
+   "title": "Charge Up Sound Effect",
+   "author": "spacey_novanox",
+   "pixabay_id": 447383,
+   "url": "https://pixabay.com/sound-effects/charge-up-sound-effect-447383/",
    "license": "Pixabay Content License",
    "license_url": "https://pixabay.com/service/license-summary/",
    "status": "confirmed",
-   "local": "tools/foley/pixabay_v228_skill_0_0.wav"
+   "local": "tools/foley/pixabay_v228_skill_0_0.wav",
+   "note": "Supplied by the user (downloaded file spacey_novanox-charge-up-sound-effect-447383.mp3); author as in the file name."
   },
   "px_93891": {
    "site": "Pixabay",
@@ -793,16 +794,17 @@
    "status": "confirmed",
    "local": "tools/foley/pixabay_v228_skill_4_2.wav"
   },
-  "px_107016": {
+  "px_451421": {
    "site": "Pixabay",
-   "title": "Shield recharging",
-   "author": "freesound_community",
-   "pixabay_id": 107016,
-   "url": "https://pixabay.com/sound-effects/film-special-effects-shield-recharging-107016/",
+   "title": "Spell Aura Magical Sound Effect",
+   "author": "humordome",
+   "pixabay_id": 451421,
+   "url": "https://pixabay.com/sound-effects/spell-aura-magical-sound-effect-451421/",
    "license": "Pixabay Content License",
    "license_url": "https://pixabay.com/service/license-summary/",
    "status": "confirmed",
-   "local": "tools/foley/pixabay_v228_skill_5_2.wav"
+   "local": "tools/foley/pixabay_v228_skill_5_2.wav",
+   "note": "Supplied by the user (downloaded file humordome-spell-aura-magical-sound-effect-451421.mp3); author as in the file name."
   },
   "px_41684": {
    "site": "Pixabay",
@@ -957,6 +959,42 @@
    "license_url": "https://pixabay.com/service/license-summary/",
    "status": "confirmed",
    "local": "tools/foley/pixabay_v228_skill_3_0_2.wav"
+  },
+  "px_155027": {
+   "site": "Pixabay",
+   "title": "Electric",
+   "author": "olenchic",
+   "pixabay_id": 155027,
+   "url": "https://pixabay.com/sound-effects/electric-155027/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v228_sensor_pop.wav",
+   "note": "Supplied by the user (downloaded file olenchic-electric-155027.mp3); author as in the file name."
+  },
+  "px_77575": {
+   "site": "Pixabay",
+   "title": "Time Swoosh",
+   "author": "freesound_community",
+   "pixabay_id": 77575,
+   "url": "https://pixabay.com/sound-effects/time-swoosh-77575/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v228_dash_swoosh.wav",
+   "note": "Supplied by the user (downloaded file freesound_community-time-swoosh-77575.mp3); author as in the file name."
+  },
+  "px_356127": {
+   "site": "Pixabay",
+   "title": "Falling Tree",
+   "author": "dragon-studio",
+   "pixabay_id": 356127,
+   "url": "https://pixabay.com/sound-effects/falling-tree-356127/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v228_cover_break.wav",
+   "note": "Supplied by the user (downloaded file dragon-studio-falling-tree-356127.mp3); author as in the file name."
   }
  },
  "sounds": {
@@ -2307,11 +2345,11 @@
   "skill_0_0": {
    "license": "Pixabay Content License",
    "sources": [
-    "px_376875"
+    "px_447383"
    ],
    "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
-   "clip": "s00_a 0.42-1.40 s, fade, level matched to skill",
-   "note": "2.2.8 per-class skill sound (the user's pick)"
+   "clip": "s00_u 0.02-1.07 s, fade, level matched to skill",
+   "note": "2.2.8 per-class skill sound (the user's pick, 11-16)"
   },
   "skill_0_1": {
    "license": "Pixabay Content License",
@@ -2347,8 +2385,17 @@
     "px_69477"
    ],
    "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
-   "clip": "s12_u 0.04-2.34 s (the first two beeps), level matched to skill",
-   "note": "2.2.8 per-class skill sound (the user's pick, 11-15)"
+   "clip": "s12_u 0.04-2.76 s (the first two beeps with the second one's tail, 0.4 s fade), level matched to skill",
+   "note": "2.2.8 per-class skill sound (the user's pick, 11-15); 2.3.0 the tail no longer cut"
+  },
+  "sensor_pop": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_155027"
+   ],
+   "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
+   "clip": "sp_u 0.02-0.90 s (the audible spark), 0.4 s fade, level matched to skill -4 dB",
+   "note": "2.3.0 the motion sensor's spark when it goes (destroyed or its time up)"
   },
   "skill_2_0": {
    "license": "Pixabay Content License",
@@ -2365,7 +2412,7 @@
     "px_335797"
    ],
    "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
-   "clip": "s21_a 0.00-1.60 s, fade, level matched to skill",
+   "clip": "s21_a 0.00-4.60 s (nearly all, covering the 4 s dome), 0.8 s fade, level matched to skill",
    "note": "2.2.8 per-class skill sound (the user's pick)"
   },
   "skill_3_0": {
@@ -2414,7 +2461,7 @@
     "px_47607"
    ],
    "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
-   "clip": "s41_d 0.00-3.08 s + s41_e 0.00-2.00 s faded out (started together), level matched to skill",
+   "clip": "s41_d 0.00-3.08 s + s41_e 0.00-2.00 s faded out (started together), level matched to skill +9 dB",
    "note": "2.2.8 per-class skill sound (the user's pick, 11-15)"
   },
   "skill_4_2": {
@@ -2448,11 +2495,11 @@
   "skill_5_2": {
    "license": "Pixabay Content License",
    "sources": [
-    "px_107016"
+    "px_451421"
    ],
    "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
-   "clip": "s50_a 0.00-1.80 s, fade, level matched to skill",
-   "note": "2.2.8 per-class skill sound (the user's pick, 11-15)"
+   "clip": "s52_u 0.02-2.90 s, 1 s fade, level matched to skill",
+   "note": "2.2.8 per-class skill sound (the user's pick, 11-16)"
   },
   "revolver_eject": {
    "license": "Pixabay Content License",
@@ -2463,6 +2510,35 @@
    "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
    "clip": "rv_a 0.85-1.70 s + rv_c 0.45-1.25 s (0.12 s later), fade, level matched to shell_insert -3 dB",
    "note": "2.2.8 revolver: casings poured out by the ejector"
+  },
+  "dash_swoosh": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_77575"
+   ],
+   "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
+   "clip": "ds_u 0.00-5.00 s, 1.2 s fade, level matched to skill -2 dB",
+   "note": "2.3.0 heard once while the dash lasts (Actor.HUMS, not looped)"
+  },
+  "device_break": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_155027",
+    "px_47821"
+   ],
+   "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
+   "clip": "sp_u 0.02-0.90 s spark first, the explosion clip (1.25 s, x0.75) from 0.25 s, level matched to explosion",
+   "note": "2.3.0 a turret, drone or drone station destroyed"
+  },
+  "cover_break": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_356127",
+    "px_155027"
+   ],
+   "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
+   "clip": "sp_u 0.02-0.90 s spark first, cb_u 0.58-2.60 s (the fall, x0.75) from 0.25 s, 1 s fade, level matched to explosion -4 dB",
+   "note": "2.3.0 a cover destroyed"
   }
  }
 }
