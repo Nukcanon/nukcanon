@@ -1,3 +1,0 @@
-Galmuri - quiple (Lee Minseo), SIL OFL 1.1, https://github.com/quiple/galmuri (v2.40.4). Galmuri11, Galmuri11-Bold, Galmuri9, GalmuriMono11. OFL.txt 동봉
-
-Press Start 2P - The Press Start 2P Project Authors (cody@zone38.net), SIL OFL 1.1, https://github.com/google/fonts/tree/main/ofl/pressstart2p. PressStart2P-Regular.ttf. PressStart2P_OFL.txt (HUD bitmap font source; baked into assets/ui/font_*.png by tools/make_ui_art.py)
