@@ -726,6 +726,237 @@
    "license_url": "https://pixabay.com/service/license-summary/",
    "status": "confirmed",
    "local": "tools/foley/user_cinematic_boom.wav"
+  },
+  "px_376875": {
+   "site": "Pixabay",
+   "title": "Whoosh Cinematic",
+   "author": "DRAGON-STUDIO",
+   "pixabay_id": 376875,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-whoosh-cinematic-376875/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v228_skill_0_0.wav"
+  },
+  "px_93891": {
+   "site": "Pixabay",
+   "title": "Inhale_10115b",
+   "author": "freesound_community",
+   "pixabay_id": 93891,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-inhale-10115b-93891/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v228_skill_0_2.wav"
+  },
+  "px_181154": {
+   "site": "Pixabay",
+   "title": "Heartbeat - Cinematic Trailer SFX",
+   "author": "kontraa",
+   "pixabay_id": 181154,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-heartbeat-cinematic-trailer-sfx-181154/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v228_skill_0_2.wav"
+  },
+  "px_335797": {
+   "site": "Pixabay",
+   "title": "Force Field",
+   "author": "CreatorsHome",
+   "pixabay_id": 335797,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-force-field-335797/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v228_skill_2_1.wav"
+  },
+  "px_343685": {
+   "site": "Pixabay",
+   "title": "Slowdown FX",
+   "author": "SoundReality",
+   "pixabay_id": 343685,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-slowdown-fx-343685/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v228_skill_4_0.wav"
+  },
+  "px_454247": {
+   "site": "Pixabay",
+   "title": "Glitch Noise",
+   "author": "DRAGON-STUDIO",
+   "pixabay_id": 454247,
+   "url": "https://pixabay.com/sound-effects/glitch-noise-454247/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v228_skill_4_2.wav"
+  },
+  "px_107016": {
+   "site": "Pixabay",
+   "title": "Shield recharging",
+   "author": "freesound_community",
+   "pixabay_id": 107016,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-shield-recharging-107016/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v228_skill_5_2.wav"
+  },
+  "px_41684": {
+   "site": "Pixabay",
+   "title": "bullet-shells",
+   "author": "freesound_community",
+   "pixabay_id": 41684,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-bullet-shells-41684/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v228_revolver_eject.wav"
+  },
+  "px_482504": {
+   "site": "Pixabay",
+   "title": "Energy Charge 4",
+   "author": "Yodguard",
+   "pixabay_id": 482504,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-energy-charge-4-482504/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v228_skill_0_1.wav"
+  },
+  "px_230964": {
+   "site": "Pixabay",
+   "title": "Hitting strike something sound sonor echo fx",
+   "author": "nta88",
+   "pixabay_id": 230964,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-hitting-strike-something-sound-sonor-echo-fx-230964/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v228_skill_1_0.wav"
+  },
+  "px_69477": {
+   "site": "Pixabay",
+   "title": "Detector",
+   "author": "freesound_community",
+   "pixabay_id": 69477,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-detector-69477/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v228_skill_1_2.wav"
+  },
+  "px_37395": {
+   "site": "Pixabay",
+   "title": "Sci-Fi Charge Up",
+   "author": "freesound_community",
+   "pixabay_id": 37395,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-sci-fi-charge-up-37395/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v228_skill_2_0.wav"
+  },
+  "px_95253": {
+   "site": "Pixabay",
+   "title": "ratchet socket wrench tool",
+   "author": "freesound_community",
+   "pixabay_id": 95253,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-ratchet-socket-wrench-tool-95253/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v228_skill_3_0.wav"
+  },
+  "px_98304": {
+   "site": "Pixabay",
+   "title": "Electric motor engine start stop",
+   "author": "freesound_community",
+   "pixabay_id": 98304,
+   "url": "https://pixabay.com/sound-effects/city-electric-motor-engine-start-stop-98304/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v228_skill_3_1.wav"
+  },
+  "px_291096": {
+   "site": "Pixabay",
+   "title": "Heavy Object Falling",
+   "author": "Universfield",
+   "pixabay_id": 291096,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-heavy-object-falling-291096/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v228_skill_3_2_2.wav"
+  },
+  "px_382372": {
+   "site": "Pixabay",
+   "title": "Short bass drop impact with reverb tail",
+   "author": "Sdanezis",
+   "pixabay_id": 382372,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-short-bass-drop-impact-with-reverb-tail-382372/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v228_skill_4_1.wav"
+  },
+  "px_47607": {
+   "site": "Pixabay",
+   "title": "Shields down",
+   "author": "freesound_community",
+   "pixabay_id": 47607,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-shields-down-47607/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v228_skill_4_1_2.wav"
+  },
+  "px_614163": {
+   "site": "Pixabay",
+   "title": "Sci-Fi Energy Shield Activation 1",
+   "author": "Vadim_Makes_Sound",
+   "pixabay_id": 614163,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-sci-fi-energy-shield-activation-1-614163/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v228_skill_5_0.wav"
+  },
+  "px_546564": {
+   "site": "Pixabay",
+   "title": "Fantasy Healing Spell Soft Magic Chime 2",
+   "author": "Vadim_Makes_Sound",
+   "pixabay_id": 546564,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-fantasy-healing-spell-soft-magic-chime-2-546564/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v228_skill_5_1.wav"
+  },
+  "px_87453": {
+   "site": "Pixabay",
+   "title": "30-shell-bouncing",
+   "author": "freesound_community",
+   "pixabay_id": 87453,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-30-shell-bouncing-87453/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v228_revolver_eject_2.wav"
+  },
+  "px_314780": {
+   "site": "Pixabay",
+   "title": "Mechanical SFX 018",
+   "author": "AudioPapkin",
+   "pixabay_id": 314780,
+   "url": "https://pixabay.com/sound-effects/film-special-effects-mechanical-sfx-018-314780/",
+   "license": "Pixabay Content License",
+   "license_url": "https://pixabay.com/service/license-summary/",
+   "status": "confirmed",
+   "local": "tools/foley/pixabay_v228_skill_3_0_2.wav"
   }
  },
  "sounds": {
@@ -2072,6 +2303,166 @@
    "clip": "one pop, trimmed",
    "not_in_manifest": true,
    "note": "optional vocal gunfire, off by default"
+  },
+  "skill_0_0": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_376875"
+   ],
+   "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
+   "clip": "s00_a 0.42-1.40 s, fade, level matched to skill",
+   "note": "2.2.8 per-class skill sound (the user's pick)"
+  },
+  "skill_0_1": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_482504"
+   ],
+   "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
+   "clip": "s01_u 0.10-2.90 s, fade, level matched to skill",
+   "note": "2.2.8 per-class skill sound (the user's pick, 11-15)"
+  },
+  "skill_0_2": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_93891",
+    "px_181154"
+   ],
+   "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
+   "clip": "s02_a 0.03-1.34 s, s02_b 0.30-1.60 s, fade, level matched to skill",
+   "note": "2.2.8 per-class skill sound (the user's pick)"
+  },
+  "skill_1_0": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_230964"
+   ],
+   "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
+   "clip": "s10_u 0.04-3.80 s (first strike and its echo), 1.2 s fade out, level matched to skill",
+   "note": "2.2.8 per-class skill sound (the user's pick, 11-15)"
+  },
+  "skill_1_2": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_69477"
+   ],
+   "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
+   "clip": "s12_u 0.04-2.34 s (the first two beeps), level matched to skill",
+   "note": "2.2.8 per-class skill sound (the user's pick, 11-15)"
+  },
+  "skill_2_0": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_37395"
+   ],
+   "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
+   "clip": "s20_u 0.00-1.25 s, level matched to skill",
+   "note": "2.2.8 per-class skill sound (the user's pick, 11-15)"
+  },
+  "skill_2_1": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_335797"
+   ],
+   "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
+   "clip": "s21_a 0.00-1.60 s, fade, level matched to skill",
+   "note": "2.2.8 per-class skill sound (the user's pick)"
+  },
+  "skill_3_0": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_95253",
+    "px_314780"
+   ],
+   "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
+   "clip": "s30_e 0.08-1.20 s + s30_u 0.00-1.90 s faded out (started together), level matched to skill",
+   "note": "2.2.8 per-class skill sound (the user's pick, 11-15)"
+  },
+  "skill_3_1": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_98304",
+    "px_95253"
+   ],
+   "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
+   "clip": "s31_c 0.00-1.80 s + s30_e 0.08-1.20 s (started together), fade, level matched to skill",
+   "note": "2.2.8 per-class skill sound (the user's pick, 11-15)"
+  },
+  "skill_3_2": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_95253",
+    "px_291096"
+   ],
+   "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
+   "clip": "s30_e 0.08-1.20 s + s32_c 0.05-1.00 s (started together), fade, level matched to skill",
+   "note": "2.2.8 per-class skill sound (the user's pick, 11-15)"
+  },
+  "skill_4_0": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_343685"
+   ],
+   "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
+   "clip": "s40_a 0.10-2.25 s, fade, level matched to skill",
+   "note": "2.2.8 per-class skill sound (the user's pick)"
+  },
+  "skill_4_1": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_382372",
+    "px_47607"
+   ],
+   "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
+   "clip": "s41_d 0.00-3.08 s + s41_e 0.00-2.00 s faded out (started together), level matched to skill",
+   "note": "2.2.8 per-class skill sound (the user's pick, 11-15)"
+  },
+  "skill_4_2": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_454247"
+   ],
+   "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
+   "clip": "s42_b 0.00-1.40 s, fade, level matched to skill -3 dB",
+   "note": "2.2.8 per-class skill sound (the user's pick)"
+  },
+  "skill_5_0": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_614163"
+   ],
+   "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
+   "clip": "s50_d 0.00-1.80 s, fade, level matched to skill",
+   "note": "2.2.8 per-class skill sound (the user's pick, 11-15)"
+  },
+  "skill_5_1": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_546564",
+    "px_6798"
+   ],
+   "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
+   "clip": "s51_u 0.00-2.60 s + the LINK beam hum (link_loop, 2.6 s) underneath, fade, level matched to skill",
+   "note": "2.2.8 per-class skill sound (the user's pick, 11-15)"
+  },
+  "skill_5_2": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_107016"
+   ],
+   "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
+   "clip": "s50_a 0.00-1.80 s, fade, level matched to skill",
+   "note": "2.2.8 per-class skill sound (the user's pick, 11-15)"
+  },
+  "revolver_eject": {
+   "license": "Pixabay Content License",
+   "sources": [
+    "px_41684",
+    "px_87453"
+   ],
+   "recipe": "tools/combat_audio_v228.py (table: tools/combat_audio_v228_table.py)",
+   "clip": "rv_a 0.85-1.70 s + rv_c 0.45-1.25 s (0.12 s later), fade, level matched to shell_insert -3 dB",
+   "note": "2.2.8 revolver: casings poured out by the ejector"
   }
  }
 }
