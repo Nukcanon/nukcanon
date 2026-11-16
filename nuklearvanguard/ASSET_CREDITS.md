@@ -43,10 +43,9 @@
 | cheer_2.ogg | Male Voice – Let's Go! | Universfield | https://pixabay.com/sound-effects/352481/ | Pixabay Content License |
 | crate_break_1.ogg | Wood Crate Destory 2 | freesound_community | https://pixabay.com/sound-effects/97263/ | Pixabay Content License |
 | crate_break_2.ogg | Crate Break 1 | freesound_community | https://pixabay.com/sound-effects/93926/ | Pixabay Content License |
-| mech_hit_1.ogg | metal hit 12 + bullet hit metal | floraphonic / freesound_community | https://pixabay.com/sound-effects/193278/ , https://pixabay.com/sound-effects/84818/ | Pixabay Content License |
-| mech_hit_2.ogg | metal whoosh hit 9 + bullet hit metal | floraphonic / freesound_community | https://pixabay.com/sound-effects/201909/ , https://pixabay.com/sound-effects/84818/ | Pixabay Content License |
-| mech_hit_3.ogg | metal hit 22 + metal hit 95 + bullet hit metal | floraphonic / freesound_community | https://pixabay.com/sound-effects/193289/ , https://pixabay.com/sound-effects/200424/ , https://pixabay.com/sound-effects/84818/ | Pixabay Content License |
-| mech_hit_4.ogg | metal hit 95 + whoosh hit 9 + metal hit 12 | floraphonic | https://pixabay.com/sound-effects/200424/ , https://pixabay.com/sound-effects/201909/ , https://pixabay.com/sound-effects/193278/ | Pixabay Content License |
+| mech_hit_1.ogg | hit on metal (가공: 잘라 고르게 펴고 잡음·대역 조정, 11-17) | freesound_community | https://pixabay.com/sound-effects/42480/ | Pixabay Content License |
+| mech_hit_2.ogg | hit on metal (가공: 잘라 고르게 펴고 잡음·대역 조정, 11-17) | freesound_community | https://pixabay.com/sound-effects/42480/ | Pixabay Content License |
+| mech_hit_3.ogg | hit on metal (가공: 잘라 고르게 펴고 잡음·대역 조정, 11-17) | freesound_community | https://pixabay.com/sound-effects/42480/ | Pixabay Content License |
 | death_briggs_1.ogg | young man being hurt | freesound_community | https://pixabay.com/sound-effects/95628/ | Pixabay Content License |
 | death_mason_1.ogg | male_hurt7 | freesound_community | https://pixabay.com/sound-effects/48124/ | Pixabay Content License |
 | death_mason_2.ogg | male grunts and yells | freesound_community | https://pixabay.com/sound-effects/65945/ | Pixabay Content License |
@@ -93,10 +92,17 @@
 | level_complete_1.ogg | Level Passed | Universfield | https://pixabay.com/sound-effects/143039/ | Pixabay Content License |
 | level_complete_2.ogg | Level Complete | Universfield | https://pixabay.com/sound-effects/143022/ | Pixabay Content License |
 | machine_gun_burst_1.ogg | Clean Machine Gun Burst | freesound_community | https://pixabay.com/sound-effects/98224/ | Pixabay Content License |
-| menu_click_1.ogg | Menu Click | Universfield | https://pixabay.com/sound-effects/147357/ | Pixabay Content License |
-| menu_click_2.ogg | Click Button | Universfield | https://pixabay.com/sound-effects/140881/ | Pixabay Content License |
-| menu_select_1.ogg | Select 003 | CreatorsHome | https://pixabay.com/sound-effects/337609/ | Pixabay Content License |
-| menu_select_2.ogg | Menu Select Button | VoiceBosch | https://pixabay.com/sound-effects/182476/ | Pixabay Content License |
+| menu_click_1.ogg | button 9 | freesound_community | https://pixabay.com/sound-effects/88354/ | Pixabay Content License |
+| chime.ogg | Select 003 | CreatorsHome | https://pixabay.com/sound-effects/337609/ | Pixabay Content License |
+| menu_move_1.ogg | tangcomplete | freesound_community | https://pixabay.com/sound-effects/90540/ | Pixabay Content License |
+| menu_change_1.ogg | gun reload | universfield | https://pixabay.com/sound-effects/123781/ | Pixabay Content License |
+| ricochet_1.ogg | bullet ricochet on a metal surface 1 | kebabus16 | https://pixabay.com/sound-effects/432479/ | Pixabay Content License |
+| ricochet_2.ogg | bullet ricochet on a metal surface 2 | kebabus16 | https://pixabay.com/sound-effects/432480/ | Pixabay Content License |
+| ricochet_3.ogg | bullet ricochet on a metal surface 3 | kebabus16 | https://pixabay.com/sound-effects/432483/ | Pixabay Content License |
+| title_slam_1.ogg | a massive axe impact hitting metal 1 | yodguard | https://pixabay.com/sound-effects/450251/ | Pixabay Content License |
+| title_slam_2.ogg | metal hit 10 | floraphonic | https://pixabay.com/sound-effects/193281/ | Pixabay Content License |
+| char_gunshot_1.ogg | gun shot sound effect | alice_soundz | https://pixabay.com/sound-effects/224087/ | Pixabay Content License |
+| lets_go_1.ogg | male voice let's go | universfield | https://pixabay.com/sound-effects/352481/ | Pixabay Content License |
 | motor_boat_1.ogg | Boat on River | freesound_community | https://pixabay.com/sound-effects/26388/ | Pixabay Content License |
 | motor_boat_2.ogg | Diesel motor on Fishing Boat | freesound_community | https://pixabay.com/sound-effects/75321/ | Pixabay Content License |
 | oneup_1.ogg | 8-Bit Extra Life 1-Up | Chisper | https://pixabay.com/sound-effects/634763/ | Pixabay Content License |
@@ -119,8 +125,8 @@
 | scream_pain_2.ogg | Man Pain Scream | Universfield | https://pixabay.com/sound-effects/567203/ | Pixabay Content License |
 | shell_drop_1.ogg | Gun Shells Hitting Ground | freesound_community | https://pixabay.com/sound-effects/40297/ | Pixabay Content License |
 | shell_drop_2.ogg | .30 Shell Bouncing | freesound_community | https://pixabay.com/sound-effects/87453/ | Pixabay Content License |
-| shotgun_blast_1.ogg | Shotgun Blast | Universfield | https://pixabay.com/sound-effects/352038/ | Pixabay Content License |
-| shotgun_blast_2.ogg | Cinematic Shotgun with Reload | DRAGON-STUDIO | https://pixabay.com/sound-effects/467480/ | Pixabay Content License |
+| shotgun_fire_1.ogg | shotgun firing 3 | freesound_community | https://pixabay.com/sound-effects/14483/ | Pixabay Content License |
+| shotgun_pump_1.ogg | pump action shotgun cycle | freesound_community | https://pixabay.com/sound-effects/81021/ | Pixabay Content License |
 | start_fanfare_1.ogg | Fanfare | freesound_community | https://pixabay.com/sound-effects/46385/ | Pixabay Content License |
 | start_fanfare_2.ogg | Fanfare 1 | BenKirb | https://pixabay.com/sound-effects/276819/ | Pixabay Content License |
 | start_jingle_1.ogg | Game Start | freesound_community | https://pixabay.com/sound-effects/6104/ | Pixabay Content License |
