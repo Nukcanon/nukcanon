@@ -46,6 +46,8 @@
 | mech_hit_1.ogg | hit on metal (가공: 잘라 고르게 펴고 잡음·대역 조정, 11-17) | freesound_community | https://pixabay.com/sound-effects/42480/ | Pixabay Content License |
 | mech_hit_2.ogg | hit on metal (가공: 잘라 고르게 펴고 잡음·대역 조정, 11-17) | freesound_community | https://pixabay.com/sound-effects/42480/ | Pixabay Content License |
 | mech_hit_3.ogg | hit on metal (가공: 잘라 고르게 펴고 잡음·대역 조정, 11-17) | freesound_community | https://pixabay.com/sound-effects/42480/ | Pixabay Content License |
+| hover_engine_loop.ogg | blazing fire (가공: 8초 반복 조각·이음매 교차, 4초 주기로 부드럽게 오르내림, 11-17) | soundreality | https://pixabay.com/sound-effects/394355/ | Pixabay Content License |
+| fire_pillar.ogg | fire spell impact (가공: 앞 0.22초 자름, 1.6초·뒤 1.25초 동안 줄어듦, 부드럽게 눌러 크게, 11-17) | dragon-studio | https://pixabay.com/sound-effects/448565/ | Pixabay Content License |
 | death_briggs_1.ogg | young man being hurt | freesound_community | https://pixabay.com/sound-effects/95628/ | Pixabay Content License |
 | death_mason_1.ogg | male_hurt7 | freesound_community | https://pixabay.com/sound-effects/48124/ | Pixabay Content License |
 | death_mason_2.ogg | male grunts and yells | freesound_community | https://pixabay.com/sound-effects/65945/ | Pixabay Content License |
