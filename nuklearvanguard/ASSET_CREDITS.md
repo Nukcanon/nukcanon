@@ -94,6 +94,7 @@
 | level_complete_1.ogg | Level Passed | Universfield | https://pixabay.com/sound-effects/143039/ | Pixabay Content License |
 | level_complete_2.ogg | Level Complete | Universfield | https://pixabay.com/sound-effects/143022/ | Pixabay Content License |
 | machine_gun_burst_1.ogg | Clean Machine Gun Burst | freesound_community | https://pixabay.com/sound-effects/98224/ | Pixabay Content License |
+| enemy_mg_shot.ogg | Clean Machine Gun Burst (가공: 연사의 마지막 한 발과 꼬리만 잘라 냄, 11-19) | freesound_community | https://pixabay.com/sound-effects/98224/ | Pixabay Content License |
 | menu_click_1.ogg | button 9 | freesound_community | https://pixabay.com/sound-effects/88354/ | Pixabay Content License |
 | chime.ogg | Select 003 | CreatorsHome | https://pixabay.com/sound-effects/337609/ | Pixabay Content License |
 | menu_move_1.ogg | tangcomplete | freesound_community | https://pixabay.com/sound-effects/90540/ | Pixabay Content License |
