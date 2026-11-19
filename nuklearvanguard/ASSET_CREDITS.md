@@ -165,6 +165,11 @@ CC0는 공개 영역 헌정이라 표시 의무가 없습니다(제작자는 예
 |---|---|---|---|---|---|
 | thank_you_1.ogg · thank_you_2.ogg | Free Voice Clips Pack - Bright Female (thank you 2개) | cicifyre | https://opengameart.org/content/voice-clip-packs-for-visual-novels-and-rpgs | CC0 | 잘라냄, 음량 조정, 빠르게(음높이 유지) |
 | thank_you_m_1.ogg | Thank you (NPC, British Male) | theuncertainman (Freesound) | https://freesound.org/people/theuncertainman/sounds/429036/ | CC0 | 잘라냄, 음량 조정, 빠르게(음높이 유지) |
+| veh_approach_truck_1.ogg | Big Truck Approach FF658 | martinimeniscus (Freesound) | https://freesound.org/people/martinimeniscus/sounds/162891/ | CC0 | 잘라냄, 음량 조정 |
+| veh_brake_truck_1.ogg | S37-07 Car in and skids to stop; car doors | craigsmith (Freesound) | https://freesound.org/people/craigsmith/sounds/675275/ | CC0 | 잘라냄, 음량 조정, 아래 소리와 겹침 |
+| veh_brake_truck_1.ogg | Hydraulic Truck Brakes | Filmscore (Freesound) | https://freesound.org/people/Filmscore/sounds/823069/ | CC0 | 잘라냄, 음량 조정, 위 소리와 겹침 |
+| veh_approach_jeep_1.ogg | S07-21 Thunderbird in fast and stop with skid; engine off; doors | craigsmith (Freesound) | https://freesound.org/people/craigsmith/sounds/675254/ | CC0 | 잘라냄, 음량 조정 |
+| veh_brake_jeep_1.ogg | Tires Squeaking | RutgerMuller (Freesound) | https://freesound.org/people/RutgerMuller/sounds/104026/ | CC0 | 잘라냄, 음량 조정 |
 | thank_you_m2_1.ogg | Voice Pack - Merchant (56. Thank you) | Alba MacKenna (Alba_Mac) | https://opengameart.org/content/voice-pack%E2%94%82merchant | **CC BY 4.0** (https://creativecommons.org/licenses/by/4.0/) | 수정함: 잘라냄, 음량 조정, 빠르게. 표시: "Voice lines by Alba MacKenna (Alba_Mac), CC BY 4.0, https://creativecommons.org/licenses/by/4.0/ — edited (trimmed, sped up, converted)." |
 | waves_loop.ogg | Beach Ocean Waves (wave_01~04, 원 녹음 freesound 18363) | jasinski (OpenGameArt 올린 이: qubodup) | https://opengameart.org/content/beach-ocean-waves | CC0 | 이어 붙임 |
 | gulls_1.ogg · gulls_2.ogg | Solo Seagull Sound Effects | Rango Mango | https://opengameart.org/content/solo-seagull-sound-effects | CC0 | 자르기·겹침·저역 통과 |
