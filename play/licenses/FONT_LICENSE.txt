@@ -4,12 +4,17 @@ Noto Sans KR: Copyright © 2014-2021 Adobe (http://www.adobe.com/), with Reserve
 This Font Software is licensed under the SIL Open Font License,
 Version 1.1.
 
-Covers assets/Korean.ttf (Noto Sans KR) and assets/fonts/Symbols.ttf, a
-subset of the same Noto Sans KR font holding only punctuation, arrows,
+Covers assets/Korean.ttf (Noto Sans KR), its cuts assets/fonts/KoreanThin.ttf and assets/fonts/KoreanBold.ttf, and
+assets/fonts/Symbols.ttf, a subset of the same Noto Sans KR font holding only punctuation, arrows,
 geometric shapes and other symbols (made with fontTools pyftsubset for 1.4.1).
 In 1.4.2 its vertical line metrics (ascent / descent / line gap) were set to
 those of DoHyeon (tools/fit_symbol_font.py) so mixed text stays centred; the
 glyph outlines are unchanged.
+
+2.3.4 (modified versions, as the OFL allows; the Reserved Font Name 'Source' is not used in their names): fonts/KoreanThin.ttf and
+fonts/KoreanBold.ttf are Korean.ttf (the variable Noto Sans KR) fixed at weight 100 and 650, and fonts/Symbols.ttf is fixed at weight 100,
+each with its overlapping strokes merged (tools/flatten_fonts_1119.py: fontTools instancer + removeOverlaps with skia-pathops), so the
+distance-field glyphs have no holes where strokes cross. The letter shapes are unchanged. Korean.ttf itself is only the source of these now.
 
 This license is copied below, and is also available with a FAQ at:
 http://scripts.sil.org/OFL
