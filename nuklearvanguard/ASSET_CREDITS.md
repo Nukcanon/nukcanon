@@ -81,7 +81,6 @@
 | helicopter_1.ogg | Helicopter Sound 1 | DRAGON-STUDIO | https://pixabay.com/sound-effects/372462/ | Pixabay Content License |
 | helicopter_2.ogg | Helicopter Sound (8D) | DRAGON-STUDIO | https://pixabay.com/sound-effects/372463/ | Pixabay Content License |
 | impact_dirt_1.ogg | Ground Impact | Universfield | https://pixabay.com/sound-effects/352053/ | Pixabay Content License |
-| impact_flesh_1.ogg | HTF Blood Splatter Explode | RAGECore29 | https://pixabay.com/sound-effects/478992/ | Pixabay Content License |
 | jet_flyby_1.ogg | Fighter Jet Powerful Low Flyby SFX | MIGHTUSER | https://pixabay.com/sound-effects/337205/ | Pixabay Content License |
 | jet_flyby_2.ogg | Small Propeller Plane FlyBy | kalsstockmedia | https://pixabay.com/sound-effects/341994/ | Pixabay Content License |
 | jump_1.ogg | Swing Whoosh | Jofae | https://pixabay.com/sound-effects/110410/ | Pixabay Content License |
@@ -169,6 +168,8 @@ CC0는 공개 영역 헌정이라 표시 의무가 없습니다(제작자는 예
 | veh_brake_truck_1.ogg | S37-07 Car in and skids to stop; car doors | craigsmith (Freesound) | https://freesound.org/people/craigsmith/sounds/675275/ | CC0 | 잘라냄, 음량 조정, 아래 소리와 겹침 |
 | veh_brake_truck_1.ogg | Hydraulic Truck Brakes | Filmscore (Freesound) | https://freesound.org/people/Filmscore/sounds/823069/ | CC0 | 잘라냄, 음량 조정, 위 소리와 겹침 |
 | veh_approach_jeep_1.ogg | S07-21 Thunderbird in fast and stop with skid; engine off; doors | craigsmith (Freesound) | https://freesound.org/people/craigsmith/sounds/675254/ | CC0 | 잘라냄, 음량 조정 |
+| enemy_hurt_1.ogg | Grunt | freesound_community | https://pixabay.com/sound-effects/85990/ | Pixabay Content License |
+| mina_hurt_1.ogg | Heavy Grunt | freesound_community | https://pixabay.com/sound-effects/6969/ | Pixabay Content License |
 | veh_brake_jeep_1.ogg | Tires Squeaking | RutgerMuller (Freesound) | https://freesound.org/people/RutgerMuller/sounds/104026/ | CC0 | 잘라냄, 음량 조정 |
 | thank_you_m2_1.ogg | Voice Pack - Merchant (56. Thank you) | Alba MacKenna (Alba_Mac) | https://opengameart.org/content/voice-pack%E2%94%82merchant | **CC BY 4.0** (https://creativecommons.org/licenses/by/4.0/) | 수정함: 잘라냄, 음량 조정, 빠르게. 표시: "Voice lines by Alba MacKenna (Alba_Mac), CC BY 4.0, https://creativecommons.org/licenses/by/4.0/ — edited (trimmed, sped up, converted)." |
 | waves_loop.ogg | Beach Ocean Waves (wave_01~04, 원 녹음 freesound 18363) | jasinski (OpenGameArt 올린 이: qubodup) | https://opengameart.org/content/beach-ocean-waves | CC0 | 이어 붙임 |
