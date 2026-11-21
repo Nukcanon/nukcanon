@@ -150,7 +150,7 @@
 | waterfall_2.ogg | waterfall | eisenkern1982 | https://pixabay.com/sound-effects/176958/ | Pixabay Content License |
 | weapon_pickup_1.ogg | Gun Reload 2 | DRAGON-STUDIO | https://pixabay.com/sound-effects/511308/ | Pixabay Content License |
 | weapon_pickup_2.ogg | Pistol Gun Cock | freesound_community | https://pixabay.com/sound-effects/89523/ | Pixabay Content License |
-| weapon_pickup_3.ogg | Gun Cock (Stapeler) | freesound_community | https://pixabay.com/sound-effects/95646/ | Pixabay Content License |
+| weapon_pickup_3.ogg · weapon_swap.ogg | Gun Cock (Stapeler) | freesound_community | https://pixabay.com/sound-effects/95646/ | Pixabay Content License |
 | saw_shot.ogg | Air Impact Wrench | freesound_community | https://pixabay.com/sound-effects/82141/ | Pixabay Content License |
 | drone_loop.ogg | Drone Fly | klemenflerin | https://pixabay.com/sound-effects/397287/ | Pixabay Content License |
 | blade_hit.ogg | knife slice | freesound_community | https://pixabay.com/sound-effects/41231/ | Pixabay Content License |
@@ -168,8 +168,14 @@ CC0는 공개 영역 헌정이라 표시 의무가 없습니다(제작자는 예
 | veh_brake_truck_1.ogg | S37-07 Car in and skids to stop; car doors | craigsmith (Freesound) | https://freesound.org/people/craigsmith/sounds/675275/ | CC0 | 잘라냄, 음량 조정, 아래 소리와 겹침 |
 | veh_brake_truck_1.ogg | Hydraulic Truck Brakes | Filmscore (Freesound) | https://freesound.org/people/Filmscore/sounds/823069/ | CC0 | 잘라냄, 음량 조정, 위 소리와 겹침 |
 | veh_approach_jeep_1.ogg | S07-21 Thunderbird in fast and stop with skid; engine off; doors | craigsmith (Freesound) | https://freesound.org/people/craigsmith/sounds/675254/ | CC0 | 잘라냄, 음량 조정 |
+| drone_hover.ogg | Dji Mavic Mini 2 hover above ground UP-DOWN XY mic placement Zoom H5.wav | Sadiquecat (Freesound) | https://freesound.org/people/Sadiquecat/sounds/683298/ | CC0 | 잘라냄, 저음 줄임, 반복 이음, 음량 조정 |
+| sat_pew.ogg | Blaster pew | hotpin7 (Freesound) | https://freesound.org/people/hotpin7/sounds/819682/ | CC0 | 잘라냄, 끝 페이드, 음량 조정 |
 | enemy_hurt_1.ogg | Grunt | freesound_community | https://pixabay.com/sound-effects/85990/ | Pixabay Content License |
 | mina_hurt_1.ogg | Heavy Grunt | freesound_community | https://pixabay.com/sound-effects/6969/ | Pixabay Content License |
+| burn_scream_1.ogg | Man Scream 07 | universfield | https://pixabay.com/sound-effects/276686/ | Pixabay Content License |
+| drone_burst.ogg | Electric | olenchic | https://pixabay.com/sound-effects/155027/ | Pixabay Content License |
+| laser_beam_1.ogg | Laser weld | freesound_community | https://pixabay.com/sound-effects/103309/ | Pixabay Content License |
+| tochka_hit_1.ogg ~ tochka_hit_4.ogg | Running on sand | bubu07audio | https://pixabay.com/sound-effects/357373/ | Pixabay Content License |
 | veh_brake_jeep_1.ogg | Tires Squeaking | RutgerMuller (Freesound) | https://freesound.org/people/RutgerMuller/sounds/104026/ | CC0 | 잘라냄, 음량 조정 |
 | thank_you_m2_1.ogg | Voice Pack - Merchant (56. Thank you) | Alba MacKenna (Alba_Mac) | https://opengameart.org/content/voice-pack%E2%94%82merchant | **CC BY 4.0** (https://creativecommons.org/licenses/by/4.0/) | 수정함: 잘라냄, 음량 조정, 빠르게. 표시: "Voice lines by Alba MacKenna (Alba_Mac), CC BY 4.0, https://creativecommons.org/licenses/by/4.0/ — edited (trimmed, sped up, converted)." |
 | waves_loop.ogg | Beach Ocean Waves (wave_01~04, 원 녹음 freesound 18363) | jasinski (OpenGameArt 올린 이: qubodup) | https://opengameart.org/content/beach-ocean-waves | CC0 | 이어 붙임 |
