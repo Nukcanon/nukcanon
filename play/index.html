@@ -106,8 +106,8 @@ body {
 #portrait {display:none;position:fixed;inset:0;z-index:30;background:#112631;color:white;place-content:center;text-align:center;font:20px system-ui;padding:30px;}
 @media (orientation:portrait) and (pointer:coarse) {body.started #portrait{display:grid}}
 </style>
-		<link id="-gd-engine-icon" rel="icon" type="image/png" href="game-f14670288c01.icon.png" />
-<link rel="apple-touch-icon" href="game-f14670288c01.apple-touch-icon.png"/>
+		<link id="-gd-engine-icon" rel="icon" type="image/png" href="game-a8e773d4a249.icon.png" />
+<link rel="apple-touch-icon" href="game-a8e773d4a249.apple-touch-icon.png"/>
 
 	</head>
 	<body>
@@ -123,7 +123,7 @@ body {
 		</noscript>
 
 		<div id="status">
-			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="game-f14670288c01.png" alt="">
+			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="game-a8e773d4a249.png" alt="">
 			<progress id="status-progress"></progress>
 			<div id="status-notice"></div>
 		</div>
@@ -189,6 +189,11 @@ gameCanvas.getContext=function(type,attributes){
     for (let i = given.length - 1; i >= 0; i--) if (!context.isProgram(given[i]) || context.getProgramParameter(given[i], parallel.COMPLETION_STATUS_KHR)) given.splice(i, 1); // (deleted meanwhile: none to wait for)
     return given.length;
   };
+  // 2.4.0 (사용자: 「게임이 왜 느려지는지 알 수 있게」) 미리 준비 진행률 "보낸 수,전체 수" (아직 시작 전이면 ''): 이 작업은 8 ms씩
+  // 쪼개 페이지(게임)와 같은 스레드에서 보내므로, 게임이 화면에 띄운다(VisualWarmup.shader_status, 0.5초에 한 번 이하로 읽음).
+  // 끝났거나(성공·건너뜀·오류 모두) 그만둔 뒤에는 "전체,전체"(전체를 모르면 "1,1"): 게임이 표시를 끄고 더 묻지 않는다.
+  const progress = { issued: 0, total: 0, done: false };
+  window.incShaderProgress = () => progress.done ? (progress.total || 1) + ',' + (progress.total || 1) : progress.total ? progress.issued + ',' + progress.total : '';
   window.incShaderPrewarm = async url => {
     try {
       if (matchMedia('(any-pointer: coarse)').matches) return; // (phones and tablets: other GPUs, other sources)
@@ -204,6 +209,7 @@ gameCanvas.getContext=function(type,attributes){
       if (data.v !== 1) return;
       const t0 = performance.now();
       context = gl;
+      progress.total = data.programs.length;
       const put = (map, key, object) => (map.get(key) || map.set(key, []).get(key)).push(object);
       // issued in slices of about 8 ms (one long call stopped the page for 1.2 s on X20); a program is handed out as
       // soon as it is issued, the shaders once all programs hold theirs. 2.2.0 (measured on X20: on a second visit
@@ -214,7 +220,7 @@ gameCanvas.getContext=function(type,attributes){
       let next = performance.now() + 8;
       for (const [ids, varyings] of data.programs) {
         const t = performance.now();
-        const p = gl.createProgram(); for (const i of ids) gl.attachShader(p, make(i)); if (varyings) gl.transformFeedbackVaryings(p, varyings[0], varyings[1]); gl.linkProgram(p); put(programs, programKey(p), p);
+        const p = gl.createProgram(); for (const i of ids) gl.attachShader(p, make(i)); if (varyings) gl.transformFeedbackVaryings(p, varyings[0], varyings[1]); gl.linkProgram(p); put(programs, programKey(p), p); progress.issued++;
         stats.gl += performance.now() - t;
         if (performance.now() > next) { const w = performance.now(); await slice(); stats.wait += performance.now() - w; stats.slices++; next = performance.now() + 8; }
       }
@@ -223,12 +229,13 @@ gameCanvas.getContext=function(type,attributes){
       console.log('SHADER_PREWARM programs=' + data.programs.length + ' shaders=' + made.length + ' issued_ms=' + Math.round(performance.now() - t0) +
         ' gl_ms=' + Math.round(stats.gl) + ' wait_ms=' + Math.round(stats.wait) + ' slices=' + stats.slices + ' engine_at_ms=' + (started ? Math.round(started - t0) : -1));
     } catch (error) { console.warn('Shader prewarm skipped:', error.message); }
+    finally { progress.done = true; }
   };
 })();
 </script>
-<script src="game-f14670288c01.js"></script>
+<script src="game-a8e773d4a249.js"></script>
 		<script>
-const GODOT_CONFIG = {"args": [], "canvasResizePolicy": 2, "emscriptenPoolSize": 8, "ensureCrossOriginIsolationHeaders": true, "executable": "game-f14670288c01", "experimentalVK": false, "fileSizes": {"game-f14670288c01.pck": 94618356, "game-f14670288c01.wasm": 39514754, "game-f14670288c01.maps.pck": 57781076}, "focusCanvas": true, "gdextensionLibs": [], "godotPoolSize": 4};
+const GODOT_CONFIG = {"args": [], "canvasResizePolicy": 2, "emscriptenPoolSize": 8, "ensureCrossOriginIsolationHeaders": true, "executable": "game-a8e773d4a249", "experimentalVK": false, "fileSizes": {"game-a8e773d4a249.pck": 94628152, "game-a8e773d4a249.wasm": 39514754, "game-a8e773d4a249.maps.pck": 57781172}, "focusCanvas": true, "gdextensionLibs": [], "godotPoolSize": 4};
 const GODOT_THREADS_ENABLED = false;
 window.incShaderPrewarm(GODOT_CONFIG.executable+'.shaders.json');
 // Web updates follow the deployed build, not the Windows release label.
