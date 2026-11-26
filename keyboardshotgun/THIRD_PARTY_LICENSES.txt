@@ -86,8 +86,8 @@ https://www.kenney.nl , https://quaternius.com , https://www.kaylousberg.com , h
 ======================================================================
 게임 그림(sprites/atlas-*.webp, sprites/g/*.webp, sprites/bot-*.webp)은 받은 3D 모델을 고정 시점·만화 음영·외곽선으로 그려 만든 것입니다
 (크기·색·자세를 바꾸고 모서리를 둥글게 다듬음). CC0 모델은 고지 의무가 없지만 감사의 뜻으로 적습니다.
-- Kenney: Nature Kit, Food Kit, Holiday Kit, Survival Kit, Minigolf Kit, Car Kit, Furniture Kit, Starter Kit 3D Platformer(캐릭터 로봇 character.glb —
-  얼굴판 모양(네모·세모·동그라미)·표정·몸 색을 바꿈), 그리고 2D 묶음(Game Icons·Board Game Icons 등, 키 표지·작은 아이콘)
+- Kenney: Nature Kit, Food Kit, Holiday Kit, Survival Kit, Minigolf Kit, Car Kit, Furniture Kit, Mini Characters(내 캐릭터 5종 —
+  자세·윗옷 색을 바꿈), 그리고 2D 묶음(Game Icons·Board Game Icons 등, 키 표지·작은 아이콘)
 - Quaternius(Poly Pizza): 동물·탈것·사람·소품
 - KayKit(Kay Lousberg): Restaurant Bits, Furniture Bits
 - Poly Pizza의 그 밖의 CC0 모델: CreativeTrio, isa, scaranto, reelpersen, Polygonal Mind, reyshapes 등
@@ -117,11 +117,12 @@ https://creativecommons.org/licenses/by/3.0/
 - "Toy Mouse" by sirkitree — https://poly.pizza/m/49PYgABKfFo
 
 ======================================================================
-그림 — Twemoji 14.0.2 (가위바위보 손 그림) — CC-BY 4.0
+그림 — Twemoji 14.0.2 (가위바위보 손 그림, 따봉 그림) — CC-BY 4.0
 Copyright 2020 Twitter, Inc and other contributors — https://github.com/twitter/twemoji
 https://creativecommons.org/licenses/by/4.0/
 ======================================================================
 가위바위보 게임의 손 그림(✊ 270a, ✌ 270c, ✋ 270b)은 Twemoji 그림을 크기만 바꿔 쓴 것입니다.
+잘했을 때 뜨는 따봉 그림(👍 1f44d)도 Twemoji 그림을 크기만 바꿔 쓴 것입니다.
 
 ======================================================================
 소리 — Kenney(CC0 1.0)·Pixabay(Pixabay Content License)
