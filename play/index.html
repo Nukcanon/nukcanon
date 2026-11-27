@@ -38,7 +38,7 @@ body {
 }
 
 #status {
-	background-color: #242424;
+	background-color: #101820;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -103,16 +103,27 @@ body {
 #launch h1 {letter-spacing:.1em;font-size:clamp(24px,5vw,44px);}
 #launch p {color:#bdd0d7;line-height:1.6;max-width:550px;}
 #fullscreen {position:fixed;top:max(6px,env(safe-area-inset-top,0));left:max(8px,env(safe-area-inset-left,0));z-index:5;padding:5px 12px;border:1px solid #78989c77;border-radius:0 0 6px 6px;background:#13293699;color:#d9eeee;font-size:12px;cursor:pointer;}
+/* (11-26 S10 1차) 로딩 화면 - 설치판 BootScreen(scripts/boot_screen.gd)과 같은 값: 바탕 BG, 높이 720 기준 자리·크기, 막대 FILL·TRACK, 단계 글자 STEP·OUTLINE·22 px DoHyeon */
+@font-face {font-family:IncBoot;src:url(boot_font.ttf);font-display:block;}
+#boot {position:fixed;inset:0;z-index:25;background:#101820;overflow:hidden;--k:1;}
+#boot[hidden] {display:none;}
+#boot .boot-box {position:absolute;left:50%;top:50%;width:0;height:0;transform:scale(var(--k));}
+#boot .boot-logo {position:absolute;left:-300px;top:-200px;width:600px;height:270px;}
+#boot .boot-step {position:absolute;left:-400px;top:80px;width:800px;height:34px;text-align:center;font:22px IncBoot,system-ui;color:#b8ccd2;white-space:nowrap;
+	text-shadow:-2px 0 #0b1218,2px 0 #0b1218,0 -2px #0b1218,0 2px #0b1218,-1.5px -1.5px #0b1218,1.5px 1.5px #0b1218,-1.5px 1.5px #0b1218,1.5px -1.5px #0b1218;}
+#boot .boot-track {position:absolute;left:-200px;top:120px;width:400px;height:4px;background:rgba(255,255,255,.16);}
+#boot .boot-fill {height:100%;width:0;background:#6cdfc3;}
 #portrait {display:none;position:fixed;inset:0;z-index:30;background:#112631;color:white;place-content:center;text-align:center;font:20px system-ui;padding:30px;}
 @media (orientation:portrait) and (pointer:coarse) {body.started #portrait{display:grid}}
 </style>
-		<link id="-gd-engine-icon" rel="icon" type="image/png" href="game-a8e773d4a249.icon.png" />
-<link rel="apple-touch-icon" href="game-a8e773d4a249.apple-touch-icon.png"/>
+		<link id="-gd-engine-icon" rel="icon" type="image/png" href="game-2b99ab99826c.icon.png" />
+<link rel="apple-touch-icon" href="game-2b99ab99826c.apple-touch-icon.png"/>
 
 	</head>
 	<body>
 <div id="portrait">화면을 가로로 돌려 주세요.<br><small>두 손 터치 조작에 맞춘 가로 화면 게임입니다.</small></div>
 <div id="launch"><div class="launch-card"><h1>INTERNAL N CRUSH</h1><p>첫 실행에는 게임 파일을 내려받습니다.<br>모바일은 가로 화면 · PC는 키보드와 마우스로 플레이하세요.</p><button id="start" disabled>준비 중…</button><p id="start-note" aria-live="polite"></p><p id="start-error" role="status"></p><section class="lobby-guide" aria-label="함께 플레이하는 방법"><strong>별도 서버 프로그램 없이 함께 플레이</strong><p>게임 시작 → <b>온라인 로비</b>에서 공용 로비에 자동 연결됩니다.<br>한 사람이 방을 만들고, 다른 사람들은 같은 목록에서 참가하세요.<br>Windows 버전은 <b>인터넷 로비</b>를 이용하면 웹과 함께 플레이할 수 있습니다.</p><p>인터넷 연결이 필요합니다. 학교·DMZ·VPN에서도 같은 온라인 방 목록에서 참가할 수 있습니다. 망 설정에 따라 기기 간 직접 연결이 제한될 수 있습니다.</p></section></div></div>
+<div id="boot" hidden><div class="boot-box"><img class="boot-logo" src="boot_logo.png" alt=""><div class="boot-step"></div><div class="boot-track"><div class="boot-fill"></div></div></div></div>
 <button id="fullscreen" aria-label="전체 화면 전환">전체 화면</button>
 		<canvas id="canvas">
 			Your browser does not support the canvas tag.
@@ -123,7 +134,7 @@ body {
 		</noscript>
 
 		<div id="status">
-			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="game-a8e773d4a249.png" alt="">
+			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="game-2b99ab99826c.png" alt="">
 			<progress id="status-progress"></progress>
 			<div id="status-notice"></div>
 		</div>
@@ -157,7 +168,21 @@ gameCanvas.getContext=function(type,attributes){
   let context = null;
   const wrap = (name, after) => { const f = P[name]; P[name] = function (...a) { const r = f.apply(this, a); after(r, a); return r; }; };
   wrap('createShader', (s, [type]) => { if (s) types.set(s, type); });
-  wrap('shaderSource', (_, [s, text]) => sources.set(s, text));
+  // (11-27 X20 실험: 점광원이 비춘 물체의 기본 패스 변형 32개가 메뉴 묶음 컴파일 시간의 76 % - 그 원문에 면광원을 끄는 줄 하나로 1.4~1.5초 → 0.26~0.31초)
+  // 이 게임에는 면광원(AreaLight3D)이 없으므로(web/test_shader_sets.py가 확인) 면광원 코드가 든 장면 셰이더 원문에 `#define DISABLE_LIGHT_AREA`를
+  // #version 줄 바로 뒤에 넣는다 - 엔진이 보내는 원문과 기록(shaders.json)에서 보내는 원문이 모두 이 함수를 지나 열쇠가 계속 맞는다.
+  // 엔진 판이 바뀌어 표시(AREA_MARK)가 없어지면 아무것도 하지 않는다(SHADER_PREWARM 줄 area_off=넣은 수). 비교: 주소 ?arealight=1 이면 넣지 않음.
+  const AREA_MARK = 'area_light_indices', AREA_DEF = '#define DISABLE_LIGHT_AREA';
+  const areaKeep = (() => { try { return new URLSearchParams(location.search).get('arealight') === '1'; } catch (e) { return false; } })();
+  let areaOff = 0;
+  const areaFix = text => {
+    if (areaKeep || typeof text !== 'string' || !text.startsWith('#version') || !text.includes(AREA_MARK) || text.includes(AREA_DEF)) return text;
+    const nl = text.indexOf('\n'); if (nl < 0) return text;
+    areaOff++; return text.slice(0, nl + 1) + AREA_DEF + '\n' + text.slice(nl + 1);
+  };
+  window.incAreaLightOff = () => areaOff;
+  const setSource = P.shaderSource;
+  P.shaderSource = function (s, text) { const t = areaFix(text); if (s) sources.set(s, t); return setSource.call(this, s, t); };
   wrap('attachShader', (_, [p, s]) => { if (p && s) (attached.get(p) || attached.set(p, []).get(p)).push(s); });
   const feedback = new WeakMap();
   wrap('transformFeedbackVaryings', (_, [p, names, mode]) => feedback.set(p, JSON.stringify([Array.from(names), mode])));
@@ -169,16 +194,36 @@ gameCanvas.getContext=function(type,attributes){
   const programKey = p => (attached.get(p) || []).map(shaderKey).join(',') + '|' + (feedback.get(p) || '');
   const take = (map, key) => { const list = map.get(key); if (!list) return null; const r = list.pop(); if (!list.length) map.delete(key); return r; };
   const given = []; // programs handed to the engine and maybe still compiling (incShaderBusy)
-  const stats = { gl: 0, wait: 0, slices: 0 };
+  const stats = { gl: 0, wait: 0, slices: 0, copies: 0, check: 0, issued_at: 0, done_at: 0 };
   let started = 0; // (when the engine first asked: the SHADER_PREWARM line)
   // the engine's compile/link: a ready object of the same key, used once (null: compile as before)
+  // (11-26 S10) 엔진이 지운 프로그램은 지우지 않고 같은 열쇠(셰이더 원문)로 다시 내준다: Godot는 원문이 같아도 셰이더 자원이 다르면(맨 처음 로딩의
+  // 무대가 그린 맵 재질 조각 looks.scn과 실제 맵 장면의 재질) 프로그램을 새로 만든다 - 설치판은 디스크 셰이더 저장소가 원문으로 찾아 바로 쓰지만
+  // 웹에는 그것이 없어 같은 원문을 다시 컴파일했다(X20 첫 경기 가림막 한 프레임 12.7초, 직접 컴파일 46개 중 45개가 로딩 화면에서 이미 만든 원문).
+  const keyOf = new WeakMap(); // 엔진에 내준·엔진이 링크한 프로그램 → 열쇠
+  const del = P.deleteProgram;
+  P.deleteProgram = function (p) {
+    const k = p && this === context && keyOf.get(p);
+    // (11-27 상한) 풀에 둔 것이 POOL_MOST개, 한 열쇠에 POOL_PER_KEY개를 넘으면 실제로 지운다(맵을 여러 번 바꿔도 GPU 쪽 프로그램이 끝없이 쌓이지 않게)
+    if (k && pooledNow < POOL_MOST && (programs.get(k) || []).length < POOL_PER_KEY) { keyOf.delete(p); pooledSet.add(p); put(programs, k, p); pooled++; pooledNow++; return; } // (다시 쓸 수 있게 둠 - 같은 원문이 다시 오면 take가 내줌)
+    if (k) keyOf.delete(p);
+    return del.call(this, p);
+  };
+  let pooled = 0, reused = 0, pooledNow = 0;
+  const POOL_MOST = 64, POOL_PER_KEY = 2;
+  window.incShaderPool = () => ({ pooled, reused, now: pooledNow });
   window.incShaderTake = (gl, object, program) => {
     if (gl !== context) return null;
     if (!started) started = performance.now();
-    const r = take(program ? programs : shaders, program ? programKey(object) : shaderKey(object));
-    if (r && program) given.push(r);
+    const key = program ? programKey(object) : shaderKey(object);
+    const r = take(program ? programs : shaders, key);
+    if (program) {
+      keyOf.set(r || object, key);
+      if (r) { given.push(r); if (pooledSet.has(r)) { pooledSet.delete(r); reused++; pooledNow--; } }
+    }
     return r;
   };
+  const pooledSet = new WeakSet();
   // 2.1.9 (measured on X20: the first frame of the first fight waited ~0.6 s on programs still compiling) how many
   // programs the engine has taken are not ready yet - asked without waiting (COMPLETION_STATUS_KHR); the game holds
   // its start cover for them (VisualWarmup.warm_shaders). 2.1.10 (measured: the cover always waited its full 3 s)
@@ -194,50 +239,147 @@ gameCanvas.getContext=function(type,attributes){
   // 끝났거나(성공·건너뜀·오류 모두) 그만둔 뒤에는 "전체,전체"(전체를 모르면 "1,1"): 게임이 표시를 끄고 더 묻지 않는다.
   const progress = { issued: 0, total: 0, done: false };
   window.incShaderProgress = () => progress.done ? (progress.total || 1) + ',' + (progress.total || 1) : progress.total ? progress.issued + ',' + progress.total : '';
+  // 2.4.1 (사용자: 「해당 맵에 필요한 셰이더만 실제 게임 시작 시 로딩으로」) 목록 v2(web/pack_shaders.py --sets)는 쓰임새 묶음을 가진다:
+  // 페이지를 열면 메뉴 것(sets.menu, 비었으면 공통)만 받기와 겹쳐 보내고, 경기 시작 로딩에서 게임이 incShaderWant(맵, 품질)로
+  // 「공통 + 그 품질 공통 + 그 맵 추가분」을 부른다(이미 보낸 것은 건너뜀). 기록에 없는 맵·품질은 전체를, v1 목록은 예전처럼 전체를.
+  // 진행률(incShaderProgress)은 지금 보내는 묶음 하나의 「보낸 수,전체 수」.
+  let book = null, gl = null, made = null, sent = null, queue = Promise.resolve(), t0 = 0, loading = false;
+  const put = (map, key, object) => (map.get(key) || map.set(key, []).get(key)).push(object);
+  const make = i => { if (!made[i]) { const s = gl.createShader(book.shaders[i][0]); gl.shaderSource(s, book.shaders[i][1].map(j => book.lines[j]).join('\n')); gl.compileShader(s); made[i] = s; } return made[i]; };
+  const slice = () => new Promise(r => setTimeout(r, 0));
+  // issued in slices of about 8 ms (one long call stopped the page for 1.2 s on X20); a program is handed out as
+  // soon as it is issued, its shaders once the batch is issued. 2.2.0 (measured on X20: on a second visit
+  // the first match waited 12-14 s, issued_ms 26 s): each program is linked right after its own shaders are
+  // compiled, not all shaders first - the engine's first programs are then ready in order (wait 0.6 s)
+  // (11-27 노트북 j판: 보내기는 5~6초에 끝났지만 GPU 쪽 컴파일·링크가 45~77초 이어졌고, 엔진이 새로 만든 첫 프로그램의 첫 동기 물음이
+  // 그 줄 전체가 빌 때까지 막혀 탭이 얼었다 - X20 실험: 256개를 한꺼번에 보내면 다 끝나는 데 4.3~5.1초, 그 사이 새 프로그램 하나의 첫 물음이
+  // 2.1~3.4초 막힘. 같은 원문 사본을 원본과 함께 보내면 따로 컴파일돼 23 % 더 들고, 원본이 끝난 뒤 보내면 하나 1.7 ms)
+  // 보내기: 원본만 기록 순서대로(맨 처음 로딩·캔버스 것이 앞). 기다리기: CHECK_MS마다 앞에서부터 완료(COMPLETION_STATUS_KHR - 묻기만, 막지 않음)를
+  // 세고, 끝난 원본의 사본(counts)을 그때 보낸다. 진행률은 「끝난 수/전체(원본+사본)」 - 줄지 않고, 다 끝나기 전에는 전체가 되지 않는다.
+  // 다 끝나면(또는 컨텍스트 유실·DONE_MOST_MS 상한) 끝. 컴파일·링크 실패도 「완료」로 온다(실패한 프로그램은 엔진이 받아 직접 다시 만들지 않게 그대로 둠).
+  const CHECK_MS = 100, DONE_MOST_MS = 240000, SLICE_MS = 8;
+  let lost = false;
+  const complete = p => lost || gl.isContextLost() || gl.getProgramParameter(p, parallel.COMPLETION_STATUS_KHR);
+  const link = (ids, varyings, fresh) => {
+    const p = gl.createProgram();
+    for (const i of ids) {
+      let s;
+      if (fresh) { s = gl.createShader(book.shaders[i][0]); gl.shaderSource(s, book.shaders[i][1].map(j => book.lines[j]).join('\n')); gl.compileShader(s); fresh.push(s); }
+      else s = make(i);
+      gl.attachShader(p, s);
+    }
+    if (varyings) gl.transformFeedbackVaryings(p, varyings[0], varyings[1]);
+    gl.linkProgram(p); put(programs, programKey(p), p); return p;
+  };
+  async function issue(list) {
+    const todo = list.filter(i => !sent[i]);
+    const copiesOf = n => Math.max(0, ((book.counts && book.counts[n]) || 1) - 1);
+    const total = todo.reduce((s, n) => s + 1 + copiesOf(n), 0);
+    progress.issued = 0; progress.total = total; progress.done = false;
+    const fresh = [], extra = [], wait = [];
+    let next = performance.now() + 8;
+    for (const n of todo) {
+      if (sent[n]) continue;
+      const [ids, varyings] = book.programs[n];
+      const t = performance.now();
+      for (const i of ids) if (!made[i]) fresh.push(i);
+      wait.push({ n, p: link(ids, varyings, null), copies: copiesOf(n) });
+      sent[n] = true;
+      stats.gl += performance.now() - t;
+      if (performance.now() > next) { const w = performance.now(); await slice(); stats.wait += performance.now() - w; stats.slices++; next = performance.now() + 8; }
+    }
+    // a shader is handed out once; one in several programs stays attached to the others
+    fresh.forEach(i => made[i] && put(shaders, shaderKey(made[i]), made[i]));
+    stats.issued_at = performance.now();
+    const end = performance.now() + DONE_MOST_MS;
+    let k = 0; const copies = [], later = []; // later: 원본이 끝나 보낼 차례인 사본(원본 번호) - 한 번 확인에 SLICE_MS까지만 보냄(긴 작업 없이)
+    while ((k < wait.length || copies.length || later.length) && performance.now() < end) {
+      await new Promise(r => setTimeout(r, CHECK_MS));
+      const a = performance.now();
+      while (k < wait.length && complete(wait[k].p)) {
+        const w = wait[k++]; progress.issued++;
+        for (let c = 0; c < w.copies; c++) later.push(w.n);
+      }
+      if (lost || gl.isContextLost()) { progress.issued += later.length; later.length = 0; }
+      while (later.length && performance.now() - a < SLICE_MS) { const n = later.shift(); const [ids, varyings] = book.programs[n]; copies.push(link(ids, varyings, extra)); stats.copies++; }
+      for (let i = copies.length - 1; i >= 0; i--) if (complete(copies[i])) { copies.splice(i, 1); progress.issued++; }
+      stats.check = Math.max(stats.check, performance.now() - a);
+    }
+    if (k < wait.length || copies.length || later.length) stats.unfinished = wait.length - k + copies.length + later.length;
+    progress.issued = Math.max(progress.issued, total - (stats.unfinished || 0));
+    extra.forEach(s => put(shaders, shaderKey(s), s));
+    stats.done_at = performance.now();
+    progress.done = true;
+    return todo.length;
+  }
+  const all = () => book.programs.map((_, i) => i);
+  // 경기 시작 로딩에서 부를 묶음: 공통 + 품질 공통 + 그 맵·품질 추가분(그 품질 기록이 없으면 그 맵의 모든 품질, 맵 기록이 없으면 전체)
+  // (11-26 S10 1차) map === 'boot': 맨 처음 로딩에서 부를 맵 무관 전체 - 메뉴 + boot + 공통 + 그 품질 공통(v1 목록은 전체)
+  window.incShaderWanted = (map, quality) => {
+    if (!book) return [];
+    if (book.v !== 2) return all();
+    const s = book.sets;
+    if (map === 'boot') return [...new Set([].concat(s.menu, s.boot || [], s.common, s.quality[String(quality)] || []))];
+    const perMap = s.maps[String(map)];
+    if (!perMap) return all();
+    const q = String(quality);
+    const extra = perMap[q] || perMap['*'] || [].concat(...Object.values(perMap));
+    return [...new Set([].concat(s.menu, s.common, s.quality[q] || [], extra))];
+  };
+  // 게임이 경기 시작 로딩(가림막)에서 부른다. 앞 묶음이 끝난 뒤 이어서(순서대로), 돌려준 값은 이번에 새로 보낼 수
+  // (목록을 아직 받는 중이면 -1: 게임이 나중에 다시 부른다. 미리 준비를 하지 않는 페이지·실패면 0)
+  window.incShaderWant = (map, quality) => {
+    if (!book || !gl) return loading ? -1 : 0;
+    const list = window.incShaderWanted(map, quality);
+    const left = list.filter(i => !sent[i]).length;
+    if (!left) return 0;
+    progress.done = false; progress.total = Math.max(progress.total, left);
+    queue = queue.then(() => issue(list)).then(n => console.log('SHADER_WANT map=' + map + ' q=' + quality + ' issued=' + n + ' total_sent=' + sent.filter(Boolean).length + '/' + book.programs.length)).catch(e => { progress.done = true; console.warn('Shader want skipped:', e.message); });
+    return left;
+  };
+  // (11-26 S10, 노트북 다시 방문: 파일이 캐시에 있어 엔진이 4.4초에 시작했는데 미리 준비(726개)는 32.8초에 끝나 둘이 겹쳤다 - 미리 준비가
+  // 엔진에 밀려 28초 기다렸고 맨 처음 로딩의 그리기 준비 한 프레임이 27초) 페이지를 열 때의 미리 준비가 끝났는가 - web_shell.html이 엔진을
+  // 이것이 끝난 뒤에 시작한다(끝·건너뜀·실패 모두 끝남). incShaderPrewarmReady: 끝나면 풀리는 약속.
+  let readyDone = null;
+  window.incShaderPrewarmReady = new Promise(r => { readyDone = r; });
+  const mode = (() => { try { return new URLSearchParams(location.search).get('prewarm') || ''; } catch (e) { return ''; } })();
+  window.incShaderPrewarmBusy = () => loading; // (엔진 시작이 기다릴지: 부르지 않은 페이지(기록용 사본)에서는 기다리지 않음)
   window.incShaderPrewarm = async url => {
+    loading = true;
     try {
       if (matchMedia('(any-pointer: coarse)').matches) return; // (phones and tablets: other GPUs, other sources)
+      if (mode === '0') { console.log('SHADER_PREWARM off (?prewarm=0)'); return; }
       const canvas = document.getElementById('canvas');
       // the attributes Godot 4.7.2 asks for: its own getContext call then returns this same context
-      const gl = canvas && canvas.getContext('webgl2', { alpha: false, depth: true, stencil: false, antialias: false, premultipliedAlpha: true,
+      const ctx = canvas && canvas.getContext('webgl2', { alpha: false, depth: true, stencil: false, antialias: false, premultipliedAlpha: true,
         preserveDrawingBuffer: true, powerPreference: 'high-performance', failIfMajorPerformanceCaveat: false });
-      parallel = gl && gl.getExtension('KHR_parallel_shader_compile');
+      parallel = ctx && ctx.getExtension('KHR_parallel_shader_compile');
       if (!parallel) return; // (without it the compiles would stop the page)
       const response = await fetch(url);
       if (!response.ok) return;
       const data = await response.json();
-      if (data.v !== 1) return;
-      const t0 = performance.now();
-      context = gl;
-      progress.total = data.programs.length;
-      const put = (map, key, object) => (map.get(key) || map.set(key, []).get(key)).push(object);
-      // issued in slices of about 8 ms (one long call stopped the page for 1.2 s on X20); a program is handed out as
-      // soon as it is issued, the shaders once all programs hold theirs. 2.2.0 (measured on X20: on a second visit
-      // the first match waited 12-14 s, issued_ms 26 s): each program is linked right after its own shaders are
-      // compiled, not all shaders first - the engine's first programs are then ready in order (wait 0.6 s)
-      const made = new Array(data.shaders.length), slice = () => new Promise(r => setTimeout(r, 0));
-      const make = i => { if (!made[i]) { const s = gl.createShader(data.shaders[i][0]); gl.shaderSource(s, data.shaders[i][1].map(j => data.lines[j]).join('\n')); gl.compileShader(s); made[i] = s; } return made[i]; };
-      let next = performance.now() + 8;
-      for (const [ids, varyings] of data.programs) {
-        const t = performance.now();
-        const p = gl.createProgram(); for (const i of ids) gl.attachShader(p, make(i)); if (varyings) gl.transformFeedbackVaryings(p, varyings[0], varyings[1]); gl.linkProgram(p); put(programs, programKey(p), p); progress.issued++;
-        stats.gl += performance.now() - t;
-        if (performance.now() > next) { const w = performance.now(); await slice(); stats.wait += performance.now() - w; stats.slices++; next = performance.now() + 8; }
-      }
-      // a shader is handed out once; one in several programs stays attached to the others
-      made.forEach(s => s && put(shaders, shaderKey(s), s));
-      console.log('SHADER_PREWARM programs=' + data.programs.length + ' shaders=' + made.length + ' issued_ms=' + Math.round(performance.now() - t0) +
+      if (data.v !== 1 && !(data.v === 2 && data.sets && data.sets.maps)) return;
+      t0 = performance.now();
+      context = gl = ctx; book = data; made = new Array(data.shaders.length); sent = new Array(data.programs.length).fill(false);
+      canvas.addEventListener('webglcontextlost', () => { lost = true; }, { once: true }); // (유실: 기다리기를 끝냄 - 엔진이 다시 만든다)
+      // v1: 전체, v2: 메뉴 것(없으면 공통)
+      // (11-26 노트북 A/B 스위치, 주소 인자) ?prewarm=0 미리 준비 안 함(위에서 이미 끝), ?prewarm=all 기록 전체(예전 방식), 기본은 메뉴 묶음(맨 처음 로딩까지 쓰는 것)
+      const first = data.v === 1 || mode === 'all' ? all() : (data.sets.menu.length ? data.sets.menu : data.sets.common);
+      const job = issue(first); queue = job.catch(() => {});
+      await job;
+      console.log('SHADER_PREWARM mode=' + (mode || 'menu') + ' done_at_ms=' + Math.round(performance.now()) + ' v=' + data.v + ' programs=' + first.length + '/' + data.programs.length + ' issued_ms=' + Math.round(stats.issued_at - t0) + ' complete_ms=' + Math.round(stats.done_at - t0) + ' copies=' + stats.copies + ' area_off=' + (areaKeep ? 'kept' : areaOff) + ' check_max_ms=' + Math.round(stats.check) + (stats.unfinished ? ' unfinished=' + stats.unfinished : '') + (lost ? ' context_lost' : '') +
         ' gl_ms=' + Math.round(stats.gl) + ' wait_ms=' + Math.round(stats.wait) + ' slices=' + stats.slices + ' engine_at_ms=' + (started ? Math.round(started - t0) : -1));
-    } catch (error) { console.warn('Shader prewarm skipped:', error.message); }
-    finally { progress.done = true; }
+    } catch (error) { progress.done = true; console.warn('Shader prewarm skipped:', error.message); }
+    finally { if (!book) progress.done = true; loading = false; readyDone(); } // (받은 목록이 있으면 묶음마다 issue()가 끝을 적는다 - 이어서 부탁한 묶음을 끝난 것으로 덮지 않게)
   };
 })();
 </script>
-<script src="game-a8e773d4a249.js"></script>
+<script src="game-2b99ab99826c.js"></script>
 		<script>
-const GODOT_CONFIG = {"args": [], "canvasResizePolicy": 2, "emscriptenPoolSize": 8, "ensureCrossOriginIsolationHeaders": true, "executable": "game-a8e773d4a249", "experimentalVK": false, "fileSizes": {"game-a8e773d4a249.pck": 94628152, "game-a8e773d4a249.wasm": 39514754, "game-a8e773d4a249.maps.pck": 57781172}, "focusCanvas": true, "gdextensionLibs": [], "godotPoolSize": 4};
+const GODOT_CONFIG = {"args": [], "canvasResizePolicy": 2, "emscriptenPoolSize": 8, "ensureCrossOriginIsolationHeaders": true, "executable": "game-2b99ab99826c", "experimentalVK": false, "fileSizes": {"game-2b99ab99826c.pck": 95689588, "game-2b99ab99826c.wasm": 39514754, "game-2b99ab99826c.maps.pck": 75154920}, "focusCanvas": true, "gdextensionLibs": [], "godotPoolSize": 4};
 const GODOT_THREADS_ENABLED = false;
-window.incShaderPrewarm(GODOT_CONFIG.executable+'.shaders.json');
+window.incShaderPrewarmUrl=GODOT_CONFIG.executable+'.shaders.json';
+if(/[?&]prewarm=early(&|$)/.test(location.search))window.incShaderPrewarm(window.incShaderPrewarmUrl);
 // Web updates follow the deployed build, not the Windows release label.
 (() => {
   GODOT_CONFIG.args = [...(GODOT_CONFIG.args || [])];
@@ -438,22 +580,61 @@ canvasElement.addEventListener('webglcontextlost',()=>{
 		const startNote = document.getElementById('start-note');
 		let prefetched = null;
 		let launched = false;
+		// (11-26 S10) 「게임 시작」은 받기가 끝나야 켜진다(2.4.1 사용자: 「미리 받는 중」에도 눌리면 안 됨) - 받는 동안은 단추 밑에 「파일 받는 중 NN%」.
+		// 받기에 실패했거나 STALL_MS 동안 진행이 없으면(또는 데이터 절약 모드) 켜고, 그때는 누른 뒤 막대가 받기부터 보인다.
+		// 누르면 로딩 화면(#boot - 설치판 BootScreen과 같은 그림·색·글꼴·자리)의 막대 하나가 「(파일 받는 중) → 엔진 시작 중 → (게임이 알리는 단계:
+		// incBootProgress)」를 이어 보이고, 게임이 로딩 화면을 닫으면(-1) 사라진다. 화면 문구는 단계 이름과 진행률만.
+		const STALL_MS = 30000;
+		let filesDone = false, filesChanged = performance.now();
+		// 막대 구간(누를 때 정함): 받기가 끝나 있으면 엔진 시작 [0, .10]·게임 [.10, 1], 아니면 받기 [0, .30]·엔진 시작 [.30, .38]·게임 [.38, 1]
+		const BOOT = { files: 0, engine: .10 };
+		const bootEl = document.getElementById('boot');
+		const bootFill = bootEl.querySelector('.boot-fill'), bootStep = bootEl.querySelector('.boot-step');
+		const boot = { share: 0, step: '파일 받는 중', shown: false, game: false, crawl: 0, done: false };
+		function bootDraw() {
+			bootFill.style.width = (boot.share * 100).toFixed(2) + '%';
+			bootStep.textContent = boot.step + ' ' + Math.floor(boot.share * 100) + '%';
+		}
+		function bootSet(share, step) { // 되돌아가지 않음
+			boot.share = Math.min(1, Math.max(boot.share, share)); if (step) boot.step = step;
+			if (boot.shown) bootDraw();
+		}
+		function bootFit() { bootEl.style.setProperty('--k', String(Math.max(.1, window.innerHeight / 720))); }
+		function bootClose() {
+			if (boot.done) return; boot.done = true; clearInterval(boot.crawl);
+			bootSet(1); requestAnimationFrame(() => requestAnimationFrame(() => { bootEl.remove(); window.removeEventListener('resize', bootFit); }));
+		}
+		// 게임(BootScreen.tell_page)이 부름: share 0~1(게임 로딩 화면의 진행률), step 단계 이름. share < 0: 게임이 로딩 화면을 닫음
+		window.incBootProgress = (share, step) => {
+			if (share < 0) { bootClose(); return; }
+			boot.game = true; clearInterval(boot.crawl);
+			bootSet(BOOT.engine + (1 - BOOT.engine) * share, step);
+		};
 		function showProgress(current, total) {
 			if (current > 0 && total > 0) {
 				statusProgress.value = current;
 				statusProgress.max = total;
-				if (!launched && startNote) startNote.textContent = '게임 파일 미리 받는 중 ' + Math.min(99, Math.floor(current * 100 / total)) + '%';
+				if (!boot.game) bootSet(BOOT.files * Math.min(1, current / total), '파일 받는 중');
+				filesChanged = performance.now();
+				if (!launched && startNote) startNote.textContent = '파일 받는 중 ' + Math.min(99, Math.floor(current * 100 / total)) + '%'; // (누르기 전: 단추 밑 한 줄)
 			} else {
 				statusProgress.removeAttribute('value');
 				statusProgress.removeAttribute('max');
 			}
+		}
+		// (11-27) 셰이더 미리 준비는 받기가 끝난 뒤 한 번(package_web.py가 주소를 둠) - 받기·wasm 컴파일과 CPU를 다투지 않게
+		let prewarmStarted = false;
+		function startPrewarm() {
+			if (prewarmStarted || !window.incShaderPrewarm || !window.incShaderPrewarmUrl || /[?&]prewarm=early(&|$)/.test(location.search)) return;
+			prewarmStarted = true; window.incShaderPrewarm(window.incShaderPrewarmUrl);
 		}
 		function prefetch() {
 			if (!prefetched) {
 				engine.config.update({ 'onProgress': showProgress });
 				preloadMaps();
 				prefetched = Promise.all([engine.init(executable), engine.preloadFile(mainPack, mainPack)]);
-				prefetched.then(() => { if (!launched && startNote) startNote.textContent = '준비 완료 · 바로 시작합니다'; }, () => { if (!launched && startNote) startNote.textContent = '게임 파일을 받지 못했습니다. 페이지를 새로 고쳐 주세요.'; });
+				prefetched.then(() => { filesDone = true; startPrewarm(); if (!boot.game) bootSet(BOOT.files); if (!launched && startNote) startNote.textContent = '받기 완료'; openStart(); },
+					() => { if (!launched && startNote) startNote.textContent = '게임 파일을 받지 못했습니다. 눌러서 다시 시도하세요.'; prefetched = null; openStart(); });
 			}
 			return prefetched;
 		}
@@ -471,14 +652,50 @@ canvasElement.addEventListener('webglcontextlost',()=>{
 				return maps.then(() => start.apply(this, args));
 			};
 		}
-		startButton.onclick=()=>{if(launched)return;launched=true;if(navigator.maxTouchPoints>0&&window.incEnterFullscreen)window.incEnterFullscreen();document.body.classList.add('started');document.getElementById('launch').remove();prefetch().then(() => engine.start({
+		// 엔진 시작 구간: 게임이 첫 진행을 알릴 때까지 BOOT.engine 바로 앞까지 시간에 따라 천천히(되돌아가지 않음)
+		function engineStarting() {
+			if (boot.game) return;
+			bootSet(boot.share, '엔진 시작 중');
+			const from = performance.now(), at = boot.share;
+			boot.crawl = setInterval(() => { if (boot.game || boot.done) { clearInterval(boot.crawl); return; } bootSet(at + (BOOT.engine - at) * .95 * (1 - Math.exp(-(performance.now() - from) / 4000))); }, 100);
+		}
+		// (11-26 S10, 노트북 다시 방문: 엔진과 셰이더 미리 준비가 겹치면 둘 다 몇 배 느려졌다 - 클릭→메뉴 89초, 한 프레임 27초) 페이지를 열 때 시작한
+		// 셰이더 미리 준비(shader_prewarm.js)가 남았으면 끝난 뒤 엔진을 시작한다. 그동안 막대는 보낸 수/전체 수로 「화면 준비 중」.
+		function shadersFirst() {
+			const ready = window.incShaderPrewarmReady;
+			if (!ready || !(window.incShaderPrewarmBusy && window.incShaderPrewarmBusy())) return Promise.resolve(); // (미리 준비를 부르지 않았거나 이미 끝남)
+			let finished = false; ready.then(() => { finished = true; });
+			return Promise.race([ready, new Promise(r => setTimeout(r, 0))]).then(() => {
+				if (finished) return;
+				const from = boot.share, to = from + (BOOT.engine - from) * .7;
+				const tick = setInterval(() => {
+					const parts = String(window.incShaderProgress ? window.incShaderProgress() : '').split(',');
+					const k = parts.length === 2 && +parts[1] > 0 ? Math.min(1, +parts[0] / +parts[1]) : 0;
+					bootSet(from + (to - from) * k, '화면 준비 중');
+				}, 100);
+				return ready.then(() => clearInterval(tick));
+			});
+		}
+		// (2.4.1) 누른 뒤 키보드 포커스를 캔버스로 - 단추가 사라지며 포커스가 페이지에 남아, 캔버스를 한 번 누르기 전까지 키가 게임에 가지 않았다
+		startButton.onclick=()=>{if(launched)return;launched=true;if(navigator.maxTouchPoints>0&&window.incEnterFullscreen)window.incEnterFullscreen();document.body.classList.add('started');document.getElementById('launch').remove();
+			if (!filesDone) { BOOT.files = .30; BOOT.engine = .38; }
+			// (셰이더 미리 준비가 남았으면 엔진 시작 구간 앞쪽을 그 단계에 씀 - shadersFirst)
+			if (window.incShaderProgress && (p => !(p.length === 2 && p[0] === p[1]))(String(window.incShaderProgress()).split(','))) BOOT.engine = Math.min(.5, BOOT.engine + .15);
+			bootFit();window.addEventListener('resize', bootFit);bootEl.hidden=false;boot.shown=true;bootDraw();canvasElement.focus();
+			prefetch().then(shadersFirst).then(() => { engineStarting(); return engine.start({
 			'args': ['--main-pack', mainPack].concat(engine.config.args || []),
-		})).then(() => {
-			setStatusMode('hidden');
-		}, displayFailureNotice);};
+		}); }).then(() => {
+			setStatusMode('hidden');canvasElement.focus();
+			// 게임이 로딩 화면을 알리지 않는 판(옛 pck 등): 20초 안에 아무 알림이 없으면 닫음(막대가 화면을 계속 덮지 않게)
+			setTimeout(() => { if (!boot.game) bootClose(); }, 20000);
+		}, (error) => { boot.done = true; clearInterval(boot.crawl); bootEl.remove(); displayFailureNotice(error); });}; // (11-27: 실패하면 막대 타이머도 멈춤 - 예전에는 엔진 시작이 실패해도 100 ms 타이머가 끝없이 돌았다)
+		function openStart() { if (launched || !startButton.disabled) return; startButton.disabled = false; startButton.textContent = '게임 시작'; }
 		// 2.1.9: the button waits for the update check and service worker (up to 1.6 s on a first visit) - a click before did nothing
-		startButton.disabled=false;startButton.textContent='게임 시작';
-		if (!(navigator.connection && navigator.connection.saveData)) prefetch();
+		// (update_client.js가 이 함수 앞에서 incUpdateReady를 기다린다)
+		if (!(navigator.connection && navigator.connection.saveData)) {
+			prefetch();
+			const watch = setInterval(() => { if (launched || !startButton.disabled) { clearInterval(watch); return; } if (performance.now() - filesChanged > STALL_MS) openStart(); }, 500);
+		} else openStart();
 	}
 	// 1.4.5: the game calls this when play begins (after the start click, within
 	// the browser's user-activation window); the button below stays as before.
