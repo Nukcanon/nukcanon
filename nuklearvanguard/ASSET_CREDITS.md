@@ -173,6 +173,7 @@ CC0는 공개 영역 헌정이라 표시 의무가 없습니다(제작자는 예
 | enemy_hurt_1.ogg | Grunt | freesound_community | https://pixabay.com/sound-effects/85990/ | Pixabay Content License |
 | mina_hurt_1.ogg | Heavy Grunt | freesound_community | https://pixabay.com/sound-effects/6969/ | Pixabay Content License |
 | burn_scream_1.ogg | Man Scream 07 | universfield | https://pixabay.com/sound-effects/276686/ | Pixabay Content License |
+| ride_sweep.ogg | Swoosh 010 | UNIVERSFIELD | https://pixabay.com/sound-effects/352856/ | Pixabay Content License |
 | drone_burst.ogg | Electric | olenchic | https://pixabay.com/sound-effects/155027/ | Pixabay Content License |
 | laser_beam_1.ogg | Laser weld | freesound_community | https://pixabay.com/sound-effects/103309/ | Pixabay Content License |
 | tochka_hit_1.ogg ~ tochka_hit_4.ogg | Running on sand | bubu07audio | https://pixabay.com/sound-effects/357373/ | Pixabay Content License |
